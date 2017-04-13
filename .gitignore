@@ -1,0 +1,10 @@
+# ignore all but some directories and files
+/*
+/*/
+!init.el
+!init.d/
+!package/
+!.gitignore
+
+# ignore some patterns
+*~
