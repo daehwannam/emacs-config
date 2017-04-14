@@ -4,9 +4,9 @@
 !init.el
 !.gitignore
 !config/
-!config/.domain.txt
 
 # ignore some patterns or files
 *~
 *[#]*
 init.d/org-mode.el
+config/.domain.txt
