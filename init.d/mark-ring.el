@@ -19,9 +19,26 @@
 ;;; move forward and backward
 ;; http://stackoverflow.com/questions/3393834/how-to-move-forward-and-backward-in-emacs-mark-ring
 ;; https://github.com/deestan/emacs/blob/master/emacs-goodies-el/marker-visit.el
-(require 'marker-visit)
+;(require 'marker-visit)
 ;(global-set-key (kbd "s-7") 'marker-visit-prev) ; Meta+7
 ;(global-set-key (kbd "s-8") 'marker-visit-next) ; Meta+8
-(global-set-key (kbd "C-c p") (make-repeatable-command 'marker-visit-prev))
-(global-set-key (kbd "C-c n") (make-repeatable-command 'marker-visit-next))
 
+;(global-set-key (kbd "C-c p") (make-repeatable-command 'marker-visit-prev))
+;(global-set-key (kbd "C-c n") (make-repeatable-command 'marker-visit-next))
+
+
+
+;;; move forward and backward
+;; http://stackoverflow.com/questions/3393834/how-to-move-forward-and-backward-in-emacs-mark-ring
+(defun unpop-to-mark-command ()
+  "Unpop off mark ring. Does nothing if mark ring is empty."
+  (interactive)
+      (when mark-ring
+        (setq mark-ring (cons (copy-marker (mark-marker)) mark-ring))
+        (set-marker (mark-marker) (car (last mark-ring)) (current-buffer))
+        (when (null (mark t)) (ding))
+        (setq mark-ring (nbutlast mark-ring))
+        (goto-char (marker-position (car (last mark-ring))))))
+
+(global-set-key (kbd "C-c p") (make-repeatable-command 'pop-to-mark-command))
+(global-set-key (kbd "C-c n") (make-repeatable-command 'unpop-to-mark-command))

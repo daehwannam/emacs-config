@@ -5,8 +5,10 @@
 !init.d/
 !package/
 !.gitignore
-!custom
+!custom/
+!unused_package/
 
-# ignore some patterns
+# ignore some patterns or files
 *~
 *[#]*
+init.d/org-mode.el
