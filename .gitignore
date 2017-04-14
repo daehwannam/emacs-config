@@ -5,7 +5,8 @@
 !init.d/
 !package/
 !.gitignore
-!custom
+!custom/
+!unused_package/
 
 # ignore some patterns
 *~
