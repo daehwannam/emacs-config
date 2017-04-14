@@ -2,11 +2,8 @@
 /*
 /*/
 !init.el
-!init.d/
-!package/
 !.gitignore
-!custom/
-!unused_package/
+!config
 
 # ignore some patterns or files
 *~
