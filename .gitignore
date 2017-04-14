@@ -3,7 +3,8 @@
 /*/
 !init.el
 !.gitignore
-!config
+!config/
+!config/.domain.txt
 
 # ignore some patterns or files
 *~

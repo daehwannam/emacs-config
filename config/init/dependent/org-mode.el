@@ -12,15 +12,30 @@
 (define-key global-map "\C-ca" 'org-agenda)
 (setq org-log-done t)
 
+
+;; raad file contents
+;; http://ergoemacs.org/emacs/elisp_read_file_content.html
+(defun get-string-from-file (filePath)
+  "Return filePath's file content."
+  (with-temp-buffer
+    (insert-file-contents filePath)
+    (buffer-string)))
+
+
+
 ;; check OS type
 ;; http://ergoemacs.org/emacs/elisp_determine_OS_version.html
+
+(setq domain_name (get-string-from-file "~/.emacs.d/config/domain.txt"))
 (cond
- ((string-equal system-type "windows-nt") ; Microsoft Windows
+; ((string-equal system-type "windows-nt") ; Microsoft Windows
+ ((string-equal domain_name "ms") ; Microsoft Windows
   (progn
     (setq org-agenda-files (directory-files-recursively
 			    "e:/data/Dropbox/org/" ".*\\.org\\(\\.txt\\)*$"))
     ))
- ((string-equal system-type "gnu/linux") ; linux
+; ((string-equal system-type "gnu/linux") ; linux
+ ((string-equal domain_name "vobox") ; vbox linux
   (progn
     (setq org-agenda-files (directory-files-recursively
 			    "~/data/Dropbox/org/" ".*\\.org\\(\\.txt\\)*$"))
