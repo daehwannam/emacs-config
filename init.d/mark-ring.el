@@ -22,6 +22,6 @@
 (require 'marker-visit)
 ;(global-set-key (kbd "s-7") 'marker-visit-prev) ; Meta+7
 ;(global-set-key (kbd "s-8") 'marker-visit-next) ; Meta+8
-(global-set-key (kbd "C-c j") (make-repeatable-command 'marker-visit-prev))
-(global-set-key (kbd "C-c ;") (make-repeatable-command 'marker-visit-next))
+(global-set-key (kbd "C-c p") (make-repeatable-command 'marker-visit-prev))
+(global-set-key (kbd "C-c n") (make-repeatable-command 'marker-visit-next))
 
