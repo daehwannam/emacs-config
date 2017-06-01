@@ -5,7 +5,7 @@
 ;; extract directory
 ;; http://stackoverflow.com/questions/27284851/emacs-lisp-get-directory-name-not-path-from-the-path
 
-(condition-case nil
+(condition-case nil  ; http://stackoverflow.com/questions/7790382/how-to-determine-whether-a-package-is-installed-in-elisp
    (progn
       (require 'org)
       ;(load (concat (file-name-directory (message buffer-file-name)) "./dependent/org-mode.el")))
