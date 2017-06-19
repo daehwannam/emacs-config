@@ -1,7 +1,7 @@
 
 ;;; hight light current line
 ;; http://emacsredux.com/blog/2013/04/02/highlight-current-line/
-(global-hl-line-mode t)
+;(global-hl-line-mode t)
 
 
 ;;; configuration
