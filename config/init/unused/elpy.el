@@ -5,4 +5,4 @@
       (progn
 	(package-initialize)
 	(elpy-enable)
-	(setq elpy-rpc-backend "jedi"))))
+	(setq elpy-rpc-backend "jedi")))))
