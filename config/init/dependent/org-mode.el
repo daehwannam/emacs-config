@@ -56,3 +56,9 @@
 (setq org-agenda-span 35
       org-agenda-start-on-weekday nil
       org-agenda-start-day "-7d")
+
+
+;;; line wrap
+;; https://emacs.stackexchange.com/questions/18480/wrap-line-text-in-org-mode-when-i-re-open-a-file
+;; it splits long lines
+(setq org-startup-truncated nil)
