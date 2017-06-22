@@ -8,3 +8,9 @@
 
 ;;; python-mode linum-mode setting
 (add-hook 'python-mode-hook 'linum-mode)
+
+
+
+;;; python 3 setting
+;; https://askubuntu.com/questions/460668/how-to-use-python3-in-emacs-on-ubuntu-14-04
+(setq python-shell-interpreter "python3")
