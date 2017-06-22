@@ -4,3 +4,8 @@
 (defun remove-empty-lines ()
   (interactive)
   (flush-lines "^[[:space:]]*$"))
+
+(defun remove-tailing-white-space ()
+  (interactive)
+  (replace-regexp "[[:space:]]*$" ""))
+
