@@ -17,8 +17,4 @@
 ;; https://stackoverflow.com/a/17817119
 (defun ipython ()
   (interactive)
-  ;; (if (= (length (mapcar #'window-buffer (window-list))) 2)
-  ;;     split windows and move to right)
-  (multi-term)
-  (insert "ipython"))
-;  (comint-send-input))
+  (term "ipython"))
