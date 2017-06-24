@@ -8,5 +8,5 @@
 # ignore some patterns or files
 *~
 *[#]*
-config/package/
+config/bin/
 config/domain.txt

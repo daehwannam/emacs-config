@@ -8,17 +8,18 @@
 ;; You may delete these explanatory comments.
 (package-initialize)
 
-(add-to-list 'load-path "~/.emacs.d/config/package/")
-;(add-to-list 'load-path "~/.emacs.d/setting/")
+(defun add-to-load-path-recursively (path)
+  (add-to-list 'load-path path)
 
-;;; recursively add packages from a directory to load-path
-;; http://stackoverflow.com/questions/7322246/adding-subdirectories-to-load-path
-(let ((default-directory "~/.emacs.d/config/package/"))
-  (normal-top-level-add-subdirs-to-load-path))
+  ;; recursively add packages from a directory to load-path
+  ;; http://stackoverflow.com/questions/7322246/adding-subdirectories-to-load-path
+  (let ((default-directory path))
+    (normal-top-level-add-subdirs-to-load-path)))
 
-(add-to-list 'load-path "~/.emacs.d/config/script/")
-(let ((default-directory "~/.emacs.d/config/script/"))
-  (normal-top-level-add-subdirs-to-load-path))
+(add-to-load-path-recursively "~/.emacs.d/config/bin/")
+(add-to-load-path-recursively "~/.emacs.d/config/package/")
+(add-to-load-path-recursively "~/.emacs.d/config/script/")
+  
 
 ;;; load all init files
 ;; https://www.emacswiki.org/emacs/LoadingLispFiles
