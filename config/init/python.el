@@ -15,6 +15,7 @@
 
 ;;; ipython
 ;; https://stackoverflow.com/a/17817119
-(defun ipython ()
+(defun run-ipython ()
   (interactive)
-  (term "ipython"))
+  (term "ipython")
+  (rename-buffer "*IPython*"))
