@@ -29,7 +29,7 @@
 
     ))
 ; ((string-equal system-type "gnu/linux") ; linux
- ((string-equal domain_name "vobox") ; vbox linux
+ ((string-equal domain_name "vbox") ; vbox linux
   (progn
     )))
 

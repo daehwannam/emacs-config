@@ -9,15 +9,15 @@
 	(setq elpy-rpc-backend "jedi")
 	;(setq elpy-rpc-python-command "python3")
 
-	(let (domain_name (get-string-from-file "~/.emacs.d/config/domain.txt"))
+	(let (domain-name (get-string-from-file "~/.emacs.d/config/domain.txt"))
 	  (cond
-	   ;; ((string-equal domain_name "ms\n") ; Microsoft Windows
+	   ;; ((string-equal domain-name "ms\n") ; Microsoft Windows
 	   ;;  (progn
 	   ;;    (do-something bla bla bla)))
-	   ;; ((string-equal domain_name "vbox\n") ; vbox linux
+	   ;; ((string-equal domain-name "vbox\n") ; vbox linux
 	   ;;  (progn
 	   ;;    (do-something bla bla bla)))
-	   ((string-equal system-type "gnu/linux") ; linux
+	   ((string-equal domain-name "hegel\n") ; hegel
 	    (progn
 	      (setenv "WORKON_HOME" "~/bin/anaconda2/envs/")
 	      (pyvenv-mode 1)))))
