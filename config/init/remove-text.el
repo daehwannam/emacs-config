@@ -5,7 +5,7 @@
   (interactive)
   (flush-lines "^[[:space:]]*$"))
 
-(defun remove-tailing-white-space ()
+(defun remove-trailing-white-space ()
   (interactive)
   (replace-regexp "[[:space:]]*$" ""))
 
