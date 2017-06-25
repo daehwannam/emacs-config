@@ -15,7 +15,14 @@
 
 ;;; ipython
 ;; https://stackoverflow.com/a/17817119
+;; (defun run-ipython ()
+;;   (interactive)
+;;   (term "ipython")
+;;   (rename-buffer "*IPython*"))
 (defun run-ipython ()
   (interactive)
-  (term "ipython")
-  (rename-buffer "*IPython*"))
+  ;;; count windows: https://emacs.stackexchange.com/questions/3494/how-to-count-all-of-the-windows-in-a-frame
+  (if (< (length (mapcar #'window-buffer (window-list))) 2)
+      (split-window-right))
+  (other-window 1)
+  (named-term "ipython" "*IPython*"))
