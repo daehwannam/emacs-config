@@ -15,7 +15,7 @@
 (setq domain_name (get-string-from-file "~/.emacs.d/config/domain.txt"))
 (cond
 ; ((string-equal system-type "windows-nt") ; Microsoft Windows
- ((string-equal domain_name "ms") ; Microsoft Windows
+ ((string-equal domain_name "ms\n") ; Microsoft Windows
   (progn
 
 
@@ -29,7 +29,7 @@
 
     ))
 ; ((string-equal system-type "gnu/linux") ; linux
- ((string-equal domain_name "vbox") ; vbox linux
+ ((string-equal domain_name "vbox\n") ; vbox linux
   (progn
     )))
 
