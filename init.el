@@ -24,7 +24,11 @@
 ;;; load theme.el
 (load "~/.emacs.d/config/init/theme.el")
 
+;;; load useful functions
+(require 'load-directory)
+(load-directory "~/.emacs.d/config/function")
+
 ;;; load all init files
 ;; https://www.emacswiki.org/emacs/LoadingLispFiles
-(require 'load-directory)
+;; (require 'load-directory)
 (load-directory "~/.emacs.d/config/init")
