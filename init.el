@@ -19,7 +19,10 @@
 (add-to-load-path-recursively "~/.emacs.d/config/bin/")
 (add-to-load-path-recursively "~/.emacs.d/config/package/")
 (add-to-load-path-recursively "~/.emacs.d/config/script/")
-  
+
+
+;;; load theme.el
+(load "~/.emacs.d/config/init/theme.el")
 
 ;;; load all init files
 ;; https://www.emacswiki.org/emacs/LoadingLispFiles

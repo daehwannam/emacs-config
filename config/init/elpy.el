@@ -9,7 +9,8 @@
 	(setq elpy-rpc-backend "jedi")
 	;(setq elpy-rpc-python-command "python3")
 
-	(let (domain-name (get-string-from-file "~/.emacs.d/config/domain.txt"))
+	(let (domain-name)
+	  (setq domain-name (get-string-from-file "~/.emacs.d/config/domain.txt"))
 	  (cond
 	   ;; ((string-equal domain-name "ms\n") ; Microsoft Windows
 	   ;;  (progn
