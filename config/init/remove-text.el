@@ -9,3 +9,7 @@
   (interactive)
   (replace-regexp "[[:space:]]*$" ""))
 
+(defun shrink-empty-lines ()
+  (interactive)
+  (replace-regexp "^[[:space:]]*\n\\([[:space:]]*\n\\)+" "\n"))
+(shrink-empty-lines)
