@@ -1,0 +1,22 @@
+# ignore some directories
+data/
+model/
+result/
+src/exercise/
+
+# train.py, extract.py copies
+_cp_*.py
+_training*.py
+
+# visualization
+src/visualization/*.txt
+
+# old files
+old_*
+
+# emacs temporary files
+*~
+\#*#
+
+# python temporary file
+*.pyc

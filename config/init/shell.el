@@ -32,7 +32,7 @@
 
 ;; below is based on emacs "shell" function
 ;; https://github.com/emacs-mirror/emacs/blob/master/lisp/shell.el
-(defun tf-shell (&optional buffer)
+(defun py3-shell (&optional buffer)
   (interactive
    (list
     (and current-prefix-arg
@@ -59,5 +59,5 @@
 		 ;; If the current buffer is a dead shell buffer, use it.
 		 (current-buffer)))
   (shell buffer)
-  (insert "source activate tf3")
+  (insert "source activate py3")
   (comint-send-input))
