@@ -27,8 +27,9 @@
 (global-set-key (kbd "C-c O") (make-repeatable-command 'other-frame-backwards))
 
 ;; make-frame-command & delete-frame key setting
-(global-set-key (kbd "C-c 2") 'make-frame-command)
 (global-set-key (kbd "C-c 0") 'delete-frame)
+(global-set-key (kbd "C-c 1") 'delete-other-frames)
+(global-set-key (kbd "C-c 2") 'make-frame-command)
 
 ;; window size adjust
 (global-set-key (kbd "C-x ^") (make-repeatable-command 'enlarge-window))
