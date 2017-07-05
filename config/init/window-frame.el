@@ -36,3 +36,12 @@
 (global-set-key (kbd "C-x %") (make-repeatable-command 'shrink-window))
 (global-set-key (kbd "C-x }") (make-repeatable-command 'enlarge-window-horizontally))
 (global-set-key (kbd "C-x {") (make-repeatable-command 'shrink-window-horizontally))
+
+
+;; kill buffer and delete window
+(defun kill-buffer-and-delete-window ()
+  (interactive)
+  (kill-buffer)
+  (delete-window))
+
+(global-set-key (kbd "C-x K") 'kill-buffer-and-delete-window)
