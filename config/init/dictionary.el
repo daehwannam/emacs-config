@@ -18,12 +18,12 @@
   (dolist (path load-path)
     (if (string= (car (last (split-string path "/")))
 		 "dictionary-1.10")
-	(progn
+	(progn  ; then
 	  (load "dictionary-init")
 	  ;; dictionary key bindings
 	  (global-set-key "\C-cs" 'dictionary-search)
-	  (global-set-key "\C-cm" 'dictionary-match-words))
-      (throw 'dict-path t))  ; then
+	  (global-set-key "\C-cm" 'dictionary-match-words)
+	  (throw 'dict-path t)))
     (progn nil)  ; else
     )
   )
