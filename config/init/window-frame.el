@@ -22,9 +22,13 @@
 (global-set-key (kbd "C-x 5 o") (make-repeatable-command 'other-frame))
 (global-set-key (kbd "C-x 5 O") (make-repeatable-command 'other-frame-backwards))
 
+(global-set-key (kbd "C-x ㅐ") (make-repeatable-command 'other-window))
+
 ;; other-frame key setting
 (global-set-key (kbd "C-c o") (make-repeatable-command 'other-frame))
 (global-set-key (kbd "C-c O") (make-repeatable-command 'other-frame-backwards))
+
+(global-set-key (kbd "C-c ㅐ") (make-repeatable-command 'other-frame))
 
 ;; make-frame-command & delete-frame key setting
 (global-set-key (kbd "C-c 0") 'delete-frame)
