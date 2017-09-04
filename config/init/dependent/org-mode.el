@@ -38,7 +38,7 @@
  ((string-equal domain-name "vbox\n") ; vbox linux
   (progn
     (setq org-agenda-files (directory-files-recursively
-			    "~/data/Dropbox/org/" ".*\\.org\\(\\.txt\\)*$"))
+			    "~/data/Dropbox/org/" ".*\\.org\\(\\.txt\\)+$"))
     )))
 
 ;(directory-files "e:/Dropbox/org/" t ".*\\.org\\(\\.txt\\)*$")
