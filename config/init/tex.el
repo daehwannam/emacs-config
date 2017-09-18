@@ -3,4 +3,9 @@
 
 ;;; preview pane mode
 ;; https://www.emacswiki.org/emacs/LaTeXPreviewPane
-(latex-preview-pane-enable)
+;;
+;; https://stackoverflow.com/questions/757564/in-emacs-lisp-how-do-i-check-if-a-variable-is-defined
+(if (boundp 'latex-preview-pane-enable)
+    (latex-preview-pane-enable))
+
+

@@ -9,4 +9,5 @@
 
 ;;; vlf setting
 ;; https://github.com/m00natic/vlfi
-(require 'vlf-setup)
+(if (boundp 'vlf-setup)
+    (require 'vlf-setup))
