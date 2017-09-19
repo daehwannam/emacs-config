@@ -49,3 +49,17 @@
   (delete-window))
 
 (global-set-key (kbd "C-x K") 'kill-buffer-and-delete-window)
+
+
+;; split windows below or right
+(defun split-window-below-or-right-and-find-file (filename &optional wildcards)
+  (interactive
+   (find-file-read-args "Find file in other window: "
+                        (confirm-nonexistent-file-or-buffer)))
+  (if (< (* (window-body-height) 2) (window-body-width))
+      (split-window-right)
+    (split-window-below))
+  (other-window 1)
+  (find-file filename))
+
+(global-set-key (kbd "C-x F") 'split-window-below-or-right-and-find-file)
