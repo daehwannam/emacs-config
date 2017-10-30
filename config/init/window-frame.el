@@ -56,7 +56,7 @@
   (kill-buffer)
   (delete-frame))
 
-(global-set-key (kbd "C-c K") 'kill-buffer-and-delete-frame)
+;(global-set-key (kbd "C-c K") 'kill-buffer-and-delete-frame)
 
 ;; split windows below or right
 (defun split-window-below-or-right-and-find-file (filename &optional wildcards)
