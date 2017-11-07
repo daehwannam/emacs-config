@@ -10,7 +10,7 @@
 	;(setq elpy-rpc-python-command "python3")
 
 	(let (domain-name)
-	  (setq domain-name (get-string-from-file "~/.emacs.d/config/domain.txt"))
+	  (setq domain-name (trim-string (get-string-from-file "~/.emacs.d/config/domain.txt")))
 	  (cond
 	   ;; ((string-equal domain-name "ms\n") ; Microsoft Windows
 	   ;;  (progn
@@ -18,9 +18,13 @@
 	   ;; ((string-equal domain-name "vbox\n") ; vbox linux
 	   ;;  (progn
 	   ;;    (do-something bla bla bla)))
-	   ((string-equal domain-name "hegel\n") ; hegel
+	   ((string-equal domain-name "hegel") ; hegel
 	    (progn
 	      (setenv "WORKON_HOME" "~/bin/anaconda2/envs/")
+	      (pyvenv-mode 1)))
+	   ((string-equal domain-name "engels") ; engels
+	    (progn
+	      (setenv "WORKON_HOME" "~/bin/anaconda3/envs/")
 	      (pyvenv-mode 1)))))
 
 	)))
