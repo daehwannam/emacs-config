@@ -11,3 +11,15 @@
 ;; https://github.com/m00natic/vlfi
 (if (boundp 'vlf-setup)
     (require 'vlf-setup))
+
+(setq domain-name (trim-string (get-string-from-file "~/.emacs.d/config/domain.txt")))
+(cond
+ ((string-equal domain-name "vbox")
+  (progn
+    (require 'vlf-setup)
+    ))
+ ((string-equal domain-name "engels")
+  (progn
+    (require 'vlf-setup))
+  ))
+
