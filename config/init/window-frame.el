@@ -70,3 +70,59 @@
   (find-file filename))
 
 (global-set-key (kbd "C-x F") 'split-window-below-or-right-and-find-file)
+
+(defun split-window-below-or-right-and-execute-extended-command (prefixarg &optional command-name)
+  ;; Based on Fexecute_extended_command in keyboard.c of Emacs.
+  ;; Aaron S. Hawley <aaron.s.hawley(at)gmail.com> 2009-08-24
+  "Read function name, then read its arguments and call it.
+
+To pass a numeric argument to the command you are invoking, specify
+the numeric argument to this command.
+
+Noninteractively, the argument PREFIXARG is the prefix argument to
+give to the command you invoke, if it asks for an argument."
+  (interactive (list current-prefix-arg (read-extended-command)))
+  ;; Emacs<24 calling-convention was with a single `prefixarg' argument.
+
+  ;; split windows below or right
+  (if (< (* (window-body-height) 2) (window-body-width))
+      (split-window-right)
+    (split-window-below))
+  (other-window 1)
+
+  (if (null command-name)
+      (setq command-name (let ((current-prefix-arg prefixarg)) ; for prompt
+                           (read-extended-command))))
+  (let* ((function (and (stringp command-name) (intern-soft command-name)))
+         (binding (and suggest-key-bindings
+		       (not executing-kbd-macro)
+		       (where-is-internal function overriding-local-map t))))
+    (unless (commandp function)
+      (error "`%s' is not a valid command name" command-name))
+    (setq this-command function)
+    ;; Normally `real-this-command' should never be changed, but here we really
+    ;; want to pretend that M-x <cmd> RET is nothing more than a "key
+    ;; binding" for <cmd>, so the command the user really wanted to run is
+    ;; `function' and not `execute-extended-command'.  The difference is
+    ;; visible in cases such as M-x <cmd> RET and then C-x z (bug#11506).
+    (setq real-this-command function)
+    (let ((prefix-arg prefixarg))
+      (command-execute function 'record))
+    ;; If enabled, show which key runs this command.
+    (when binding
+      ;; But first wait, and skip the message if there is input.
+      (let* ((waited
+              ;; If this command displayed something in the echo area;
+              ;; wait a few seconds, then display our suggestion message.
+              (sit-for (cond
+                        ((zerop (length (current-message))) 0)
+                        ((numberp suggest-key-bindings) suggest-key-bindings)
+                        (t 2)))))
+        (when (and waited (not (consp unread-command-events)))
+          (with-temp-message
+              (format "You can run the command `%s' with %s"
+                      function (key-description binding))
+            (sit-for (if (numberp suggest-key-bindings)
+                         suggest-key-bindings
+                       2))))))))
+(global-set-key (kbd "M-X") 'split-window-below-or-right-and-execute-extended-command)
