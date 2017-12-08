@@ -32,13 +32,13 @@
  ((string-equal domain-name "ms") ; Microsoft Windows
   (progn
     (setq org-agenda-files (directory-files-recursively
-			    "e:/data/Dropbox/org/" ".*\\.org\\(\\.txt\\)*$"))
+			    "e:/data/Dropbox/org/schedule/" ".*\\.org\\(\\.txt\\)*$"))
     ))
 ; ((string-equal system-type "gnu/linux") ; linux
  ((string-equal domain-name "vbox") ; vbox linux
   (progn
     (setq org-agenda-files (directory-files-recursively
-			    "~/data/Dropbox/org/" ".*\\.org\\(\\.txt\\)+$"))
+			    "~/data/Dropbox/org/schedule/" ".*\\.org\\(\\.txt\\)+$"))
     )))
 
 ;(directory-files "e:/Dropbox/org/" t ".*\\.org\\(\\.txt\\)*$")
@@ -53,7 +53,7 @@
 ;;; org-mode agenda length
 ;; http://stackoverflow.com/questions/32423127/how-to-view-the-next-days-in-org-modes-agenda
 
-(setq org-agenda-span 35
+(setq org-agenda-span 49
       org-agenda-start-on-weekday nil
       org-agenda-start-day "-7d")
 
