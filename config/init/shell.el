@@ -61,3 +61,34 @@
   (shell buffer)
   (insert "source activate py3")
   (comint-send-input))
+
+(defun py2-shell (&optional buffer)
+  (interactive
+   (list
+    (and current-prefix-arg
+	 (prog1
+	     (read-buffer "Shell buffer: "
+			  ;; If the current buffer is an inactive
+			  ;; shell buffer, use it as the default.
+			  (if (and (eq major-mode 'shell-mode)
+				   (null (get-buffer-process (current-buffer))))
+			      (buffer-name)
+			    (generate-new-buffer-name "*shell*")))
+	   (if (file-remote-p default-directory)
+	       ;; It must be possible to declare a local default-directory.
+	       ;; FIXME: This can't be right: it changes the default-directory
+	       ;; of the current-buffer rather than of the *shell* buffer.
+	       (setq default-directory
+		     (expand-file-name
+		      (read-directory-name
+		       "Default directory: " default-directory default-directory
+		       t nil))))))))
+  (setq buffer (if (or buffer (not (derived-mode-p 'shell-mode))
+		       (comint-check-proc (current-buffer)))
+		   (get-buffer-create (or buffer "*shell*"))
+		 ;; If the current buffer is a dead shell buffer, use it.
+		 (current-buffer)))
+  (shell buffer)
+  (insert "source activate py2")
+  (comint-send-input))
+
