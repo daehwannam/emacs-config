@@ -71,6 +71,7 @@
 
 (global-set-key (kbd "C-x F") 'split-window-below-or-right-and-find-file)
 
+
 (defun split-window-below-or-right-and-execute-extended-command (prefixarg &optional command-name)
   ;; Based on Fexecute_extended_command in keyboard.c of Emacs.
   ;; Aaron S. Hawley <aaron.s.hawley(at)gmail.com> 2009-08-24
@@ -126,3 +127,73 @@ give to the command you invoke, if it asks for an argument."
                          suggest-key-bindings
                        2))))))))
 (global-set-key (kbd "M-X") 'split-window-below-or-right-and-execute-extended-command)
+
+
+(defun split-window-below-or-right-and-switch-to-buffer (buffer-or-name &optional norecord force-same-window)
+  "Display buffer BUFFER-OR-NAME in the selected window.
+
+WARNING: This is NOT the way to work on another buffer temporarily
+within a Lisp program!  Use `set-buffer' instead.  That avoids
+messing with the window-buffer correspondences.
+
+If the selected window cannot display the specified
+buffer (e.g. if it is a minibuffer window or strongly dedicated
+to another buffer), call `pop-to-buffer' to select the buffer in
+another window.
+
+If called interactively, read the buffer name using the
+minibuffer.  The variable `confirm-nonexistent-file-or-buffer'
+determines whether to request confirmation before creating a new
+buffer.
+
+BUFFER-OR-NAME may be a buffer, a string (a buffer name), or nil.
+If BUFFER-OR-NAME is a string that does not identify an existing
+buffer, create a buffer with that name.  If BUFFER-OR-NAME is
+nil, switch to the buffer returned by `other-buffer'.
+
+If optional argument NORECORD is non-nil, do not put the buffer
+at the front of the buffer list, and do not make the window
+displaying it the most recently selected one.
+
+If optional argument FORCE-SAME-WINDOW is non-nil, the buffer
+must be displayed in the selected window; if that is impossible,
+signal an error rather than calling `pop-to-buffer'.
+
+The option `switch-to-buffer-preserve-window-point' can be used
+to make the buffer appear at its last position in the selected
+window.
+
+Return the buffer switched to."
+  (interactive
+   (list (read-buffer-to-switch "Switch to buffer: ") nil 'force-same-window))
+  (let ((buffer (window-normalize-buffer-to-switch-to buffer-or-name)))
+    (cond
+     ;; Don't call set-window-buffer if it's not needed since it
+     ;; might signal an error (e.g. if the window is dedicated).
+     ((eq buffer (window-buffer)))
+     ((window-minibuffer-p)
+      (if force-same-window
+          (user-error "Cannot switch buffers in minibuffer window")
+        (pop-to-buffer buffer norecord)))
+     ((eq (window-dedicated-p) t)
+      (if force-same-window
+          (user-error "Cannot switch buffers in a dedicated window")
+        (pop-to-buffer buffer norecord)))
+     (t
+      (let* ((entry (assq buffer (window-prev-buffers)))
+	     (displayed (and (eq switch-to-buffer-preserve-window-point
+				 'already-displayed)
+			     (get-buffer-window buffer 0))))
+	(set-window-buffer nil buffer)
+	(when (and entry
+		   (or (eq switch-to-buffer-preserve-window-point t)
+		       displayed))
+	  ;; Try to restore start and point of buffer in the selected
+	  ;; window (Bug#4041).
+	  (set-window-start (selected-window) (nth 1 entry) t)
+	  (set-window-point nil (nth 2 entry))))))
+
+    (unless norecord
+      (select-window (selected-window)))
+    (set-buffer buffer)))
+(global-set-key (kbd "M-B") 'split-window-below-or-right-and-switch-to-buffer)
