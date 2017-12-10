@@ -166,6 +166,13 @@ window.
 Return the buffer switched to."
   (interactive
    (list (read-buffer-to-switch "Switch to buffer: ") nil 'force-same-window))
+
+  ;; split windows below or right
+  (if (< (* (window-body-height) 2) (window-body-width))
+      (split-window-right)
+    (split-window-below))
+  (other-window 1)
+
   (let ((buffer (window-normalize-buffer-to-switch-to buffer-or-name)))
     (cond
      ;; Don't call set-window-buffer if it's not needed since it
@@ -196,4 +203,5 @@ Return the buffer switched to."
     (unless norecord
       (select-window (selected-window)))
     (set-buffer buffer)))
-(global-set-key (kbd "M-B") 'split-window-below-or-right-and-switch-to-buffer)
+
+(global-set-key (kbd "C-x B") 'split-window-below-or-right-and-switch-to-buffer)
