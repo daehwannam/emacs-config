@@ -5,6 +5,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(org-startup-truncated nil)
+ '(package-selected-packages (quote (magit elpy org vlf)))
  '(safe-local-variable-values (quote ((TeX . UTF-8)))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
