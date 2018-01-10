@@ -53,7 +53,7 @@
 ;;; org-mode agenda length
 ;; http://stackoverflow.com/questions/32423127/how-to-view-the-next-days-in-org-modes-agenda
 
-(setq org-agenda-span 49
+(setq org-agenda-span 70
       org-agenda-start-on-weekday nil
       org-agenda-start-day "-7d")
 
