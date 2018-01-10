@@ -31,3 +31,12 @@
 
 ;;; For conda environment, "source activate <env>" should be done before running emacs.
 ;; https://emacs.stackexchange.com/a/16638
+
+
+;; [Flake setting]
+;; http://flake8.pycqa.org/en/latest/user/configuration.html
+;; add follwoing text to the ~/.config/flake8
+;; ------------------- ~/.config/flake8 -------------------------
+;; [flake8]
+;; ignore = E501
+;; --------------------------------------------------------------
