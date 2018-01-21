@@ -37,3 +37,16 @@
 (setq scroll-step 1)
 (setq scroll-conservatively 10000)
 (setq auto-window-vscroll nil)
+
+
+
+;;; recenter-top-bottom
+
+(defun recenter-top-bottom-other ()
+  (interactive)
+  (save-excursion
+    (other-window 1)
+    (recenter-top-bottom)
+    (other-window -1)))
+
+(global-set-key (kbd "C-x M-l") (make-repeatable-command 'recenter-top-bottom-other))

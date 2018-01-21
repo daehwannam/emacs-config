@@ -17,6 +17,12 @@
 
 
 
+;;; open a shell in the current window.
+;; https://stackoverflow.com/a/46122387
+(push (cons "\\*shell\\*" display-buffer--same-window-action) display-buffer-alist)
+
+
+
 ;;; shell for virtual env or conda
 ;;
 ;; original simple code
