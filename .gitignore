@@ -12,3 +12,4 @@
 config/bin/
 config/domain.txt
 config/old-domain.txt
+config/custom/custom.el

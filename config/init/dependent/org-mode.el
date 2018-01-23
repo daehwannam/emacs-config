@@ -1,5 +1,5 @@
 ;;; org-mode
-;; 2http://orgmode.org/worg/org-tutorials/orgtutorial_dto.html
+;; http://orgmode.org/worg/org-tutorials/orgtutorial_dto.html
 
 (package-initialize)
 (require 'org)
