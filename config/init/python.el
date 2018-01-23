@@ -8,7 +8,9 @@
 
 ;;; python-mode linum-mode setting
 (add-hook 'python-mode-hook 'linum-mode)
-(add-hook 'python-mode-hook '(lambda () (electric-indent-mode -1))) ; https://github.com/jorgenschaefer/elpy/issues/195
+(defun non-electric-indent-mode ()
+  (electric-indent-mode -1))
+(add-hook 'python-mode-hook 'non-electric-indent-mode) ; https://github.com/jorgenschaefer/elpy/issues/195
 
 ;;; python 3 setting
 ;; https://askubuntu.com/questions/460668/how-to-use-python3-in-emacs-on-ubuntu-14-04
