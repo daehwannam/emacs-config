@@ -1,4 +1,9 @@
 
+;;; initialize machine id if it's not exist.
+(unless (file-exists-p "~/.emacs.d/config/domain.txt")
+  ;; https://stackoverflow.com/questions/14071991/how-to-create-an-empty-file-by-elisp/14072295
+  (write-region "" nil "~/.emacs.d/config/domain.txt"))
+
 ;;; load-path setting
 ;(add-to-list 'load-path "/home/dhnam/.emacs.d/package/")
 

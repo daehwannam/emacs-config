@@ -1,6 +1,7 @@
 # ignore all but some directories and files
 /*
 /*/
+
 !init.el
 !.gitignore
 !config/
@@ -9,7 +10,16 @@
 # ignore some patterns or files
 *~
 *[#]*
-config/bin/
 config/domain.txt
 config/old-domain.txt
 config/custom/custom.el
+
+# include special directories (that include .gitkeep)
+config/bin/*
+config/bin/*/
+
+!elpa
+elpa/*
+elpa/*/
+
+!.gitkeep
