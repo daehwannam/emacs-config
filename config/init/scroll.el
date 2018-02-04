@@ -12,8 +12,21 @@
   (interactive)                    
   (scroll-down (window-small-height)))
 
+(defun scroll-up-small-with-cursor ()
+  (interactive)
+  (scroll-up (window-small-height))
+  (next-line (window-small-height)))
+
+(defun scroll-down-small-with-cursor ()         
+  (interactive)                    
+  (scroll-down (window-small-height))
+  (previous-line (window-small-height)))
+
 (global-set-key (kbd "C-v") 'scroll-up-small)
 (global-set-key (kbd "M-v") 'scroll-down-small)
+
+;; (global-set-key (kbd "C-V") 'scroll-up-small-with-cursor)
+;; (global-set-key (kbd "M-v") 'scroll-down-small-with-cursor)
 
 
 
