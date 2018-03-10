@@ -12,10 +12,9 @@
 ;; check OS type
 ;; http://ergoemacs.org/emacs/elisp_determine_OS_version.html
 
-(setq domain_name (get-string-from-file "~/.emacs.d/config/domain.txt"))
 (cond
 ; ((string-equal system-type "windows-nt") ; Microsoft Windows
- ((string-equal domain_name "ms\n") ; Microsoft Windows
+ ((string-equal machine-domain "ms") ; Microsoft Windows
   (progn
 
 
@@ -29,7 +28,7 @@
 
     ))
 ; ((string-equal system-type "gnu/linux") ; linux
- ((string-equal domain_name "vbox\n") ; vbox linux
+ ((string-equal machine-domain "vbox") ; vbox linux
   (progn
     )))
 

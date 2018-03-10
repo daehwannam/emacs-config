@@ -26,16 +26,15 @@
 ;; check OS type
 ;; http://ergoemacs.org/emacs/elisp_determine_OS_version.html
 
-(setq domain-name (trim-string (get-string-from-file "~/.emacs.d/config/domain.txt")))
 (cond
 ; ((string-equal system-type "windows-nt") ; Microsoft Windows
- ((string-equal domain-name "ms") ; Microsoft Windows
+ ((string-equal machine-domain "ms") ; Microsoft Windows
   (progn
     (setq org-agenda-files (directory-files-recursively
 			    "e:/data/Dropbox/org/schedule/" ".*\\.org\\(\\.txt\\)*$"))
     ))
 ; ((string-equal system-type "gnu/linux") ; linux
- ((string-equal domain-name "vbox") ; vbox linux
+ ((string-equal machine-domain "vbox") ; vbox linux
   (progn
     (setq org-agenda-files (directory-files-recursively
 			    "~/data/Dropbox/org/schedule/" ".*\\.org\\(\\.txt\\)+$"))

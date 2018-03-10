@@ -1,7 +1,6 @@
 
-(setq domain-name (trim-string (get-string-from-file "~/.emacs.d/config/domain.txt")))
 (cond
- ((string-equal domain-name "vbox") ; vbox linux
+ ((string-equal machine-domain "vbox") ; vbox linux
   (progn
     (require 'org-ref)
 

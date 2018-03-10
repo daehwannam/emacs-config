@@ -1,7 +1,6 @@
 
-(setq domain-name (trim-string (get-string-from-file "~/.emacs.d/config/domain.txt")))
-(if (or (string-equal domain-name "engels")
-	(string-equal domain-name "vbox"))
+(if (or (string-equal machine-domain "engels")
+	(string-equal machine-domain "vbox"))
     (progn
       (global-set-key (kbd "C-x g") 'magit-status)
       (global-set-key (kbd "C-x M-g") 'magit-dispatch-popup)))

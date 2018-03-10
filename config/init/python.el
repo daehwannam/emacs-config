@@ -31,13 +31,12 @@
   (named-term "ipython" "*IPython*"))
 
 
-;; (setq domain-name (trim-string (get-string-from-file "~/.emacs.d/config/domain.txt")))
 ;; (cond
-;;  ((string-equal domain-name "vbox") ; Microsoft Windows
+;;  ((string-equal machine-domain "vbox") ; Microsoft Windows
 ;;   (progn
 ;;     (setenv "WORKON_HOME" "~/bin/anaconda2/envs/")
 ;;     (pyvenv-mode 1)))
-;;  ((string-equal domain-name "engels") ; vbox linux
+;;  ((string-equal machine-domain "engels") ; vbox linux
 ;;   (progn
 ;;     (setenv "WORKON_HOME" "~/bin/anaconda3/envs/")
 ;;     (pyvenv-mode 1)))
