@@ -17,7 +17,10 @@
 (setq installable-domain-specific-packages
   (cond
    ((string-equal machine-domain "default") '())
+   ((string-equal machine-domain "basic") '(vlf magit))
    ((string-equal machine-domain "vbox") '(vlf auctex magit material-theme))
+   ((string-equal machine-domain "engels") '(vlf magit elpy flycheck py-autopep8))
+   ;; ((string-equal machine-domain "engels") '(vlf magit elpy py-autopep8))
    ((string-equal machine-domain "programming") '(elpy))
    ))
 

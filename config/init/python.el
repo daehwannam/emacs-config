@@ -30,6 +30,8 @@
   (other-window 1)
   (named-term "ipython" "*IPython*"))
 
+(when (executable-find "ipython")
+  (setq python-shell-interpreter "ipython"))
 
 ;; (cond
 ;;  ((string-equal machine-domain "vbox") ; Microsoft Windows
