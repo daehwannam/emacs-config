@@ -55,3 +55,10 @@
 ;; [flake8]
 ;; ignore = E501
 ;; --------------------------------------------------------------
+
+
+;; [pdb setting]
+;; https://stackoverflow.com/questions/38346577/debuggin-with-pdb-within-a-conda-environment
+;; ex.
+;;     cp /usr/bin/pdb ~/bin/anaconda3/bin/pdb
+;;     cp /usr/lib/python3.4/pdb.py ~/bin/anaconda3/bin/pdb.py
