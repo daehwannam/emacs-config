@@ -114,7 +114,6 @@
 (defun elscreen-frame-title-update ()
   (when (elscreen-screen-modified-p 'elscreen-frame-title-update)
     (let* ((screen-list (sort (elscreen-get-screen-list) '<))
-           (screen-to-name-alist (elscreen-get-screen-to-name-alist))
            (title (concat "| " (mapconcat
                    (lambda (screen)
                      (format "%d%s|"
