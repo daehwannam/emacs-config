@@ -24,19 +24,28 @@
 	  (progn
 	    (setenv "WORKON_HOME" "~/bin/anaconda3/envs/")
 	    (pyvenv-mode 1)
-	    (pyvenv-workon "py3"))))
+	    (pyvenv-workon "py3")))
+	 ((string-equal machine-domain "vbox") ; vbox
+	  (progn
+	    (setenv "WORKON_HOME" "~/bin/anaconda3/envs/")
+	    (pyvenv-mode 1)))
+	 )
 
 	;; https://realpython.com/blog/python/emacs-the-best-python-editor/
-	(when (require 'flycheck nil t)
-	  (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
-	  (add-hook 'elpy-mode-hook 'flycheck-mode))
 
-	(when (require 'py-autopep8 nil t)
-	  (add-hook 'elpy-mode-hook 'py-autopep8-enable-on-save))
+	(unless (member machine-domain '("vbox" "machine here don't activate below"))
+	  (when (require 'flycheck nil t)
+	    (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
+	    (add-hook 'elpy-mode-hook 'flycheck-mode))
 
 	;; (elpy-use-ipython)  # deprecated
 	;; (setq python-shell-interpreter "ipython"
 	;;       python-shell-interpreter-args "-i --simple-prompt")
+	  (when (require 'py-autopep8 nil t)
+	    (add-hook 'elpy-mode-hook 'py-autopep8-enable-on-save))
+	  )
+
+	;; (elpy-use-ipython) ; deprecated
 	)))
 
 ;;; For conda environment, "source activate <env>" should be done before running emacs.
@@ -50,3 +59,10 @@
 ;; [flake8]
 ;; ignore = E501
 ;; --------------------------------------------------------------
+
+
+;; [pdb setting]
+;; https://stackoverflow.com/questions/38346577/debuggin-with-pdb-within-a-conda-environment
+;; ex.
+;;     cp /usr/bin/pdb ~/bin/anaconda3/bin/pdb
+;;     cp /usr/lib/python3.4/pdb.py ~/bin/anaconda3/bin/pdb.py
