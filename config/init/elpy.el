@@ -23,7 +23,8 @@
 	 ((string-equal machine-domain "engels") ; engels
 	  (progn
 	    (setenv "WORKON_HOME" "~/bin/anaconda3/envs/")
-	    (pyvenv-mode 1))))
+	    (pyvenv-mode 1)
+	    (pyvenv-workon "py3"))))
 
 	;; https://realpython.com/blog/python/emacs-the-best-python-editor/
 	(when (require 'flycheck nil t)
@@ -33,7 +34,9 @@
 	(when (require 'py-autopep8 nil t)
 	  (add-hook 'elpy-mode-hook 'py-autopep8-enable-on-save))
 
-	(elpy-use-ipython)
+	;; (elpy-use-ipython)  # deprecated
+	;; (setq python-shell-interpreter "ipython"
+	;;       python-shell-interpreter-args "-i --simple-prompt")
 	)))
 
 ;;; For conda environment, "source activate <env>" should be done before running emacs.

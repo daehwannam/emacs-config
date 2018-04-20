@@ -8,9 +8,11 @@
 
 ;;; python-mode linum-mode setting
 (add-hook 'python-mode-hook 'linum-mode)
+
+;; use C-j as newline-and-indent
 (defun non-electric-indent-mode ()
   (electric-indent-mode -1))
-(add-hook 'python-mode-hook 'non-electric-indent-mode) ; https://github.com/jorgenschaefer/elpy/issues/195
+;; (add-hook 'python-mode-hook 'non-electric-indent-mode) ; https://github.com/jorgenschaefer/elpy/issues/195
 
 ;;; python 3 setting
 ;; https://askubuntu.com/questions/460668/how-to-use-python3-in-emacs-on-ubuntu-14-04
@@ -30,8 +32,8 @@
   (other-window 1)
   (named-term "ipython" "*IPython*"))
 
-(when (executable-find "ipython")
-  (setq python-shell-interpreter "ipython"))
+;; (when (executable-find "ipython")
+;;   (setq python-shell-interpreter "ipython"))
 
 ;; (cond
 ;;  ((string-equal machine-domain "vbox") ; Microsoft Windows
