@@ -55,4 +55,7 @@
   ;; Enable workgroups
   (workgroups-mode 1)			; should be last
   (wg-create-workgroup "wg0")
+
+  ;; To disable auto-save when emacs exits, change wg-emacs-exit-save-behavior
+  ;; ex) (defcustom wg-emacs-exit-save-behavior 'nothing ...)
   )
