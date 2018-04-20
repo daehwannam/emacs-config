@@ -1,0 +1,6 @@
+
+* remote add
+** local machine example
+   ssh://user@server.name.ac.kr:60001/home/user/emacs.git
+** github example
+   https://github.com/daehwannam/emacs-config.git
