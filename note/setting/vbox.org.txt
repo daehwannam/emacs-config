@@ -1,0 +1,10 @@
+* Mount command
+  linux command: sudo mount -t vboxsf my_data ~/my_data
+  - vboxsf my_data: shared folder in host os (os installed in real pc)
+  - ~/my_data: folder in guest os (os from virtual image)
+
+* Port forwarding for SSH
+  VBox command: VBoxManage modifyvm myserver --natpf1 "ssh,tcp,,<port for guest ssh server>,,22"
+
+* Remote desktop to Guest
+  Settings -> Display -> Remote Display -> Enagle Server & change Server Port

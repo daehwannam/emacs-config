@@ -7,6 +7,7 @@
 !.gitignore
 !config/
 !README.md
+!note/
 
 # ignore some patterns or files
 *~
