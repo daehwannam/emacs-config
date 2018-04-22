@@ -7,13 +7,15 @@
   ;; Change prefix key (before activating WG)
   (setq wg-prefix-key (kbd "C-c z"))
 
-  ;; Change workgroups session file
-  (setq wg-session-file "~/.emacs.d/layout/workgroups")
-
   ;; Default save directory
   (defvar wg-save-directory
     "~/.emacs.d/layout/"
     "The directory where the workgroup configuration files are stored.")
+  (unless (file-exists-p wg-save-directory)
+    (make-directory wg-save-directory))
+
+  ;; Change workgroups session file
+  (setq wg-session-file (concat (file-name-as-directory wg-save-directory) "workgroups"))
 
   ;; Load and save functions
   (defun wg-save-session-to (filename)
