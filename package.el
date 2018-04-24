@@ -18,7 +18,7 @@
   (cond
    ((string-equal machine-domain "default") '())
    ((string-equal machine-domain "basic") '(vlf magit workgroups2))
-   ((string-equal machine-domain "vbox") '(vlf auctex magit material-theme elpy flycheck py-autopep8 workgroups2))
+   ((string-equal machine-domain "vbox") '(vlf auctex magit material-theme elpy flycheck py-autopep8 workgroups2 latex-preview-pane))
    ((string-equal machine-domain "engels") '(vlf magit elpy flycheck py-autopep8 workgroups2))
    ;; ((string-equal machine-domain "engels") '(vlf magit elpy py-autopep8))
    ((string-equal machine-domain "programming") '(elpy))
