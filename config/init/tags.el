@@ -11,4 +11,5 @@
 (cond
  ((string-equal machine-domain "vbox")
   (setq tags-table-list
-	'("/usr/share/emacs/24.3/lisp" "~/.emacs.d"))))
+	'("/usr/share/emacs/25.3/lisp"
+	  "~/.emacs.d"))))
