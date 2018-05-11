@@ -36,8 +36,9 @@
 
 (define-key perspective-map (kbd "n") (make-repeatable-command'persp-next))
 (define-key perspective-map (kbd "p") (make-repeatable-command'persp-prev))
-
 (define-key perspective-map (kbd "o") 'persp-open)
+
+(define-key perspective-map (kbd "C-o") 'persp-open)
 
 ;; (define-key perspective-map (kbd "o") (make-repeatable-command'persp-next))
 ;; (define-key perspective-map (kbd "O") (make-repeatable-command'persp-prev))
