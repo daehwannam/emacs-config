@@ -13,7 +13,13 @@
 (defvar default-persp-name "p")
 
 (defun next-persp-name ()
-  (concat default-persp-name (number-to-string persp-count)))
+  (let* ((name (concat default-persp-name (number-to-string persp-count)))
+	 (persp (gethash name perspectives-hash)))
+    (while (not (null persp))
+      (setq persp-count (1+ persp-count))
+      (setq name (concat default-persp-name (number-to-string persp-count)))
+      (setq persp (gethash name perspectives-hash)))
+    name))
 
 ;; ;;; rename the first perspective
 ;; (persp-rename (next-persp-name))
@@ -28,14 +34,13 @@
   (interactive (list
                 (read-string (format "New perspective name (%s): " (next-persp-name))
                              nil nil (next-persp-name))))
-  (persp-switch name)
-  (setq persp-count (1+ persp-count)))
+  (persp-switch name))
 
 ;;; customized keys
 (define-key perspective-map (kbd "2") 'persp-open)
 
-(define-key perspective-map (kbd "n") (make-repeatable-command'persp-next))
-(define-key perspective-map (kbd "p") (make-repeatable-command'persp-prev))
+(define-key perspective-map (kbd "n") (make-repeatable-command 'persp-next))
+(define-key perspective-map (kbd "p") (make-repeatable-command 'persp-prev))
 (define-key perspective-map (kbd "o") 'persp-open)
 
 (define-key perspective-map (kbd "C-o") 'persp-open)
