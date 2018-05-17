@@ -1,2 +1,3 @@
 
-(require 'wgrep)
+(require 'wgrep nil t)
+
