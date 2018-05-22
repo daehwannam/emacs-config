@@ -18,5 +18,8 @@
 ;(global-set-key (kbd "C-c C-b") (make-repeatable-command 'previous-buffer))
 ;(global-set-key (kbd "C-c C-f") (make-repeatable-command 'next-buffer))
 
-(global-set-key (kbd "<f7>") (make-repeatable-command 'previous-buffer))
-(global-set-key (kbd "<f8>") (make-repeatable-command 'next-buffer))
+;; (global-set-key (kbd "ESC <f7>") (make-repeatable-command 'previous-buffer)) ; M-<f7>
+;; (global-set-key (kbd "ESC <f8>") (make-repeatable-command 'next-buffer)) ; M-<f8>
+
+(global-set-key (kbd "C-x <f7>") (make-repeatable-command 'previous-buffer)) ; M-<f7>
+(global-set-key (kbd "C-x <f8>") (make-repeatable-command 'next-buffer)) ; M-<f8>

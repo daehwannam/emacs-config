@@ -48,7 +48,7 @@
   (kill-buffer)
   (delete-window))
 
-(global-set-key (kbd "C-x K") 'kill-buffer-and-delete-window)
+;; (global-set-key (kbd "C-x K") 'kill-buffer-and-delete-window)
 
 ;; kill buffer and delete frame
 (defun kill-buffer-and-delete-frame ()
@@ -57,6 +57,23 @@
   (delete-frame))
 
 ;(global-set-key (kbd "C-c K") 'kill-buffer-and-delete-frame)
+
+;; kill other window buffer
+(defun kill-other-window-buffer ()
+  (interactive)
+  (other-window 1)
+  (kill-buffer)
+  (other-window -1))
+
+(global-set-key (kbd "C-x K") 'kill-other-window-buffer)
+
+;; kill other window
+(defun delete-other-window ()
+  (interactive)
+  (other-window 1)
+  (delete-window))
+
+(global-set-key (kbd "C-x 9") 'delete-other-window)
 
 ;; split windows below or right
 (defun split-window-below-or-right-and-find-file (filename &optional wildcards)
