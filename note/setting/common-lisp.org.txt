@@ -1,0 +1,20 @@
+
+* Install
+  https://askubuntu.com/questions/670304/what-is-the-install-routine-for-common-lisp-slime-sbcl-quicklisp-on-ubuntu
+** install sbcl
+   sudo apt-get install sbcl
+** install quicklisp
+   https://www.quicklisp.org/
+   copy and past the code in the gray box
+** install slime by using quicklisp
+   sbcl
+   (ql:quickload "quicklisp-slime-helper")
+   (quit)
+** after installing slime, it will say following:
+   - To use, add this to your ~/.emacs:
+     (load (expand-file-name "~/quicklisp/slime-helper.el"))
+     ;; Replace "sbcl" with the path to your implementation
+     (setq inferior-lisp-program "sbcl")
+   - you can get the path by "which sbcl"
+** M-x slime
+  

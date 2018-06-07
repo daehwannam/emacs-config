@@ -1,0 +1,10 @@
+* Putty manual for emacs
+  https://www.emacswiki.org/emacs/PuTTY
+
+* Keybord
+  https://serverfault.com/questions/439493/function-keys-over-ssh-putty-to-sco-unix?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
+  - Session > Terminal > Keyboard : The Function keys and keypad = SCO
+
+* Color
+  - Connection > Data : Terminal-type string = xterm-256color
+    - 

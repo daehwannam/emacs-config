@@ -1,0 +1,10 @@
+
+* Install
+  - run bash Anaconda-latest-Linux-x86_64.sh
+    - install location: /home/dhnam/bin/anaconda3
+  - append the following to .bashrc
+    : export PATH="/home/dhnam/bin/anaconda3/bin:$PATH"
+
+* Conda environment
+** Python 2
+   conda create -n py2 python=2.7 anaconda
