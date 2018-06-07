@@ -40,5 +40,8 @@
         (setq mark-ring (nbutlast mark-ring))
         (goto-char (marker-position (car (last mark-ring))))))
 
+;; (global-set-key (kbd "C-x <f7>") (make-repeatable-command 'pop-to-mark-command))
+;; (global-set-key (kbd "C-x <f8>") (make-repeatable-command 'unpop-to-mark-command))
+
 (global-set-key (kbd "<f7>") (make-repeatable-command 'pop-to-mark-command))
 (global-set-key (kbd "<f8>") (make-repeatable-command 'unpop-to-mark-command))

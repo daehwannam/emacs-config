@@ -33,12 +33,30 @@
 
   (eyebrowse-mode t)
 
+  (defun eyebrowse-prev-window-config-fixed (count)
+    "Modified version of eyebrowse-prev-window-config to fix the error of line removal"
+    (interactive "P")
+    (eyebrowse-prev-window-config count)
+    (other-window 1)
+    (other-window -1))
+
+  (defun eyebrowse-next-window-config-fixed (count)
+    "Modified version of eyebrowse-next-window-config to fix the error of line removal"
+    (interactive "P")
+    (eyebrowse-next-window-config count)
+    (other-window 1)
+    (other-window -1))
+
   ;; (define-key eyebrowse-mode-map (kbd "C-z c") 'eyebrowse-create-window-config)
   ;; (define-key eyebrowse-mode-map (kbd "C-z O") (make-repeatable-command 'eyebrowse-prev-window-config))
   ;; (define-key eyebrowse-mode-map (kbd "C-z o") (make-repeatable-command 'eyebrowse-next-window-config))
+
   (define-key eyebrowse-mode-map (kbd "C-z 2") 'eyebrowse-create-window-config)
-  (define-key eyebrowse-mode-map (kbd "C-z O") (make-repeatable-command 'eyebrowse-prev-window-config))
-  (define-key eyebrowse-mode-map (kbd "C-z o") (make-repeatable-command 'eyebrowse-next-window-config))
+  ;; (define-key eyebrowse-mode-map (kbd "C-z O") (make-repeatable-command 'eyebrowse-prev-window-config))
+  ;; (define-key eyebrowse-mode-map (kbd "C-z o") (make-repeatable-command 'eyebrowse-next-window-config))
+
+  (define-key eyebrowse-mode-map (kbd "C-z O") (make-repeatable-command 'eyebrowse-prev-window-config-fixed))
+  (define-key eyebrowse-mode-map (kbd "C-z o") (make-repeatable-command 'eyebrowse-next-window-config-fixed))
 
   (defun eyebrowse-close-all-but-current ()
     (interactive)
