@@ -1,4 +1,4 @@
-(when (fboundp 'ivy-mode)
+(when (and (fboundp 'ivy-mode) (fboundp 'counsel-mode))
   ;; http://oremacs.com/swiper/
 
   ;; Initialization
