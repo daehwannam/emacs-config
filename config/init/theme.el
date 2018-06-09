@@ -1,3 +1,7 @@
+
+;;; https://stackoverflow.com/a/12843877
+(add-to-list 'custom-theme-load-path "~/.emacs.d/config/init/theme")
+
 ;;; color theme change
 (load-theme 'manoj-dark)
 (custom-set-faces
