@@ -11,6 +11,10 @@
  ;; If there is more than one, they won't work right.
  '(mode-line-buffer-id ((t (:background "grey65" :foreground "color-160" :weight bold :height 0.9)))))
 
+;;; highlight current line with keeping syntax coloring
+(global-hl-line-mode 1)
+(set-face-foreground 'hl-line nil)
+
 
 ;; (when (require 'material-theme nil t)
 ;;   (load-theme 'material t) ;; load material theme
