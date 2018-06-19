@@ -53,7 +53,7 @@
         do (setq start (match-end 0))
         finally return count))
 
-(defun py-repl-kill-ring-save (beg end &optional region)
+(defun py-repl-kill-ring-save-without-empty-lines (beg end &optional region)
   (interactive (list (mark) (point)
 		     (prefix-numeric-value current-prefix-arg)))
   ;; https://stackoverflow.com/questions/605846/how-do-i-access-the-contents-of-the-current-region-in-emacs-lisp
@@ -81,9 +81,8 @@
     (kill-new result)
     (setq deactivate-mark t)))
 
-(defun py-repl-kill-ring-save-with-empty-lines (beg end &optional region)
+(defun py-repl-kill-ring-save (beg end &optional region)
   (interactive (list (mark) (point)
 		     (prefix-numeric-value current-prefix-arg)))
-  (kill-new (seq-filter (lambda (x) (not (string-empty-p (string-trim x))))
-			(elpy-shell--region-without-indentation beg end)))
+  (kill-new (elpy-shell--region-without-indentation beg end))
   (setq deactivate-mark t))
