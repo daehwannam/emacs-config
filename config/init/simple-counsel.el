@@ -8,6 +8,7 @@
 
   ;; Ivy-based interface to standard commands
   (global-set-key (kbd "C-c s") 'swiper)
+  (global-set-key (kbd "C-c C-s") 'swiper)
   ;; (global-set-key (kbd "C-r") 'swiper)
   (global-set-key (kbd "M-x") 'counsel-M-x)
   ;; (global-set-key (kbd "C-x C-f") 'counsel-find-file)
