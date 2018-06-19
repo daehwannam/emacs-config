@@ -116,3 +116,7 @@
 		     (prefix-numeric-value current-prefix-arg)))
   (kill-new (elpy-shell--region-without-indentation beg end))
   (setq deactivate-mark t))
+
+;; https://stackoverflow.com/a/14230685
+(add-hook 'python-mode-hook
+	  (lambda () (local-set-key (kbd "C-c M-w") #'py-repl-kill-ring-save)))
