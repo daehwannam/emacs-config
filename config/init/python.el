@@ -81,6 +81,36 @@
     (kill-new result)
     (setq deactivate-mark t)))
 
+(unless (fboundp 'elpy-shell--region-without-indentation)
+  (defun elpy-shell--region-without-indentation (beg end)
+    "Return the current region as a string, but without indentation."
+    (if (= beg end)
+	""
+      (let ((region (buffer-substring beg end))
+	    (indent-level nil)
+	    (indent-tabs-mode nil))
+	(with-temp-buffer
+	  (insert region)
+	  (goto-char (point-min))
+	  (while (< (point) (point-max))
+	    (cond
+	     ((or (elpy-shell--current-line-only-whitespace-p)
+		  (python-info-current-line-comment-p)))
+	     ((not indent-level)
+	      (setq indent-level (current-indentation)))
+	     ((and indent-level
+		   (< (current-indentation) indent-level))
+	      (error (message "X%sX" (thing-at-point 'line)))))
+            ;; (error "Can't adjust indentation, consecutive lines indented less than starting line")))
+	    (forward-line))
+	  (indent-rigidly (point-min)
+			  (point-max)
+			  (- indent-level))
+	  ;; 'indent-rigidly' introduces tabs despite the fact that 'indent-tabs-mode' is nil
+	  ;; 'untabify' fix that
+	  (untabify (point-min) (point-max))
+	  (buffer-string))))))
+
 (defun py-repl-kill-ring-save (beg end &optional region)
   (interactive (list (mark) (point)
 		     (prefix-numeric-value current-prefix-arg)))
