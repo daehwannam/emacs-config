@@ -53,30 +53,39 @@
         do (setq start (match-end 0))
         finally return count))
 
-(defun py-repl-kill-ring-save (beg end &optional region)
-  (interactive (list (mark) (point)
-		     (prefix-numeric-value current-prefix-arg)))
-  ;; https://stackoverflow.com/questions/605846/how-do-i-access-the-contents-of-the-current-region-in-emacs-lisp
-  ;; https://stackoverflow.com/questions/6236196/elisp-split-string-function-to-split-a-string-by-character
-  (let (lines char-lists indent-sizes min-indent result)
-    (setq lines (nbutlast (split-string (buffer-substring-no-properties beg end) "$") 1)) ; https://stackoverflow.com/a/605931
-    (setf (car lines) (concat " " (car lines)))
-    (setq lines (mapcar (lambda (x) (substring x 1)) lines))
-    (setq lines (seq-filter (lambda (x) (not (string-empty-p (string-trim x)))) lines))
-    (setq char-lists nil)
-    (dolist (line lines)
-      (setq char-lists (cons (mapcar (lambda (x) (char-to-string x)) line) char-lists)))
-    (setq char-lists (reverse char-lists))
-    (setq indent-sizes (mapcar
-			(lambda (x) (let ((size 0) (li x))
-				      (while (string= (car x) " ")
-					(setq size (+ 1 size))
-					(setq x (cdr x)))
-				      size))
-			char-lists))
-    (setq min-indent (seq-min indent-sizes))
-    (setq result "")
-    (dolist (line lines)
-      (setq result (concat result (substring line min-indent) "\n")))
-    (kill-new result)
-    (setq deactivate-mark t)))
+(if (fboundp 'elpy-enable)
+    (defun py-repl-kill-ring-save (beg end &optional region)
+      (interactive (list (mark) (point)
+			 (prefix-numeric-value current-prefix-arg)))
+      (kill-new (elpy-shell--region-without-indentation beg end))
+      (setq deactivate-mark t))
+
+  (defun py-repl-kill-ring-save (beg end &optional region)
+    (interactive (list (mark) (point)
+		       (prefix-numeric-value current-prefix-arg)))
+    ;; https://stackoverflow.com/questions/605846/how-do-i-access-the-contents-of-the-current-region-in-emacs-lisp
+    ;; https://stackoverflow.com/questions/6236196/elisp-split-string-function-to-split-a-string-by-character
+    (let (lines char-lists indent-sizes min-indent result)
+      (setq lines (nbutlast (split-string (buffer-substring-no-properties beg end) "$") 1)) ; https://stackoverflow.com/a/605931
+      (setf (car lines) (concat " " (car lines)))
+      (setq lines (mapcar (lambda (x) (substring x 1)) lines))
+      (setq lines (seq-filter (lambda (x) (not (string-empty-p (string-trim x)))) lines))
+      (setq char-lists nil)
+      (dolist (line lines)
+	(setq char-lists (cons (mapcar (lambda (x) (char-to-string x)) line) char-lists)))
+      (setq char-lists (reverse char-lists))
+      (setq indent-sizes (mapcar
+			  (lambda (x) (let ((size 0) (li x))
+					(while (string= (car x) " ")
+					  (setq size (+ 1 size))
+					  (setq x (cdr x)))
+					size))
+			  char-lists))
+      (setq min-indent (seq-min indent-sizes))
+      (setq result "")
+      (dolist (line lines)
+	(setq result (concat result (substring line min-indent) "\n")))
+      (kill-new result)
+      (setq deactivate-mark t))))
+
+
