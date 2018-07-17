@@ -120,3 +120,13 @@
 ;; https://stackoverflow.com/a/14230685
 (add-hook 'python-mode-hook
 	  (lambda () (local-set-key (kbd "C-c M-w") #'py-repl-kill-ring-save)))
+
+
+;; python docstring
+;; https://github.com/naiquevin/sphinx-doc.el
+;; 
+;; The command is mapped to "C-c M-d"
+(when (fboundp 'sphinx-doc-mode)
+  (add-hook 'python-mode-hook (lambda ()
+				(require 'sphinx-doc)
+				(sphinx-doc-mode t))))
