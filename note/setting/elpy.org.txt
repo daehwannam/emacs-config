@@ -1,0 +1,7 @@
+
+* Tutorials
+  https://realpython.com/emacs-the-best-python-editor/
+  http://chillaranand.github.io/emacs-py-ide/
+
+* Install
+  pip install jedi flake8 importmagic autopep8

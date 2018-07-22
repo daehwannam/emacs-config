@@ -2,12 +2,17 @@
 ;; http://ergoemacs.org/emacs/emacs_package_system.html
 (when (>= emacs-major-version 24)
   (require 'package)
-  (add-to-list
-   'package-archives
-   ;; '("melpa" . "http://stable.melpa.org/packages/") ; many packages won't show if using stable
-   '("melpa" . "http://melpa.milkbox.net/packages/")
-   ;; '("melpa" . "http://melpa.org/packages/")
-   t))
+  ;; (add-to-list
+  ;;  'package-archives
+  ;;  ;; '("melpa" . "http://stable.melpa.org/packages/") ; many packages won't show if using stable
+  ;;  '("melpa" . "http://melpa.milkbox.net/packages/")
+  ;;  ;; '("melpa" . "http://melpa.org/packages/")
+  ;;  t)
+  (setq package-archives
+	'(("gnu" . "http://elpa.gnu.org/packages/")
+	  ("marmalade" . "https://marmalade-repo.org/packages/")
+	  ("melpa" . "http://melpa.milkbox.net/packages/")))
+  )
 
 ;;; package initialization
 (package-initialize)

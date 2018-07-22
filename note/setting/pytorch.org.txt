@@ -1,0 +1,6 @@
+
+* Note
+  - "conda install" command doesn't work on conda environments
+
+* Install
+  pip3 install torch torchvision
