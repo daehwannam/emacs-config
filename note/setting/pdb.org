@@ -1,11 +1,11 @@
 
 * pdb setting for conda environments
   1. source activate py3
-  2. find pdb path by ">> which pdb"
-     ex) /usr/bin/pdb
+  2. find pdb path by ">> which pdb" for python2 or ">> which pdb3" for Python3
+     ex) /usr/bin/pdb or /usr/bin/pdb3
   3. find python path bpy ">> which python"
      ex) /home/dhnam/bin/anaconda3/envs/py3/bin/python
-  4. copy /usr/bin/pdb to /home/dhnam/bin/anaconda3/envs/py3/bin/pdb
+  4. copy /usr/bin/pdb or pdb3 to /home/dhnam/bin/anaconda3/envs/py3/bin/pdb
   5. then open /home/dhnam/bin/anaconda3/envs/py3/bin/pdb
   6. change shebang
      ex) /home/dhnam/bin/anaconda3/envs/py3/bin/python
