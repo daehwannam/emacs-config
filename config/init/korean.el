@@ -13,11 +13,9 @@
 ;; http://ergoemacs.org/emacs/elisp_determine_OS_version.html
 
 (cond
-; ((string-equal system-type "windows-nt") ; Microsoft Windows
- ((string-equal machine-domain "ms") ; Microsoft Windows
+ ((string-equal system-type "windows-nt") ; Microsoft Windows
+ ;; ((string-equal machine-domain "ms") ; Microsoft Windows
   (progn
-
-
     ;;; korean language setting
     ;; http://devnauts.tistory.com/51
     (set-language-environment "Korean")

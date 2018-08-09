@@ -29,6 +29,7 @@
    ((string-equal machine-domain "engels") '(vlf magit elpy flycheck py-autopep8 wgrep which-key projectile flx-ido counsel counsel-projectile eyebrowse sphinx-doc))
    ;; ((string-equal machine-domain "engels") '(vlf magit elpy py-autopep8))
    ((string-equal machine-domain "programming") '(elpy))
+   ((string-equal machine-domain "ms-laptop") '(vlf magit))
    ))
 
 (mapc #'(lambda (package)
