@@ -30,6 +30,7 @@
    ;; ((string-equal machine-domain "engels") '(vlf magit elpy py-autopep8))
    ((string-equal machine-domain "programming") '(elpy))
    ((string-equal machine-domain "ms-laptop") '(vlf magit))
+   ((string-equal machine-domain "ms-desktop") '(vlf magit))
    ))
 
 (mapc #'(lambda (package)
