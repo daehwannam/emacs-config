@@ -16,7 +16,8 @@
 
 ;;; python 3 setting
 ;; https://askubuntu.com/questions/460668/how-to-use-python3-in-emacs-on-ubuntu-14-04
-(setq python-shell-interpreter "python3")
+;; (setq python-shell-interpreter "python3")  ;; it occurs error for virtual environment of python2
+
 
 ;;; ipython
 ;; https://stackoverflow.com/a/17817119
