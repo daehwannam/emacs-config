@@ -17,8 +17,10 @@ config/old-domain.txt
 config/custom/custom.el
 
 # include special directories (that include .gitkeep)
+# config/bin now can be empty
 config/bin/*
 config/bin/*/
+!config/bin/note.org
 
 !elpa
 elpa/*

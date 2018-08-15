@@ -1,0 +1,2 @@
+
+config/bin directory contains lisp code that git ignores.
