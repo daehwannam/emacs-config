@@ -30,7 +30,8 @@
 	(pyvenv-workon "py3"))		       ; use "M-x pyvenv-deactivate" to deactivate
        ((string-equal machine-domain "vbox") ; vbox
 	(setenv "WORKON_HOME" "~/bin/anaconda3/envs/")
-	(pyvenv-mode 1))
+	(pyvenv-mode 1)
+	(pyvenv-workon "py2"))		       ; use "M-x pyvenv-deactivate" to deactivate
        )
 
       (defun elpy-set-project-root (new-root) ; redefined

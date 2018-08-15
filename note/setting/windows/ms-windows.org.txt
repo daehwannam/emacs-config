@@ -1,0 +1,10 @@
+
+* Edit with emacs
+  https://stackoverflow.com/a/10112726
+
+* Emacs binary
+** PDF support
+   https://www.reddit.com/r/emacs/comments/7v8kvy/precompiled_pdftools_for_windows/
+   https://github.com/m-parashar/emax64/releases
+   - emax.7z should be unpack into "~/.emacs.d"
+  
