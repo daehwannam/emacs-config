@@ -60,6 +60,9 @@
       (add-hook 'python-mode-hook
 		(lambda () (local-set-key (kbd "C-c Z") 'elpy-set-project-root)))
 
+      (add-hook 'python-mode-hook
+		(lambda () (local-set-key (kbd "C-c C-g") 'elpy-goto-definition)))
+
       ;; https://realpython.com/blog/python/emacs-the-best-python-editor/
       (unless (member machine-domain '("vbox" "machine here don't activate below"))
 	(when (require 'flycheck nil t)
