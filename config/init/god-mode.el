@@ -5,10 +5,10 @@
   (global-set-key (kbd "M-'") 'god-mode-all) ; original binding was 'abbrev-prefix-mark
 
   ;; enable god-mode-all in all modes
-  (setq god-exempt-major-modes nil)
-  (setq god-exempt-predicates nil)
+  ;; (setq god-exempt-major-modes nil)
+  ;; (setq god-exempt-predicates nil)
 
-  ;; (add-to-list 'god-exempt-major-modes 'dired-mode)  ;; god-mode disabled mode list
+  (add-to-list 'god-exempt-major-modes 'dired-mode)  ;; god-mode disabled mode list
 
   ;; https://emacs.stackexchange.com/a/38318
   (defun god-mode-indicator ()
