@@ -4,8 +4,11 @@
   (require 'god-mode)
   (global-set-key (kbd "M-'") 'god-mode-all) ; original binding was 'abbrev-prefix-mark
 
+  ;; enable god-mode-all in all modes
   (setq god-exempt-major-modes nil)
   (setq god-exempt-predicates nil)
+
+  ;; (add-to-list 'god-exempt-major-modes 'dired-mode)  ;; god-mode disabled mode list
 
   ;; https://emacs.stackexchange.com/a/38318
   (defun god-mode-indicator ()
@@ -33,5 +36,10 @@
 	    (t (progn
 		 (set-face-background 'mode-line (if limited-colors-p "black" "#0a2832"))
 		 (set-face-background 'mode-line-inactive (if limited-colors-p "black" "#0a2832")))))))
-  )
 
+  ;; Key bindings
+  (global-set-key (kbd "C-x C-1") 'delete-other-windows)
+  (global-set-key (kbd "C-x C-2") 'split-window-below)
+  (global-set-key (kbd "C-x C-3") 'split-window-right)
+  (global-set-key (kbd "C-x C-0") 'delete-window)
+  )
