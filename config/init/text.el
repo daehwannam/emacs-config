@@ -37,3 +37,18 @@
         (downcase-region start (cdr (bounds-of-thing-at-point 'symbol)))))))
 
 (global-set-key (kbd "M-_") 'toggle-camelcase-underscores)
+
+
+(defun kill-ring-save-at-point ()
+  "Copy the symbol at point."
+  (interactive)
+  (save-excursion
+    (let* ((bounds (bounds-of-thing-at-point 'symbol))
+           (start (car bounds))
+           (end (cdr bounds))
+           (currently-using-underscores-p (progn (goto-char start)
+                                                 (re-search-forward "_" end t))))
+      (kill-ring-save start end)
+      )))
+
+(global-set-key (kbd "C-c w") 'kill-ring-save-at-point)
