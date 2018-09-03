@@ -26,3 +26,26 @@
   "When running `quit-window', always kill the buffer."
   (ad-set-arg 0 t))
 (ad-activate 'quit-window)
+
+(fset 'dired-open-next
+      "no\C-[-\C-xo")
+
+(defun dired-open-next ()
+  (interactive)
+  (let ((window (selected-window)))
+	(dired-next-line 1)
+	(dired-find-file-other-window)
+	(select-window window)))
+
+(defun dired-open-prev ()
+  (interactive)
+  (let ((window (selected-window)))
+	(dired-previous-line 1)
+	(dired-find-file-other-window)
+	(select-window window)))
+
+(add-hook 'dired-mode-hook
+	  (lambda () (local-set-key (kbd "M-n") #'dired-open-next)))
+
+(add-hook 'dired-mode-hook
+	  (lambda () (local-set-key (kbd "M-p") #'dired-open-prev)))
