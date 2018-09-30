@@ -24,7 +24,12 @@
     (setq inferior-lisp-program path-to-inferior-lisp-program))
   (when (fboundp 'slime)
     (add-hook 'slime-mode-hook
-	      (lambda () (local-set-key (kbd "C-j") #'slime-eval-print-last-expression)))))
+	      (lambda () (local-set-key (kbd "C-j") #'slime-eval-print-last-expression)))
+    (add-hook 'slime-mode-hook
+	      (lambda () (local-set-key (kbd "C-c C-d H") #'slime-documentation)))
+    )
+  
+  )
 
 ;; ;; ;; ParEdit
 ;; ;; ;; http://wikemacs.org/wiki/Paredit-mode
