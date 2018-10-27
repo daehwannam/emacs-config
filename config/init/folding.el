@@ -1,3 +1,8 @@
+;; HideShow mode
+(hs-minor-mode 1)
+;; (hs-minor-mode 1) ;; disable the mode
+
+;; vimish-fold
 (require 'vimish-fold)
 (vimish-fold-global-mode 1)
 
