@@ -1,5 +1,7 @@
 ;; HideShow mode
-(hs-minor-mode 1)
+(add-hook 'prog-mode-hook #'hs-minor-mode)
+
+;; (hs-minor-mode 1) ;; enable current buffer only...
 ;; (hs-minor-mode 1) ;; disable the mode
 
 ;; vimish-fold
