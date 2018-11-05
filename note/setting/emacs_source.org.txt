@@ -1,5 +1,5 @@
 
-* Installing sourch
+* Installing source
   https://emacs.stackexchange.com/questions/7184/where-are-emacs-lisp-files
   sudo apt-get install emacs25-el
 

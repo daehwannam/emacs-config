@@ -1,6 +1,14 @@
 
+* bare git directory
+  $ mkdir example.git
+  $ cd example.git
+  $ git init --bare
+
 * remote add
+
 ** local machine example
-   ssh://user@server.name.ac.kr:60001/home/user/emacs.git
+   - ssh://user@server.name.ac.kr:60001/home/user/emacs.git
+   - ssh://dhnam@descarte.postech.ac.kr:61112/home/dhnam/work/gitbackup/sp_ae.git
+
 ** github example
    https://github.com/daehwannam/emacs-config.git
