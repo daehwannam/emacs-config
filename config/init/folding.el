@@ -1,4 +1,10 @@
+;; HideShow mode
+(add-hook 'prog-mode-hook #'hs-minor-mode)
 
+;; (hs-minor-mode 1) ;; enable current buffer only...
+;; (hs-minor-mode 1) ;; disable the mode
+
+;; vimish-fold
 (when (fboundp 'vimish-fold-mode)
   (require 'vimish-fold)
   (vimish-fold-global-mode 1)		; https://emacs.stackexchange.com/a/17168
