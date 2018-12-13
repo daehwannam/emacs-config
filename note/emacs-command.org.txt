@@ -1,0 +1,6 @@
+
+
+
+* Esc-=: count lines
+** Be careful of Alt-= in Putty
+   It changes the default character set.

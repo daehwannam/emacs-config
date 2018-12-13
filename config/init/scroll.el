@@ -28,6 +28,11 @@
 ;; (global-set-key (kbd "C-V") 'scroll-up-small-with-cursor)
 ;; (global-set-key (kbd "M-v") 'scroll-down-small-with-cursor)
 
+;; reverse-move-to-window-line-top-bottom
+(defun reverse-move-to-window-line-top-bottom ()
+  (interactive)
+  (move-to-window-line-top-bottom -1))
+(global-set-key (kbd "M-R") 'reverse-move-to-window-line-top-bottom)
 
 
 ;;; scrolling other window

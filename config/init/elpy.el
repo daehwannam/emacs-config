@@ -79,6 +79,10 @@
       ;; (elpy-use-ipython) ; deprecated
       ))
 
+;; Usefule elpy command
+;; C-c C-o runs the command elpy-occur-definitions
+
+
 ;;; For conda environment, "source activate <env>" should be done before running emacs.
 ;; https://emacs.stackexchange.com/a/16638
 

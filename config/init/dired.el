@@ -49,3 +49,15 @@
 
 (add-hook 'dired-mode-hook
 	  (lambda () (local-set-key (kbd "M-p") #'dired-open-prev)))
+
+(fset 'dired-do-copy-into-other-window
+   "\C-[xcopy-other-window-path-to-clipboard\C-mC\C-y\C-i") ;  C-i: Tab
+
+(add-hook 'dired-mode-hook
+	  (lambda () (local-set-key (kbd "M-C") #'dired-do-copy-into-other-window)))
+
+(fset 'dired-do-rename-into-other-window
+   "\C-[xcopy-other-window-path-to-clipboard\C-mR\C-y\C-i")
+
+(add-hook 'dired-mode-hook
+	  (lambda () (local-set-key (kbd "M-R") #'dired-do-rename-into-other-window)))
