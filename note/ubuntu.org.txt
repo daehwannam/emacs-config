@@ -1,0 +1,6 @@
+
+* .Trash location
+  https://askubuntu.com/questions/102099/where-is-the-trash-folder
+  /home/$USER/.local/share/Trash
+  or
+  /home/$USER/.local/share/Trash/files/

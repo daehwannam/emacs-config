@@ -1,4 +1,0 @@
-
-* Function arguments
-  http://www.gigamonkeys.com/book/functions.html
-  addtional arguments: optional, rest, keyword

@@ -37,3 +37,7 @@
     $ git clone git://descarte.postech.ac.kr/20181112_samsung
     $ cd 20181112_samsung
     $ git pull
+
+* when .gitignore is not working
+  git rm -r --cached .
+  http://www.randallkent.com/2010/04/30/gitignore-not-working/

@@ -1,4 +1,0 @@
-
-* when .gitignore is not working
-  git rm -r --cached .
-  http://www.randallkent.com/2010/04/30/gitignore-not-working/

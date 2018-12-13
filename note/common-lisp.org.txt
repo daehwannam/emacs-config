@@ -17,4 +17,8 @@
      (setq inferior-lisp-program "sbcl")
    - you can get the path by "which sbcl"
 ** M-x slime
-  
+
+* Function arguments
+  http://www.gigamonkeys.com/book/functions.html
+  addtional arguments: optional, rest, keyword
+

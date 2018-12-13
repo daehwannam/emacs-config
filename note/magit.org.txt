@@ -1,0 +1,5 @@
+
+* See previous revision
+  - C-x v ~
+  - magit-find-file
+  https://emacs.stackexchange.com/a/7657
