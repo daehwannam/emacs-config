@@ -57,19 +57,17 @@
 (defun normalize-paper-name (str)
   (setq str (downcase str))
   (setq str (replace-regexp-in-string ":" "=" str))
-  (setq str (replace-regexp-in-string " " "_" str)))
+  (setq str (replace-regexp-in-string "[ \n]" "_" str)))
 
 (defun unnormalize-paper-name (str)
   (setq str (replace-regexp-in-string "=" ":" str))
   (setq str (replace-regexp-in-string "_" " " str)))
 
+(defun message-normalized-paper-name (name)
+  (interactive "sEnter paper name: ")
+  (message "%s" (normalize-paper-name name)))
+
 (defun dired-do-normalize-paper-name (&optional arg)
-  "Rename current file or all marked (or next ARG) files.
-When renaming just the current file, you specify the new name.
-When renaming multiple or marked files, you specify a directory.
-This command also renames any buffers that are visiting the files.
-The default suggested for the target directory depends on the value
-of `dired-dwim-target', which see."
   (interactive "P")
   (let (new-file-paths original-point)
     (dolist (file-path (dired-get-marked-files nil arg))
@@ -93,3 +91,35 @@ of `dired-dwim-target', which see."
     (revert-buffer)
     (goto-char original-point)
     ))
+
+(defun dired-do-convert-pdf-to-txt (&optional arg)
+  (interactive "P")
+  (let (new-file-paths original-point)
+    (dolist (file-path (dired-get-marked-files nil arg))
+      (let* ((dir-path (file-name-directory file-path))
+	     (file-name (file-name-nondirectory file-path))
+	     (new-file-path (replace-regexp-in-string ".pdf" ".txt"
+			     (concat dir-path (normalize-paper-name file-name)))))
+	(unless (file-exists-p new-file-path)
+	  (print file-path)
+	  (print new-file-path)
+	  (shell-command (concat "pdftotext" " " file-path " " new-file-path))))))
+  (revert-buffer))
+
+(defun grep-file (command-args)
+  (interactive
+   (progn
+     (grep-compute-defaults)
+     (let ((default (grep-default-command)))
+       (list (read-shell-command "Run grep (like this): "
+                                 (if current-prefix-arg default "grep --color -nH -i -m 1 -e "
+)
+                                 'grep-history
+                                 (if current-prefix-arg nil default))))))
+
+  ;; Setting process-setup-function makes exit-message-function work
+  ;; even when async processes aren't supported.
+  (compilation-start (if (and grep-use-null-device null-device)
+			 (concat command-args " " null-device)
+		       command-args)
+		     'grep-mode))
