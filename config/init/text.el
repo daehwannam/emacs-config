@@ -52,3 +52,44 @@
       )))
 
 (global-set-key (kbd "C-c M-w") 'kill-ring-save-at-point)
+
+
+(defun normalize-paper-name (str)
+  (setq str (downcase str))
+  (setq str (replace-regexp-in-string ":" "=" str))
+  (setq str (replace-regexp-in-string " " "_" str)))
+
+(defun unnormalize-paper-name (str)
+  (setq str (replace-regexp-in-string "=" ":" str))
+  (setq str (replace-regexp-in-string "_" " " str)))
+
+(defun dired-do-normalize-paper-name (&optional arg)
+  "Rename current file or all marked (or next ARG) files.
+When renaming just the current file, you specify the new name.
+When renaming multiple or marked files, you specify a directory.
+This command also renames any buffers that are visiting the files.
+The default suggested for the target directory depends on the value
+of `dired-dwim-target', which see."
+  (interactive "P")
+  (let (new-file-paths original-point)
+    (dolist (file-path (dired-get-marked-files nil arg))
+      (let* ((dir-path (file-name-directory file-path))
+	     (file-name (file-name-nondirectory file-path))
+	     (new-file-path (concat dir-path (normalize-paper-name file-name))))
+	(unless (equal file-path new-file-path)
+	  (rename-file file-path new-file-path))
+	(setq new-file-paths (cons new-file-path new-file-paths))))
+
+    (setq original-point (point))
+    (save-excursion
+      (revert-buffer t)
+      (setq original-point (point))
+      (dolist (new-file-path new-file-paths)
+	(beginning-of-buffer)
+	(re-search-forward (file-name-nondirectory new-file-path))
+	(dired-mark nil t)
+	(end-of-buffer)
+	))
+    (revert-buffer)
+    (goto-char original-point)
+    ))
