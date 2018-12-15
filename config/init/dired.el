@@ -62,7 +62,7 @@
 (add-hook 'dired-mode-hook
 	  (lambda () (local-set-key (kbd "M-R") #'dired-do-rename-into-other-window)))
 
-
+;;; functions to process pdf
 (defun normalize-paper-name (str)
   (setq str (downcase str))
   (setq str (replace-regexp-in-string ":" "=" str))
