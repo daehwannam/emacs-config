@@ -1,5 +1,22 @@
 ;;; scrolling setting
 ;; http://stackoverflow.com/questions/13274439/how-to-configure-emacs-to-enable-c-v-to-move-cursor-half-window-height
+
+;;; scroll half
+(defun window-half-height ()
+  (max 1 (/ (1- (window-height (selected-window))) 2)))
+
+(defun scroll-up-half ()
+  (interactive)
+  (scroll-up (window-half-height)))
+
+(defun scroll-down-half ()         
+  (interactive)                    
+  (scroll-down (window-half-height)))
+
+(global-set-key [next] 'scroll-up-half)
+(global-set-key [prior] 'scroll-down-half)
+
+;;; scroll small 
 (defun window-small-height ()
 ;  (max 1 (/ (1- (window-height (selected-window))) 10)))
   3)
