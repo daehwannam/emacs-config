@@ -15,5 +15,5 @@
   (kill-new numstr)
   (message (concat "line number: " numstr)))
 
-(require 'hmlinum)
-(hmlinum-activate)
+;; (require 'hmlinum)
+;; (hmlinum-activate)
