@@ -19,10 +19,17 @@ Otherwise hmlinum will highlight only in the active buffer."
   :group 'linum)
 
 (defun middle-position ()
-  (save-excursion
-    (goto-char (window-start))
-    (forward-line (/ (- (window-height (selected-window)) 1) 2))
-    (point)))
+  (condition-case nil
+      (save-excursion
+	(goto-char (window-start))
+	(forward-line (/ (- (window-height (selected-window)) 1) 2))
+	(point))
+    (save-excursion nil)))	       ;exception handlling for save-excursion
+  ;; (save-excursion
+  ;;   (goto-char (window-start))
+  ;;   ;; (call-interactively 'move-to-window-line)
+  ;;   (move-to-window-line nil)
+  ;;   (point)))
 
 (defun hmlinum-color (face &optional line)
   "Highlight line number LINE by using face FACE.

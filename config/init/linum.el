@@ -2,6 +2,8 @@
 
 ;; https://emacs.stackexchange.com/questions/21504/enable-linum-mode-for-all-files-with-extension-but-not-other-buffers
 (add-hook 'find-file-hook 'linum-mode)
+;; (add-hook 'text-mode-hook 'linum-mode)
+;; (add-hook 'prog-mode-hook 'linum-mode)
 
 ;(setq linum-format "%d ")
 (setq linum-format "%4d \u2502 ")
@@ -15,5 +17,5 @@
   (kill-new numstr)
   (message (concat "line number: " numstr)))
 
-;; (require 'hmlinum)
-;; (hmlinum-activate)
+(require 'hmlinum)
+(hmlinum-activate)
