@@ -50,14 +50,37 @@
 (add-hook 'dired-mode-hook
 	  (lambda () (local-set-key (kbd "M-p") #'dired-open-prev)))
 
+;; File path copy
+;; https://stackoverflow.com/a/9414763
+(defun copy-path-to-clipboard ()
+  "Copy the current buffer file name to the clipboard."
+  (interactive)
+  (let ((filename (if (equal major-mode 'dired-mode)
+                      default-directory
+                    (buffer-file-name))))
+    (when filename
+      (kill-new filename)
+      (message "'%s'" filename))))
+
+(defun copy-other-window-path-to-clipboard (count)
+  "Copy the other window's path."
+  (interactive "p")
+  (let ((path (progn (other-window count)
+		(let ((path default-directory))
+		  (other-window (- count))
+		  path))))
+    (when path
+      (kill-new path)
+      (message "'%s'" path))))
+
 (fset 'dired-do-copy-into-other-window
-   "\C-[xcopy-other-window-path-to-clipboard\C-mC\C-y\C-i") ;  C-i: Tab
+   "\C-[xcopy-other-window-path-to-clipboard\C-mC\C-y")
 
 (add-hook 'dired-mode-hook
 	  (lambda () (local-set-key (kbd "M-C") #'dired-do-copy-into-other-window)))
 
 (fset 'dired-do-rename-into-other-window
-   "\C-[xcopy-other-window-path-to-clipboard\C-mR\C-y\C-i")
+   "\C-[xcopy-other-window-path-to-clipboard\C-mR\C-y")
 
 (add-hook 'dired-mode-hook
 	  (lambda () (local-set-key (kbd "M-R") #'dired-do-rename-into-other-window)))
@@ -76,18 +99,12 @@
   (interactive "sEnter paper name: ")
   (message "%s" (normalize-paper-name name)))
 
-(defun dired-do-normalize-paper-name (&optional arg)
-  (interactive "P")
-  (let (new-file-paths original-point)
-    (dolist (file-path (dired-get-marked-files nil arg))
-      (let* ((dir-path (file-name-directory file-path))
-	     (file-name (file-name-nondirectory file-path))
-	     (new-file-path (concat dir-path (normalize-paper-name file-name))))
-	(unless (equal file-path new-file-path)
-	  (rename-file file-path new-file-path))
-	(setq new-file-paths (cons new-file-path new-file-paths))))
+(defun message-unnormalized-paper-name (name)
+  (interactive "sEnter paper name: ")
+  (message "%s" (unnormalize-paper-name name)))
 
-    (setq original-point (point))
+(defun dired-mark-files-by-paths (file-paths)
+  (let ((original-point (point)))
     (save-excursion
       (revert-buffer t)
       (setq original-point (point))
@@ -101,34 +118,28 @@
     (goto-char original-point)
     ))
 
+(defun dired-do-normalize-paper-name (&optional arg)
+  (interactive "P")
+  (let (new-file-paths)
+    (dolist (file-path (dired-get-marked-files nil arg))
+      (let* ((dir-path (file-name-directory file-path))
+	     (file-name (file-name-nondirectory file-path))
+	     (new-file-path (concat dir-path (normalize-paper-name file-name))))
+	(unless (equal file-path new-file-path)
+	  (rename-file file-path new-file-path))
+	(setq new-file-paths (cons new-file-path new-file-paths))))
+    (dired-mark-files-by-paths new-file-paths)))
+
 (defun dired-do-convert-pdf-to-txt (&optional arg)
   (interactive "P")
-  (let (new-file-paths original-point)
+  (let (new-file-paths)
     (dolist (file-path (dired-get-marked-files nil arg))
       (let* ((dir-path (file-name-directory file-path))
 	     (file-name (file-name-nondirectory file-path))
 	     (new-file-path (replace-regexp-in-string ".pdf" ".txt"
 			     (concat dir-path (normalize-paper-name file-name)))))
 	(unless (file-exists-p new-file-path)
-	  (print file-path)
-	  (print new-file-path)
-	  (shell-command (concat "pdftotext" " " file-path " " new-file-path))))))
-  (revert-buffer))
-
-(defun grep-file (command-args)
-  (interactive
-   (progn
-     (grep-compute-defaults)
-     (let ((default (grep-default-command)))
-       (list (read-shell-command "Run grep (like this): "
-                                 (if current-prefix-arg default "grep --color -nH -i -m 1 -e "
-)
-                                 'grep-history
-                                 (if current-prefix-arg nil default))))))
-
-  ;; Setting process-setup-function makes exit-message-function work
-  ;; even when async processes aren't supported.
-  (compilation-start (if (and grep-use-null-device null-device)
-			 (concat command-args " " null-device)
-		       command-args)
-		     'grep-mode))
+	  (setq new-file-paths (cons new-file-path new-file-paths)) ; exclude existing files
+	  (shell-command (concat "pdftotext" " " file-path " " new-file-path)))))
+    (dired-unmark-all-marks)
+    (dired-mark-files-by-paths new-file-paths)))

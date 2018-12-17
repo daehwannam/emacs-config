@@ -1,3 +1,0 @@
-
-(require 'wgrep nil t)
-
