@@ -51,4 +51,4 @@
       (kill-ring-save start end)
       )))
 
-(global-set-key (kbd "C-c M-w") 'kill-ring-save-at-point)
+(global-set-key (kbd "C-x M-w") 'kill-ring-save-at-point)
