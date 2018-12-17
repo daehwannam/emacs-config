@@ -24,7 +24,11 @@ Otherwise hmlinum will highlight only in the active buffer."
 	(goto-char (window-start))
 	(forward-line (/ (- (window-height (selected-window)) 1) 2))
 	(point))
-    (save-excursion nil)))	       ;exception handlling for save-excursion
+    ('save-excursion nil)))	       ;exception handlling
+  ;; (save-excursion
+  ;;   (goto-char (window-start))
+  ;;   (forward-line (/ (- (window-height (selected-window)) 1) 2))
+  ;;   (point))
   ;; (save-excursion
   ;;   (goto-char (window-start))
   ;;   ;; (call-interactively 'move-to-window-line)
