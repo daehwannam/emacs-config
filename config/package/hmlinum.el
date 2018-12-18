@@ -21,9 +21,7 @@ Otherwise hmlinum will highlight only in the active buffer."
 (defun middle-position ()
   (condition-case nil
       (save-excursion
-	(goto-char (window-start))
-	;; (if (eq (selected-window) (window-buffer (selected-window)))
-	(line-move-1 (/ (- (window-height (selected-window)) 1) 2) t nil)
+	(move-to-window-line nil)
 	(point))
     ('error 0)))  ; exception handlling; return 0
 
