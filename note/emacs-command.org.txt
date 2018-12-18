@@ -1,6 +1,40 @@
 
 
+* Command
+** Esc-=: count lines
+*** Be careful of Alt-= in Putty
+    It changes the default character set.
 
-* Esc-=: count lines
-** Be careful of Alt-= in Putty
-   It changes the default character set.
+
+* Emacs Lisp
+** Code Characters for interactive
+   https://www.gnu.org/software/emacs/manual/html_node/elisp/Interactive-Codes.html#Interactive-Codes
+
+** Exception handling
+   https://curiousprogrammer.wordpress.com/2009/06/08/error-handling-in-emacs-lisp/
+
+
+* Source
+** Installing source
+   https://emacs.stackexchange.com/questions/7184/where-are-emacs-lisp-files
+   sudo apt-get install emacs25-el
+
+** Old way
+*** Download
+    download emacs source code from https://github.com/emacs-mirror/emacs
+    e.g. wget https://github.com/emacs-mirror/emacs/archive/emacs-25.3.zip
+    
+*** Commands
+    cd /tmp
+    wget https://github.com/emacs-mirror/emacs/archive/emacs-25.3.zip
+    unzip emacs-25.3.zip
+    cp -R emacs-emacs-25.3/lisp/* /usr/share/emacs/25.3/lisp
+
+
+* Package
+** Evil-collection
+   https://github.com/emacs-evil/evil-collection
+
+* Advice
+** Evil vs Emacs
+   - https://stackoverflow.com/questions/43380067/why-would-you-prefer-spacemacs-over-emacs-running-on-evil-mode

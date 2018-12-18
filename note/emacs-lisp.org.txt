@@ -1,6 +1,0 @@
-
-* Code Characters for interactive
-  https://www.gnu.org/software/emacs/manual/html_node/elisp/Interactive-Codes.html#Interactive-Codes
-
-* Exception handling
-  https://curiousprogrammer.wordpress.com/2009/06/08/error-handling-in-emacs-lisp/
