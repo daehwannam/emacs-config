@@ -5,14 +5,12 @@
 *** Be careful of Alt-= in Putty
     It changes the default character set.
 
-
 * Emacs Lisp
 ** Code Characters for interactive
    https://www.gnu.org/software/emacs/manual/html_node/elisp/Interactive-Codes.html#Interactive-Codes
 
 ** Exception handling
    https://curiousprogrammer.wordpress.com/2009/06/08/error-handling-in-emacs-lisp/
-
 
 * Source
 ** Installing source
@@ -30,11 +28,21 @@
     unzip emacs-25.3.zip
     cp -R emacs-emacs-25.3/lisp/* /usr/share/emacs/25.3/lisp
 
+* Modes & Packages
+** Evil
+*** Evil-collection
+    https://github.com/emacs-evil/evil-collection
 
-* Package
-** Evil-collection
-   https://github.com/emacs-evil/evil-collection
+** Advice
+*** Evil vs Emacs
+    - https://stackoverflow.com/questions/43380067/why-would-you-prefer-spacemacs-over-emacs-running-on-evil-mode
 
-* Advice
-** Evil vs Emacs
-   - https://stackoverflow.com/questions/43380067/why-would-you-prefer-spacemacs-over-emacs-running-on-evil-mode
+** Org Mode
+*** Calendar
+    - M-x calendar
+    - org-calendar-goto-agenda: type "c"
+      https://emacs.stackexchange.com/questions/29632/org-mode-calendar-integration
+
+** Dired
+*** dired-do-shell-command
+    https://stackoverflow.com/a/380013
