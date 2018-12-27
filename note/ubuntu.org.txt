@@ -4,3 +4,12 @@
   /home/$USER/.local/share/Trash
   or
   /home/$USER/.local/share/Trash/files/
+
+* Upgrade ubuntu version
+  type "do-release-upgrade" in shell
+  - apt-get update & upgrade may procede
+
+* apt-get
+** update vs upgrade
+   You should first run update, then upgrade. Neither of them automatically runs the other.
+   https://askubuntu.com/a/94104

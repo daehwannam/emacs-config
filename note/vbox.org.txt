@@ -4,7 +4,14 @@
   - ~/my_data: folder in guest os (os from virtual image)
 
 * Port forwarding for SSH
-  VBox command: VBoxManage modifyvm myserver --natpf1 "ssh,tcp,,<port for guest ssh server>,,22"
+  - Way 1: VBox command: VBoxManage modifyvm myserver --natpf1 "ssh,tcp,,<port for guest ssh server>,,22"
+  - Way 2
+    - Settings -> Network -> Adapter 1 -> Advanced -> Port Forwarding
+    - Insert "ssh / TCP / / 61112 / / 22
 
 * Remote desktop to Guest
   Settings -> Display -> Remote Display -> Enagle Server & change Server Port
+
+* Copy image
+  https://srackham.wordpress.com/cloning-and-copying-virtualbox-virtual-machines/
+  File -> Virtual Media Manager 
