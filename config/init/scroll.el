@@ -52,6 +52,15 @@
 (global-set-key (kbd "M-R") 'reverse-move-to-window-line-top-bottom)
 
 
+(defun reverse-recenter-top-bottom ()
+  (interactive)
+  (let ((this-scroll-margin
+	 (min (max 0 scroll-margin)
+	      (truncate (/ (window-body-height) 4.0)))))
+    (recenter (- -1 this-scroll-margin))))
+(global-set-key (kbd "M-L") 'reverse-recenter-top-bottom)
+
+
 ;;; scrolling other window
 (defun scroll-other-up-small ()
   (interactive)
@@ -85,3 +94,9 @@
     (other-window -1)))
 
 (global-set-key (kbd "C-x M-l") (make-repeatable-command 'recenter-top-bottom-other))
+
+
+;; Avy: https://github.com/abo-abo/avy
+(when (fboundp 'avy-goto-char-2)
+  (global-set-key (kbd "M-g ;") 'avy-goto-char-2))
+

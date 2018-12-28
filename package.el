@@ -26,7 +26,7 @@
    ((string-equal machine-domain "basic") '(vlf magit))
    ((string-equal machine-domain "vbox") '(vlf auctex magit material-theme elpy flycheck py-autopep8 workgroups2 latex-preview-pane perspective counsel iedit wgrep which-key projectile flx-ido counsel-projectile eyebrowse persp-projectile paredit markdown-mode vimish-fold highlight evil))
    ;; ((string-equal machine-domain "engels") '(vlf magit elpy flycheck py-autopep8 wgrep which-key projectile flx-ido  eyebrowse))
-   ((string-equal machine-domain "engels") '(vlf magit elpy flycheck py-autopep8 wgrep which-key projectile flx-ido counsel counsel-projectile eyebrowse sphinx-doc markdown-mode vimish-fold))
+   ((string-equal machine-domain "engels") '(vlf magit elpy flycheck py-autopep8 wgrep which-key projectile flx-ido counsel counsel-projectile eyebrowse sphinx-doc markdown-mode vimish-fold avy))
    ;; ((string-equal machine-domain "engels") '(vlf magit elpy py-autopep8))
    ((string-equal machine-domain "programming") '(elpy))
    ((string-equal machine-domain "ms-laptop") '(vlf magit))
