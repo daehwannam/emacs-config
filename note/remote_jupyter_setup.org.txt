@@ -1,0 +1,39 @@
+
+* Password
+  In Jupyter Notebook, run following code:
+  >> from notebook.auth import passwd
+  >> passwd()
+
+  Then the result would be:
+  $ Enter password: ....
+  $ Verify password: ....
+  $ 'sha1:...............'
+
+* Make config file
+  Type:
+  $ jupyter notebook --generate-config
+
+  Result:
+  $ Writing default config to : PATH\jupyter_notebook_config.py
+
+* Copy hash code
+  Open "PATH\jupyter_notebook_config.py", then write the following code:
+
+    ## Whitelist of allowed kernel names.
+    #
+    #  By default, all installed kernels are allowed.
+    #c.KernelSpecManager.whitelist = set([])
+
+    c.NotebookApp.password = u'sha1:......................'
+
+* Run server
+  $ jupyter notebook --ip=xxx.xxx.xxx.xxx --port=yyyyy
+  You can change IP and port
+
+* Connect from a remote client
+  In a web browser, connect to "IP:Port"
+    ex) http://xxx.xxx.xxx.xxx:yyyyy
+  
+* References
+  - https://kimdoky.github.io/tip/2018/05/21/tip-jupyter-local.html
+  - https://medium.com/@decom0405/%EC%A3%BC%ED%94%BC%ED%84%B0-jupyter-notebook-%EC%9B%90%EA%B2%A9-%EC%A0%91%EC%86%8D-ee55539425f0
