@@ -8,8 +8,6 @@
 
 ;; setting tags table
 ;; https://www.gnu.org/software/emacs/manual/html_node/emacs/Select-Tags-Table.html
-(cond
- ((string-equal machine-domain "vbox")
-  (setq tags-table-list
-	'("/usr/share/emacs/25.3/lisp"
-	  "~/.emacs.d"))))
+
+(when (machine-config-get 'etags-list)
+  (setq tags-table-list (machine-config-get 'etags-list)))

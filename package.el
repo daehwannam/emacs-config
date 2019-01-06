@@ -20,18 +20,19 @@
 ;;; package install
 ;; https://realpython.com/blog/python/emacs-the-best-python-editor/
 (defvar installable-domain-specific-packages) ; (defvar machine-domain-specific-packages some-value)
-(setq installable-domain-specific-packages
-  (cond
-   ((string-equal machine-domain "default") '())
-   ((string-equal machine-domain "basic") '(vlf magit))
-   ((string-equal machine-domain "vbox") '(vlf auctex magit material-theme elpy flycheck py-autopep8 workgroups2 latex-preview-pane perspective counsel iedit wgrep which-key projectile flx-ido counsel-projectile eyebrowse persp-projectile paredit markdown-mode highlight))
-   ;; ((string-equal machine-domain "engels") '(vlf magit elpy flycheck py-autopep8 wgrep which-key projectile flx-ido  eyebrowse))
-   ((string-equal machine-domain "engels") '(vlf magit elpy flycheck py-autopep8 wgrep which-key projectile flx-ido counsel counsel-projectile eyebrowse sphinx-doc markdown-mode))
-   ;; ((string-equal machine-domain "engels") '(vlf magit elpy py-autopep8))
-   ((string-equal machine-domain "programming") '(elpy))
-   ((string-equal machine-domain "ms-laptop") '(vlf magit))
-   ((string-equal machine-domain "ms-desktop") '(vlf magit))
-   ))
+(setq installable-domain-specific-packages (machine-config-get 'installable-packages))
+;; (setq installable-domain-specific-packages
+;;   (cond
+;;    ((string-equal machine-domain "default") '())
+;;    ((string-equal machine-domain "basic") '(vlf magit))
+;;    ((string-equal machine-domain "vbox") '(vlf auctex magit material-theme elpy flycheck py-autopep8 workgroups2 latex-preview-pane perspective counsel iedit wgrep which-key projectile flx-ido counsel-projectile eyebrowse persp-projectile paredit markdown-mode highlight))
+;;    ;; ((string-equal machine-domain "engels") '(vlf magit elpy flycheck py-autopep8 wgrep which-key projectile flx-ido  eyebrowse))
+;;    ((string-equal machine-domain "engels") '(vlf magit elpy flycheck py-autopep8 wgrep which-key projectile flx-ido counsel counsel-projectile eyebrowse sphinx-doc markdown-mode))
+;;    ;; ((string-equal machine-domain "engels") '(vlf magit elpy py-autopep8))
+;;    ((string-equal machine-domain "programming") '(elpy))
+;;    ((string-equal machine-domain "ms-laptop") '(vlf magit))
+;;    ((string-equal machine-domain "ms-desktop") '(vlf magit))
+;;    ))
 
 (mapc #'(lambda (package)
 	  (unless (package-installed-p package)

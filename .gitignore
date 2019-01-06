@@ -12,8 +12,7 @@
 # ignore some patterns or files
 *~
 *[#]*
-config/domain.txt
-config/old-domain.txt
+config/id.txt
 config/custom/custom.el
 
 # include special directories (that include .gitkeep)

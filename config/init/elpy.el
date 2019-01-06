@@ -14,25 +14,31 @@
       (elpy-enable)
       (setq elpy-rpc-backend "jedi")
       ;; (setq elpy-rpc-python-command "python3")
-      (cond
-       ;; ((string-equal machine-domain "ms") ; Microsoft Windows
-       ;;  (progn
-       ;;    (do-something bla bla bla)))
-       ;; ((string-equal machine-domain "vbox") ; vbox linux
-       ;;  (progn
-       ;;    (do-something bla bla bla)))
-       ((string-equal machine-domain "hegel") ; hegel
-	(setenv "WORKON_HOME" "~/bin/anaconda2/envs/")
+      ;; (cond
+      ;;  ;; ((string-equal machine-domain "ms") ; Microsoft Windows
+      ;;  ;;  (progn
+      ;;  ;;    (do-something bla bla bla)))
+      ;;  ;; ((string-equal machine-domain "vbox") ; vbox linux
+      ;;  ;;  (progn
+      ;;  ;;    (do-something bla bla bla)))
+      ;;  ((string-equal machine-domain "hegel") ; hegel
+      ;; 	(setenv "WORKON_HOME" "~/bin/anaconda2/envs/")
+      ;; 	(pyvenv-mode 1))
+      ;;  ((string-equal machine-domain "engels") ; engels
+      ;; 	(setenv "WORKON_HOME" "~/bin/anaconda3/envs/")
+      ;; 	(pyvenv-mode 1)
+      ;; 	(pyvenv-workon "py3"))		       ; use "M-x pyvenv-deactivate" to deactivate
+      ;;  ((string-equal machine-domain "vbox") ; vbox
+      ;; 	(setenv "WORKON_HOME" "~/bin/anaconda3/envs/")
+      ;; 	(pyvenv-mode 1)
+      ;; 	(pyvenv-workon "py2"))		       ; use "M-x pyvenv-deactivate" to deactivate
+      ;;  )
+      (when (machine-config-get 'pyvenv-workon-home-path)
+	(setenv "WORKON_HOME" (machine-config-get 'pyvenv-workon-home-path))
 	(pyvenv-mode 1))
-       ((string-equal machine-domain "engels") ; engels
-	(setenv "WORKON_HOME" "~/bin/anaconda3/envs/")
-	(pyvenv-mode 1)
-	(pyvenv-workon "py3"))		       ; use "M-x pyvenv-deactivate" to deactivate
-       ((string-equal machine-domain "vbox") ; vbox
-	(setenv "WORKON_HOME" "~/bin/anaconda3/envs/")
-	(pyvenv-mode 1)
-	(pyvenv-workon "py2"))		       ; use "M-x pyvenv-deactivate" to deactivate
-       )
+      (when (machine-config-get 'pyvenv-name)
+	(pyvenv-workon (machine-config-get 'pyvenv-name))) ; use "M-x pyvenv-deactivate" to deactivate
+      
 
       (defun elpy-set-project-root (new-root) ; redefined
 	"Set the Elpy project root to NEW-ROOT."
@@ -64,17 +70,16 @@
 		(lambda () (local-set-key (kbd "C-c C-g") 'elpy-goto-definition)))
 
       ;; https://realpython.com/blog/python/emacs-the-best-python-editor/
-      (unless (member machine-domain '("vbox" "machine here don't activate below"))
-	(when (require 'flycheck nil t)
-	  (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
-	  (add-hook 'elpy-mode-hook 'flycheck-mode))
+      ;; (unless (member machine-domain '("vbox" "machine here don't activate below"))
+      (when (and (machine-config-get 'elpy-flycheck-activate) (require 'flycheck nil t))
+	(setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
+	(add-hook 'elpy-mode-hook 'flycheck-mode))
 
 	;; (elpy-use-ipython)  # deprecated
 	;; (setq python-shell-interpreter "ipython"
 	;;       python-shell-interpreter-args "-i --simple-prompt")
-	(when (require 'py-autopep8 nil t)
-	  (add-hook 'elpy-mode-hook 'py-autopep8-enable-on-save))
-	)
+      (when (and (machine-config-get 'elpy-autopep8-activate) (require 'py-autopep8 nil t))
+	(add-hook 'elpy-mode-hook 'py-autopep8-enable-on-save))
 
       ;; (elpy-use-ipython) ; deprecated
       ))

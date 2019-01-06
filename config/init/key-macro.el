@@ -9,12 +9,8 @@
 ;; ‘M-x insert-kbd-macro’ – Insert a named keyboard macro at point.
 ;; (global-set-key (kbd "C-c a") 'my-macro)
 
-(cond
- ((string-equal machine-domain "vbox") ; vbox
-  (fset 'find-and-region-_x_
-	"\C-s_X_\C-m\C-@\C-b\C-b\C-b\C-x\C-x")
-  (add-hook 'python-mode-hook
-	    (lambda () (local-set-key (kbd "C-c _") 'find-and-region-_x_))))
- ((string-equal machine-domain "vbox") ; vbox
-  )
-)
+(when (machine-config-get 'ai-edu-key-binding)
+   (fset 'find-and-region-_x_
+	 "\C-s_X_\C-m\C-@\C-b\C-b\C-b\C-x\C-x")
+   (add-hook 'python-mode-hook
+	     (lambda () (local-set-key (kbd "C-c _") 'find-and-region-_x_))))

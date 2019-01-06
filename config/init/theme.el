@@ -7,7 +7,7 @@
 ;; (global-hl-line-mode 0)  ;; it disables hl-line-mode
 
 ;;; color theme change
-(let ((theme-style (cdr (assoc 'theme-style my-emacs-config))))
+(let ((theme-style (machine-config-get 'theme-style)))
   (cond
    ((eq theme-style 'dark)
     (load-theme 'manoj-dark)

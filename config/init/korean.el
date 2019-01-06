@@ -26,8 +26,8 @@
     ;; https://libsora.so/posts/emacs-hangul-key/
     (global-set-key (kbd "<kana>") 'toggle-input-method) ;한/영 키
     ))
-; ((string-equal system-type "gnu/linux") ; linux
- ((string-equal machine-domain "vbox") ; vbox linux
+ ((string-equal system-type "gnu/linux") ; linux
+ ;; ((string-equal machine-domain "vbox") ; vbox linux
   (progn
     )))
 
