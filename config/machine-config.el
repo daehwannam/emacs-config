@@ -3,7 +3,7 @@
 (unless (file-exists-p "~/.emacs.d/config/options.txt")
   ;; https://stackoverflow.com/questions/17376706/in-emacs-lisp-how-can-i-append-a-string-to-a-file-that-i-dont-like-to-open
   ;; https://stackoverflow.com/questions/14071991/how-to-create-an-empty-file-by-elisp/14072295
-  (write-region "default-machine option1 option2" nil "~/.emacs.d/config/options.txt"))
+  (write-region "(default-machine option1 option2)" nil "~/.emacs.d/config/options.txt"))
 (defvar machine-options (car (read-from-string (get-string-from-file "~/.emacs.d/config/options.txt"))))
 
 
