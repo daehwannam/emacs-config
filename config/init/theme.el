@@ -9,7 +9,9 @@
 ;;; color theme change
 (let ((theme-style (machine-config-get 'theme-style)))
   (cond
-   ((eq theme-style 'dark)
+   ((eq theme-style 'white)
+    (load-theme 'leuven))
+   (t ;; (eq theme-style 'dark)
     (load-theme 'manoj-dark)
     (custom-set-faces
      ;; custom-set-faces was added by Custom.
@@ -25,8 +27,7 @@
      '(hi-green ((t (:background "green" :foreground "magenta"))))
      '(hi-blue ((t (:background "light blue" :foreground "red"))))
      ))
-   ((eq theme-style 'white)
-    (load-theme 'leuven))))
+   ))
 
 
 ;; (when (require 'material-theme nil t)
