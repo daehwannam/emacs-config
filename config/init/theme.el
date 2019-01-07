@@ -14,7 +14,10 @@
 (let ((theme-style (machine-config-get 'theme-style)))
   (cond
    ((eq theme-style 'white)
-    (load-theme 'leuven))
+    (load-theme 'leuven)
+    (custom-set-faces
+     '(mlinum-highlight-face ((t (:inherit default :foreground "cyan" :background "white"))))
+     ))
    (t ;; (eq theme-style 'dark)
     (load-theme 'manoj-dark)
     (custom-set-faces
@@ -30,7 +33,7 @@
      '(hi-pink ((t (:background "pink" :foreground "color-34"))))
      '(hi-green ((t (:background "green" :foreground "magenta"))))
      '(hi-blue ((t (:background "light blue" :foreground "red"))))
-     '(mlinum-highlight-face ((t (:inherit default :foreground "green" :background "black"))))
+     '(mlinum-highlight-face ((t (:inherit default :foreground "cyan" :background "black"))))
      ))
    ))
 
