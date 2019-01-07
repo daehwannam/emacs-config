@@ -16,6 +16,3 @@
   (setq numstr (number-to-string (line-number-at-pos)))
   (kill-new numstr)
   (message (concat "line number: " numstr)))
-
-(require 'hmlinum)
-(hmlinum-activate)

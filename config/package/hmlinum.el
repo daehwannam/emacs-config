@@ -5,15 +5,15 @@
 (require 'linum)
 (require 'cl-lib)
 
-(defface linum-highlight-face
+(defface mlinum-highlight-face
     '((t (:inherit default :foreground "black"
           :background "gray")))
-  "Face for highlighting current line"
+  "Face for highlighting middle line"
   :group 'linum)
 
-(defcustom linum-highlight-in-all-buffersp
+(defcustom mlinum-highlight-in-all-buffersp
   nil
-  "Non-nil means hmlinum highlights current line in all buffers.
+  "Non-nil means hmlinum highlights middle line in all buffers.
 Otherwise hmlinum will highlight only in the active buffer."
   :type 'boolean
   :group 'linum)
@@ -63,9 +63,9 @@ If LINE is nil, highlight current line."
           (overlay-put nov 'linum-str lstr))))))
 
 (defun hmlinum-highlight-line (&optional line)
-  (hmlinum-color 'linum-highlight-face line))
+  (hmlinum-color 'mlinum-highlight-face line))
 (defun hmlinum-unhighlight-line (&optional line)
-  (unless linum-highlight-in-all-buffersp
+  (unless mlinum-highlight-in-all-buffersp
     (hmlinum-color 'linum line)))
 
 (defun hmlinum-highlight-region ()

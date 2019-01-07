@@ -6,6 +6,10 @@
 (global-hl-line-mode 1)
 ;; (global-hl-line-mode 0)  ;; it disables hl-line-mode
 
+;; highlight the middle line number
+(require 'hmlinum)
+(hmlinum-activate)
+
 ;;; color theme change
 (let ((theme-style (machine-config-get 'theme-style)))
   (cond
@@ -26,6 +30,7 @@
      '(hi-pink ((t (:background "pink" :foreground "color-34"))))
      '(hi-green ((t (:background "green" :foreground "magenta"))))
      '(hi-blue ((t (:background "light blue" :foreground "red"))))
+     '(mlinum-highlight-face ((t (:inherit default :foreground "green" :background "black"))))
      ))
    ))
 
