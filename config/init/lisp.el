@@ -8,19 +8,19 @@
 
 
 ;; Common lisp
-(when (fboundp 'slime)
-  (let ((path-to-slime-helper (machine-config-get 'path-to-slime-helper))
-	(path-to-inferior-lisp-program (machine-config-get 'path-to-inferior-lisp-program)))
-    ;; (when (file-exists-p  path-to-slime-helper)
-    (load (expand-file-name path-to-slime-helper))
-    ;; Replace "sbcl" with the path to your implementation
-    ;; (when (file-exists-p path-to-inferior-lisp-program)
-    (setq inferior-lisp-program path-to-inferior-lisp-program)
+(let ((path-to-slime-helper (machine-config-get 'path-to-slime-helper))
+      (path-to-inferior-lisp-program (machine-config-get 'path-to-inferior-lisp-program)))
+  (when path-to-slime-helper
+    (load (expand-file-name path-to-slime-helper)))
+  ;; Replace "sbcl" with the path to your implementation
+  (when path-to-inferior-lisp-program
+    (setq inferior-lisp-program path-to-inferior-lisp-program))
+  (when (fboundp 'slime)
     (add-hook 'slime-mode-hook
 	      (lambda () (local-set-key (kbd "C-j") #'slime-eval-print-last-expression)))
     (add-hook 'slime-mode-hook
-	      (lambda () (local-set-key (kbd "C-c C-d H") #'slime-documentation)))
-    ))
+	      (lambda () (local-set-key (kbd "C-c C-d H") #'slime-documentation))))
+  )
 
 ;; ;; ;; ParEdit
 ;; ;; ;; http://wikemacs.org/wiki/Paredit-mode
