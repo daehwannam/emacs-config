@@ -16,7 +16,7 @@
    ((eq theme-style 'white)
     (load-theme 'leuven)
     (custom-set-faces
-     '(mlinum-highlight-face ((t (:inherit default :foreground "cyan" :background "white"))))
+     '(mlinum-highlight-face ((t (:inherit default :foreground "purple" :background "white"))))
      ))
    (t ;; (eq theme-style 'dark)
     (load-theme 'manoj-dark)
@@ -33,7 +33,7 @@
      '(hi-pink ((t (:background "pink" :foreground "color-34"))))
      '(hi-green ((t (:background "green" :foreground "magenta"))))
      '(hi-blue ((t (:background "light blue" :foreground "red"))))
-     '(mlinum-highlight-face ((t (:inherit default :foreground "cyan" :background "black"))))
+     '(mlinum-highlight-face ((t (:inherit default :foreground "brightwhite" :background "black"))))
      ))
    ))
 
