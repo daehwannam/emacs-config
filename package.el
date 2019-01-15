@@ -12,11 +12,18 @@
 	'(("gnu" . "http://elpa.gnu.org/packages/")
 	  ("marmalade" . "https://marmalade-repo.org/packages/")
 	  ("melpa" . "http://melpa.milkbox.net/packages/")
-	  ("org" . "http://orgmode.org/elpa/")))
+	  ("org" . "http://orgmode.org/elpa/") ; https://emacs.stackexchange.com/a/27599
+	  ))
   )
 
 ;;; package initialization
 (package-initialize)
+
+;;; fetch the list of packages available
+;;; https://stackoverflow.com/a/10093312
+(unless package-archive-contents
+  (package-refresh-contents))
+
 
 ;;; package install
 ;; https://realpython.com/blog/python/emacs-the-best-python-editor/

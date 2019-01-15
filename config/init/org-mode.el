@@ -1,4 +1,8 @@
 
+;; How to install latest org mode
+;; [[https://www.reddit.com/r/emacs/comments/5sx7j0/how_do_i_get_usepackage_to_ignore_the_bundled/]]
+;; we can install 'org-plus-contrib' to do together the latest version of 'org' which 'org-plus-contrib' depends on.
+
 ;;; org-mode
 ;; http://orgmode.org/worg/org-tutorials/orgtutorial_dto.html
 
