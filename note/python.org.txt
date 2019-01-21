@@ -1,0 +1,8 @@
+
+* tail call optimization
+** code
+  - https://github.com/Bogdanp/tcopy/tree/master/tcopy
+  - http://code.activestate.com/recipes/474088-tail-call-optimization-decorator/
+  - https://chrispenner.ca/posts/python-tail-recursion
+** discussion
+  - https://www.reddit.com/r/Python/comments/96i85o/convenient_tail_call_elimination_decorator_for/

@@ -1,0 +1,10 @@
+
+* Drawing tool
+  https://tex.stackexchange.com/questions/26972/what-gui-applications-are-there-to-assist-in-generating-graphics-for-tex
+  https://tex.stackexchange.com/questions/205/what-graphics-packages-are-there-for-creating-graphics-in-latex-documents
+  - TikzEdt
+  - IPE
+  - LaTeXDraw
+
+* Org-mode with Beamer
+  https://www.youtube.com/watch?v=Ho6nMWGtepY
