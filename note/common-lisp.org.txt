@@ -22,3 +22,5 @@
   http://www.gigamonkeys.com/book/functions.html
   addtional arguments: optional, rest, keyword
 
+* CFFI
+  - tutorial: https://www.youtube.com/watch?v=lvHi5LyhxGk
