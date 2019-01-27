@@ -71,14 +71,14 @@
 
       ;; https://realpython.com/blog/python/emacs-the-best-python-editor/
       ;; (unless (member machine-domain '("vbox" "machine here don't activate below"))
-      (when (and (machine-config-get 'elpy-flycheck-activate) (require 'flycheck nil t))
+      (when (and (not (machine-config-get 'elpy-flycheck-deactivate)) (require 'flycheck nil t))
 	(setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
 	(add-hook 'elpy-mode-hook 'flycheck-mode))
 
 	;; (elpy-use-ipython)  # deprecated
 	;; (setq python-shell-interpreter "ipython"
 	;;       python-shell-interpreter-args "-i --simple-prompt")
-      (when (and (machine-config-get 'elpy-autopep8-activate) (require 'py-autopep8 nil t))
+      (when (and (not (machine-config-get 'elpy-autopep8-deactivate)) (require 'py-autopep8 nil t))
 	(add-hook 'elpy-mode-hook 'py-autopep8-enable-on-save))
 
       ;; (elpy-use-ipython) ; deprecated

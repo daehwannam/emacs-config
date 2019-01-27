@@ -6,8 +6,8 @@
   (write-region "(default-machine option1 option2)" nil "~/.emacs.d/config/options.txt"))
 (defvar machine-options (car (read-from-string (get-string-from-file "~/.emacs.d/config/options.txt"))))
 
-
-(defvar machine-config-list
+(defvar machine-config-list)
+(setq machine-config-list
   '((theme-style (white-theme white))
     (ai-edu-key-binding (vbox t))
     (path-to-slime-helper (vbox "~/quicklisp/slime-helper.el"))
@@ -23,9 +23,9 @@
     (pyvenv-name
      (engels "py3")
      (vbox "py2"))
-    (elpy-flycheck-activate
+    (elpy-flycheck-deactivate
      (vbox t))
-    (elpy-autopep8-activate
+    (elpy-autopep8-deactivate
      (vbox t))
     (installable-packages
      (basic (vlf magit))
