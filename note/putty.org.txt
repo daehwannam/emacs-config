@@ -7,4 +7,3 @@
 
 * Color
   - Connection > Data : Terminal-type string = xterm-256color
-    - 

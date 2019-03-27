@@ -6,3 +6,10 @@
   - https://chrispenner.ca/posts/python-tail-recursion
 ** discussion
   - https://www.reddit.com/r/Python/comments/96i85o/convenient_tail_call_elimination_decorator_for/
+
+* python2 to python3
+  $ 2to3 -w example.py [or directory]
+
+  if you don't want to make backup files:
+  $ 2to3 -wn example.py [or directory]
+
