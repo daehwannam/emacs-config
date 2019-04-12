@@ -8,7 +8,7 @@
 
 (defvar machine-config-list)
 (setq machine-config-list
-  '((theme-style (white-theme white))
+  '((theme-style (a-machine-name white))
     (ai-edu-key-binding (vbox t))
     (path-to-slime-helper (vbox "~/quicklisp/slime-helper.el"))
     (path-to-inferior-lisp-program (vbox "/usr/bin/sbcl"))
@@ -22,7 +22,7 @@
      (vbox "~/bin/anaconda3/envs/"))
     (pyvenv-name
      (engels "py3")
-     (vbox "py2"))
+     (vbox "py3"))
     (elpy-flycheck-deactivate
      (vbox t))
     (elpy-autopep8-deactivate

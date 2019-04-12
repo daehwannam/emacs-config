@@ -1,0 +1,23 @@
+* Bash
+** Queuing processes
+   https://superuser.com/a/462673
+   $ command1 &
+   $ wait; command2-1 && command2-2 &
+   $ wait; command3 &
+   $ ...
+
+* Ubuntu
+** .Trash location
+   https://askubuntu.com/questions/102099/where-is-the-trash-folder
+   /home/$USER/.local/share/Trash
+   or
+   /home/$USER/.local/share/Trash/files/
+
+** Upgrade ubuntu version
+   type "do-release-upgrade" in shell
+   - apt-get update & upgrade may procede
+
+** apt-get
+*** update vs upgrade
+    You should first run update, then upgrade. Neither of them automatically runs the other.
+    https://askubuntu.com/a/94104
