@@ -6,6 +6,10 @@
     It changes the default character set.
 ** Removing dependencies
    M-x package-autoremove
+** Dired mode Compression commands
+   https://emacs.stackexchange.com/questions/20833/how-to-deal-with-zip-archives-in-dired
+   - dired-do-compress: Z
+   - dired-do-compress-to: c
 
 * Emacs Lisp
 ** Code Characters for interactive
