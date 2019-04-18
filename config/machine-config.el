@@ -33,7 +33,7 @@
      ;; (engels (vlf magit elpy flycheck py-autopep8 wgrep which-key projectile flx-ido  eyebrowse))
      (engels (vlf magit elpy flycheck py-autopep8 wgrep which-key projectile flx-ido counsel counsel-projectile eyebrowse sphinx-doc markdown-mode))
      ;; (engels (vlf magit elpy py-autopep8))
-     (programming (elpy))
+     (programming (vlf magit counsel elpy))
      (ms-laptop (vlf magit))
      (ms-desktop (vlf magit))
      )))
