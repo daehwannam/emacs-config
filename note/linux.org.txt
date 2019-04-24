@@ -21,3 +21,30 @@
 *** update vs upgrade
     You should first run update, then upgrade. Neither of them automatically runs the other.
     https://askubuntu.com/a/94104
+
+** Creating a new user
+   $ adduser username
+
+** Add a sudo user to sudo group
+   $ usermod -aG sudo username
+
+** Login as another user
+   https://askubuntu.com/questions/222984/can-i-log-in-with-other-users-account
+   - $ su username
+   - $ login username
+   - $ sudo -u username
+
+* General commands
+** scp example
+   $ scp -P 60001 user@domain.name.com:/home/dhnam/some_file ./copied_file
+
+   - '-P' indicate port number
+   - directory cannot be copied
+   
+* Special commands
+** GPU information
+   - Information of 1st GPU
+     https://askubuntu.com/a/604167
+     $ cat /proc/driver/nvidia/gpus/0000:01:00.0/information
+   - Nvidia command
+     $ nvidia-smi

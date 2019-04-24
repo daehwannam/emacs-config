@@ -33,7 +33,7 @@
 * Connect from a remote client
   In a web browser, connect to "IP:Port"
     ex) http://xxx.xxx.xxx.xxx:yyyyy
-  
+    ex) http://0.0.0.0:yyyyy (when exact address is not working - vbox, docker...)
 * References
   - https://kimdoky.github.io/tip/2018/05/21/tip-jupyter-local.html
   - https://medium.com/@decom0405/%EC%A3%BC%ED%94%BC%ED%84%B0-jupyter-notebook-%EC%9B%90%EA%B2%A9-%EC%A0%91%EC%86%8D-ee55539425f0
