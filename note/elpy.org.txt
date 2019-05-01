@@ -5,3 +5,13 @@
 
 * Install
   pip install jedi flake8 importmagic autopep8
+
+* Flake setting
+  [Flake setting]
+  http://flake8.pycqa.org/en/latest/user/configuration.html
+  add follwoing text to the ~/.config/flake8
+
+  ------------------- ~/.config/flake8 -------------------------
+  [flake8]
+  ignore = E501
+  --------------------------------------------------------------

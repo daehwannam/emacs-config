@@ -73,7 +73,12 @@
       ;; (unless (member machine-domain '("vbox" "machine here don't activate below"))
       (when (and (not (machine-config-get 'elpy-flycheck-deactivate)) (require 'flycheck nil t))
 	(setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
-	(add-hook 'elpy-mode-hook 'flycheck-mode))
+	(add-hook 'elpy-mode-hook 'flycheck-mode)
+	;; (defun my-flycheck-disable-checker ()
+	;;   flycheck-disable-checker 'python-pylint)
+	;; (add-hook 'flycheck-mode-hook 'my-flycheck-disable-checker)
+	;; (add-to-list 'flycheck-disabled-checkers 'python-pylint)
+	)
 
 	;; (elpy-use-ipython)  # deprecated
 	;; (setq python-shell-interpreter "ipython"

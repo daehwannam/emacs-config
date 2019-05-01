@@ -21,10 +21,12 @@
     (pyvenv-workon-home-path
      (hegel "~/bin/anaconda2/envs/")
      (engels "~/bin/anaconda3/envs/")
-     (vbox "~/bin/anaconda3/envs/"))
+     (vbox "~/bin/anaconda3/envs/")
+     (kant "~/bin/anaconda3/envs/"))
     (pyvenv-name
      (engels "py3")
-     (vbox "py3"))
+     (vbox "py3")
+     (kant "py3"))
     (elpy-flycheck-deactivate
      (vbox t))
     (elpy-autopep8-deactivate
@@ -35,7 +37,7 @@
      ;; (engels (vlf magit elpy flycheck py-autopep8 wgrep which-key projectile flx-ido  eyebrowse))
      (engels (vlf magit elpy flycheck py-autopep8 wgrep which-key projectile flx-ido counsel counsel-projectile eyebrowse sphinx-doc markdown-mode))
      ;; (engels (vlf magit elpy py-autopep8))
-     (programming (vlf magit counsel elpy))
+     (programming (vlf magit counsel elpy py-autopep8))
      (ms-laptop (vlf magit))
      (ms-desktop (vlf magit))
      )))
