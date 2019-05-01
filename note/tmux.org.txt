@@ -2,14 +2,19 @@
   https://gist.github.com/andreyvit/2921703
 
 * Configuration for "~/.tmux.conf"
+  # reload tmux file
+  # $ tmux source-file ~/.tmux.conf
+  
   # https://gist.github.com/andreyvit/2921703
   # remap prefix
   
   # https://superuser.com/a/271791
   unbind-key C-b
   set -g prefix F5		# https://unix.stackexchange.com/questions/278032/cant-use-f1-f2-f3-f4-as-prefix-key
+  bind-key F5 send-prefix
+  bind-key -n F6 send-prefix
   # set -g prefix 'C-\'
-  bind-key 'C-\' send-prefix
+  # bind-key 'C-\' send-prefix
   
   # 256 colors
   # https://unix.stackexchange.com/questions/1045/getting-256-colors-to-work-in-tmux

@@ -1,0 +1,61 @@
+
+* convergence example
+** Neural Symbolic Machines: Learning Semantic Parsers on Freebase with Weak Supervision
+   - convergence with adam
+   - convergence with learning rate decay
+** From Language to Programs: Bridging Reinforcement Learning and Maximum Marginal Likelihood
+   - "train until accuracy on the validation set converges"
+
+* early stoping
+  - patience-based approach: it stops when the best performance(ex. accuracy) over development set is not updated during 'patience' number of epochs
+** materials
+   - https://machinelearningmastery.com/how-to-stop-training-deep-neural-networks-at-the-right-time-using-early-stopping/
+   - https://machinelearningmastery.com/early-stopping-to-avoid-overtraining-neural-network-models/
+     - it contains examples of early stopping
+     - sometimes early stopping is not work:
+       "Understanding deep learning requires rethinking generalization"
+       it's when data is abundant & 'patience' is too small
+       (but if 'patience' is too big, training needs much time)
+** papers dont use ealy stopping?
+   https://www.reddit.com/r/MachineLearning/comments/9omr67/discussion_early_stopping_why_not_always/
+*** what's early stopping
+    Absolutely! But from my understanding, the point of early-stopping is to prevent overfitting. Ideally, early-stopping stops training at the point where the generalization capability of the model is at its highest, and before overfitting starts (save best weights, stop training if no improvement in desired metric in the past N epochs).
+** Neural Semantic Parsing with Type Constraints for Semi-Structured Tables
+   - it uses dev set to early stop
+*** early stopping definition
+    - https://en.wikipedia.org/wiki/Early_stopping#Validation-based_early_stopping
+**** Goodfellow book
+     - section 7.8: early stopping
+       http://www.deeplearningbook.org/contents/regularization.html
+       (stackoverflow question: https://stats.stackexchange.com/questions/305452/understanding-early-stopping-in-neural-networks-and-its-implications-when-using)
+     - validation set & cross validation
+       http://www.deeplearningbook.org/contents/ml.html
+
+* best perform on dev set
+** Weakly Supervised Semantic Parsing with Abstract Examples
+   - "best model W.+DISC on the development set."
+
+* k-fold cross validation
+** Neural Semantic Parsing with Type Constraints for Semi-Structured Tables
+   this paper uses it
+** hyperparameter turing by k-fold cross validation
+   https://stats.stackexchange.com/a/43138
+** standard error of cross validation
+   standard_error_of_cross_validation = standard_deviation_of_k_performance / sqrt(k)  ; k is the number of folds
+   - https://stackoverflow.com/questions/34914229/which-standard-deviation-of-the-cross-validation-score
+   - http://www.math.canterbury.ac.nz/~r.vale/Crossvalidation.pdf
+   - https://stackoverflow.com/questions/34914229/which-standard-deviation-of-the-cross-validation-score
+** nested k-fold cross validation
+   - https://stats.stackexchange.com/questions/56421/is-it-ok-to-determine-early-stopping-using-the-validation-set-in-10-fold-cross-v
+   - https://stats.stackexchange.com/questions/90288/in-k-fold-cross-validation-does-the-training-subsample-include-test-set
+** application of k-fold cross validation
+   - reliably testing model performance
+   - model selection or hyper parameter tuning
+   - ensembling k number of models
+* Joint Concept Learning and Semantic Parsing from Natural Language Explanations
+  10-fold cross validation to evaluate test performance rather than model selection
+
+* ensemble model
+** Neural Semantic Parsing with Type Constraints for Semi-Structured Tables
+   - it averages logical form probabilities of 5 models trained by each fold
+     (rather than averages action probabilities)
