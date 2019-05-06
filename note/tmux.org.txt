@@ -22,3 +22,7 @@
   
   # disable status bar
   set -g status off
+
+* nested local tmux
+  https://github.com/tmux/tmux/issues/146
+  $ tmux -Ltest new
