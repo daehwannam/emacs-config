@@ -3,6 +3,8 @@
 (unless (file-exists-p "~/.emacs.d/config/options.txt")
   ;; https://stackoverflow.com/questions/17376706/in-emacs-lisp-how-can-i-append-a-string-to-a-file-that-i-dont-like-to-open
   ;; https://stackoverflow.com/questions/14071991/how-to-create-an-empty-file-by-elisp/14072295
+  ;;
+  ;; options are sorted in descending order of priority
   (write-region "(default-machine option1 option2)" nil "~/.emacs.d/config/options.txt"))
 (defvar machine-options (car (read-from-string (get-string-from-file "~/.emacs.d/config/options.txt"))))
 
@@ -33,7 +35,7 @@
      ;; (engels (vlf magit elpy flycheck py-autopep8 wgrep which-key projectile flx-ido  eyebrowse))
      (engels (vlf magit elpy flycheck py-autopep8 wgrep which-key projectile flx-ido counsel counsel-projectile eyebrowse sphinx-doc markdown-mode))
      ;; (engels (vlf magit elpy py-autopep8))
-     (programming (elpy))
+     (programming (vlf magit counsel elpy))
      (ms-laptop (vlf magit))
      (ms-desktop (vlf magit))
      )))
