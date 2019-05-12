@@ -82,6 +82,9 @@
 	(add-hook 'elpy-mode-hook 'py-autopep8-enable-on-save))
 
       ;; (elpy-use-ipython) ; deprecated
+
+      ;; https://github.com/paetzke/py-autopep8.el
+      (setq py-autopep8-options '("--max-line-length=95"))
       ))
 
 ;; Usefule elpy command

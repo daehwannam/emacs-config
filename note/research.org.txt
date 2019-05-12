@@ -75,3 +75,10 @@
      As we mentioned earlier, A* has the following properties: the tree-search version of A* is optimal if h(n) is admissible, while the graph-search version is optimal if h(n) is consistent.
 * Computer network
   - Exponential backoff
+
+* definition of machine learning
+  - https://cedar.buffalo.edu/~srihari/CSE574/Chap1/Machine-Learning-Intro-old.pdf
+  - Tom M. Mitchell
+    "A computer program is said to learn from experience E with respect to some class of tasks T and performance measure P if its performance at tasks in T, as measured by P, improves with experience E."
+    - 'experience' means 'data'
+      ex. data in supervised learning or data collected during reinforcement learning

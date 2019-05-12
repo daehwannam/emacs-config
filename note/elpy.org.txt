@@ -5,3 +5,14 @@
 
 * Install
   pip install jedi flake8 importmagic autopep8
+
+* flake setting
+  http://flake8.pycqa.org/en/latest/user/configuration.html
+  https://emacs.stackexchange.com/questions/23925/how-to-customize-the-line-character-length-in-elpy
+  add follwoing text to the ~/.config/flake8
+
+  ------------------- ~/.config/flake8 -------------------------
+  [flake8]
+  ignore = E501
+  max-line-length = 95
+  --------------------------------------------------------------
