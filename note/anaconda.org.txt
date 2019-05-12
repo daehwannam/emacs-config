@@ -4,6 +4,9 @@
     - install location: /home/dhnam/bin/anaconda3
   - append the following to .bashrc
     : export PATH="/home/dhnam/bin/anaconda3/bin:$PATH"
+  - install pip
+    https://stackoverflow.com/questions/41060382/using-pip-to-install-packages-to-anaconda-environment
+    $ conda install pip
 
 * Conda environment
 ** Python 2
