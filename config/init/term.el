@@ -104,3 +104,7 @@ Will prompt you shell name when you type `C-u' before this command."
     (dolist (session-name session-names)
       (shell-command (concat "tmux kill-session -t " session-name)))
     (message (concat "killed sessions: " (mapconcat 'identity session-names ", ")))))
+
+(defun tmux-kill-all-emacs-term-sessions ()
+  (interactive)
+  (shell-command "tmux -L emacs-term kill-server"))

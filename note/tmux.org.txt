@@ -26,3 +26,13 @@
 * nested local tmux
   https://github.com/tmux/tmux/issues/146
   $ tmux -Ltest new
+  
+  or
+
+  $ tmux -L socket-name new
+  $ tmux -L socket-name new -s session-name
+  $ tmux -L socket-name a -t session-name
+
+** kill all nested sessions
+   $ tmux -L socket-name kill-server
+
