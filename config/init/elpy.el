@@ -84,7 +84,7 @@
       ;; (elpy-use-ipython) ; deprecated
 
       ;; https://github.com/paetzke/py-autopep8.el
-      (setq py-autopep8-options '("--max-line-length=95"))
+      (setq py-autopep8-options '("--max-line-length=97"))
       ))
 
 ;; Usefule elpy command
