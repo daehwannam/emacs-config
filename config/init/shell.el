@@ -97,15 +97,3 @@
   (shell buffer)
   (insert "source activate py2")
   (comint-send-input))
-
-
-;; tmux command
-;;
-;; string join: https://stackoverflow.com/questions/12999530/is-there-a-function-that-joins-a-string-into-a-delimited-string
-(defun tmux-kill-numbered-sessions ()
-  (interactive)
-  (let ((session-names (split-string (trim-string (shell-command-to-string
-						   "tmux ls | grep '^[0-9][0-9]*: ' | awk '{print substr($1, 0, length($1))}' | xargs echo")))))
-    (dolist (session-name session-names)
-      (shell-command (concat "tmux kill-session -t " session-name)))
-    (message (concat "killed sessions: " (mapconcat 'identity session-names ", ")))))
