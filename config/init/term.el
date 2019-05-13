@@ -65,9 +65,9 @@ If option DEDICATED-WINDOW is `non-nil' will create dedicated `multi-term' windo
       ;; Make term, details to see function `make-term' in `term.el'.
       (if session-name
 	  (if (member session-name (multi-term-tmux-sessions))
-	      (make-term term-name "tmux" nil "a" "-t" session-name)
-	    (make-term term-name "tmux" nil "new" "-s" session-name))
-	(make-term term-name "tmux" nil "new"))
+	      (make-term term-name "tmux" nil "-L" "emacs-term" "a" "-t" session-name)
+	    (make-term term-name "tmux" nil "-L" "emacs-term" "new" "-s" session-name))
+	(make-term term-name "tmux" nil "-L" "emacs-term" "new"))
       ;; (if multi-term-program-switches
       ;;     (make-term term-name shell-name nil multi-term-program-switches)
       ;;   (make-term term-name shell-name))
