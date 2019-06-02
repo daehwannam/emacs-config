@@ -23,6 +23,7 @@
      (engels "~/bin/anaconda3/envs/")
      (vbox "~/bin/anaconda3/envs/"))
     (pyvenv-name
+     (py3-env "py3")
      (engels "py3")
      (vbox "py3"))
     (elpy-flycheck-deactivate
