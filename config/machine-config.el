@@ -10,7 +10,7 @@
 
 (defvar machine-config-list)
 (setq machine-config-list
-  '((theme-style (white-style-machine white))
+  '((theme-style (white-theme-machine white))
     (ai-edu-key-binding (vbox t))
     (path-to-slime-helper (vbox "~/quicklisp/slime-helper.el"))
     (path-to-inferior-lisp-program (vbox "/usr/bin/sbcl"))
