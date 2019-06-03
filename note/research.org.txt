@@ -82,3 +82,9 @@
     "A computer program is said to learn from experience E with respect to some class of tasks T and performance measure P if its performance at tasks in T, as measured by P, improves with experience E."
     - 'experience' means 'data'
       ex. data in supervised learning or data collected during reinforcement learning
+
+* Beam search
+** efficient top-k selection (instead of sorting)
+   - https://stackoverflow.com/questions/35146460/time-complexity-and-space-complexity-for-beam-search
+   - https://en.wikipedia.org/wiki/Quickselect#Variants
+   - https://en.wikipedia.org/wiki/Introselect

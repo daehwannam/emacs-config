@@ -34,6 +34,18 @@
    - $ login username
    - $ sudo -u username
 
+** unicode output setting
+   https://emacs.stackexchange.com/questions/10223/how-to-display-unicode-utf-8-as-unicode
+
+   in ~/.basrh:
+
+   # unicode output setting
+   # https://emacs.stackexchange.com/questions/10223/how-to-display-unicode-utf-8-as-unicode
+   $ LANG=en_EN.UTF8
+   $ export LC_ALL=en_US.UTF-8
+   $ export LANG=en_US.UTF-8
+   $ export LANGUAGE=en_US.UTF-8
+
 ** Change hostname
    https://www.cyberciti.biz/faq/ubuntu-change-hostname-command/
    1. Type the following command to edit /etc/hostname using nano or vi text editor:
