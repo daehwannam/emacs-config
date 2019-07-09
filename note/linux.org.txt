@@ -57,6 +57,14 @@
    3. Reboot the system to changes take effect:
       $ sudo reboot
 
+* Setup
+** SSH multiple port
+   Modify /etc/ssh/sshd_config:
+   ~ Port 22
+   ~ Port 61112
+   The type follow
+   $ sudo service ssh restart
+
 * General commands
 ** scp example
    $ scp -P 60001 user@domain.name.com:/home/dhnam/some_file ./copied_file
