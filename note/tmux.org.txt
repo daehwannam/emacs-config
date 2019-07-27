@@ -22,3 +22,8 @@
   
   # disable status bar
   set -g status off
+
+* Commands
+** toggle status bar
+   https://superuser.com/questions/420776/can-you-toggle-the-visibility-of-the-status-bar-in-tmux
+   : set -g status
