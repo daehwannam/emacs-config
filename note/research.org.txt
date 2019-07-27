@@ -52,10 +52,46 @@
    - reliably testing model performance
    - model selection or hyper parameter tuning
    - ensembling k number of models
-* Joint Concept Learning and Semantic Parsing from Natural Language Explanations
-  10-fold cross validation to evaluate test performance rather than model selection
+** Joint Concept Learning and Semantic Parsing from Natural Language Explanations
+   10-fold cross validation to evaluate test performance rather than model selection
 
 * ensemble model
 ** Neural Semantic Parsing with Type Constraints for Semi-Structured Tables
    - it averages logical form probabilities of 5 models trained by each fold
      (rather than averages action probabilities)
+
+* language model
+** n-gram model derivation
+   https://leimao.github.io/blog/Maximum-Likelihood-Estimation-Ngram/
+   proof by using Lagrange multiplier
+
+* A* search
+** Why does A* with admissible non consistent heuristic find non optimal solution?
+   https://stackoverflow.com/questions/51684682/why-does-a-with-admissible-non-consistent-heuristic-find-non-optimal-solution
+** Optimality when heuristic is admissible / consistent
+   - https://en.wikipedia.org/wiki/Admissible_heuristic#Notes
+   - https://ai.stackexchange.com/questions/6026/admissible-consistent-heuristic-theorems
+   - AI modern approach Section 3.5.2 Optimality of A* (page 95)
+     As we mentioned earlier, A* has the following properties: the tree-search version of A* is optimal if h(n) is admissible, while the graph-search version is optimal if h(n) is consistent.
+* Computer network
+  - Exponential backoff
+
+* definition of machine learning
+  - https://cedar.buffalo.edu/~srihari/CSE574/Chap1/Machine-Learning-Intro-old.pdf
+  - Tom M. Mitchell
+    "A computer program is said to learn from experience E with respect to some class of tasks T and performance measure P if its performance at tasks in T, as measured by P, improves with experience E."
+    - 'experience' means 'data'
+      ex. data in supervised learning or data collected during reinforcement learning
+
+* Beam search
+** efficient top-k selection (instead of sorting)
+   - https://stackoverflow.com/questions/35146460/time-complexity-and-space-complexity-for-beam-search
+   - https://en.wikipedia.org/wiki/Quickselect#Variants
+   - https://en.wikipedia.org/wiki/Introselect
+
+* consistent / spurious logical form
+  (Macro Grammars and Holistic Triggering for Efficient Semantic Parsing)
+  - logical form produce correct denotation --> consistent
+  - logical form produce correct denotation but it don't reflect natural language utterance
+    --> the program is consistent with respect to denotation but it's spurious
+

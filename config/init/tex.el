@@ -8,4 +8,5 @@
 (if (boundp 'latex-preview-pane-enable)
     (latex-preview-pane-enable))
 
-
+;; https://tex.stackexchange.com/a/967
+(add-hook 'LaTeX-mode-hook #'turn-on-flyspell)

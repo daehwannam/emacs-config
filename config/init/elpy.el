@@ -7,7 +7,7 @@
 
 ;;; elpy : https://github.com/jorgenschaefer/elpy
 
-(if (fboundp 'elpy-enable)
+(if (or (require 'elpy nil t) (fboundp 'elpy-enable)) ; 'require is used when loading without elpa package (then from "config/package/elpy")
     (progn
       ;; elpy setting
       (package-initialize)
@@ -87,6 +87,9 @@
 	(add-hook 'elpy-mode-hook 'py-autopep8-enable-on-save))
 
       ;; (elpy-use-ipython) ; deprecated
+
+      ;; https://github.com/paetzke/py-autopep8.el
+      (setq py-autopep8-options '("--max-line-length=97"))
       ))
 
 ;; Usefule elpy command

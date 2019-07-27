@@ -97,4 +97,3 @@
   (shell buffer)
   (insert "source activate py2")
   (comint-send-input))
-
