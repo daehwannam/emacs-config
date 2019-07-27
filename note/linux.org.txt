@@ -37,7 +37,7 @@
 ** unicode output setting
    https://emacs.stackexchange.com/questions/10223/how-to-display-unicode-utf-8-as-unicode
 
-   in ~/.basrh:
+   in ~/.basrc:
 
    # unicode output setting
    # https://emacs.stackexchange.com/questions/10223/how-to-display-unicode-utf-8-as-unicode
@@ -71,6 +71,12 @@
 
    - '-P' indicate port number
    - directory cannot be copied
+
+** ps
+   - list all options
+     $ ps --help all
+   - show all processes(-e) with full-format(-f)
+     $ ps -ef
    
 * Special commands
 ** GPU information
