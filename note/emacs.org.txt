@@ -60,3 +60,7 @@
     https://stackoverflow.com/questions/2177687/open-file-via-ssh-and-sudo-with-emacs
     /ssh:you1@remotehost1|ssh:you2@remotehost2:/path
     /ssh:you@remotehost|sudo:remotehost:/path/to/file
+*** Specific port
+    /ssh:you@remotehost#33333:/home/user/file
+*** From windows emacs
+    /plink:you@remotehost#33333:/home/user
