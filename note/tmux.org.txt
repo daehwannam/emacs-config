@@ -36,3 +36,13 @@
 ** kill all nested sessions
    $ tmux -L socket-name kill-server
 
+* swap window order
+  https://superuser.com/a/343574
+  ex) <prefix> : swap-window -s 3 -t 1
+  this swaps window 3 with window 1
+
+* copy mode via command
+  $ tmux -L emacs-term copy-mode
+
+* list manual
+  $ man tmux

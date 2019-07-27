@@ -77,6 +77,15 @@
      $ ps --help all
    - show all processes(-e) with full-format(-f)
      $ ps -ef
+
+** alias
+   ex)
+   $ alias emacs=emacs25
+   $ alias emacsclient=emacsclient25
+   $ alias ll='ls -A'
+
+   if you write alias in ~/.bashrc, you have to update it by:
+   $ source ~/.bashrc
    
 * Special commands
 ** GPU information
