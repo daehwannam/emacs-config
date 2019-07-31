@@ -95,3 +95,8 @@
   - logical form produce correct denotation but it don't reflect natural language utterance
     --> the program is consistent with respect to denotation but it's spurious
 
+* Policy gradient
+** Why does baseline work?
+   https://danieltakeshi.github.io/2017/03/28/going-deeper-into-reinforcement-learning-fundamentals-of-policy-gradients/
+   baseline reduces the approximated variance of gradients
+
