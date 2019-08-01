@@ -57,6 +57,10 @@
    3. Reboot the system to changes take effect:
       $ sudo reboot
 
+** Ubuntu version
+   https://askubuntu.com/questions/686239/how-do-i-check-the-version-of-ubuntu-i-am-running
+   $ lsb_release -a
+
 * Setup
 ** SSH multiple port
    Modify /etc/ssh/sshd_config:
@@ -96,16 +100,67 @@
    2. CUDA toolkits (ex. v9.0)
    3. cuDNN (ex. v7.2.1)
 
-** install references
-   1. NVIDIA Driver
+** install guides
+*** NVIDIA Driver
+    - using GUI: software & updates
       https://eungbean.github.io/2018/08/08/Ubuntu-Installation1/
-   2. CUDA toolkits
-      https://eungbean.github.io/2018/08/08/Ubuntu-Installation2-1/
-   3. Multiple CUDAs
-      https://kaen2891.tistory.com/24
-      https://blog.kovalevskyi.com/multiple-version-of-cuda-libraries-on-the-same-machine-b9502d50ae77
-   4. extract installers from runfile
+    - using apt
       https://medium.com/@zhanwenchen/install-cuda-and-cudnn-for-tensorflow-gpu-on-ubuntu-79306e4ac04e
+      $ sudo apt-get install nvidia-384 nvidia-modprobe
+    - install latest nvidia drivers (in ubuntu 14.04)
+      https://www.binarytides.com/install-nvidia-drivers-ubuntu-14-04/
+
+      setup the xorg-edgers ppa
+      $ sudo add-apt-repository ppa:xorg-edgers/ppa -y
+      $ sudo apt-get update
+      
+      install a specific driver
+      $ sudo apt-get install nvidia-334
+
+      or install the latest version
+      $ sudo apt-get install nvidia-current
+    - minimum driver version
+      https://stackoverflow.com/a/30820690
+
+*** CUDA toolkits
+    https://eungbean.github.io/2018/08/08/Ubuntu-Installation2-1/
+
+*** Multiple CUDAs
+    https://kaen2891.tistory.com/24
+    https://blog.kovalevskyi.com/multiple-version-of-cuda-libraries-on-the-same-machine-b9502d50ae77
+    https://eungbean.github.io/2018/08/08/Ubuntu-Installation2-1/
+    
+    add following commands to ~/.bashrc
+    $ export PATH=/usr/local/cuda-8.0/bin:$PATH
+    $ export LD_LIBRARY_PATH=/usr/local/cuda-8.0/lib64:$LD_LIBRARY_PATH
+
+*** CUDA runfile
+**** prerequisites
+     - disable nouveau
+       https://medium.com/@abhiksingla10/installing-cuda-9-2-and-cudnn-7-1-on-ubuntu-16-04-d194cee27cba
+     - X-server should be shutdown before installing NVIDIA driver
+       https://medium.com/@abhiksingla10/installing-cuda-9-2-and-cudnn-7-1-on-ubuntu-16-04-d194cee27cba
+       stop light dm
+       https://ericplayground.com/2017/09/26/how-to-stop-and-restart-an-x-server-on-ubuntu/
+       $ sudo service lightdm stop
+       $ sudo init 3
+**** extract NVIDIA driver, CUDA installer and CUDA samples from runfile
+     https://medium.com/@zhanwenchen/install-cuda-and-cudnn-for-tensorflow-gpu-on-ubuntu-79306e4ac04e
+     $ bash ./cuda_*.run --extract=$HOME  # an absolute path
+
+**** install all without extraction
+     https://blog.kovalevskyi.com/multiple-version-of-cuda-libraries-on-the-same-machine-b9502d50ae77
+     $ sudo sh cuda-9.1.run --silent
+
+     other options:
+     --override (https://eungbean.github.io/2018/08/08/Ubuntu-Installation2-1/)
+
+**** install toolkit only without extraction
+     https://blog.kovalevskyi.com/multiple-version-of-cuda-libraries-on-the-same-machine-b9502d50ae77
+     $ sudo sh cuda-9.1.run --silent --toolkit --toolkitpath=/usr/local/cuda-9.1
+
+**** all options of runfile
+     $ sudo sh cuda-9.1.run --help
 
 ** get gpu information
    - Information of 1st GPU
