@@ -166,5 +166,7 @@
    - Information of 1st GPU
      https://askubuntu.com/a/604167
      $ cat /proc/driver/nvidia/gpus/0000:01:00.0/information
-   - Nvidia command
+   - NVIDIA diver version and gpu usage
      $ nvidia-smi
+   - CUDA version command
+     $ nvcc --version

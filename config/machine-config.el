@@ -34,7 +34,7 @@
     (elpy-autopep8-deactivate
      (vbox t))
     (installable-packages
-     (basic (vlf magit))
+     (basic (vlf magit counsel))
      (vbox (vlf magit auctex material-theme elpy flycheck py-autopep8 workgroups2 latex-preview-pane perspective counsel iedit wgrep which-key projectile flx-ido counsel-projectile eyebrowse persp-projectile paredit markdown-mode highlight))
      ;; (engels (vlf magit elpy flycheck py-autopep8 wgrep which-key projectile flx-ido  eyebrowse))
      (engels (vlf magit elpy flycheck py-autopep8 wgrep which-key projectile flx-ido counsel counsel-projectile eyebrowse sphinx-doc markdown-mode))
