@@ -4,7 +4,7 @@
   $ cd example.git
   $ git init --bare
 
-* remote add
+* remote repository add
 
 ** local machine example
    - ssh://user@server.name.ac.kr:60001/home/user/emacs.git
@@ -13,30 +13,30 @@
 ** github example
    https://github.com/daehwannam/emacs-config.git
 
-** git daemon
-*** references
-    https://railsware.com/blog/2013/09/19/taming-the-git-daemon-to-quickly-share-git-repository/
-    https://git-scm.com/book/en/v2/Git-on-the-Server-Git-Daemon
+* git daemon
+** references
+   https://railsware.com/blog/2013/09/19/taming-the-git-daemon-to-quickly-share-git-repository/
+   https://git-scm.com/book/en/v2/Git-on-the-Server-Git-Daemon
 
-*** setup & run server
-    $ ls repo_base_path -a
-    >> . .. my_repo_dir my_repo_dir2 my_repo_dir3
+** setup & run server
+   $ ls repo_base_path -a
+   >> . .. my_repo_dir my_repo_dir2 my_repo_dir3
 
-    $ git daemon --base-path=repo_base_path --export-all --reuseaddr --informative-errors --verbose
-    (The default port is 9418)
+   $ git daemon --base-path=repo_base_path --export-all --reuseaddr --informative-errors --verbose
+   (The default port is 9418)
 
-    ex)
-    $ ls
-    >> 20180927_job_3rd  20180927_original  20181112_samsung
-    $ git daemon --base-path=. --export-all --reuseaddr --informative-errors --verbose
+   ex)
+   $ ls
+   >> 20180927_job_3rd  20180927_original  20181112_samsung
+   $ git daemon --base-path=. --export-all --reuseaddr --informative-errors --verbose
 
-*** Access server
-    $ git clone git://ip.address.ac.kr/my_repo_dir
+** Access server
+   $ git clone git://ip.address.ac.kr/my_repo_dir
 
-    ex)
-    $ git clone git://descarte.postech.ac.kr/20181112_samsung
-    $ cd 20181112_samsung
-    $ git pull
+   ex)
+   $ git clone git://descarte.postech.ac.kr/20181112_samsung
+   $ cd 20181112_samsung
+   $ git pull
 
 * when .gitignore is not working
   git rm -r --cached .

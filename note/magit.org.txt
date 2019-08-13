@@ -1,5 +1,11 @@
 
-* See previous revision
+* See previous revision without magit
+  https://emacs.stackexchange.com/a/7657
+
   - C-x v ~
   - magit-find-file
-  https://emacs.stackexchange.com/a/7657
+
+* See previous revision with magit
+  https://emacs.stackexchange.com/a/7683
+
+  M-x magit-find-file
