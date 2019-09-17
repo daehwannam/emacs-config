@@ -4,7 +4,7 @@
   "round the numbers of region."
   (interactive "r")
   ;; https://www.gnu.org/software/emacs/manual/html_node/elisp/Text-from-Minibuffer.html
-  (let ((fp (or fp (read-string "Enter floating point format (ex. 0.3): "))))
+  (let ((fp (or fp (read-string "Enter floating point format: ")))) ; (ex. 0.3)
     (save-restriction
       (narrow-to-region start end)
       (goto-char 1)
