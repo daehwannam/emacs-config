@@ -51,13 +51,13 @@
   ;; 					;(directory-files "e:/Dropbox/org/" t ".*\\.org\\(\\.txt\\)*$")
 
 
-;;; org-mode file extension change for dropbox access
+  ;;; org-mode file extension change for dropbox access
   ;; https://www.reddit.com/r/emacs/comments/2rv4l3/i_love_org_files_but_how_do_i_edit_them_from_my/
   ;; https://www.emacswiki.org/emacs/AutoModeAlist
   (add-to-list 'auto-mode-alist '("\\.org.txt\\'" . org-mode))
 
 
-;;; org-mode agenda length
+  ;;; org-mode agenda length
   ;; http://stackoverflow.com/questions/32423127/how-to-view-the-next-days-in-org-modes-agenda
 
   (setq org-agenda-span 70
@@ -65,7 +65,7 @@
 	org-agenda-start-day "-7d")
 
 
-;;; line wrap
+  ;;; line wrap
   ;; https://emacs.stackexchange.com/questions/18480/wrap-line-text-in-org-mode-when-i-re-open-a-file
   ;; it splits long lines
   (setq org-startup-truncated nil)
@@ -74,4 +74,8 @@
   ;; Code block setting
   (org-babel-do-load-languages
    'org-babel-load-languages '((python . t)))
+
+  ;;; table
+  (add-hook 'org-mode-hook (lambda () (local-set-key (kbd "C-c C-x M-c") 'org-table-insert-column)))
+  (add-hook 'org-mode-hook (lambda () (local-set-key (kbd "C-c C-x M-r") 'org-table-insert-row)))
   )

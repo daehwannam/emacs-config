@@ -1,3 +1,17 @@
 
+* TikZ
+** External
+   https://olezfdtd.wordpress.com/2012/03/28/precompile-pgfplots-using-tikzexternalize/
+   http://www.maths.adelaide.edu.au/anthony.roberts/LaTeX/pgfplotBasics.pdf
+   https://www.overleaf.com/learn/latex/Questions/I_have_a_lot_of_tikz,_matlab2tikz_or_pgfplots_figures,_so_I%27m_getting_a_compilation_timeout._Can_I_externalise_my_figures%3F
+
+   - use \tikzsetnextfilename{filename} before each \begin{tikzpicture}.
+
+* pdfcrop
+  https://tex.stackexchange.com/questions/434404/remove-only-top-and-bottom-margins-using-pdfcrop
+
+  - include only a specific page in pdf
+    https://tex.stackexchange.com/a/25807
+
 * References
   - arrows: http://www.sascha-frank.com/Arrow/latex-arrows.html

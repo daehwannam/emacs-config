@@ -100,3 +100,8 @@
    https://danieltakeshi.github.io/2017/03/28/going-deeper-into-reinforcement-learning-fundamentals-of-policy-gradients/
    baseline reduces the approximated variance of gradients
 
+* Type theory
+  https://en.wikipedia.org/wiki/Type_theory#Linguistics
+
+* Semantic parsing dataset
+  https://github.com/allenai/acl2018-semantic-parsing-tutorial

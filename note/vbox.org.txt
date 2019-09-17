@@ -9,8 +9,11 @@
     - Settings -> Network -> Adapter 1 -> Advanced -> Port Forwarding
     - Insert "ssh / TCP / / 61112 / / 22
 
-* Remote desktop to Guest
-  Settings -> Display -> Remote Display -> Enagle Server & change Server Port
+* Remote desktop to Guest: Remote display
+  Settings -> Display -> Remote Display -> Enagle Server & change Server Port & Authentication=External 
+** Connection problem of Windows host
+   https://www.virtualbox.org/ticket/4406
+   check "save credentials"
 
 * Copy image
   https://srackham.wordpress.com/cloning-and-copying-virtualbox-virtual-machines/

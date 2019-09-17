@@ -10,3 +10,6 @@
 
 ;; https://tex.stackexchange.com/a/967
 (add-hook 'LaTeX-mode-hook #'turn-on-flyspell)
+
+;; https://tex.stackexchange.com/a/161303
+(setq LaTeX-command-style '(("" "%(PDF)%(latex) -shell-escape %S%(PDFout)")))
