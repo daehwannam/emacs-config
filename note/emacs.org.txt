@@ -1,4 +1,10 @@
 
+* Emacs execution
+** emacs without gui
+   $ emacs --no-window-system
+   $ or
+   $ emacs -nw
+** emacsclient
 
 * Command
 ** Esc-=: count lines
@@ -66,3 +72,8 @@
     /ssh:you@remotehost#33333:/home/user/file
 *** From windows emacs
     /plink:you@remotehost#33333:/home/user
+** Desktop mode & window register
+   https://stackoverflow.com/a/46146046
+   https://stackoverflow.com/a/2575269
+   - frameset-to-register: C-x r f
+   - jump-to-register: C-x r j
