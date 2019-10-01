@@ -1,0 +1,29 @@
+* Putty
+** Putty manual for emacs
+   https://www.emacswiki.org/emacs/PuTTY
+
+** Keybord
+   https://serverfault.com/questions/439493/function-keys-over-ssh-putty-to-sco-unix?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
+   - Session > Terminal > Keyboard : The Function keys and keypad = SCO
+
+** Color
+   - Connection > Data : Terminal-type string = xterm-256color
+
+** SSH X11 forwarding
+   https://askubuntu.com/questions/971171/how-to-use-putty-to-get-x11-connections-over-ssh-from-windows-to-ubuntu
+   - Connection -> SSH -> X11
+     - check "Enable X11 forwarding"
+     - X display location: (empty) or localhost:0.0 or localhost:0
+   - X11 display server should be installed like VcXsrv, Xming, MobaXterm
+     https://superuser.com/questions/119792/how-to-use-x11-forwarding-with-putty
+   - VcXsrv is faster than Xming
+   - MobaXterm is faster than Xming
+   - MobaXterm also support ssh client feature
+
+* MobaXterm
+** 256color
+   https://stackoverflow.com/q/54976656
+
+   write the following line in ~/.bashrc
+   $ # to support 256color for ssh-clients like MobaXterm
+   $ export TERM=xterm-256color
