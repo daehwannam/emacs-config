@@ -8,3 +8,31 @@
    https://github.com/m-parashar/emax64/releases
    - emax.7z should be unpack into "~/.emacs.d"
   
+* RDP port change
+  - step-by-step: https://www.dsun.kr/78
+  - script: https://shaeod.tistory.com/749
+    [file_name=RDP_port.cmd]
+    > @echo off
+    > echo.
+    > echo.
+    > echo		원격 데스크톱 포트 변경하기 by snoopy
+    > echo		지원 OS : 윈도우 비스타, 7, 2008, 2008 R2
+    > echo.
+    > set /p port=포트 번호 입력 : 
+    > reg add "HKLM\SYSTEM\CurrentControlSet\Control\Terminal Server" /v fDenyTSConnections /t REG_DWORD /d 0 /f
+    > reg add "HKLM\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp" /v PortNumber /t REG_DWORD /d %port% /f
+    > if errorlevel 1 (
+    > 	cls
+    > 	echo.
+    > 	echo.
+    > 	echo 우클릭 해서 관리자 권한으로 실행해주세요.
+    > 	pause>nul
+    > 	exit
+    > )
+    > netsh advfirewall firewall add rule name="원격 데스크톱 %port%" dir=in action=allow protocol=tcp localport=%port%
+    > net stop /y TermService
+    > net start /y TermService
+    > echo 모든 작업이 완료되었습니다.
+    > pause>nul
+    > exit
+    

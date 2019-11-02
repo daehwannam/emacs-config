@@ -11,6 +11,6 @@
 ;;To disable the toolbar, use the following line:
 (tool-bar-mode -1) 
 
-;;; disable maximization
+;;; enable maximization
 ;; http://emacs.stackexchange.com/questions/2999/how-to-maximize-my-emacs-frame-on-start-up
-(add-to-list 'default-frame-alist '(fullscreen . maximized))
+;; (add-to-list 'default-frame-alist '(fullscreen . maximized))
