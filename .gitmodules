@@ -1,6 +1,0 @@
-[submodule "config/package/multi-term-tmux"]
-	path = config/package/multi-term-tmux
-	url = https://github.com/beyondmetis/multi-term-tmux.git
-[submodule "config/init/unused/multi-term-tmux"]
-	path = config/init/unused/multi-term-tmux
-	url = https://github.com/beyondmetis/multi-term-tmux.git
