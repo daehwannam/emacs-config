@@ -70,3 +70,12 @@
    write the following line in ~/.bashrc
    $ # to support 256color for ssh-clients like MobaXterm
    $ export TERM=xterm-256color
+
+   but it may cause problem in tmux (https://superuser.com/q/424086/908614)
+   so write the following line in ~/.bashrc
+   $ export TERM=screen-256color
+
+   # but it may cause problem in tmux (https://emacs.stackexchange.com/a/18291)
+   # so write the following line in ~/.bashrc
+   # $ export TERM=rxvt-256color
+

@@ -18,9 +18,22 @@
    - you can get the path by "which sbcl"
 ** M-x slime
 
-* Function arguments
-  http://www.gigamonkeys.com/book/functions.html
-  addtional arguments: optional, rest, keyword
-
 * CFFI
   - tutorial: https://www.youtube.com/watch?v=lvHi5LyhxGk
+
+* Note
+** Function arguments
+   http://www.gigamonkeys.com/book/functions.html
+   addtional arguments: optional, rest, keyword
+
+** function(#') and lambda
+   https://stackoverflow.com/a/29346982/6710003
+
+   The results of following expresions are same:
+   > #'(lambda ...)
+   > (function (lambda ...))
+   > (lambda ...)
+
+   because lambda is a macro and the expanded form include function:
+   > (macroexpand-1 '(lambda (x) (+ x x x)))
+   ==> (function (lambda (x) (+ x x x)))

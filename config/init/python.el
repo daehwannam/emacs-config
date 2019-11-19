@@ -131,3 +131,23 @@
   (add-hook 'python-mode-hook (lambda ()
 				(require 'sphinx-doc)
 				(sphinx-doc-mode t))))
+
+;; EIN: Emacs IPython Notebook
+;; https://github.com/millejoh/emacs-ipython-notebook
+
+(when (fboundp 'ein:run)
+  (custom-set-variables
+   '(ein:polymode t)  ; enable Elpy
+   ;; '(ein:cell-input-area ((t (:background "black"))))
+   )
+  (add-hook 'ein:notebook-mode-hook 'linum-mode)
+  (setq ein:worksheet-enable-undo t)
+)
+
+;; run IPython notebook server with specific port number
+;; https://github.com/tkf/emacs-ipython-notebook/issues/109#issuecomment-16874676
+;;
+;; $ ipython notebook --port 9999
+;;
+;; then login EIN --> M-x ein:login RET 9999 RET
+

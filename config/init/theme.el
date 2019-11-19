@@ -34,7 +34,15 @@
      '(hi-green ((t (:background "green" :foreground "magenta"))))
      '(hi-blue ((t (:background "light blue" :foreground "red"))))
      '(mlinum-highlight-face ((t (:inherit default :foreground "brightwhite" :background "black"))))
-     ))
+     )
+
+    (when (fboundp 'ein:run)
+      (custom-set-faces
+       '(ein:cell-input-area ((t (:background "black"))))))
+
+    ;; (custom-set-faces
+    ;;  '(org-scheduled ((t (:foreground "PaleGreen")))))
+    )
    ))
 
 

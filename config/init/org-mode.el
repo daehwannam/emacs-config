@@ -75,6 +75,33 @@
   (org-babel-do-load-languages
    'org-babel-load-languages '((python . t)))
 
+  ;; https://www.reddit.com/r/orgmode/comments/64tiq9/syntax_highlighting_in_code_blocks/dg548nx/
+  ;; Code black highlighting and indentation
+  (setq org-src-fontify-natively t
+	org-src-tab-acts-natively t
+	org-confirm-babel-evaluate nil
+	org-edit-src-content-indentation 0)
+
+  ;; python code black
+  ;; https://emacs.stackexchange.com/a/12847
+  (add-to-list 'org-structure-template-alist
+	       '("py" "#+BEGIN_SRC python :results output\n?\n#+END_SRC"))
+
+  ;; change code results to "output" (default is "value" for return)
+  ;; https://emacs.stackexchange.com/questions/17926/python-org-mode-source-block-output-is-always-none
+  (add-to-list 'org-structure-template-alist
+	       '("pyo" "#+BEGIN_SRC python :results output\n?\n#+END_SRC"))
+
+  ;; virtualenv
+  ;; https://emacs.stackexchange.com/a/38047
+  (add-to-list 'org-structure-template-alist
+	       '("pyto" "#+BEGIN_SRC elisp :session s-py3\n(pyvenv-workon \"py3\")\n#+END_SRC\n#+BEGIN_SRC python :results output :session spy3\n?\n#+END_SRC"))
+
+  ;; org code black insert image
+  ;; https://emacs.stackexchange.com/questions/44516/orgmode-ipython-output-image-not-show-in-results
+  ;; 
+  ;; [not added yet]
+
   ;;; table
   (add-hook 'org-mode-hook (lambda () (local-set-key (kbd "C-c C-x M-c") 'org-table-insert-column)))
   (add-hook 'org-mode-hook (lambda () (local-set-key (kbd "C-c C-x M-r") 'org-table-insert-row)))

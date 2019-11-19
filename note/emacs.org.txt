@@ -19,6 +19,10 @@
 ** rectangle-mark-mode
    https://stackoverflow.com/a/25068794
 
+* Customize
+** Change text colors with describe-char
+   https://emacs.stackexchange.com/a/18199/26068
+
 * Emacs Lisp
 ** Code Characters for interactive
    https://www.gnu.org/software/emacs/manual/html_node/elisp/Interactive-Codes.html#Interactive-Codes
@@ -59,6 +63,9 @@
 ** Dired
 *** dired-do-shell-command
     https://stackoverflow.com/a/380013
+*** wdired-mode
+    https://stackoverflow.com/a/49472114
+    wdired-change-to-wdired-mode can change symbol link.
 ** Tramp
 *** Remote
     C-x C-f /ssh:you@remotehost:/home/user/file
