@@ -73,7 +73,7 @@
 
   ;; Code block setting
   (org-babel-do-load-languages
-   'org-babel-load-languages '((python . t)))
+   'org-babel-load-languages '((python . t) (sh . t)))
 
   ;; https://www.reddit.com/r/orgmode/comments/64tiq9/syntax_highlighting_in_code_blocks/dg548nx/
   ;; Code black highlighting and indentation
@@ -85,12 +85,19 @@
   ;; python code black
   ;; https://emacs.stackexchange.com/a/12847
   (add-to-list 'org-structure-template-alist
-	       '("py" "#+BEGIN_SRC python :results output\n?\n#+END_SRC"))
+	       '("py" "#+BEGIN_SRC python :results value\n?\n#+END_SRC"))
 
   ;; change code results to "output" (default is "value" for return)
   ;; https://emacs.stackexchange.com/questions/17926/python-org-mode-source-block-output-is-always-none
   (add-to-list 'org-structure-template-alist
 	       '("pyo" "#+BEGIN_SRC python :results output\n?\n#+END_SRC"))
+
+  ;; shell code black
+  (add-to-list 'org-structure-template-alist
+	       '("sh" "#+BEGIN_SRC sh :results value\n?\n#+END_SRC"))
+
+  (add-to-list 'org-structure-template-alist
+	       '("sho" "#+BEGIN_SRC sh :results output\n?\n#+END_SRC"))
 
   ;; virtualenv
   ;; https://emacs.stackexchange.com/a/38047
