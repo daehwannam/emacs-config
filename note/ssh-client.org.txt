@@ -52,6 +52,10 @@
 ** Color
    - Connection > Data : Terminal-type string = xterm-256color
 
+   Or
+
+   - Connection > Data : Terminal-type string = screen-256color
+
 ** SSH X11 forwarding
    https://askubuntu.com/questions/971171/how-to-use-putty-to-get-x11-connections-over-ssh-from-windows-to-ubuntu
    - Connection -> SSH -> X11
