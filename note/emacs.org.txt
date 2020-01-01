@@ -60,6 +60,11 @@
     - M-x calendar
     - org-calendar-goto-agenda: type "c"
       https://emacs.stackexchange.com/questions/29632/org-mode-calendar-integration
+** Link
+   https://orgmode.org/manual/Handling-links.html
+   - C-c l     (org-store-link)
+   - C-c C-l     (org-insert-link)
+   - C-c C-o     (org-open-at-point)
 ** Dired
 *** dired-do-shell-command
     https://stackoverflow.com/a/380013

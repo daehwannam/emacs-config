@@ -17,6 +17,8 @@
      (setq inferior-lisp-program "sbcl")
    - you can get the path by "which sbcl"
 ** M-x slime
+** run a script file in command line
+   sbcl --script source.lisp
 
 * CFFI
   - tutorial: https://www.youtube.com/watch?v=lvHi5LyhxGk
