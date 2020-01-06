@@ -39,3 +39,6 @@
    because lambda is a macro and the expanded form include function:
    > (macroexpand-1 '(lambda (x) (+ x x x)))
    ==> (function (lambda (x) (+ x x x)))
+
+** Macro
+   - examples: https://lispcookbook.github.io/cl-cookbook/macros.html
