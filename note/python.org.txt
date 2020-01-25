@@ -13,3 +13,9 @@
   if you don't want to make backup files:
   $ 2to3 -wn example.py [or directory]
 
+* Hy language
+** emacs hy-mode
+   https://github.com/hylang/hy-mode
+*** jedhy
+    https://github.com/ekaschalk/jedhy
+    $ pip install jedhy  # it may be installed without virtual env (with base python)

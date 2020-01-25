@@ -151,3 +151,16 @@
 ;;
 ;; then login EIN --> M-x ein:login RET 9999 RET
 
+
+;; Hy lang setup
+(when (fboundp 'hy-mode)
+  (add-to-list 'auto-mode-alist '("\\.hy\\'" . hy-mode))
+  ;; (add-hook 'hy-mode-hook #'run-jedhy)
+  ;; (require 'hy-mode)
+  ;; (run-jedhy)
+  (condition-case nil
+      ;; first call of 'run-jedhy raises an error, so the error is processed first here.
+      ;; afterwards, it raises not errors
+      (run-jedhy)
+    (error nil))
+  )
