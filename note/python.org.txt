@@ -16,6 +16,15 @@
 * Hy language
 ** emacs hy-mode
    https://github.com/hylang/hy-mode
-*** jedhy
-    https://github.com/ekaschalk/jedhy
-    $ pip install jedhy  # it may be installed without virtual env (with base python)
+*** install
+**** jedhy
+     https://github.com/ekaschalk/jedhy
+     $ pip install jedhy  # it may be installed without virtual env (with base python)
+*** note
+**** tuple unpacking
+     https://groups.google.com/forum/#!searchin/hylang-discuss/unpacking%7Csort:date/hylang-discuss/zk4Ck3fU4pA/F1gr4C09BAAJ
+     (setv [x y z _ _] [1 2 3 4 5])
+     (setv [a b #* rest] (range 5))
+**** complex slicing
+     https://groups.google.com/forum/m/#!topic/hylang-discuss/gDWb_sSD1CQ
+     https://groups.google.com/forum/#!searchin/lisp-korea/hy%7Csort:date/lisp-korea/qgWO5jVNDmA/Bjl8NIdNAwAJ

@@ -163,4 +163,6 @@
       ;; afterwards, it raises not errors
       (run-jedhy)
     (error nil))
+  ;; (setq hy-shell--interpreter-args '("--spy" "--repl-output-fn" "hy.contrib.hy-repr.hy-repr"))  # simplified representation
+  ;; (setq hy-shell--interpreter-args '("--spy"))  ; default arguments
   )
