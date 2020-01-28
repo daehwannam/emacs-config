@@ -17,6 +17,13 @@
 ** emacs hy-mode
    https://github.com/hylang/hy-mode
 *** install
+**** hy
+     - stable version(0.17.0): https://github.com/hylang/hy
+       $ pip3 install hy
+       or 
+       $ pip3 install --user hy  # install scripts in /home/dhnam/.local/bin/
+     - latest master version: https://docs.hylang.org/en/stable/quickstart.html
+       $ pip install git+https://github.com/hylang/hy.git
 **** jedhy
      https://github.com/ekaschalk/jedhy
      $ pip install jedhy  # it may be installed without virtual env (with base python)
