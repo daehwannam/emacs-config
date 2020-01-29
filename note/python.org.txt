@@ -35,3 +35,13 @@
 **** complex slicing
      https://groups.google.com/forum/m/#!topic/hylang-discuss/gDWb_sSD1CQ
      https://groups.google.com/forum/#!searchin/lisp-korea/hy%7Csort:date/lisp-korea/qgWO5jVNDmA/Bjl8NIdNAwAJ
+
+* pip
+** command
+   $ python -m pip [command] [args]
+** examples
+   - version check
+     https://stackoverflow.com/a/26664162/6710003
+     $ python -m pip install stanfordnlp==
+   - install specified version
+     $ python -m pip install stanfordnlp==0.2.0

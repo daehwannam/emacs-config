@@ -119,6 +119,12 @@
 
       or install the latest version
       $ sudo apt-get install nvidia-current
+    - install latest nvidia drivers (method 2)
+      http://www.linuxandubuntu.com/home/how-to-install-latest-nvidia-drivers-in-linux
+      $ sudo apt-get purge nvidia*
+      $ sudo add-apt-repository ppa:graphics-drivers
+      $ sudo apt-get update
+      $ sudo apt-get install nvidia-430
     - minimum driver version
       https://stackoverflow.com/a/30820690
 
