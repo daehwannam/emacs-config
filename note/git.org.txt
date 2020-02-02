@@ -41,3 +41,15 @@
 * when .gitignore is not working
   git rm -r --cached .
   http://www.randallkent.com/2010/04/30/gitignore-not-working/
+
+* magit
+** See previous revision without magit
+   https://emacs.stackexchange.com/a/7657
+
+   - C-x v ~
+   - magit-find-file
+
+** See previous revision with magit
+   https://emacs.stackexchange.com/a/7683
+
+   M-x magit-find-file
