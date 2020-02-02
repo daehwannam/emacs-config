@@ -51,7 +51,6 @@
   $ git submodule update
 
 * magit
->>>>>>> ddd8562ce18f3d38ed6ed966183d92f091543973
 ** See previous revision without magit
    https://emacs.stackexchange.com/a/7657
 
