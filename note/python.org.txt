@@ -45,3 +45,14 @@
      $ python -m pip install stanfordnlp==
    - install specified version
      $ python -m pip install stanfordnlp==0.2.0
+
+* Other packages
+** Spacy
+   $ conda install -c conda-forge spacy  # spacy-2.2.3
+   $ conda install -c conda-forge spacy-lookups-data  # spacy-lookups-data-0.2.0
+   $ python -m spacy download en_core_web_sm  # en-core-web-sm-2.2.5
+
+* IPython
+** Convert ipython notebook file(.ipynb) to python file(.py)
+   https://stackoverflow.com/a/37799207
+   $ jupyter nbconvert --to script 'my-notebook.ipynb'

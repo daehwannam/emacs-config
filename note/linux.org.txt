@@ -6,6 +6,19 @@
    $ wait; command3 &
    $ ...
 
+** run if previous command succeed
+   https://unix.stackexchange.com/a/22727
+   $ previous_command
+   $ if [ $? -eq 0 ]; then
+   $     next_command
+   $ fi
+
+** check if a file exists
+   https://stackoverflow.com/a/638980
+   $ if [ ! -f /tmp/foo.txt ]; then
+   $     echo "File not found!"
+   $ fi
+
 * Ubuntu
 ** .Trash location
    https://askubuntu.com/questions/102099/where-is-the-trash-folder
