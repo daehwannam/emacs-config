@@ -46,6 +46,25 @@
    - install specified version
      $ python -m pip install stanfordnlp==0.2.0
 
+* pdb
+** pdb command
+   $ python -m pdb example.py
+   or
+   $ pdb example.py  # this command requires pdb setup for different environments
+** pdb setting for conda environments
+   https://stackoverflow.com/questions/38346577/debuggin-with-pdb-within-a-conda-environment
+   1. source activate py3
+   2. find pdb path by ">> which pdb" for python2 or ">> which pdb3" for Python3
+      ex) /usr/bin/pdb or /usr/bin/pdb3
+   3. find python path by ">> which python"
+      ex) /home/dhnam/bin/anaconda3/envs/py3/bin/python
+   4. copy /usr/bin/pdb or pdb3 to /home/dhnam/bin/anaconda3/envs/py3/bin/pdb
+   5. then open /home/dhnam/bin/anaconda3/envs/py3/bin/pdb
+   6. change shebang
+      ex) /home/dhnam/bin/anaconda3/envs/py3/bin/python
+
+    in this example, pyvenv-workon should be applied for "py3"
+
 * Other packages
 ** Spacy
    $ conda install -c conda-forge spacy  # spacy-2.2.3
@@ -56,3 +75,25 @@
 ** Convert ipython notebook file(.ipynb) to python file(.py)
    https://stackoverflow.com/a/37799207
    $ jupyter nbconvert --to script 'my-notebook.ipynb'
+
+* Anaconda
+** Install
+   - run bash Anaconda-latest-Linux-x86_64.sh
+     - install location: /home/dhnam/bin/anaconda3
+   - append the following to .bashrc
+     : export PATH="/home/dhnam/bin/anaconda3/bin:$PATH"
+   - install pip
+     https://stackoverflow.com/questions/41060382/using-pip-to-install-packages-to-anaconda-environment
+     $ conda install pip
+
+** Conda environment
+*** Python 2
+    conda create -n py2 python=2.7 anaconda
+*** Python 3
+    conda create -n py3 python=3.6 anaconda
+*** Removing environments
+    # https://stackoverflow.com/a/49128056/6710003
+    conda env remove -n ENV_NAME
+
+** Anaconda update
+   conda install pytorch torchvision -c pytorch

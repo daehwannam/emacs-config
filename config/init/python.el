@@ -166,3 +166,7 @@
   ;; (setq hy-shell--interpreter-args '("--spy" "--repl-output-fn" "hy.contrib.hy-repr.hy-repr"))  # simplified representation
   ;; (setq hy-shell--interpreter-args '("--spy"))  ; default arguments
   )
+
+;; pdb setup
+(custom-set-variables
+ '(gud-pdb-command-name "python -m pdb"))
