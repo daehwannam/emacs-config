@@ -54,9 +54,9 @@
 ** pdb setting for conda environments
    https://stackoverflow.com/questions/38346577/debuggin-with-pdb-within-a-conda-environment
    1. source activate py3
-   2. find pdb path by ">> which pdb" for python2 or ">> which pdb3" for Python3
+   2. find pdb path by "$ which pdb" for python2 or "$ which pdb3" for Python3
       ex) /usr/bin/pdb or /usr/bin/pdb3
-   3. find python path by ">> which python"
+   3. find python path by "$ which python"
       ex) /home/dhnam/bin/anaconda3/envs/py3/bin/python
    4. copy /usr/bin/pdb or pdb3 to /home/dhnam/bin/anaconda3/envs/py3/bin/pdb
    5. then open /home/dhnam/bin/anaconda3/envs/py3/bin/pdb
@@ -70,6 +70,21 @@
    $ conda install -c conda-forge spacy  # spacy-2.2.3
    $ conda install -c conda-forge spacy-lookups-data  # spacy-lookups-data-0.2.0
    $ python -m spacy download en_core_web_sm  # en-core-web-sm-2.2.5
+
+** NLTK
+*** setup
+    >>> import nltk
+    >>> nltk.download('averaged_perceptron_tagger')  # pos_tag
+    >>> nltk.download('wordnet')
+    >>> nnltk.download('punkt')  # tokenizer
+
+    or 
+
+    $ echo -e "import nltk\nnltk.download('averaged_perceptron_tagger')\nnltk.download('wordnet')" | python
+    $ echo -e "import nltk\nnltk.download('punkt')" | python
+*** download path
+    >>> import nltk
+    >>> nltk.data.path
 
 * IPython
 ** Convert ipython notebook file(.ipynb) to python file(.py)
