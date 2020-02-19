@@ -100,6 +100,10 @@
    - install pip
      https://stackoverflow.com/questions/41060382/using-pip-to-install-packages-to-anaconda-environment
      $ conda install pip
+   - search specific version
+     $ conda search spacy
+   - install specific package
+     $ conda install spacy=2.2.3
 
 ** Conda environment
 *** Python 2
