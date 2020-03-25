@@ -18,6 +18,8 @@
    https://github.com/hylang/hy-mode
 *** install
 **** hy
+     - specific version
+       $ python -m pip install hy==0.18.0
      - stable version(0.17.0): https://github.com/hylang/hy
        $ pip3 install hy
        or 
@@ -35,6 +37,29 @@
 **** complex slicing
      https://groups.google.com/forum/m/#!topic/hylang-discuss/gDWb_sSD1CQ
      https://groups.google.com/forum/#!searchin/lisp-korea/hy%7Csort:date/lisp-korea/qgWO5jVNDmA/Bjl8NIdNAwAJ
+
+     - Python
+     >>> from numpy import *
+     >>> a = arange(24).reshape(2,3,4)
+     >>> a
+     array([[[ 0,  1,  2,  3],
+             [ 4,  5,  6,  7],
+             [ 8,  9, 10, 11]],
+     
+            [[12, 13, 14, 15],
+             [16, 17, 18, 19],
+             [20, 21, 22, 23]]])
+     >>> a[:,0,0]
+     array([ 0, 12])
+     >>> a[0,::-1, -1]
+     array([11,  7,  3])
+     >>>
+
+     - Hy
+     >>> (import [numpy [*]])
+     >>> (setv a (.reshape (arange 24) 2 3 4))
+     >>> (get a (, (slice None) 0 0))
+     >>> (get a (, 0 (slice None None -1) -1))
 
 * pip
 ** command
