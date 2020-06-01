@@ -60,6 +60,21 @@
      >>> (setv a (.reshape (arange 24) 2 3 4))
      >>> (get a (, (slice None) 0 0))
      >>> (get a (, 0 (slice None None -1) -1))
+** get sub items from collections
+*** built-in
+    - first
+    - last
+    - rest
+    - some (conditional)
+*** hy core
+    - butlast
+    - second
+    - drop
+    - drop-last
+    - drop-while
+    - take
+    - take-nth
+    - take-while
 
 * pip
 ** command
