@@ -185,7 +185,7 @@
 ;; (add-hook 'pdb-mode-hook
 ;; 	  (lambda () (local-set-key (kbd "C-c C-j") #'insert-py-code-to-hy-output-frame)))
 
-(defun pdb-send-hy-input ()
+(defun hy-pdb-send-hy-input ()
   (interactive)
   (move-beginning-of-line 1)
   (insert pdb-hy-input-frame-left-side)
@@ -194,4 +194,4 @@
   (comint-send-input))
 
 (add-hook 'pdb-mode-hook
-	  (lambda () (local-set-key (kbd "C-j") #'pdb-send-hy-input)))
+	  (lambda () (local-set-key (kbd "C-j") #'hy-pdb-send-hy-input)))
