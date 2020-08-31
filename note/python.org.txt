@@ -153,6 +153,9 @@
 *** Removing environments
     # https://stackoverflow.com/a/49128056/6710003
     conda env remove -n ENV_NAME
+*** List environment directories
+    https://stackoverflow.com/a/54155338
+    conda config --show envs_dirs
 
 ** Anaconda update
    conda install pytorch torchvision -c pytorch

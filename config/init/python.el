@@ -170,3 +170,28 @@
 ;; pdb setup
 (custom-set-variables
  '(gud-pdb-command-name "python -m pdb"))
+
+;; pdb setup for Hy
+(setq pdb-hy-input-frame-left-side "import hy; from hy.contrib.hy_repr import hy_repr; print(hy_repr(hy.eval(hy.read_str(\"\"\"")
+(setq pdb-hy-input-frame-right-side "\"\"\"))))")
+
+(defun insert-py-code-to-hy-output-frame ()
+  (interactive)
+  (setq back-move-len (length "\"))))"))
+  (insert pdb-hy-input-frame-left-side)
+  (insert pdb-hy-input-frame-right-side)
+  (backward-char back-move-len))
+
+;; (add-hook 'pdb-mode-hook
+;; 	  (lambda () (local-set-key (kbd "C-c C-j") #'insert-py-code-to-hy-output-frame)))
+
+(defun pdb-send-hy-input ()
+  (interactive)
+  (move-beginning-of-line 1)
+  (insert pdb-hy-input-frame-left-side)
+  (move-end-of-line 1)
+  (insert pdb-hy-input-frame-right-side)
+  (comint-send-input))
+
+(add-hook 'pdb-mode-hook
+	  (lambda () (local-set-key (kbd "C-j") #'pdb-send-hy-input)))
