@@ -75,6 +75,9 @@
     - take
     - take-nth
     - take-while
+** hydimatic
+   - pretty print
+     https://github.com/hylang/hy/issues/914
 
 * pip
 ** command
