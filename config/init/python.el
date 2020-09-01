@@ -194,4 +194,4 @@
   (comint-send-input))
 
 (add-hook 'pdb-mode-hook
-	  (lambda () (local-set-key (kbd "C-j") #'hy-pdb-send-hy-input)))
+	  (lambda () (local-set-key (kbd "M-j") #'hy-pdb-send-hy-input)))
