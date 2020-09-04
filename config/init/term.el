@@ -94,6 +94,33 @@ Will prompt you shell name when you type `C-u' before this command."
 ;; (require 'multi-term-tmux)
 ;; (defalias 'tterm 'multi-term-tmux-open)
 
+(defun tmux-send-toggle-logging-cmd ()
+  (interactive)
+  (term-send-raw-string
+   "tmux -L emacs-term run-shell ~/.tmux/plugins/tmux-logging/scripts/toggle_logging.sh"))
+
+(comment
+ ;; 'tmux-term-with-logging is not working
+ (defun tmux-term-with-logging (&optional session-name)
+   "Create new term buffer, then do tmux new session.
+It's modified code of 'multi-term.
+Will prompt you shell name when you type `C-u' before this command."
+   (interactive (list (read-from-minibuffer "Session name: ")))
+   (when (string= session-name "")
+     (setq session-name nil))
+   (let (term-buffer)
+     ;; Set buffer.
+     (setq term-buffer (multi-term-get-tmux-buffer session-name current-prefix-arg))
+     (setq multi-term-buffer-list (nconc multi-term-buffer-list (list term-buffer)))
+     (set-buffer term-buffer)
+     ;; Internal handle for `multi-term' buffer.
+     (multi-term-internal)
+     ;; Switch buffer
+     (switch-to-buffer term-buffer))
+   (tmux-send-toggle-logging-cmd))
+
+ (defalias 'tterm-logging 'tmux-term-with-logging))
+
 ;; tmux command
 ;;
 ;; string join: https://stackoverflow.com/questions/12999530/is-there-a-function-that-joins-a-string-into-a-delimited-string

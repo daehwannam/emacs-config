@@ -1,3 +1,26 @@
+
+* install with conda
+  https://anaconda.org/conda-forge/tmux
+  conda install -c conda-forge tmux
+
+** tmux plugin manager
+   https://github.com/tmux-plugins/tpm
+
+   $ git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+   Then add <run '~/.tmux/plugins/tpm/tpm'> to "~/.tmux.conf"
+
+   if "~/.tmux.conf" lists plugins to be installed, use the command <prefix & shift + i>
+
+* plugins
+** logging
+   https://superuser.com/questions/1265979/where-is-the-log-file-by-tmux
+   https://github.com/tmux-plugins/tmux-logging
+*** install
+    add <set -g @plugin 'tmux-plugins/tmux-logging'> to ~/.tmux.conf
+*** commands
+    - toggle start/stop logging --> prefix + shift + p
+    - save complete history --> prefix + alt + shift + p
+
 * tmux cheetsheet
   https://gist.github.com/andreyvit/2921703
 
@@ -22,6 +45,18 @@
   
   # disable status bar
   set -g status off
+
+  # --- Plugins --- #
+
+  # logging
+  # it requires at least version 1.9
+  # https://github.com/tmux-plugins/tmux-logging
+  # 
+  set -g @plugin 'tmux-plugins/tmux-logging'
+  set -g history-limit 50000  # enhance the limitation of saving the complete history (prefix & alt + shift + p)
+
+  # Initialize TMUX plugin manager (keep this line at the very bottom of tmux.conf)
+  run '~/.tmux/plugins/tpm/tpm'
 
 * list manual
   $ man tmux

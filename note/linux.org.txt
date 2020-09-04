@@ -1,4 +1,7 @@
 * Bash
+** make empty file
+   $ touch file.txt
+
 ** Queuing processes
    https://superuser.com/a/462673
    $ command1 &
