@@ -3339,7 +3339,7 @@ See http://debbugs.gnu.org/cgi/bugreport.cgi?bug=7115"
 
 (require 'ansi-color)
 (require 'cc-cmds)
-(require 'cl-lib)
+(require 'cl)
 (require 'comint)
 (require 'compile)
 (require 'custom)

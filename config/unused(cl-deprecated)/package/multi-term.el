@@ -268,7 +268,7 @@
 
 ;;; Require:
 (require 'term)
-(require 'cl-lib)
+(require 'cl)
 (require 'advice)
 
 ;;; Code:
@@ -788,9 +788,9 @@ Otherwise return nil."
     (walk-windows
      (lambda (w)
        (with-selected-window w
-         (cl-incf window-number)
+         (incf window-number)
          (if (window-dedicated-p w)
-             (cl-incf dedicated-window-number)))))
+             (incf dedicated-window-number)))))
     (if (and (> dedicated-window-number 0)
              (= (- window-number dedicated-window-number) 1))
         t nil)))
