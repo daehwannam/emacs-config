@@ -246,3 +246,10 @@
      $ nvidia-smi
    - CUDA version command
      $ nvcc --version
+
+** use cuda with python
+   # https://stackoverflow.com/a/34776814
+   # https://stackoverflow.com/a/37901914
+   $ CUDA_DEVICE_ORDER=PCI_BUS_ID CUDA_VISIBLE_DEVICES= python main.py  # no gpu
+   $ CUDA_DEVICE_ORDER=PCI_BUS_ID CUDA_VISIBLE_DEVICES=1 python main.py  # gpu #1
+   $ CUDA_DEVICE_ORDER=PCI_BUS_ID CUDA_VISIBLE_DEVICES=0,2 python main.py  # gpu #0 #2
