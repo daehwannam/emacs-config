@@ -268,7 +268,7 @@
 
 ;;; Require:
 (require 'term)
-(require 'cl)
+(require 'cl-lib)
 (require 'advice)
 
 ;;; Code:

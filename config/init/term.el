@@ -97,7 +97,8 @@ Will prompt you shell name when you type `C-u' before this command."
 (defun tmux-send-toggle-logging-cmd ()
   (interactive)
   (term-send-raw-string
-   "tmux -L emacs-term run-shell ~/.tmux/plugins/tmux-logging/scripts/toggle_logging.sh"))
+   "tmux -L emacs-term run-shell ~/.tmux/plugins/tmux-logging/scripts/toggle_logging.sh")
+  (term-send-return))
 
 (comment
  ;; 'tmux-term-with-logging is not working

@@ -1,5 +1,6 @@
 ;;; load emacs 24's package system. Add MELPA repository.
 ;; http://ergoemacs.org/emacs/emacs_package_system.html
+
 (when (>= emacs-major-version 24)
   (require 'package)
   ;; (add-to-list
@@ -17,7 +18,7 @@
   )
 
 ;;; package initialization
-(package-initialize)
+;; (package-initialize)
 
 ;;; fetch the list of packages available
 ;;; https://stackoverflow.com/a/10093312

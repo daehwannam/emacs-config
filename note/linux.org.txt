@@ -22,6 +22,15 @@
    $     echo "File not found!"
    $ fi
 
+* Configuration of ~/.bashrc
+  # added by Anaconda3 4.4.0 installer
+  export PATH="/home/dhnam/bin/anaconda3/bin:$PATH"
+  # alias emacs='emacs25'  # alias emacs='emacs24'
+
+  # CUDA path config
+  export PATH=/usr/local/cuda-10.1/bin:$PATH
+  export LD_LIBRARY_PATH=/usr/local/cuda-10.1/lib64:$LD_LIBRARY_PATH
+
 * Ubuntu
 ** .Trash location
    https://askubuntu.com/questions/102099/where-is-the-trash-folder

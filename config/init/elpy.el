@@ -10,7 +10,7 @@
 (if (or (require 'elpy nil t) (fboundp 'elpy-enable)) ; 'require is used when loading without elpa package (then from "config/package/elpy")
     (progn
       ;; elpy setting
-      (package-initialize)
+      ;; (package-initialize)
       (elpy-enable)
       (setq elpy-rpc-backend "jedi")
       ;; (setq elpy-rpc-python-command "python3")

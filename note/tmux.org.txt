@@ -2,7 +2,8 @@
 * install with conda
   https://anaconda.org/conda-forge/tmux
   conda install -c conda-forge tmux
-
+** version check
+   tmux -V
 ** tmux plugin manager
    https://github.com/tmux-plugins/tpm
 
