@@ -17,10 +17,13 @@
 
 
 
-;;; open a shell in the current window.
-;; https://stackoverflow.com/a/46122387
-(push (cons "\\*shell\\*" display-buffer--same-window-action) display-buffer-alist)
+(comment
+  ;; open a shell in the current window.
+  ;; https://stackoverflow.com/a/46122387
+  (push (cons "\\*shell\\*" display-buffer--same-window-action) display-buffer-alist)
 
+  ;; WARNING: this change the behavior of 'pdbtrace, so pdbtrace doesn't show the indicated source code
+  )
 
 
 ;;; shell for virtual env or conda

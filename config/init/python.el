@@ -396,4 +396,19 @@ Similarly for Soar, Scheme, etc."
 	   )))
  (add-hook 'python-mode-hook 'prettify-symbols-mode)
  (add-hook 'python-mode-hook 'init-python-prettify-symbols-alist)
-)
+ )
+
+(progn
+  ;; pdbtrace
+  ;; https://stackoverflow.com/questions/26285046/how-do-i-enable-pdbtrack-python-debugging-in-emacs-24-x-shell
+  (require 'python)
+  
+  (defun pdbtrace-shell-mode-hook ()
+    (add-hook 'comint-output-filter-functions 'python-pdbtrack-comint-output-filter-function t))
+
+  (add-hook 'shell-mode-hook 'pdbtrace-shell-mode-hook)
+  )
+ 
+(defun load-commands-for-pdb-with-hy ()
+  (interactive)
+  (local-set-key (kbd "M-j") #'comint-send-input-for-hy))

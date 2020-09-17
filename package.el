@@ -1,5 +1,6 @@
 ;;; load emacs 24's package system. Add MELPA repository.
 ;; http://ergoemacs.org/emacs/emacs_package_system.html
+
 (when (>= emacs-major-version 24)
   (require 'package)
   ;; (add-to-list
@@ -10,14 +11,21 @@
   ;;  t)
   (setq package-archives
 	'(("gnu" . "http://elpa.gnu.org/packages/")
+	  ("melpa" . "http://melpa.org/packages/")
 	  ("marmalade" . "https://marmalade-repo.org/packages/")
-	  ("melpa" . "http://melpa.milkbox.net/packages/")
+	  ;; ("milkbox" . "http://melpa.milkbox.net/packages/") ; it doesn't work
 	  ("org" . "http://orgmode.org/elpa/") ; https://emacs.stackexchange.com/a/27599
 	  ))
+  (let ((package-archive-list '(("melpa" . "http://melpa.org/packages/")
+				("marmalade" . "https://marmalade-repo.org/packages/")
+				("org" . "http://orgmode.org/elpa/") ; https://emacs.stackexchange.com/a/27599
+				)))
+    (mapc #'(lambda (archive-pair) (add-to-list 'package-archives archive-pair))
+	  package-archive-list))
   )
 
 ;;; package initialization
-(package-initialize)
+;; (package-initialize)
 
 ;;; fetch the list of packages available
 ;;; https://stackoverflow.com/a/10093312
@@ -42,7 +50,14 @@
 ;;    ((string-equal machine-domain "ms-desktop") '(vlf magit))
 ;;    ))
 
-(mapc #'(lambda (package)
-	  (unless (package-installed-p package)
-	    (package-install package)))
-      installable-domain-specific-packages)
+(let ((package-content-refreshed nil))
+  (mapc #'(lambda (package)
+	    (unless (package-installed-p package)
+	      (print "------------------------------------------------------------------")
+	      (print package)
+	      (unless package-content-refreshed
+		;; https://magit.vc/manual/magit/Installing-from-Melpa.html
+		(package-refresh-contents)
+		(setq package-content-refreshed t))
+	      (package-install package)))
+	installable-domain-specific-packages))

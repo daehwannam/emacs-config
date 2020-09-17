@@ -7,7 +7,7 @@
 ;; http://orgmode.org/worg/org-tutorials/orgtutorial_dto.html
 
 (when (fboundp 'org-mode)
-  (package-initialize)
+  ;; (package-initialize)
   (require 'org)
   (require 'org-loaddefs)  ; No org-loaddefs.el file could be found from where org.el is loaded.
 
@@ -72,8 +72,10 @@
 
 
   ;; Code block setting
-  (org-babel-do-load-languages
-   'org-babel-load-languages '((python . t) (sh . t)))
+  ;; https://emacs.stackexchange.com/a/43768
+  (let ((shell-symbol (if (version< emacs-version "26.0") 'sh 'shell)))
+    (org-babel-do-load-languages
+     'org-babel-load-languages `((python . t) (,shell-symbol . t))))
 
   ;; https://www.reddit.com/r/orgmode/comments/64tiq9/syntax_highlighting_in_code_blocks/dg548nx/
   ;; Code black highlighting and indentation
