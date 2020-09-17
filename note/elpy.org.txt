@@ -5,6 +5,7 @@
 
 * Install
   $ pip install jedi flake8 importmagic autopep8
+  $ pip install pylint  # for emacs 27.1
 
   if flake8 is not installed:
   $ conda install flake8

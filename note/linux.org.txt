@@ -106,6 +106,9 @@
 
    if you write alias in ~/.bashrc, you have to update it by:
    $ source ~/.bashrc
+
+** simple commands
+   - <ls -lh> to see the detail sizes of files
    
 * Special commands
 
