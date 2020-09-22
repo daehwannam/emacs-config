@@ -20,7 +20,7 @@
      (vbox ("~/data/Dropbox/org/schedule/" ".*\\.org\\(\\.txt\\)?$")))
     (pyvenv-workon-home-path
      (hegel "~/bin/anaconda2/envs/")
-     (engels "~/bin/anaconda3/envs/")
+     (engels "~/program/anaconda3/envs/")
      (vbox "~/bin/anaconda3/envs/")
      (kant "~/bin/anaconda3/envs/")
      (py3-env "~/bin/anaconda3/envs/"))

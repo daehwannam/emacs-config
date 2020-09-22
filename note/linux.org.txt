@@ -25,6 +25,7 @@
 * Configuration of ~/.bashrc
   # added by Anaconda3 4.4.0 installer
   export PATH="/home/dhnam/bin/anaconda3/bin:$PATH"
+  source activate default  # after installing "conda create -n default python=3 anaconda"
   # alias emacs='emacs25'  # alias emacs='emacs24'
 
   # CUDA path config

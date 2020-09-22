@@ -100,3 +100,13 @@
 (when (fboundp 'avy-goto-char-2)
   (global-set-key (kbd "M-g ;") 'avy-goto-char-2))
 
+
+(progn
+  ;; disables shortcuts for making long region
+  (global-unset-key (kbd "C-x C-p"))
+  )
+
+(progn
+  ;; performance enhance in files with long lines
+  ;; https://emacs.stackexchange.com/a/19030
+  (global-so-long-mode 1))

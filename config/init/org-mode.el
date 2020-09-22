@@ -84,32 +84,54 @@
 	org-confirm-babel-evaluate nil
 	org-edit-src-content-indentation 0)
 
-  ;; python code black
-  ;; https://emacs.stackexchange.com/a/12847
-  (add-to-list 'org-structure-template-alist
-	       '("py" "#+BEGIN_SRC python :results value\n?\n#+END_SRC"))
+  (if (version< emacs-version "27.1")
+      ;; comparing org-mode version would be better
+      ;; "easy template" does not work in org-mode 9.2
+      (progn
+	;; <python code black>
+	;; - https://emacs.stackexchange.com/a/12847
+	;;
+	;; <easy template>
+	;; - usage: <s + TAB
+	;; - Caution: easy template would not work in the recent org-mode
+	;;
+	;; <easy template for latest org-mode: org-tempo>
+	;; - https://emacs.stackexchange.com/a/46992
+	;; - easy teamplte can be used for latest org-mode versions
+	;; - however, it cannot use customized templates, such as 'pyo
 
-  ;; change code results to "output" (default is "value" for return)
-  ;; https://emacs.stackexchange.com/questions/17926/python-org-mode-source-block-output-is-always-none
-  (add-to-list 'org-structure-template-alist
-	       '("pyo" "#+BEGIN_SRC python :results output\n?\n#+END_SRC"))
+	(add-to-list 'org-structure-template-alist
+		     '("py" "#+BEGIN_SRC python :results value\n?\n#+END_SRC"))
 
-  ;; shell code black
-  (add-to-list 'org-structure-template-alist
-	       '("sh" "#+BEGIN_SRC sh :results value\n?\n#+END_SRC"))
+	;; change code results to "output" (default is "value" for return)
+	;; https://emacs.stackexchange.com/questions/17926/python-org-mode-source-block-output-is-always-none
+	(add-to-list 'org-structure-template-alist
+		     '("pyo" "#+BEGIN_SRC python :results output\n?\n#+END_SRC"))
 
-  (add-to-list 'org-structure-template-alist
-	       '("sho" "#+BEGIN_SRC sh :results output\n?\n#+END_SRC"))
+	;; shell code black
+	(add-to-list 'org-structure-template-alist
+		     '("sh" "#+BEGIN_SRC sh :results value\n?\n#+END_SRC"))
 
-  ;; virtualenv
-  ;; https://emacs.stackexchange.com/a/38047
-  (add-to-list 'org-structure-template-alist
-	       '("pyto" "#+BEGIN_SRC elisp :session s-py3\n(pyvenv-workon \"py3\")\n#+END_SRC\n#+BEGIN_SRC python :results output :session spy3\n?\n#+END_SRC"))
+	(add-to-list 'org-structure-template-alist
+		     '("sho" "#+BEGIN_SRC sh :results output\n?\n#+END_SRC"))
 
-  ;; org code black insert image
-  ;; https://emacs.stackexchange.com/questions/44516/orgmode-ipython-output-image-not-show-in-results
-  ;; 
-  ;; [not added yet]
+	;; virtualenv
+	;; https://emacs.stackexchange.com/a/38047
+	(add-to-list 'org-structure-template-alist
+		     '("pyto" "#+BEGIN_SRC elisp :session s-py3\n(pyvenv-workon \"py3\")\n#+END_SRC\n#+BEGIN_SRC python :results output :session spy3\n?\n#+END_SRC"))
+
+	;; org code black insert image
+	;; https://emacs.stackexchange.com/questions/44516/orgmode-ipython-output-image-not-show-in-results
+	;; 
+	;; [not added yet]
+	)
+    (progn
+      ;; <structured template>
+      ;; https://emacs.stackexchange.com/questions/46988/why-do-easy-templates-e-g-s-tab-in-org-9-2-not-work
+      (require 'org-tempo)
+      ;; org-tempo
+      ;; "<s + TAB" --> code block
+      ))
 
   ;;; table
   (add-hook 'org-mode-hook (lambda () (local-set-key (kbd "C-c C-x M-c") 'org-table-insert-column)))

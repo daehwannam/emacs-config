@@ -22,6 +22,15 @@
 * Customize
 ** Change text colors with describe-char
    https://emacs.stackexchange.com/a/18199/26068
+** Enhance mark & region selection speed
+   https://www.reddit.com/r/emacs/comments/7wezb4/how_can_i_make_line_rendering_faster/
+   - disable 'font-lock-mode
+   - other comments
+     main things to make sure are (some other has mentioned):
+     - very long lines is a problem. e.g. over 1k chars per line. If you have a single line that's few k chars, emacs essentially freezes. (this is common in minified js html css)
+     - make sure it's not font-lock problem. M-x fundamental-mode and or M-x font-lock-mode to turn it off.
+     - linum-mode makes emacs super slow. Turn it off.
+     - lots rare unicode characters in buffer makes emacs slow.
 
 * Emacs Lisp
 ** Code Characters for interactive
@@ -35,6 +44,10 @@
    sudo add-apt-repository ppa:kelleyk/emacs
    sudo apt-get update
    sudo apt-get install emacs25
+** Install emacs with conda-forge
+   https://anaconda.org/conda-forge/emacs
+   $ conda install -c conda-forge emacs
+   eamcs can be installed in virtual env
 ** Installing source
    https://emacs.stackexchange.com/questions/7184/where-are-emacs-lisp-files
    sudo apt-get install emacs25-el

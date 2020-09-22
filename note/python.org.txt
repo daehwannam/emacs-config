@@ -100,11 +100,11 @@
    2. find pdb path by "$ which pdb" for python2 or "$ which pdb3" for Python3
       ex) /usr/bin/pdb or /usr/bin/pdb3
    3. find python path by "$ which python"
-      ex) /home/dhnam/bin/anaconda3/envs/py3/bin/python
-   4. copy /usr/bin/pdb or pdb3 to /home/dhnam/bin/anaconda3/envs/py3/bin/pdb
-   5. then open /home/dhnam/bin/anaconda3/envs/py3/bin/pdb
+      ex) /home/dhnam/program/anaconda3/envs/py3/bin/python
+   4. copy /usr/bin/pdb or pdb3 to /home/dhnam/program/anaconda3/envs/py3/bin/pdb
+   5. then open /home/dhnam/program/anaconda3/envs/py3/bin/pdb
    6. change shebang
-      ex) /home/dhnam/bin/anaconda3/envs/py3/bin/python
+      ex) /home/dhnam/program/anaconda3/envs/py3/bin/python
 
     in this example, pyvenv-workon should be applied for "py3"
 ** debugging without pdb.py
@@ -143,9 +143,11 @@
 * Anaconda
 ** Install
    - run bash Anaconda-latest-Linux-x86_64.sh
-     - install location: /home/dhnam/bin/anaconda3
+     - install location: /home/dhnam/program/anaconda3
    - append the following to .bashrc
-     : export PATH="/home/dhnam/bin/anaconda3/bin:$PATH"
+     : export PATH="/home/dhnam/program/anaconda3/bin:$PATH"
+#    - or, ad conda env bin path to .bashrc
+#      : export PATH="/home/dhnam/program/anaconda3/envs/default/bin:$PATH"
    - install pip
      https://stackoverflow.com/questions/41060382/using-pip-to-install-packages-to-anaconda-environment
      $ conda install pip
@@ -158,7 +160,9 @@
 *** Python 2
     conda create -n py2 python=2.7 anaconda
 *** Python 3
-    conda create -n py3 python=3.6 anaconda
+    conda create -n py3 python=3.8 anaconda
+*** Simple Python 3 version
+    conda create -n default python=3 anaconda
 *** Removing environments
     # https://stackoverflow.com/a/49128056/6710003
     conda env remove -n ENV_NAME
