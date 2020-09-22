@@ -24,13 +24,31 @@
 
 * Configuration of ~/.bashrc
   # added by Anaconda3 4.4.0 installer
-  export PATH="/home/dhnam/bin/anaconda3/bin:$PATH"
-  source activate default  # after installing "conda create -n default python=3 anaconda"
+  # export PATH="/home/dhnam/bin/anaconda3/bin:$PATH"
+  # source activate default  # after installing "conda create -n default python=3 anaconda"
   # alias emacs='emacs25'  # alias emacs='emacs24'
 
   # CUDA path config
   export PATH=/usr/local/cuda-10.1/bin:$PATH
   export LD_LIBRARY_PATH=/usr/local/cuda-10.1/lib64:$LD_LIBRARY_PATH
+
+  # >>> conda initialize >>>
+  # !! Contents within this block are managed by 'conda init' !!
+  __conda_setup="$('/home/dhnam/program/anaconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
+  if [ $? -eq 0 ]; then
+      eval "$__conda_setup"
+  else
+      if [ -f "/home/dhnam/program/anaconda3/etc/profile.d/conda.sh" ]; then
+          . "/home/dhnam/program/anaconda3/etc/profile.d/conda.sh"
+      else
+          export PATH="/home/dhnam/program/anaconda3/bin:$PATH"
+      fi
+  fi
+  unset __conda_setup
+  # <<< conda initialize <<<
+
+  source activate default  # after installing "conda create -n default python=3 anaconda"
+
 
 * Ubuntu
 ** .Trash location
