@@ -47,8 +47,8 @@
   unset __conda_setup
   # <<< conda initialize <<<
 
+  export PATH="/home/dhnam/program/anaconda3/envs/default/bin:$PATH"
   source activate default  # after installing "conda create -n default python=3 anaconda"
-
 
 * Ubuntu
 ** .Trash location

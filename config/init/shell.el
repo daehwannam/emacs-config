@@ -42,7 +42,7 @@
 ;; below is based on emacs "shell" function
 ;; https://github.com/emacs-mirror/emacs/blob/master/lisp/shell.el
 
-(defun pyshell (&optional buffer)
+(defun conda-shell (&optional buffer env-name)
   (interactive
    (list
     (and current-prefix-arg
@@ -62,14 +62,16 @@
 		     (expand-file-name
 		      (read-directory-name
 		       "Default directory: " default-directory default-directory
-		       t nil))))))))
+		       t nil))))))
+    (read-string "Environment name: ")))
   (setq buffer (if (or buffer (not (derived-mode-p 'shell-mode))
 		       (comint-check-proc (current-buffer)))
 		   (get-buffer-create (or buffer "*shell*"))
 		 ;; If the current buffer is a dead shell buffer, use it.
 		 (current-buffer)))
   (shell buffer)
-  (insert (concat "source activate " (machine-config-get 'pyvenv-name)))
+  ;; (insert (concat "conda activate " (machine-config-get 'pyvenv-name)))
+  (insert (concat "conda activate " env-name))
   (comint-send-input))
 
 (defun py3-shell (&optional buffer)
@@ -99,7 +101,8 @@
 		 ;; If the current buffer is a dead shell buffer, use it.
 		 (current-buffer)))
   (shell buffer)
-  (insert "source activate py3")
+  ;; (insert "source activate py3")
+  (insert "conda activate py3")
   (comint-send-input))
 
 (defun py2-shell (&optional buffer)
@@ -129,5 +132,6 @@
 		 ;; If the current buffer is a dead shell buffer, use it.
 		 (current-buffer)))
   (shell buffer)
-  (insert "source activate py2")
+  ;; (insert "source activate py2")
+  (insert "conda activate py2")
   (comint-send-input))

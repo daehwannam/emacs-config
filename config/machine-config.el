@@ -26,7 +26,8 @@
      (py3-env "~/bin/anaconda3/envs/"))
     (pyvenv-name
      (py3-env "py3")
-     (engels "default")
+     ;; (engels "default")
+     (engels "py3")
      (vbox "py3")
      (kant "py3"))
     (elpy-flycheck-deactivate
