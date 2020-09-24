@@ -126,10 +126,6 @@ export LD_LIBRARY_PATH=/usr/local/cuda-10.1/lib64:$LD_LIBRARY_PATH
 
 # Conda setup
 
-# disable activating 'base'
-# https://stackoverflow.com/a/54560785
-conda config --set auto_activate_base false  # it creates "~/.condarc"
-
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
 __conda_setup="$('/home/dhnam/program/anaconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
@@ -144,6 +140,10 @@ else
 fi
 unset __conda_setup
 # <<< conda initialize <<<
+
+# disable activating 'base'
+# https://stackoverflow.com/a/54560785
+conda config --set auto_activate_base false  # it creates "~/.condarc"
 
 export PATH="/home/dhnam/program/anaconda3/envs/default/bin:$PATH"
 conda activate default
