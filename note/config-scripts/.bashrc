@@ -145,5 +145,6 @@ unset __conda_setup
 # https://stackoverflow.com/a/54560785
 conda config --set auto_activate_base false  # it creates "~/.condarc"
 
-export PATH="/home/dhnam/program/anaconda3/envs/default/bin:$PATH"
+CONDA=anaconda3  # anaconda3 or miniconda3 or ...
+export PATH="/home/dhnam/program/$CONDA/envs/default/bin:$PATH"
 conda activate default
