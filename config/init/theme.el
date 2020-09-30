@@ -6,9 +6,13 @@
 (global-hl-line-mode 1)
 ;; (global-hl-line-mode 0)  ;; it disables hl-line-mode
 
-;; highlight the middle line number
-(require 'hmlinum)
-(hmlinum-activate)
+(comment
+ ;; highlight the middle line number
+ (require 'hmlinum)
+ (hmlinum-activate)
+
+ ;; This make emacs very slow!!!!!!
+ )
 
 ;;; color theme change
 (let ((theme-style (machine-config-get 'theme-style)))

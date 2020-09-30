@@ -31,9 +31,13 @@
      (vbox "py3")
      (kant "py3"))
     (elpy-flycheck-deactivate
-     (vbox t))
+     (vbox t)
+     ;; (engles t)
+     )
     (elpy-autopep8-deactivate
-     (vbox t))
+     (vbox t)
+     ;; (engles t)
+     )
     (installable-packages
      (basic (vlf magit counsel))
      (vbox (vlf magit auctex latex-preview-pane material-theme elpy flycheck py-autopep8 sphinx-doc workgroups2 perspective counsel iedit wgrep which-key projectile flx-ido counsel-projectile eyebrowse persp-projectile paredit markdown-mode highlight tuareg ein hy-mode))
