@@ -101,10 +101,11 @@
   (global-set-key (kbd "M-g ;") 'avy-goto-char-2))
 
 
-(progn
-  ;; disables shortcuts for making long region
-  (global-unset-key (kbd "C-x C-p"))
-  )
+(comment
+ (progn
+   ;; disables shortcuts for making long region (mark-page)
+   (global-unset-key (kbd "C-x C-p"))
+   )) 
 
 (progn
   ;; performance enhance in files with long lines
