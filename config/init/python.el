@@ -384,6 +384,14 @@ Similarly for Soar, Scheme, etc."
   (add-hook 'pdb-mode-hook
 	    (lambda () (local-set-key (kbd "M-j") #'comint-send-input-for-hy))))
 
+;; hy-shell-set-project-root
+(defun hy-shell-set-project-root (new-root)
+  (interactive "DNew project root: ")
+  (hy-shell--eval-1 (format "(do (import sys) (sys.path.insert 0 \"%s\"))" new-root)))
+
+(add-hook 'hy-mode-hook
+	  (lambda () (local-set-key (kbd "C-c Z") 'hy-shell-set-project-root)))
+
 ;; prettify-symbols-mode
 (comment
  (defun init-python-prettify-symbols-alist ()
