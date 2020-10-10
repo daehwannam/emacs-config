@@ -44,7 +44,7 @@
      )
     (installable-packages
      (basic (vlf magit counsel))
-     (vbox (vlf magit auctex latex-preview-pane material-theme elpy flycheck py-autopep8 sphinx-doc workgroups2 perspective counsel iedit wgrep which-key projectile flx-ido counsel-projectile eyebrowse persp-projectile paredit markdown-mode highlight tuareg ein hy-mode))
+     (vbox (vlf magit auctex latex-preview-pane material-theme elpy flycheck py-autopep8 sphinx-doc workgroups2 perspective counsel iedit wgrep which-key projectile flx-ido counsel-projectile eyebrowse persp-projectile paredit markdown-mode tuareg ein hy-mode)) ; removed: highlight
      ;; (engels (vlf magit elpy flycheck py-autopep8 wgrep which-key projectile flx-ido  eyebrowse))
      (engels (vlf magit elpy flycheck py-autopep8 wgrep which-key projectile flx-ido counsel counsel-projectile eyebrowse sphinx-doc markdown-mode hy-mode))
      ;; (engels (vlf magit elpy py-autopep8))

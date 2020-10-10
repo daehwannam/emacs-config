@@ -9,13 +9,13 @@
   ;;  '("melpa" . "http://melpa.milkbox.net/packages/")
   ;;  ;; '("melpa" . "http://melpa.org/packages/")
   ;;  t)
-  (setq package-archives
-	'(("gnu" . "http://elpa.gnu.org/packages/")
-	  ("melpa" . "http://melpa.org/packages/")
-	  ("marmalade" . "https://marmalade-repo.org/packages/")
-	  ;; ("milkbox" . "http://melpa.milkbox.net/packages/") ; it doesn't work
-	  ("org" . "http://orgmode.org/elpa/") ; https://emacs.stackexchange.com/a/27599
-	  ))
+  ;; (setq package-archives
+  ;; 	'(("gnu" . "http://elpa.gnu.org/packages/")
+  ;; 	  ("melpa" . "http://melpa.org/packages/")
+  ;; 	  ("marmalade" . "https://marmalade-repo.org/packages/")
+  ;; 	  ;; ("milkbox" . "http://melpa.milkbox.net/packages/") ; it doesn't work
+  ;; 	  ("org" . "http://orgmode.org/elpa/") ; https://emacs.stackexchange.com/a/27599
+  ;; 	  ))
   (let ((package-archive-list '(("melpa" . "http://melpa.org/packages/")
 				("marmalade" . "https://marmalade-repo.org/packages/")
 				("org" . "http://orgmode.org/elpa/") ; https://emacs.stackexchange.com/a/27599

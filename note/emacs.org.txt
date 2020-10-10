@@ -61,6 +61,10 @@
      unzip emacs-25.3.zip
      cp -R emacs-emacs-25.3/lisp/* /usr/share/emacs/25.3/lisp
 
+* Package install
+** Manual install
+   M-x package-install RET auctex RET
+
 * Modes & Packages
 ** Evil
 *** Evil-collection
