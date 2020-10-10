@@ -21,7 +21,7 @@
     (pyvenv-workon-home-path
      (hegel "~/bin/anaconda2/envs/")
      (engels "~/program/anaconda3/envs/")
-     (vbox "~/bin/anaconda3/envs/")
+     (vbox "~/program/miniconda3/envs/")
      (kant "~/bin/anaconda3/envs/")
      (py3-env "~/bin/anaconda3/envs/"))
     (pyvenv-name
@@ -30,12 +30,16 @@
      (engels "py3")
      (vbox "py3")
      (kant "py3"))
-    (elpy-flycheck-deactivate
-     (vbox t)
+    ;; (elpy-flycheck-deactivate
+    ;;  (vbox t)
+    ;;  )
+    ;; (elpy-autopep8-deactivate
+    ;;  (vbox t)
+    ;;  )
+    (elpy-flycheck-activate
      ;; (engles t)
      )
-    (elpy-autopep8-deactivate
-     (vbox t)
+    (elpy-autopep8-activate
      ;; (engles t)
      )
     (installable-packages
