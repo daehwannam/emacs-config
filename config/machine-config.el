@@ -32,11 +32,11 @@
      (kant "py3"))
     (elpy-flycheck-deactivate
      (vbox t)
-     ;; (engles t)
+     ;; (engels t)
      )
     (elpy-autopep8-deactivate
      (vbox t)
-     ;; (engles t)
+     ;; (engels t)
      )
     (installable-packages
      (basic (vlf magit counsel))
