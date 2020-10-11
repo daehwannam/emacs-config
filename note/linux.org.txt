@@ -110,7 +110,7 @@
    Modify /etc/ssh/sshd_config:
    ~ Port 22
    ~ Port 61112
-   The type follow
+   Then type as follow:
    $ sudo service ssh restart
 
 * General commands
