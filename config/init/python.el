@@ -387,7 +387,7 @@ Similarly for Soar, Scheme, etc."
 ;; hy-shell-set-project-root
 (defun hy-shell-set-project-root (new-root)
   (interactive "DNew project root: ")
-  (hy-shell--eval-1 (format "(do (import sys) (sys.path.insert 0 \"%s\"))" new-root)))
+  (hy-shell--eval-1 (format "(do (import sys) (sys.path.insert 0 \"%s\"))" (file-truename new-root))))
 
 (add-hook 'hy-mode-hook
 	  (lambda () (local-set-key (kbd "C-c Z") 'hy-shell-set-project-root)))
