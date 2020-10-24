@@ -22,6 +22,17 @@
    $     echo "File not found!"
    $ fi
 
+** array
+   https://opensource.com/article/18/5/you-dont-know-bash-intro-bash-arrays
+
+** command line arguments
+   https://tecadmin.net/tutorial/bash-scripting/bash-command-arguments/
+
+** arguments to array
+   https://stackoverflow.com/a/12711853
+
+   $ myArray=("$@")
+
 * Configuration of ~/.bashrc
   # added by Anaconda3 4.4.0 installer
   # export PATH="/home/dhnam/bin/anaconda3/bin:$PATH"
@@ -138,13 +149,22 @@
 ** simple commands
    - <ls -lh> to see the detail sizes of files
 
+
 ** find
-** remove found files
-   https://stackoverflow.com/a/41386937
-   $ find . -type f -name '*.py[co]' -delete -o -type d -name __pycache__ -delete
-** change permissions of found files
-   https://unix.stackexchange.com/a/39133
-   $ find . -type f -name '.#*' -exec chmod +w {} \;
+*** remove found files
+    https://stackoverflow.com/a/41386937
+    $ find . -type f -name '*.py[co]' -delete -o -type d -name __pycache__ -delete
+*** change permissions of found files
+    https://unix.stackexchange.com/a/39133
+    $ find . -type f -name '.#*' -exec chmod +w {} \;
+
+** chmod
+   https://en.wikipedia.org/wiki/Chmod
+
+   - change to an executable for the user(owner)
+     $ chmod u+x ./path/to/file
+   - change to an executable for all the users (recommended)
+     $ chmod a+x ./path/to/file
    
 * Special commands
 
