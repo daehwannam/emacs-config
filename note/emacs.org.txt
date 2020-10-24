@@ -4,7 +4,12 @@
    $ emacs --no-window-system
    $ or
    $ emacs -nw
-** emacsclient
+** multiple daemon
+   https://emacs.stackexchange.com/questions/495/multiple-emacs-instances-each-with-their-own-server/505#505
+   $ emacs --daemon=workspaceN
+   $ emacsclient -s workspaceN
+*** list daemons
+    $ ps -fu dhnam | grep "emacs --daemon"
 
 * Command
 ** Esc-=: count lines

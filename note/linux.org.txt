@@ -137,6 +137,14 @@
 
 ** simple commands
    - <ls -lh> to see the detail sizes of files
+
+** find
+** remove found files
+   https://stackoverflow.com/a/41386937
+   $ find . -type f -name '*.py[co]' -delete -o -type d -name __pycache__ -delete
+** change permissions of found files
+   https://unix.stackexchange.com/a/39133
+   $ find . -type f -name '.#*' -exec chmod +w {} \;
    
 * Special commands
 
