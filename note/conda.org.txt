@@ -22,12 +22,13 @@
 ** Python 3 without specifying anaconda
    $ conda create -n py3 python=3
 
-   - If it's normal anaconda, it's not very different
-   - If it's miniconda, a light-weighted environment is installed
-
+   - append "anaconda" results in install all things for base anaconda,
+     such as "jupyter", "spyder", etc
+   - https://stackoverflow.com/questions/38066873/create-anaconda-python-environment-with-all-packages
 ** Simple Python 3 version
    $ conda create -n default python=3
-
+** Check conda version
+   $ conda --version
 ** Removing environments
    # https://stackoverflow.com/a/49128056/6710003
    $ conda env remove -n ENV_NAME

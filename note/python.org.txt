@@ -114,6 +114,11 @@
 *** ignoring breakpoints
     $ PYTHONBREAKPOINT=0 python main.py
 
+* python run file as module
+  $ python -m pack1.pack2.module  # pack1/pack2/module.py is the module's path
+
+  this code can execute the block of __main__ in "module.py"
+
 * Other packages
 ** Spacy
    $ conda install -c conda-forge spacy  # spacy-2.2.3

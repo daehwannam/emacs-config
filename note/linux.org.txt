@@ -22,6 +22,17 @@
    $     echo "File not found!"
    $ fi
 
+** array
+   https://opensource.com/article/18/5/you-dont-know-bash-intro-bash-arrays
+
+** command line arguments
+   https://tecadmin.net/tutorial/bash-scripting/bash-command-arguments/
+
+** arguments to array
+   https://stackoverflow.com/a/12711853
+
+   $ myArray=("$@")
+
 * Configuration of ~/.bashrc
   # added by Anaconda3 4.4.0 installer
   # export PATH="/home/dhnam/bin/anaconda3/bin:$PATH"
@@ -137,6 +148,14 @@
 
 ** simple commands
    - <ls -lh> to see the detail sizes of files
+
+** chmod
+   https://en.wikipedia.org/wiki/Chmod
+
+   - change to an executable for the user(owner)
+     $ chmod u+x ./path/to/file
+   - change to an executable for all the users (recommended)
+     $ chmod a+x ./path/to/file
    
 * Special commands
 
