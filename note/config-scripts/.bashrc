@@ -128,14 +128,14 @@ export LD_LIBRARY_PATH=/usr/local/cuda-10.1/lib64:$LD_LIBRARY_PATH
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/home/dhnam/program/anaconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
+__conda_setup="$('/home/dhnam/program/miniconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
 if [ $? -eq 0 ]; then
     eval "$__conda_setup"
 else
-    if [ -f "/home/dhnam/program/anaconda3/etc/profile.d/conda.sh" ]; then
-        . "/home/dhnam/program/anaconda3/etc/profile.d/conda.sh"
+    if [ -f "/home/dhnam/program/miniconda3/etc/profile.d/conda.sh" ]; then
+        . "/home/dhnam/program/miniconda3/etc/profile.d/conda.sh"
     else
-        export PATH="/home/dhnam/program/anaconda3/bin:$PATH"
+        export PATH="/home/dhnam/program/miniconda3/bin:$PATH"
     fi
 fi
 unset __conda_setup
@@ -145,6 +145,6 @@ unset __conda_setup
 # https://stackoverflow.com/a/54560785
 conda config --set auto_activate_base false  # it creates "~/.condarc"
 
-CONDA=anaconda3  # anaconda3 or miniconda3 or ...
+CONDA=miniconda3  # anaconda3 or miniconda3 or ...
 export PATH="/home/dhnam/program/$CONDA/envs/default/bin:$PATH"
 conda activate default
