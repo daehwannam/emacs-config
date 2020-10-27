@@ -149,6 +149,13 @@
 ** simple commands
    - <ls -lh> to see the detail sizes of files
 
+** df
+   show files with human-readable format
+   df -h
+
+** du
+   show directory size
+   $ sudo du -sh /path/to/dir
 
 ** find
 *** remove found files
@@ -165,6 +172,14 @@
      $ chmod u+x ./path/to/file
    - change to an executable for all the users (recommended)
      $ chmod a+x ./path/to/file
+
+** lscpu
+   show cpu information
+   $ lscpu
+
+* pskill
+  https://stackoverflow.com/a/27820938
+  $ pkill -f python
    
 * Special commands
 
