@@ -22,7 +22,7 @@
      (hegel "~/bin/anaconda2/envs/")
      (engels "~/program/anaconda3/envs/")
      (vbox "~/program/miniconda3/envs/")
-     (kant "~/bin/anaconda3/envs/")
+     (kant "~/program/miniconda3/envs/")
      (py3-env "~/bin/anaconda3/envs/"))
     (pyvenv-name
      (py3-env "py3")
