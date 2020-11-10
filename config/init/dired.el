@@ -180,5 +180,5 @@ Version 2019-11-04"
          (lambda ($fpath) (let ((process-connection-type nil))
                             (start-process "" nil "xdg-open" $fpath))) $file-list))))))
 
-(add-hook 'dired-mode
+(add-hook 'dired-mode-hook
 	  (lambda () (local-set-key (kbd "C-c C-o") 'xah-open-in-external-app)))
