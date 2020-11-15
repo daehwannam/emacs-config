@@ -87,3 +87,8 @@
 
 ** copy mode via command
    $ tmux -L emacs-term copy-mode
+
+** list all sockets (-L)
+   $ lsof | grep tmp/tmux
+
+   "default" is the default socket (when run without -L option)

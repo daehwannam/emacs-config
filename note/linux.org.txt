@@ -152,6 +152,22 @@
 ** simple commands
    - <ls -lh> to see the detail sizes of files
 
+** df
+   show files with human-readable format
+   df -h
+
+** du
+   show directory size
+   $ sudo du -sh /path/to/dir
+
+** find
+*** remove found files
+    https://stackoverflow.com/a/41386937
+    $ find . -type f -name '*.py[co]' -delete -o -type d -name __pycache__ -delete
+*** change permissions of found files
+    https://unix.stackexchange.com/a/39133
+    $ find . -type f -name '.#*' -exec chmod +w {} \;
+
 ** chmod
    https://en.wikipedia.org/wiki/Chmod
 
@@ -159,6 +175,14 @@
      $ chmod u+x ./path/to/file
    - change to an executable for all the users (recommended)
      $ chmod a+x ./path/to/file
+
+** lscpu
+   show cpu information
+   $ lscpu
+
+* pskill
+  https://stackoverflow.com/a/27820938
+  $ pkill -f python
    
 * Special commands
 
