@@ -107,8 +107,9 @@
    (global-unset-key (kbd "C-x C-p"))
    )) 
 
-(progn
-  ;; performance enhance in files with long lines
-  ;; https://emacs.stackexchange.com/a/19030
-  (when (boundp 'global-so-long-mode)
-    (global-so-long-mode 1)))
+(comment
+ (progn
+   ;; performance enhance in files with long lines
+   ;; https://emacs.stackexchange.com/a/19030
+   (when (boundp 'global-so-long-mode)
+     (global-so-long-mode 1))))
