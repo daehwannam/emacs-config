@@ -134,6 +134,9 @@
 ** ps
    - list all options
      $ ps --help all
+   - show processes made by a user
+     $ ps -u user_name
+     $ ps -fu dhnam  # with full-format
    - show all processes(-e) with full-format(-f)
      $ ps -ef
 
