@@ -446,6 +446,40 @@ Similarly for Soar, Scheme, etc."
 	  (kill-new (replace-regexp-in-string "_" "-"
 		     (replace-regexp-in-string "/" "." (get-py-default-package-name))))
 	(message "Cannot find project root"))))
+
+  (require 'cl-lib)
+  (defun find-python-package-at-point (filename)
+    (interactive
+     (read-file-name
+      "Find a package: " 
+      (let ((package-name (cl-destructuring-bind
+			      (start end) (if (use-region-p)
+					      (list (region-beginning) (region-end))
+					    (progn
+					      (let* ((bounds (bounds-of-thing-at-point 'symbol)))
+						(list (car bounds) (cdr bounds)))))
+			    (buffer-substring-no-properties start end))))
+	(if (string/starts-with package-name ".")
+	    (let ((num-dot-prefixs (+ (string-match "\\.[^\\.]" package-name) 1)))
+	      (concat (file-name-directory buffer-file-name)
+		      (string-join (mapcar (lambda (x) "..")
+					   (number-sequence 0 (- num-dot-prefixs 2))) "/")
+		      (if (> num-dot-prefixs 1) "/" "")
+		      (replace-regexp-in-string
+		       "\\." "/" (replace-regexp-in-string
+				  "-" "_" (substring package-name num-dot-prefixs)))))
+	  (let ((python-default-project-root (get-python-default-project-root)))
+	    (if python-default-project-root
+		(concat python-default-project-root
+			(replace-regexp-in-string
+			 "\\." "/" (replace-regexp-in-string
+				    "-" "_" package-name)))
+	      python-default-project-root))))))
+    ;; (find-file filename)
+    )
+
+  (add-hook 'python-mode-hook (lambda () (local-set-key (kbd "C-c C-x C-f") 'find-python-package-at-point)))
+  (add-hook 'hy-mode-hook (lambda () (local-set-key (kbd "C-c C-x C-f") 'find-python-package-at-point)))
   )
 
 ;; prettify-symbols-mode
