@@ -27,7 +27,15 @@
 
   ;; Ivy-resume and other commands
   ;; ivy-resume resumes the last Ivy-based completion.
-  (global-set-key (kbd "C-c C-r") 'ivy-resume))
+  (global-set-key (kbd "C-c C-r") 'ivy-resume)
+
+  (defun swiper-with-text-in-region (start end)
+    (interactive "r")
+    (deactivate-mark)
+    (swiper (buffer-substring start end)))
+
+  (global-set-key (kbd "C-c C-s") 'swiper-with-text-in-region)
+  )
 
 (when (fboundp 'counsel-projectile-mode)
   (counsel-projectile-mode))

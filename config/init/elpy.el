@@ -69,6 +69,21 @@
       ;; (add-hook 'python-mode-hook
       ;; 		(lambda () (local-set-key (kbd "C-c C-g") 'elpy-goto-definition)))
 
+      (progn
+	;; change default proejct source
+	(setq elpy-project-root-finder-functions
+	  '(elpy-project-find-src-root
+	    elpy-project-find-projectile-root
+	    elpy-project-find-python-root
+	    elpy-project-find-git-root
+	    elpy-project-find-hg-root
+	    elpy-project-find-svn-root))
+
+	(defun elpy-project-find-src-root ()
+	    "Return the current src repository root, if any."
+	    (locate-dominating-file default-directory ".src"))
+	)
+
       ;; https://realpython.com/blog/python/emacs-the-best-python-editor/
       ;; (unless (member machine-domain '("vbox" "machine here don't activate below"))
       (when (and (machine-config-get 'elpy-flycheck-activate) (require 'flycheck nil t))

@@ -171,6 +171,15 @@
 (custom-set-variables
  '(gud-pdb-command-name "python -m pdb"))
 
+;; command copying file path and line number for pdb's breakpoint
+(defun kill-ring-save-pdb-breakpoint ()
+  ;; https://stackoverflow.com/a/2178975
+  (interactive)
+  (kill-new (concat (buffer-file-name) ":" (number-to-string (line-number-at-pos)))))
+
+(add-hook 'python-mode-hook (lambda () (local-set-key (kbd "C-c C-x C-p") #'kill-ring-save-pdb-breakpoint)))
+(add-hook 'hy-mode-hook (lambda () (local-set-key (kbd "C-c C-x C-p") #'kill-ring-save-pdb-breakpoint)))
+
 ;; pdb setup for Hy
 (setq pdb-hy-input-frame-left-side "import hy; from hy.contrib.hy_repr import hy_repr; print(hy_repr(hy.eval(hy.read_str(\"\"\"")
 (setq pdb-hy-input-frame-right-side "\"\"\"))))")
@@ -384,13 +393,60 @@ Similarly for Soar, Scheme, etc."
   (add-hook 'pdb-mode-hook
 	    (lambda () (local-set-key (kbd "M-j") #'comint-send-input-for-hy))))
 
-;; hy-shell-set-project-root
-(defun hy-shell-set-project-root (new-root)
-  (interactive "DNew project root: ")
-  (hy-shell--eval-1 (format "(do (import sys) (sys.path.insert 0 \"%s\"))" (file-truename new-root))))
+(progn
+  ;; hy-shell-set-project-root
+  (defun hy-get-project-root-change-expr-string (new-root)
+    (format "(do (import sys) (sys.path.insert 0 \"%s\"))" (file-truename new-root)))
 
-(add-hook 'hy-mode-hook
-	  (lambda () (local-set-key (kbd "C-c Z") 'hy-shell-set-project-root)))
+  (defun hy-shell-set-project-root (new-root)
+    (interactive "DNew project root: ")
+    (hy-shell--eval-1 (hy-get-project-root-change-expr-string new-root)))
+
+  (add-hook 'hy-mode-hook
+	    (lambda () (local-set-key (kbd "C-c Z") 'hy-shell-set-project-root)))
+
+  (defun get-python-default-project-root ()
+    (locate-dominating-file default-directory ".src"))
+
+  (defun run-hy-with-default-project-root ()
+    "modified version of 'run-hy"
+    (interactive)
+
+    (hy-shell--with
+      (switch-to-buffer-other-window (current-buffer)))
+    (let ((project-root (locate-dominating-file default-directory ".src")))
+      (when project-root
+	(hy-shell--with-live
+	  ;; TODO Force the initial/end cases in a nicer way if possible
+	  (hy-shell--send "\n")
+	  (hy-shell--send (hy-get-project-root-change-expr-string project-root))
+	  (hy-shell--send "\n")))))
+
+  (add-hook 'hy-mode-hook
+	    (lambda () (local-set-key (kbd "C-c C-Z") 'run-hy-with-default-project-root)))
+
+  (defun get-py-default-package-name ()
+    (let ((project-root (get-python-default-project-root))
+	  (file-path (buffer-file-name)))
+      (when project-root
+	  (substring file-path (length project-root)
+		     (- -1 (length (file-name-extension file-path)))))))
+
+  (defun kill-py-default-package-name ()
+    (interactive)
+    (let ((package-name (get-python-default-project-root)))
+      (if package-name
+	  (kill-new (replace-regexp-in-string "/" "." (get-py-default-package-name)))
+	(message "Cannot find project root"))))
+
+  (defun kill-hy-default-package-name ()
+    (interactive)
+    (let ((package-name (get-python-default-project-root)))
+      (if package-name
+	  (kill-new (replace-regexp-in-string "_" "-"
+		     (replace-regexp-in-string "/" "." (get-py-default-package-name))))
+	(message "Cannot find project root"))))
+  )
 
 ;; prettify-symbols-mode
 (comment
@@ -420,3 +476,30 @@ Similarly for Soar, Scheme, etc."
 (defun load-commands-for-pdb-with-hy ()
   (interactive)
   (local-set-key (kbd "M-j") #'comint-send-input-for-hy))
+
+
+(progn
+  (defun convert-path-to-package ()
+    ""
+    ;; https://stackoverflow.com/a/25886353
+    (interactive)
+    (save-excursion
+      (let* ((bounds (bounds-of-thing-at-point 'symbol))
+             (start (car bounds))
+             (end (cdr bounds)))
+	(if (use-region-p)
+	    (replace-regexp "/" "." nil (region-beginning) (region-end))
+	  (replace-regexp "/" "." nil start end)))))
+
+  (defun convert-package-to-path ()
+    ""
+    ;; https://stackoverflow.com/a/25886353
+    (interactive)
+    (save-excursion
+      (let* ((bounds (bounds-of-thing-at-point 'symbol))
+             (start (car bounds))
+             (end (cdr bounds)))
+	(if (use-region-p)
+	    (replace-regexp "." "/" nil (region-beginning) (region-end))
+	  (replace-regexp "." "/" nil start end))))))
+

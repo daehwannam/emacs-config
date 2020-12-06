@@ -52,7 +52,7 @@
 
 ;; File path copy
 ;; https://stackoverflow.com/a/9414763
-(defun copy-path-to-clipboard ()
+(defun kill-path-to-clipboard ()
   "Copy the current buffer file name to the clipboard."
   (interactive)
   (let ((filename (if (equal major-mode 'dired-mode)
@@ -62,7 +62,7 @@
       (kill-new filename)
       (message "'%s'" filename))))
 
-(defun copy-other-window-path-to-clipboard (count)
+(defun kill-other-window-path-to-clipboard (count)
   "Copy the other window's path."
   (interactive "p")
   (let ((path (progn (other-window count)
@@ -74,13 +74,13 @@
       (message "'%s'" path))))
 
 (fset 'dired-do-copy-into-other-window
-   "\C-[xcopy-other-window-path-to-clipboard\C-mC\C-y")
+   "\C-[xkill-other-window-path-to-clipboard\C-mC\C-y")
 
 (add-hook 'dired-mode-hook
 	  (lambda () (local-set-key (kbd "M-C") #'dired-do-copy-into-other-window)))
 
 (fset 'dired-do-rename-into-other-window
-   "\C-[xcopy-other-window-path-to-clipboard\C-mR\C-y")
+   "\C-[xkill-other-window-path-to-clipboard\C-mR\C-y")
 
 (add-hook 'dired-mode-hook
 	  (lambda () (local-set-key (kbd "M-R") #'dired-do-rename-into-other-window)))
