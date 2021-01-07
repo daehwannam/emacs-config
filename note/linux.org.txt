@@ -166,6 +166,8 @@
     $ find . -type f -name '*.py[co]' -delete -o -type d -name __pycache__ -delete
 *** change permissions of found files
     https://unix.stackexchange.com/a/39133
+
+    e.g. change permissions of files whose names start with .#
     $ find . -type f -name '.#*' -exec chmod +w {} \;
 
 ** chmod
@@ -179,6 +181,18 @@
 ** lscpu
    show cpu information
    $ lscpu
+
+** date
+   - changing current time manually (sudo is required)
+     https://www.sharedit.co.kr/posts/2504
+
+     the format is "월일시간년도.초"
+
+     e.g.
+     $ date 031211572018.00
+     ==> Mon Mar 12 11:57:00 KST 2018
+     $ date
+     ==> Mon Mar 12 11:57:02 KST 2018
 
 * pskill
   https://stackoverflow.com/a/27820938
@@ -312,6 +326,8 @@
      $ cat /proc/driver/nvidia/gpus/0000:01:00.0/information
    - NVIDIA diver version and gpu usage
      $ nvidia-smi
+   - Detailed information with nvidia-smi
+     $ nvidia-smi -q  # https://askubuntu.com/questions/5417/how-to-get-the-gpu-info/929163#929163
    - CUDA version command
      $ nvcc --version
 
