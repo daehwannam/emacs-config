@@ -22,3 +22,15 @@
 
 ;; (print-to-file '(a f c (q e g)) "test.el")
 ;; (read-from-file "test.el")
+
+(defun joindirs (root &rest dirs)
+  "Joins a series of directories together, like Python's os.path.join,
+  (dotemacs-joindirs \"/tmp\" \"a\" \"b\" \"c\") => /tmp/a/b/c"
+
+  ;; https://stackoverflow.com/a/13473856
+
+  (if (not dirs)
+      root
+    (apply 'joindirs
+           (expand-file-name (car dirs) root)
+           (cdr dirs))))
