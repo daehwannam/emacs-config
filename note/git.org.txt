@@ -5,7 +5,6 @@
   $ git init --bare
 
 * remote repository add
-
 ** local machine example
    - ssh://user@server.name.ac.kr:60001/home/user/emacs.git
    - ssh://user@domain.com:61112/home/user/work/gitbackup/sp_ae.git
@@ -61,3 +60,6 @@
    https://emacs.stackexchange.com/a/7683
 
    M-x magit-find-file
+
+* git clone shallowly
+  $ git clone --depth=1 user@github.com:joe/hello-world.git
