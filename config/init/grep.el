@@ -19,3 +19,5 @@
 			 (concat command-args " " null-device)
 		       command-args)
 		     'grep-mode))
+
+;; (global-set-key (kbd "C-x C-M-s") 'rgrep)

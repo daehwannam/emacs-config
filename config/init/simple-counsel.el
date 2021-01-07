@@ -7,6 +7,7 @@
   (setq ivy-count-format "(%d/%d) ")
 
   ;; Ivy-based interface to standard commands
+  ;; (global-set-key (kbd "C-s") 'isearch-forward)
   (global-set-key (kbd "C-c s") 'swiper)
   ;; (global-set-key (kbd "C-c C-s") 'swiper) ; conflict with 'elpy-rgrep-symbol
   ;; (global-set-key (kbd "C-r") 'swiper)
@@ -34,7 +35,7 @@
     (deactivate-mark)
     (swiper (buffer-substring start end)))
 
-  (global-set-key (kbd "C-c C-s") 'swiper-with-text-in-region)
+  ;; (global-set-key (kbd "C-c C-s") 'swiper-with-text-in-region)
   )
 
 (when (fboundp 'counsel-projectile-mode)

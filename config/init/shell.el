@@ -102,9 +102,39 @@
 		 ;; If the current buffer is a dead shell buffer, use it.
 		 (current-buffer)))
   (shell buffer)
+  (compilation-shell-minor-mode) ; for compliation mode's features
   ;; (insert (concat "conda activate " (machine-config-get 'pyvenv-name)))
   (insert (concat "conda activate " env-name))
   (comint-send-input))
+
+(progn
+  (define-key compilation-shell-minor-mode-map (kbd "C-M-]") 'compilation-next-error)
+  (define-key compilation-shell-minor-mode-map (kbd "C-M-[") 'compilation-previous-error)
+  (define-key compilation-shell-minor-mode-map (kbd "C-M-n") 'forward-list)
+  (define-key compilation-shell-minor-mode-map (kbd "C-M-p") 'backward-list))
+
+(progn
+  (defun comint-previous-input-or-compilation-previous-error (arg)
+    "Cycle backwards through input history, saving input, or move
+point to the previous error in the compilation buffer"
+    (interactive "*p")
+    (if (comint-after-pmark-p)
+	(comint-previous-input arg)
+      (compilation-previous-error arg)))
+
+  (defun comint-next-input-or-compilation-next-error (arg)
+    "Cycle forwards through input history, saving input, or move
+point to the next error in the compilation buffer"
+    (interactive "*p")
+    (if (comint-after-pmark-p)
+	(comint-next-input arg)
+      (compilation-next-error arg)))
+
+  (add-hook 'compilation-shell-minor-mode-hook
+	    (lambda () (local-set-key (kbd "M-p") 'comint-previous-input-or-compilation-previous-error)))
+
+  (add-hook 'compilation-shell-minor-mode-hook
+	    (lambda () (local-set-key (kbd "M-n") 'comint-next-input-or-compilation-next-error))))
 
 (defun py3-shell (&optional buffer)
   (interactive

@@ -399,7 +399,8 @@ Similarly for Soar, Scheme, etc."
     (format "(do (import sys) (sys.path.insert 0 \"%s\"))" (file-truename new-root)))
 
   (defun hy-shell-set-project-root (new-root)
-    (interactive "DNew project root: ")
+    ;; (interactive "DNew project root: ")
+    (interactive (list (read-directory-name "New project root: " (get-python-default-project-root))))
     (hy-shell--eval-1 (hy-get-project-root-change-expr-string new-root)))
 
   (add-hook 'hy-mode-hook
@@ -408,22 +409,23 @@ Similarly for Soar, Scheme, etc."
   (defun get-python-default-project-root ()
     (locate-dominating-file default-directory ".src"))
 
-  (defun run-hy-with-default-project-root ()
-    "modified version of 'run-hy"
-    (interactive)
+  (comment
+   (defun run-hy-with-default-project-root ()
+     "modified version of 'run-hy"
+     (interactive)
 
-    (hy-shell--with
-      (switch-to-buffer-other-window (current-buffer)))
-    (let ((project-root (locate-dominating-file default-directory ".src")))
-      (when project-root
-	(hy-shell--with-live
-	  ;; TODO Force the initial/end cases in a nicer way if possible
-	  (hy-shell--send "\n")
-	  (hy-shell--send (hy-get-project-root-change-expr-string project-root))
-	  (hy-shell--send "\n")))))
+     (hy-shell--with
+       (switch-to-buffer-other-window (current-buffer)))
+     (let ((project-root (locate-dominating-file default-directory ".src")))
+       (when project-root
+	 (hy-shell--with-live
+	   ;; TODO Force the initial/end cases in a nicer way if possible
+	   (hy-shell--send "\n")
+	   (hy-shell--send (hy-get-project-root-change-expr-string project-root))
+	   (hy-shell--send "\n")))))
 
-  (add-hook 'hy-mode-hook
-	    (lambda () (local-set-key (kbd "C-c C-Z") 'run-hy-with-default-project-root)))
+   (add-hook 'hy-mode-hook
+	     (lambda () (local-set-key (kbd "C-c C-Z") 'run-hy-with-default-project-root))))
 
   (defun get-py-default-package-name ()
     (let ((project-root (get-python-default-project-root))

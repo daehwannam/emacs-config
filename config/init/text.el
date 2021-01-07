@@ -52,3 +52,31 @@
       )))
 
 (global-set-key (kbd "C-x M-w") 'kill-ring-save-at-point)
+
+
+(defun just-one-space-in-region (beg end)
+  "replace all whitespace in the region with single spaces"
+  ;; https://stackoverflow.com/a/8674989
+
+  (interactive "r")
+  (save-excursion
+    (save-restriction
+      (narrow-to-region beg end)
+      (goto-char (point-min))
+      (while (re-search-forward "\n+" nil t)
+	(replace-match " ")))
+    (save-restriction
+      (narrow-to-region beg end)
+      (goto-char (point-min))
+      (while (re-search-forward "\\s-+" nil t)  ; \\s-+
+	(replace-match " ")))
+    ))
+
+(defun just-one-space-conditionally (&optional n)
+  (interactive "*p")
+  (if (use-region-p)
+      (just-one-space-in-region (region-beginning) (region-end))
+    (just-one-space n)))
+
+(global-set-key (kbd "M-<SPC>") 'just-one-space-conditionally)
+
