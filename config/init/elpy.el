@@ -27,12 +27,11 @@
 	(progn
 	  ;; RPC setup
 	  (setq elpy-rpc-virtualenv-name "elpy-rpc")
-	  (comment
-	   (let ((default-elpy-rpc-virtualenv-path elpy-rpc-virtualenv-path))
-	     (comment (assert (eq default-elpy-rpc-virtualenv-path 'default)))
-	     (setq elpy-rpc-virtualenv-path
-		   (or (machine-config-get 'elpy-rpc-virtualenv-path)
-		       (joindirs pyvenv-workon-home-path elpy-rpc-virtualenv-name))))))))
+	  (let ((default-elpy-rpc-virtualenv-path elpy-rpc-virtualenv-path))
+	    (comment (assert (eq default-elpy-rpc-virtualenv-path 'default)))
+	    (setq elpy-rpc-virtualenv-path
+		  (or (machine-config-get 'elpy-rpc-virtualenv-path)
+		      (joindirs pyvenv-workon-home-path elpy-rpc-virtualenv-name)))))))
 
     (when (machine-config-get 'pyvenv-name)
       (pyvenv-workon (machine-config-get 'pyvenv-name))) ; use "M-x pyvenv-deactivate" to deactivate
