@@ -95,7 +95,12 @@
 		      (read-directory-name
 		       "Default directory: " default-directory default-directory
 		       t nil))))))
-    (read-string "Environment name: ")))
+    (completing-read "Environment name: " (pyvenv-virtualenv-list)
+                     nil t nil 'pyvenv-workon-history nil nil)))
+
+  ;; completing-read is used instead of read-string
+  ;; e.g. (read-string "Environment name: ")
+
   (setq buffer (if (or buffer (not (derived-mode-p 'shell-mode))
 		       (comint-check-proc (current-buffer)))
 		   (get-buffer-create (or buffer "*shell*"))
