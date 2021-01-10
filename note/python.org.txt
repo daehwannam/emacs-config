@@ -88,6 +88,17 @@
      $ python -m pip install stanfordnlp==
    - install specified version
      $ python -m pip install stanfordnlp==0.2.0
+** setup
+   - setup with editable
+     https://stackoverflow.com/a/35064498
+     https://stackoverflow.com/questions/15031694/installing-python-packages-from-local-file-system-folder-to-virtualenv-with-pip/20043907#20043907
+
+     It installs a package with the directory path, then the directory becomes the source of package.
+     When the code in the directory is chaged, the package is also changed.
+
+     e.g.
+     $ pip install --editable path/to/package
+     $ pip install --editable .  # current directory
 
 * pdb
 ** pdb command
