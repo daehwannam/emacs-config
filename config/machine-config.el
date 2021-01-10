@@ -38,14 +38,14 @@
      (engels nil)
      )
     (installable-packages
-     (basic (vlf magit multi-term counsel))
-     (vbox (vlf magit  multi-term auctex latex-preview-pane material-theme elpy flycheck py-autopep8 blacken sphinx-doc workgroups2 perspective counsel iedit wgrep which-key projectile flx-ido counsel-projectile eyebrowse persp-projectile paredit markdown-mode tuareg ein hy-mode)) ; removed: highlight
-     ;; (engels (vlf magit elpy flycheck py-autopep8 blacken wgrep which-key projectile flx-ido  eyebrowse))
-     (engels (vlf magit  multi-term elpy flycheck py-autopep8 blacken sphinx-doc wgrep which-key projectile flx-ido counsel counsel-projectile eyebrowse markdown-mode hy-mode))
-     ;; (engels (vlf magit elpy py-autopep8 blacken))
-     (programming (vlf magit multi-term counsel elpy flycheck py-autopep8 blacken))
-     (ms-laptop (vlf magit))
-     (ms-desktop (vlf magit))
+     (basic (vlf magit key-chord multi-term counsel))
+     (vbox (vlf magit key-chord  multi-term auctex latex-preview-pane material-theme elpy flycheck py-autopep8 blacken sphinx-doc workgroups2 perspective counsel iedit wgrep which-key counsel-projectile eyebrowse persp-projectile paredit markdown-mode tuareg ein hy-mode)) ; removed: highlight
+     ;; (engels (vlf magit key-chord elpy flycheck py-autopep8 blacken wgrep which-key projectile flx-ido  eyebrowse))
+     (engels (vlf magit key-chord  multi-term elpy flycheck py-autopep8 blacken sphinx-doc wgrep which-key counsel counsel-projectile eyebrowse markdown-mode hy-mode))
+     ;; (engels (vlf magit key-chord elpy py-autopep8 blacken))
+     (programming (vlf magit key-chord multi-term counsel elpy flycheck py-autopep8 blacken))
+     (ms-laptop (vlf magit key-chord))
+     (ms-desktop (vlf magit key-chord))
      )))
 
 ;;; emacs configuration association list
