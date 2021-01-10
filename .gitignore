@@ -5,6 +5,7 @@
 !init.el
 !package.el
 !.gitignore
+!base/
 !config/
 !README.md
 !note/
