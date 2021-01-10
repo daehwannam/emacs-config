@@ -82,47 +82,6 @@
     (kill-new result)
     (setq deactivate-mark t)))
 
-(unless (fboundp 'elpy-shell--region-without-indentation)
-  (defun elpy-shell--region-without-indentation (beg end)
-    "Return the current region as a string, but without indentation."
-    (if (= beg end)
-	""
-      (let ((region (buffer-substring beg end))
-	    (indent-level nil)
-	    (indent-tabs-mode nil))
-	(with-temp-buffer
-	  (insert region)
-	  (goto-char (point-min))
-	  (while (< (point) (point-max))
-	    (cond
-	     ((or (elpy-shell--current-line-only-whitespace-p)
-		  (python-info-current-line-comment-p)))
-	     ((not indent-level)
-	      (setq indent-level (current-indentation)))
-	     ((and indent-level
-		   (< (current-indentation) indent-level))
-	      (error (message "X%sX" (thing-at-point 'line)))))
-            ;; (error "Can't adjust indentation, consecutive lines indented less than starting line")))
-	    (forward-line))
-	  (indent-rigidly (point-min)
-			  (point-max)
-			  (- indent-level))
-	  ;; 'indent-rigidly' introduces tabs despite the fact that 'indent-tabs-mode' is nil
-	  ;; 'untabify' fix that
-	  (untabify (point-min) (point-max))
-	  (buffer-string))))))
-
-(defun py-repl-kill-ring-save (beg end &optional region)
-  (interactive (list (mark) (point)
-		     (prefix-numeric-value current-prefix-arg)))
-  (kill-new (elpy-shell--region-without-indentation beg end))
-  (setq deactivate-mark t))
-
-;; https://stackoverflow.com/a/14230685
-(add-hook 'python-mode-hook
-	  (lambda () (local-set-key (kbd "C-c W") #'py-repl-kill-ring-save)))
-
-
 ;; python docstring
 ;; https://github.com/naiquevin/sphinx-doc.el
 ;; 
@@ -131,26 +90,6 @@
   (add-hook 'python-mode-hook (lambda ()
 				(require 'sphinx-doc)
 				(sphinx-doc-mode t))))
-
-;; EIN: Emacs IPython Notebook
-;; https://github.com/millejoh/emacs-ipython-notebook
-
-(when (fboundp 'ein:run)
-  (custom-set-variables
-   '(ein:polymode t)  ; enable Elpy
-   ;; '(ein:cell-input-area ((t (:background "black"))))
-   )
-  (add-hook 'ein:notebook-mode-hook 'linum-mode)
-  (setq ein:worksheet-enable-undo t)
-)
-
-;; run IPython notebook server with specific port number
-;; https://github.com/tkf/emacs-ipython-notebook/issues/109#issuecomment-16874676
-;;
-;; $ ipython notebook --port 9999
-;;
-;; then login EIN --> M-x ein:login RET 9999 RET
-
 
 ;; Hy lang setup
 (when (fboundp 'hy-mode)
@@ -406,8 +345,9 @@ Similarly for Soar, Scheme, etc."
   (add-hook 'hy-mode-hook
 	    (lambda () (local-set-key (kbd "C-c Z") 'hy-shell-set-project-root)))
 
-  (defun get-python-default-project-root ()
-    (locate-dominating-file default-directory ".src"))
+  (comment
+   (defun get-python-default-project-root ()
+     (locate-dominating-file default-directory ".src")))
 
   (comment
    (defun run-hy-with-default-project-root ()

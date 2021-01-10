@@ -1,13 +1,4 @@
 
-;; read file contents
-;; http://ergoemacs.org/emacs/elisp_read_file_content.html
-(defun get-string-from-file (filePath)
-  "Return filePath's file content."
-  (with-temp-buffer
-    (insert-file-contents filePath)
-    (buffer-string)))
-
-
 ;; save and load a list
 ;; https://stackoverflow.com/a/44834833
 (defun print-to-file (data filename)
@@ -22,3 +13,15 @@
 
 ;; (print-to-file '(a f c (q e g)) "test.el")
 ;; (read-from-file "test.el")
+
+(defun joindirs (root &rest dirs)
+  "Joins a series of directories together, like Python's os.path.join,
+  (dotemacs-joindirs \"/tmp\" \"a\" \"b\" \"c\") => /tmp/a/b/c"
+
+  ;; https://stackoverflow.com/a/13473856
+
+  (if (not dirs)
+      root
+    (apply 'joindirs
+           (expand-file-name (car dirs) root)
+           (cdr dirs))))
