@@ -27,6 +27,9 @@
    https://github.com/hlissner/doom-emacs/issues/3372
    (require 'loadhist)
    (file-dependents (feature-file 'cl))
+** Find files by names
+   https://emacs.stackexchange.com/a/29001/26068
+   M-x find-name-dired  ; requires regex such as "*some-file*" (a file name containing "some-file")
 
 * Customize
 ** Change text colors with describe-char

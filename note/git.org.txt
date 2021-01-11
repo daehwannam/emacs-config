@@ -63,3 +63,14 @@
 
 * git clone shallowly
   $ git clone --depth=1 user@github.com:joe/hello-world.git
+
+* git clone a specific commit
+  https://stackoverflow.com/a/14091182
+
+  $ git clone $URL
+  $ cd $PROJECT_NAME
+  $ git reset --hard $SHA1
+
+* git clone a specific tag
+  git clone --depth 1 --branch <tag_name> <repo_url>
+  ("--depth 1" is optional)
