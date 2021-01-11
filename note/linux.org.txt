@@ -194,6 +194,10 @@
      $ date
      ==> Mon Mar 12 11:57:02 KST 2018
 
+** mkdir
+   - mkdir "all directories in the path" when "directories don't exist"
+     $ mkdir -p some/path/to/a/directory
+
 * pskill
   https://stackoverflow.com/a/27820938
   $ pkill -f python

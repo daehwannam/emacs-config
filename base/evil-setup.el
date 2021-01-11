@@ -9,8 +9,7 @@
 
 
 (progn
-  (unless (package-installed-p 'evil-collection)
-    (package-install 'evil-collection))
+  (install-package-unless-installed 'evil-collection)
 
   (setq evil-want-keybinding nil)
 
@@ -19,8 +18,7 @@
 
 (progn
   ;; Download Evil
-  (unless (package-installed-p 'evil)
-    (package-install 'evil))
+  (install-package-unless-installed 'evil)
 
   ;; Enable Evil
   (setq evil-want-C-u-scroll t) ; https://stackoverflow.com/a/18851955

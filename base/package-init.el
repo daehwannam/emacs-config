@@ -23,12 +23,22 @@
 
   ;; fetch the list of packages available
   ;; https://stackoverflow.com/a/10093312
-  (unless package-archive-contents
-    (package-refresh-contents)))
+  (comment
+   (unless package-archive-contents
+     (package-refresh-contents))))
 
 (progn
-  (unless (package-installed-p 'use-package)
-    (package-install 'use-package))
+  (defvar package-content-refreshed nil)
+  (defun install-package-unless-installed (package)
+    (unless (package-installed-p package)
+      (unless package-content-refreshed
+	;; https://magit.vc/manual/magit/Installing-from-Melpa.html
+	(package-refresh-contents)
+	(setq package-content-refreshed t))
+      (package-install package))))
+
+(progn
+  (install-package-unless-installed 'use-package)
 
   ;; use-package initialization
   (require 'use-package)
