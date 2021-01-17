@@ -20,8 +20,9 @@
 	;; swiper
 	;; Ivy-based interface to standard commands
 	;; (global-set-key (kbd "C-s") 'isearch-forward)
-	(global-set-key (kbd "C-c s") 'swiper)
-	(key-chord-define-global "cs" 'swiper)
+	;; (global-set-key (kbd "C-c s") 'swiper)
+	(key-chord-define-global "js" 'swiper)
+	(comment (space-chord-define-global "s" 'swiper))
 	;; (global-set-key (kbd "C-c C-s") 'swiper) ; conflict with 'elpy-rgrep-symbol
 	;; (global-set-key (kbd "C-r") 'swiper)
 	)

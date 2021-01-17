@@ -26,6 +26,9 @@
 ;; base setup
 (load "~/.emacs.d/base/package-init.el")
 (comment (load "~/.emacs.d/base/evil-setup.el"))
+(load "~/.emacs.d/base/key-chord-setup.el")
+;; (load "~/.emacs.d/base/key-config.el")
+;; (comment (load "~/.emacs.d/base/modalka-setup.el"))
 
 ;;; common utility
 (load-directory "~/.emacs.d/config/utility")

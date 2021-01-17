@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# execute "chmod a+x run.sh" for convenience
+# execute "chmod a+x runhy.sh" for convenience
 
 argv=("$@")
 path=${argv[0]}

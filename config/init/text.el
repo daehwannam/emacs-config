@@ -51,7 +51,9 @@
       (kill-ring-save start end)
       )))
 
-(global-set-key (kbd "C-x M-w") 'kill-ring-save-at-point)
+(comment (global-set-key (kbd "C-x M-w") 'kill-ring-save-at-point))
+(global-set-key (kbd "M-W") 'kill-ring-save-at-point)
+(key-chord-define-global "jw" 'kill-ring-save-at-point)
 
 
 (defun just-one-space-in-region (beg end)

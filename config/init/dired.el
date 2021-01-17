@@ -57,10 +57,12 @@
   (interactive)
   (let ((filename (if (equal major-mode 'dired-mode)
                       default-directory
-                    (buffer-file-name))))
+                    (or (buffer-file-name) default-directory))))
     (when filename
       (kill-new filename)
       (message "'%s'" filename))))
+
+(key-chord-define-global "kp" 'kill-path-to-clipboard)
 
 (defun kill-other-window-path-to-clipboard (count)
   "Copy the other window's path."
