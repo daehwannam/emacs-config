@@ -1,46 +1,99 @@
 
-;; http://stackoverflow.com/questions/5046597/changing-window-faster-in-emacs-or-repeating-last-shortcut-with-a-single-strike
-;(when (fboundp 'windmove-default-keybindings)
-;  (windmove-default-keybindings))
+(progn
+  ;; http://stackoverflow.com/questions/5046597/changing-window-faster-in-emacs-or-repeating-last-shortcut-with-a-single-strike
+  ;;(when (fboundp 'windmove-default-keybindings)
+  ;;  (windmove-default-keybindings))
 
-;; https://www.emacswiki.org/emacs/WindMove
-;(global-set-key (kbd "C-c <left>")  'windmove-left)
-;(global-set-key (kbd "C-c <right>") 'windmove-right)
-;(global-set-key (kbd "C-c <up>")    'windmove-up)
-;(global-set-key (kbd "C-c <down>")  'windmove-down)
+  ;; https://www.emacswiki.org/emacs/WindMove
+  ;;(global-set-key (kbd "C-c <left>")  'windmove-left)
+  ;;(global-set-key (kbd "C-c <right>") 'windmove-right)
+  ;;(global-set-key (kbd "C-c <up>")    'windmove-up)
+  ;;(global-set-key (kbd "C-c <down>")  'windmove-down)
 
 ;;; other window with repeatition
-;; http://stackoverflow.com/questions/91071/emacs-switch-to-previous-window
+  ;; http://stackoverflow.com/questions/91071/emacs-switch-to-previous-window
 
-(defun other-window-backwards () (interactive) (other-window -1))
-(defun other-frame-backwards () (interactive) (other-frame -1))
+  (defun other-window-backwards () (interactive) (other-window -1))
+  (defun other-frame-backwards () (interactive) (other-frame -1))
 
-;(load "make-repeatable-command") ;(load "~/.emacs.d/package/make-repeatable-command.el")
-(require 'make-repeatable-command)
-(global-set-key (kbd "C-x o") (make-repeatable-command 'other-window))
-(global-set-key (kbd "C-x O") (make-repeatable-command 'other-window-backwards))
-(global-set-key (kbd "C-x 5 o") (make-repeatable-command 'other-frame))
-(global-set-key (kbd "C-x 5 O") (make-repeatable-command 'other-frame-backwards))
+					;(load "make-repeatable-command") ;(load "~/.emacs.d/package/make-repeatable-command.el")
+  (require 'make-repeatable-command)
+  (progn
+   (global-set-key (kbd "C-x o") (make-repeatable-command 'other-window))
+   (global-set-key (kbd "C-x O") (make-repeatable-command 'other-window-backwards))
+   (global-set-key (kbd "C-x 5 o") (make-repeatable-command 'other-frame))
+   (global-set-key (kbd "C-x 5 O") (make-repeatable-command 'other-frame-backwards))
 
-(global-set-key (kbd "C-x ㅐ") (make-repeatable-command 'other-window))
+   (global-set-key (kbd "C-x ㅐ") (make-repeatable-command 'other-window))
 
-;; other-frame key setting
-(global-set-key (kbd "C-c o") (make-repeatable-command 'other-frame))
-(global-set-key (kbd "C-c O") (make-repeatable-command 'other-frame-backwards))
+   ;; other-frame key setting
+   (global-set-key (kbd "C-c o") (make-repeatable-command 'other-frame))
+   (global-set-key (kbd "C-c O") (make-repeatable-command 'other-frame-backwards))
 
-(global-set-key (kbd "C-c ㅐ") (make-repeatable-command 'other-frame))
+   (global-set-key (kbd "C-c ㅐ") (make-repeatable-command 'other-frame))
 
-;; make-frame-command & delete-frame key setting
-(global-set-key (kbd "C-c 0") 'delete-frame)
-(global-set-key (kbd "C-c 1") 'delete-other-frames)
-(global-set-key (kbd "C-c 2") 'make-frame-command)
+   ;; make-frame-command & delete-frame key setting
+   (global-set-key (kbd "C-c 0") 'delete-frame)
+   (global-set-key (kbd "C-c 1") 'delete-other-frames)
+   (global-set-key (kbd "C-c 2") 'make-frame-command))
 
-;; window size adjust
-(global-set-key (kbd "C-x ^") (make-repeatable-command 'enlarge-window))
-(global-set-key (kbd "C-x %") (make-repeatable-command 'shrink-window))
-(global-set-key (kbd "C-x }") (make-repeatable-command 'enlarge-window-horizontally))
-(global-set-key (kbd "C-x {") (make-repeatable-command 'shrink-window-horizontally))
+  (progn
+   ;; window size adjust
+   (global-set-key (kbd "C-x ^") (make-repeatable-command 'enlarge-window))
+   (global-set-key (kbd "C-x %") (make-repeatable-command 'shrink-window))
+   (global-set-key (kbd "C-x }") (make-repeatable-command 'enlarge-window-horizontally))
+   (global-set-key (kbd "C-x {") (make-repeatable-command 'shrink-window-horizontally))))
 
+(comment
+  (progn
+    (global-unset-key (kbd "C-x o"))
+    (global-unset-key (kbd "C-x 0"))
+    (global-unset-key (kbd "C-x 1"))
+    (global-unset-key (kbd "C-x 2"))
+    (global-unset-key (kbd "C-x 3"))
+
+    (global-unset-key (kbd "C-c o"))
+    (global-unset-key (kbd "C-c 0"))
+    (global-unset-key (kbd "C-c 1"))
+    (global-unset-key (kbd "C-c 2")))
+
+  (key-chord-define-global "j4" 'delete-window)
+  (key-chord-define-global "j1" 'delete-other-windows)
+  (key-chord-define-global "j2" 'split-window-below)
+  (key-chord-define-global "j3" 'split-window-right)
+  (progn
+    (key-chord-define-global "jx" 'other-window)
+    (key-chord-define-global "jc" 'other-window-backwards))
+  (comment
+   (key-chord-define-global "jf" 'other-window)
+   (key-chord-define-global "jd" 'other-window-backwards))
+
+  (key-chord-define-global "k4" 'delete-frame)
+  (key-chord-define-global "k1" 'delete-other-frames)
+  (key-chord-define-global "k2" 'make-frame-command)
+  (progn
+   (key-chord-define-global "kx" 'other-frame)
+   (key-chord-define-global "kc" 'other-frame-backwards))
+  (comment
+    (key-chord-define-global "kf" 'other-frame)
+    (key-chord-define-global "kd" 'other-frame-backwards)))
+
+(progn
+  (progn
+    (global-unset-key (kbd "C-x 1"))
+    (global-unset-key (kbd "C-x 2"))
+    (global-unset-key (kbd "C-x 3"))
+
+    (global-unset-key (kbd "C-c 1"))
+    (global-unset-key (kbd "C-c 2")))
+
+  (progn
+    (global-set-key (kbd "C-x 9") 'delete-other-windows)
+    (global-set-key (kbd "C-x 8") 'split-window-below)
+    (global-set-key (kbd "C-x 7") 'split-window-right)
+
+    (global-set-key (kbd "C-c 9") 'delete-other-frames)
+    (global-set-key (kbd "C-c 8") 'make-frame-command)))
 
 ;; kill buffer and delete window
 (defun kill-buffer-and-delete-window ()
@@ -246,4 +299,3 @@ Return the buffer switched to."
   (global-set-key (kbd "C-x C-}") (make-repeatable-command 'enlarge-window-horizontally))
   (global-set-key (kbd "C-x C-{") (make-repeatable-command 'shrink-window-horizontally))
   )
-

@@ -21,7 +21,18 @@
   (install-package-unless-installed 'evil)
 
   ;; Enable Evil
-  (setq evil-want-C-u-scroll t) ; https://stackoverflow.com/a/18851955
+  (progn
+    (comment
+     ;; https://stackoverflow.com/a/18851955
+     (setq evil-want-C-u-scroll t))
+    (progn
+      ;; https://stackoverflow.com/a/23715631
+      (define-key evil-normal-state-map (kbd "C-u") 'evil-scroll-up)
+      (define-key evil-visual-state-map (kbd "C-u") 'evil-scroll-up)
+      (define-key evil-insert-state-map (kbd "C-u")
+	(lambda ()
+	  (interactive)
+	  (evil-delete (point-at-bol) (point))))))
   (require 'evil)
 
   (progn

@@ -123,6 +123,11 @@
    https://stackoverflow.com/a/2575269
    - frameset-to-register: C-x r f
    - jump-to-register: C-x r j
+** Desktop mode save/load
+   save and load configuration file from a specific directory
+
+   M-x desktop-save
+   M-x desktop-change-dir
 
 * KeyChanges
 ** Windows: auto-hot key

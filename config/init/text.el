@@ -53,7 +53,7 @@
 
 (comment (global-set-key (kbd "C-x M-w") 'kill-ring-save-at-point))
 (global-set-key (kbd "M-W") 'kill-ring-save-at-point)
-(key-chord-define-global "jw" 'kill-ring-save-at-point)
+(key-chord-define-global "kw" 'kill-ring-save-at-point)
 
 
 (defun just-one-space-in-region (beg end)
@@ -80,5 +80,12 @@
       (just-one-space-in-region (region-beginning) (region-end))
     (just-one-space n)))
 
-(global-set-key (kbd "M-<SPC>") 'just-one-space-conditionally)
-
+;; (global-set-key (kbd "M-<SPC>") 'just-one-space-conditionally)
+(cl-flet ((bound-key-p (k) (when (let ((func (lookup-key (current-global-map) k)))
+				   (or (eq func 'just-one-space)
+				       (eq func 'just-one-space-conditionally)))
+			     k)))
+  (let ((k (or (bound-key-p (kbd "M-<SPC>"))
+	       (bound-key-p (kbd "M-'"))
+	       (t (error "No key for 'just-one-space is found")))))
+    (global-set-key k 'just-one-space-conditionally)))
