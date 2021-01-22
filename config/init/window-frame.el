@@ -79,7 +79,7 @@
     (key-chord-define-global "kd" 'other-frame-backwards)))
 
 (progn
-  (progn
+  (comment
     (global-unset-key (kbd "C-x 1"))
     (global-unset-key (kbd "C-x 2"))
     (global-unset-key (kbd "C-x 3"))
@@ -126,7 +126,8 @@
   (other-window 1)
   (delete-window))
 
-(global-set-key (kbd "C-x 9") 'delete-other-window)
+(comment
+ (global-set-key (kbd "C-x 9") 'delete-other-window))
 
 ;; split windows below or right
 (defun split-window-below-or-right-and-find-file (filename &optional wildcards)

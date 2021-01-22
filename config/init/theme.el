@@ -29,7 +29,9 @@
      ;; If you edit it by hand, you could mess it up, so be careful.
      ;; Your init file should contain only one such instance.
      ;; If there is more than one, they won't work right.
-     '(mode-line-buffer-id ((t (:background "grey65" :foreground "color-160" :weight bold :height 0.9))))
+     (comment '(mode-line-buffer-id ((t (:background "grey65" :foreground "color-160" :weight bold :height 0.9)))))  ; color-160 is not compatible with GUI
+     (comment '(mode-line-buffer-id ((t (:background "grey65" :foreground "red" :weight bold :height 0.9)))))
+     '(mode-line-buffer-id ((t (:background "grey65" :foreground "firebrick" :weight bold :height 0.9))))
      (set-face-foreground 'hl-line nil))
 
     (custom-set-faces
@@ -46,8 +48,8 @@
 
     ;; (custom-set-faces
     ;;  '(org-scheduled ((t (:foreground "PaleGreen")))))
-    )
-   ))
+
+    (comment (set-face-foreground 'mode-line-buffer-id "firebrick")))))
 
 
 ;; (when (require 'material-theme nil t)

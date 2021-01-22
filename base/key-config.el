@@ -1,6 +1,8 @@
 
-;; https://emacs.stackexchange.com/a/26068/26068
-(define-key key-translation-map (kbd "<SPC>") 'event-apply-control-modifier)
+(progn
+  ;; space key as ctrl
+  ;; https://emacs.stackexchange.com/a/26068/26068
+  (define-key key-translation-map (kbd "<SPC>") 'event-apply-control-modifier))
 
 (defun insert-space-command ()
   (interactive)
