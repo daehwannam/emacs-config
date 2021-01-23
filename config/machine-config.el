@@ -38,17 +38,32 @@
      (engels nil)
      )
     (installable-packages
-     (basic (vlf magit key-chord modalka evil multi-term counsel))
-     (vbox (vlf magit key-chord modalka evil  multi-term auctex latex-preview-pane material-theme elpy flycheck py-autopep8 blacken sphinx-doc workgroups2 perspective counsel iedit wgrep which-key counsel-projectile eyebrowse persp-projectile paredit markdown-mode tuareg ein hy-mode)) ; removed: highlight
-     ;; (engels (vlf magit key-chord modalka evil elpy flycheck py-autopep8 blacken wgrep which-key projectile flx-ido  eyebrowse))
-     (engels (vlf magit key-chord modalka evil  multi-term elpy flycheck py-autopep8 blacken sphinx-doc wgrep which-key counsel counsel-projectile eyebrowse markdown-mode hy-mode))
-     ;; (engels (vlf magit key-chord modalka evil elpy py-autopep8 blacken))
-     (programming (vlf magit key-chord modalka evil multi-term counsel elpy flycheck py-autopep8 blacken))
-     (ms-laptop (vlf magit key-chord modalka evil doom-modeline))
-     (ms-desktop (vlf magit key-chord modalka evil doom-modeline))
+     (basic (vlf magit key-chord modalka evil dash multi-term counsel))
+     (vbox (vlf magit key-chord modalka evil dash  multi-term auctex latex-preview-pane material-theme elpy flycheck py-autopep8 blacken sphinx-doc workgroups2 perspective counsel iedit wgrep which-key counsel-projectile eyebrowse persp-projectile paredit markdown-mode tuareg ein hy-mode)) ; removed: highlight
+     ;; (engels (vlf magit key-chord modalka evil dash elpy flycheck py-autopep8 blacken wgrep which-key projectile flx-ido  eyebrowse))
+     (engels (vlf magit key-chord modalka evil dash  multi-term elpy flycheck py-autopep8 blacken sphinx-doc wgrep which-key counsel counsel-projectile eyebrowse markdown-mode hy-mode))
+     ;; (engels (vlf magit key-chord modalka evil dash elpy py-autopep8 blacken))
+     (programming (vlf magit key-chord modalka evil dash multi-term counsel elpy flycheck py-autopep8 blacken))
+     (ms-laptop (vlf magit key-chord modalka evil dash))
+     (ms-desktop (vlf magit key-chord modalka evil dash))
+     (semparse (jsonnet-mode))
      )))
 
 ;;; emacs configuration association list
+(comment
+ (defun machine-config-get (key)
+   (car (cdr (cl-assoc machine-options (cdr (assoc key machine-config-list))
+		       :test (lambda (x y) (member y x)))))))
+
 (defun machine-config-get (key)
-  (car (cdr (cl-assoc machine-options (cdr (assoc key machine-config-list))
-		      :test (lambda (x y) (member y x))))))
+   (car (cdr (cl-assoc machine-options (cdr (assoc key machine-config-list))
+		       :test (lambda (x y) (eq (car x) y))))))
+
+(defun machine-config-get-all (key)
+  (mapcar (lambda (x) (car (cdr x)))
+	  (cl-remove-if-not (lambda (x) (member (car x) machine-options))
+			    (cdr (assoc key machine-config-list)))))
+
+(print (machine-config-get-all 'installable-packages))
+
+(assoc 'installable-packages machine-config-list)

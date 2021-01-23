@@ -108,7 +108,6 @@
 	(modalka-define-kbd-for-function "b" 'backward-char)
 	(modalka-define-kbd-for-function "e" 'move-end-of-line)
 	(modalka-define-kbd-for-function "f" 'forward-char)
-	(modalka-define-kbd "g" "C-g")
 	(modalka-define-kbd-for-function "n" 'next-line)
 	(modalka-define-kbd-for-function "p" 'previous-line)
 	(modalka-define-kbd "w" "C-w")
@@ -189,7 +188,8 @@
 	(modalka-define-kbd "M-B" "C-M-b")
 	(modalka-define-kbd "M-F" "C-M-f")
 	(modalka-define-kbd "M-N" "C-M-n")
-	(modalka-define-kbd "M-P" "C-M-p"))
+	(modalka-define-kbd "M-P" "C-M-p")
+	(modalka-define-kbd "M-|" "C-M-\\"))
 
       (progn
 	(comment
@@ -251,6 +251,9 @@
 	  (modalka-define-kbd "z 9" "C-z 9")
 	  (modalka-define-kbd "z 8" "C-z 8")))
 
+      (progn
+	(modalka-define-kbd "x +" "C-x +"))
+
       (comment
        (modalka-define-kbd "c s" "C-c s")
        (modalka-define-kbd "c x p" "C-c C-x C-p")
@@ -265,9 +268,17 @@
 	(modalka-define-kbd "c <right>" "C-c <right>"))
 
       (progn
+	(modalka-define-kbd "c R" "C-c M-r"))
+
+      (progn
 	(define-key isearch-mode-map (kbd "M-j") 'isearch-yank-word-or-char)
-	(define-key isearch-mode-map (kbd "M-f") 'isearch-repeat-forward)
-	(define-key isearch-mode-map (kbd "M-b") 'isearch-repeat-backward))
+	(comment
+	 (define-key isearch-mode-map (kbd "C-n") 'isearch-repeat-forward)
+	 (define-key isearch-mode-map (kbd "C-p") 'isearch-repeat-backward))
+	(progn
+	  (define-key isearch-mode-map (kbd "M-f") 'isearch-repeat-forward)
+	  (define-key isearch-mode-map (kbd "M-b") 'isearch-repeat-backward))
+	(define-key isearch-mode-map (kbd "M-g") 'isearch-abort))
 
       ;; turn on modalka-mode
       ;; (require 'evil)
