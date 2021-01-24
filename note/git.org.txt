@@ -9,9 +9,6 @@
    - ssh://user@server.name.ac.kr:60001/home/user/emacs.git
    - ssh://user@domain.com:61112/home/user/work/gitbackup/sp_ae.git
 
-** github example
-   https://github.com/daehwannam/emacs-config.git
-
 * git daemon
 ** references
    https://railsware.com/blog/2013/09/19/taming-the-git-daemon-to-quickly-share-git-repository/
@@ -74,3 +71,21 @@
 * git clone a specific tag
   git clone --depth 1 --branch <tag_name> <repo_url>
   ("--depth 1" is optional)
+
+* github
+** github example
+   https://github.com/daehwannam/emacs-config.git
+
+** Generating access token
+   https://jootc.com/p/201905122828
+
+   - Github login
+   - Menu button at the upper-right corner -> Settings
+   - Development setting at the bottom-left side
+   - Personal access tokens
+   - Generate new token
+     - Fill in "Note"
+       - e.g. "bash access"
+     - Check all "repo" options (or only neccessary options)
+     - Generate token
+   - Use the token instead of a password

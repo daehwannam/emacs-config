@@ -4,15 +4,18 @@
   (progn
     (key-chord-mode 1)
 
-    ;; default delay is 0.1
-    (setq key-chord-two-keys-delay 0.1)
+    (progn
+      ;; default values are 0.1 and 0.2
+      (setq key-chord-two-keys-delay 0.1)
+      (setq key-chord-one-key-delay 0.2))
 
     (progn
       (progn
 	(key-chord-define-global "xb" 'switch-to-buffer)
 	(key-chord-define-global "je" 'eval-last-sexp)
 	(key-chord-define-global "fn" 'forward-list)
-	(key-chord-define-global "fp" 'backward-list))
+	(key-chord-define-global "fp" 'backward-lisggt)
+	(key-chord-define-global "kk" (kbd "C-g")))
       (comment
        (key-chord-define-global "xo" 'other-window-repeat)
        (key-chord-define-global "xs" 'save-buffer))
