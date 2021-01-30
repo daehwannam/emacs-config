@@ -1,14 +1,21 @@
 # comment after pattern is not allowed.
 
-# ignore some directories
+# ignore all files  with specific names (including directories)
+temp
+
+# ignore all directories with specific names
 data/
 model/
 result/
+cache/
+
+# ignore a directory with an exact path
 src/exercise/
 
-# train.py, extract.py copies
-_cp_*.py
-_training_*.py
+# special file names (including directories)
+_cp_*
+_training_*
+_tmp_*
 
 # visualization
 src/visualization/*.txt

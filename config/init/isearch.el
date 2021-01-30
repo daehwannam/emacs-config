@@ -1,5 +1,5 @@
 
-(progn
+(comment
   (define-key isearch-mode-map (kbd "M-j") 'isearch-yank-word-or-char)
   (comment
    (define-key isearch-mode-map (kbd "C-n") 'isearch-repeat-forward)

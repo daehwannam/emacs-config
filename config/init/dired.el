@@ -62,7 +62,7 @@
       (kill-new filename)
       (message "'%s'" filename))))
 
-(key-chord-define-global "kp" 'kill-path-to-clipboard)
+(key-chord-define-global "wp" 'kill-path-to-clipboard)
 
 (defun kill-other-window-path-to-clipboard (count)
   "Copy the other window's path."
