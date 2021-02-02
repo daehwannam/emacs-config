@@ -45,10 +45,21 @@
 #      - lots rare unicode characters in buffer makes emacs slow.
 
 * Emacs Lisp
+** Key binding to function
+   https://stackoverflow.com/a/15647443
 ** Code Characters for interactive
    https://www.gnu.org/software/emacs/manual/html_node/elisp/Interactive-Codes.html#Interactive-Codes
 ** Exception handling
    https://curiousprogrammer.wordpress.com/2009/06/08/error-handling-in-emacs-lisp/
+** Debug with Edebug
+   https://www.gnu.org/software/emacs/manual/html_node/elisp/Edebug.html
+*** eval-defun (C-M-x)
+    - move cursor after a function call (or a s-expression)
+    - type C-M-x, then debugger starts inside the function
+    - or type C-u C-M-x, then debugger starts from the s-expression, rather then inside the function
+*** edebug-all-defs
+    - M-x edebug-all-defs toggles the value of the variable edebug-all-defs
+    - when edebug-all-defs is true, you can debug an interactive command by M-x some-command
 
 * Install Emacs
 ** Emacs 25

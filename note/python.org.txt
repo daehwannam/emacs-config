@@ -13,6 +13,12 @@
   if you don't want to make backup files:
   $ 2to3 -wn example.py [or directory]
 
+* typing
+** traverse types
+   - typing.get_origin
+   - typing.get_args
+   https://stackoverflow.com/questions/38703556/unpacking-pythons-type-annotations
+
 * Hy language
 ** emacs hy-mode
    https://github.com/hylang/hy-mode
@@ -89,6 +95,8 @@
    - install specified version
      $ python -m pip install stanfordnlp==0.2.0
 ** setup
+   - install from a local directory
+     $ pip install /path/to/directory
    - setup with editable
      https://stackoverflow.com/a/35064498
      https://stackoverflow.com/questions/15031694/installing-python-packages-from-local-file-system-folder-to-virtualenv-with-pip/20043907#20043907
