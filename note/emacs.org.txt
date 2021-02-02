@@ -17,10 +17,6 @@
     It changes the default character set.
 ** Removing dependencies
    M-x package-autoremove
-** Dired mode Compression commands
-   https://emacs.stackexchange.com/questions/20833/how-to-deal-with-zip-archives-in-dired
-   - dired-do-compress: Z
-   - dired-do-compress-to: c
 ** rectangle-mark-mode
    https://stackoverflow.com/a/25068794
 ** Finding files depending of old cl package
@@ -30,6 +26,10 @@
 ** Find files by names
    https://emacs.stackexchange.com/a/29001/26068
    M-x find-name-dired  ; requires regex such as "*some-file*" (a file name containing "some-file")
+
+* My command
+** xah-open-in-external-app
+   it opens a file with an external program within dired-mode.
 
 * Customize
 ** Change text colors with describe-char
@@ -116,6 +116,10 @@
 *** wdired-mode
     https://stackoverflow.com/a/49472114
     wdired-change-to-wdired-mode can change symbol link.
+*** dired-mode compression commands
+    https://emacs.stackexchange.com/questions/20833/how-to-deal-with-zip-archives-in-dired
+    - dired-do-compress: Z
+    - dired-do-compress-to: c
 ** Tramp
 *** Remote
     C-x C-f /ssh:you@remotehost:/home/user/file

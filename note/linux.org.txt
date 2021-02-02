@@ -198,6 +198,13 @@
    - mkdir "all directories in the path" when "directories don't exist"
      $ mkdir -p some/path/to/a/directory
 
+** xdg-open
+   This is a command for GUI.
+   xdg-open - opens a file or URL in the user's preferred application
+
+   e.g.
+   $ xdg-open "example.pdf"
+
 * pskill
   https://stackoverflow.com/a/27820938
   $ pkill -f python
