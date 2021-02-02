@@ -9,7 +9,7 @@
       (setq key-chord-two-keys-delay 0.1)
       (setq key-chord-one-key-delay 0.2))
 
-    (progn
+    (comment
       (progn
 	(key-chord-define-global "xb" 'switch-to-buffer)
 	(key-chord-define-global "je" 'eval-last-sexp)
