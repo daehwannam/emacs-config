@@ -341,3 +341,9 @@
    $ CUDA_DEVICE_ORDER=PCI_BUS_ID CUDA_VISIBLE_DEVICES= python main.py  # no gpu
    $ CUDA_DEVICE_ORDER=PCI_BUS_ID CUDA_VISIBLE_DEVICES=1 python main.py  # gpu #1
    $ CUDA_DEVICE_ORDER=PCI_BUS_ID CUDA_VISIBLE_DEVICES=0,2 python main.py  # gpu #0 #2
+
+** gpustat
+   - Install
+     $ conda install -c conda-forge gpustat
+   - Show GPU usage with users and process IDs
+
