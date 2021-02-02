@@ -32,7 +32,7 @@
 	  (eyebrowse--delete-window-config (car config))))))
 
   (custom-set-faces
-    '(eyebrowse-mode-line-active ((t (:inherit mode-line-emphasis :foreground "color-160")))))
+    '(eyebrowse-mode-line-active ((t (:inherit mode-line-emphasis :foreground "firebrick")))))
 
   (comment
    (custom-set-faces
