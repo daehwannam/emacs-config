@@ -30,8 +30,19 @@
 
 ** arguments to array
    https://stackoverflow.com/a/12711853
-
    $ myArray=("$@")
+
+** adding custom commands
+   https://unix.stackexchange.com/a/84694
+   - make a directory that contains command scripts or executables
+     $ mkdir ~/command
+   - update ~/.bashrc
+     $ export PATH="$HOME/command:$PATH"
+
+     In this case, commands in "$HOME/command" have higher priorities.
+     If you want them to have lower priorities:
+
+     $ export PATH="$PATH:$HOME/command"
 
 * Configuration of ~/.bashrc
   # added by Anaconda3 4.4.0 installer
@@ -177,6 +188,10 @@
      $ chmod u+x ./path/to/file
    - change to an executable for all the users (recommended)
      $ chmod a+x ./path/to/file
+   - you may need shebang(#!) at the top line to indicate a program to run the script
+     e.g. #!/bin/bash
+     e.g. #!/home/user/program/miniconda3/envs/default/bin/python
+     CAUTION: no space is needed between shebang and the program path
 
 ** lscpu
    show cpu information

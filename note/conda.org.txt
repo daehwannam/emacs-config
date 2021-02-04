@@ -1,11 +1,22 @@
 
-* Install
+* (old) Install conda
    - run bash Anaconda-latest-Linux-x86_64.sh
      - install location: /home/dhnam/program/anaconda3
    - append the following to .bashrc
      : export PATH="/home/dhnam/program/anaconda3/bin:$PATH"
 #    - or, ad conda env bin path to .bashrc
 #      : export PATH="/home/dhnam/program/anaconda3/envs/default/bin:$PATH"
+
+* Install conda
+   - Run bash Anaconda-latest-Linux-x86_64.sh
+     - install location: /home/dhnam/program/anaconda3
+   - "Do you wish the installer to initialize Miniconda3 by running conda init?"
+     ==> yes
+   - Make the default environment
+     $ conda create -n default python=3
+   - Update ~/.bashrc to replace "base" with "default"
+
+* Install
    - install pip
      https://stackoverflow.com/questions/41060382/using-pip-to-install-packages-to-anaconda-environment
      $ conda install pip
