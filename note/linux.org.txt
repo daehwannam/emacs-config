@@ -137,10 +137,13 @@
 
 * General commands
 ** scp example
-   $ scp -P 60001 user@domain.name.com:/home/user/some_file ./copied_file
-
-   - '-P' indicate port number
-   - directory cannot be copied
+   - with port number
+     $ scp -P 60001 user@domain.name.com:/home/user/some_file ./copied_file
+     - '-P' indicate port number
+     - directory cannot be copied
+   - copy recursively
+     scp -r ./source_directory user@domain.name.com:/home/user/some_directory/
+     scp -r ./source_directory user@domain.name.com:/home/user/some_directory/target_directory
 
 ** ps
    - list all options

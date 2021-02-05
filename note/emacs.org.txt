@@ -60,6 +60,17 @@
 *** edebug-all-defs
     - M-x edebug-all-defs toggles the value of the variable edebug-all-defs
     - when edebug-all-defs is true, you can debug an interactive command by M-x some-command
+** See running processes
+*** emacs internal processes
+    https://emacs.stackexchange.com/a/28066
+    M-x list-processes
+*** list system processes
+    https://emacs.stackexchange.com/a/48285
+    M-x proced
+** Async-shell-command shell command
+   M-x async-shell-command
+   or
+   M-&
 
 * Install Emacs
 ** Emacs 25
@@ -134,6 +145,10 @@
 ** Tramp
 *** Remote
     C-x C-f /ssh:you@remotehost:/home/user/file
+*** SCP rather than ssh
+    https://emacs.stackexchange.com/a/13802
+    C-x C-f /scp:you@remotehost:/home/user/file
+    This use ssh when file size is small and scp when file size is large
 *** Sudo
     C-x C-f /sudo::/home/user/file
 *** Multi-hop
