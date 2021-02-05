@@ -354,3 +354,5 @@
      $ conda install -c conda-forge gpustat
    - Show GPU usage with users and process IDs
 
+** monitoring GPUs of remote servers
+   https://github.com/mseitzer/gpu-monitor
