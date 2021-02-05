@@ -41,6 +41,34 @@
     '(mode-line-buffer-id ((t (:background "grey65" :foreground "firebrick" :weight bold :height 0.9))))))
 
   (progn
+    (defun flash-mode-line-by-inversion ()
+      (invert-face 'mode-line)
+      (run-with-timer 0.1 nil #'invert-face 'mode-line))
+
+    (defun multiple-flash-mode-line-by-inversion ()
+      ;; https://www.emacswiki.org/emacs/AlarmBell
+      (let ((flash-sec (/ 1.0 20)))
+	(invert-face 'mode-line)
+	(run-with-timer flash-sec nil #'invert-face 'mode-line)
+	(run-with-timer (* 2 flash-sec) nil #'invert-face 'mode-line)
+	(run-with-timer (* 3 flash-sec) nil #'invert-face 'mode-line)
+	(run-with-timer (* 4 flash-sec) nil #'invert-face 'mode-line)
+	(run-with-timer (* 5 flash-sec) nil #'invert-face 'mode-line)))
+
+    (defun eyebrowse-create-window-config-advice (orig-fun &rest args)
+      (apply orig-fun args)
+      (delete-other-windows)
+      (flash-mode-line-by-inversion))
+
+    (advice-add 'eyebrowse-create-window-config :around #'eyebrowse-create-window-config-advice)
+
+    (defun eyebrowse-close-all-but-current-advice (orig-fun &rest args)
+      (apply orig-fun args)
+      (multiple-flash-mode-line-by-inversion))
+
+    (advice-add 'eyebrowse-close-all-but-current :around #'eyebrowse-close-all-but-current-advice))
+
+  (progn
     (progn
       ;; (define-key eyebrowse-mode-map (kbd "C-z c") 'eyebrowse-create-window-config)
       ;; (define-key eyebrowse-mode-map (kbd "C-z O") (make-repeatable-command 'eyebrowse-prev-window-config))

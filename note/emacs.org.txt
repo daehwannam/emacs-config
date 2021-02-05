@@ -105,6 +105,17 @@
     - M-x calendar
     - org-calendar-goto-agenda: type "c"
       https://emacs.stackexchange.com/questions/29632/org-mode-calendar-integration
+*** LaTeX
+**** org-latex-preview
+     https://orgmode.org/manual/Previewing-LaTeX-fragments.html#Previewing-LaTeX-fragments
+     C-c C-x C-l (org-latex-preview)
+***** changing equation font size
+      https://emacs.stackexchange.com/a/19881
+      - M-x customize
+      - Search "org-format"
+      - Enter "Org Format Latex Options"
+      - Change the value of "scale"
+	e.g. 1.0 --> 1.5
 ** Link
    https://orgmode.org/manual/Handling-links.html
    - C-c l     (org-store-link)
