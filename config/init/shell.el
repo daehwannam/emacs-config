@@ -15,16 +15,71 @@
 
 (global-set-key (kbd "C-c M-!") 'sudo-shell-command)
 
-
-
-(comment
+(progn
   ;; open a shell in the current window.
-  ;; https://stackoverflow.com/a/46122387
-  (push (cons "\\*shell\\*" display-buffer--same-window-action) display-buffer-alist)
+  (comment
+   ;; https://stackoverflow.com/a/46122387
+   ;; WARNING: this change the behavior of 'pdbtrace, so pdbtrace doesn't show the indicated source code
+   (push (cons "\\*shell\\*" display-buffer--same-window-action) display-buffer-alist))
 
-  ;; WARNING: this change the behavior of 'pdbtrace, so pdbtrace doesn't show the indicated source code
-  )
+  (progn
+    ;; [WARNING]
+    ;; The first call of command 'other-window-repeat may not work after a shell is created
+    ;; (Also, other commands made by 'make-repeatable-command dont' work)
+    ;; It's because of the prifix argument (C-u), whose value is 4 as default.
+    ;; So, other-window-repeat repeats 4 times.
+    (add-to-list 'display-buffer-alist
+		 '("\\*shell\\*" . (display-buffer-same-window)))
+    (comment
+     ;; [THIS CODE IS NOT WORKING]
+     ;; trick to consume the prefix argument by advice
+     (defun shell-same-window-advice (orig-fun &rest args)
+       (apply orig-fun args)
+       (universal-argument-more 1))
 
+     (advice-add 'shell :around #'shell-same-window-advice)))
+
+  (comment
+   (defun shell-same-window-advice (orig-fun &rest args)
+     (let ((prev-window (selected-window))
+	   (num-windows (count-windows)))
+       (apply orig-fun args)
+       (when (not (equal (count-windows) num-windows))
+	 (delete-window))
+       (let ((shell-buffer (current-buffer)))
+	 (previous-buffer)
+	 (select-window prev-window)
+	 (switch-to-buffer shell-buffer))))
+
+   (advice-add 'shell :around #'shell-same-window-advice))
+
+  (comment
+   ;; below link contains a more general method which is applied without matching buffer names
+   ;; https://stackoverflow.com/a/40351851/6710003
+   )
+
+  (comment
+   (defun shell-same-window-advice (orig-fun &rest args)
+     (split-window-right)
+     (apply orig-fun args)
+     (other-window -1)
+     (delete-window)
+     (other-window 1))
+
+   (advice-add 'shell :around #'shell-same-window-advice))
+
+  (comment
+   ;; another option is replacing 'pop-to-buffer with 'pop-to-buffer-same-window in 'shell
+   ;; however, it has the same problem with prefix argument
+   (comment
+    (defun shell (...)
+      ...
+      (progn
+	;; [dhnam]
+	;; shell is oppend in the current window 
+	(comment (pop-to-buffer buffer))
+	(pop-to-buffer-same-window buffer))
+      ...))))
 
 ;;; shell for virtual env or conda
 ;;
