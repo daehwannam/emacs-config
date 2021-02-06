@@ -14,7 +14,7 @@
 	(key-chord-define-global "xb" 'switch-to-buffer)
 	(key-chord-define-global "je" 'eval-last-sexp)
 	(key-chord-define-global "fn" 'forward-list)
-	(key-chord-define-global "fp" 'backward-lisggt)
+	(key-chord-define-global "fp" 'backward-list)
 	(key-chord-define-global "kk" (kbd "C-g")))
       (comment
        (key-chord-define-global "xo" 'other-window-repeat)

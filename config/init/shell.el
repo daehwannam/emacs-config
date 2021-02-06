@@ -168,12 +168,14 @@
   (comint-send-input))
 
 (progn
+  (key-chord-define shell-mode-map "fp" 'comint-previous-matching-input-from-input)
+  (key-chord-define shell-mode-map "fn" 'comint-next-matching-input-from-input))
+
+(progn
   (define-key compilation-shell-minor-mode-map (kbd "C-M-]") 'compilation-next-error)
   (define-key compilation-shell-minor-mode-map (kbd "C-M-[") 'compilation-previous-error)
   (define-key compilation-shell-minor-mode-map (kbd "C-M-n") 'forward-list)
-  (define-key compilation-shell-minor-mode-map (kbd "C-M-p") 'backward-list)
-  (key-chord-define compilation-shell-minor-mode-map "fp" 'comint-previous-matching-input-from-input)
-  (key-chord-define compilation-shell-minor-mode-map "fn" 'comint-next-matching-input-from-input))
+  (define-key compilation-shell-minor-mode-map (kbd "C-M-p") 'backward-list))
 
 (progn
   (defun comint-previous-input-or-compilation-previous-error (arg)
