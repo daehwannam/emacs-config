@@ -206,3 +206,20 @@ print("hello world")
     1. Find the script file, select it, and press Control+C.
     2. Press Win+R to open the Run dialog, then enter shell:startup and click OK or Enter. This will open the Startup folder for the current user. To instead open the folder for all users, enter shell:common startup (however, in that case you must be an administrator to proceed).
     3. Right click inside the window, and click "Paste Shortcut". The shortcut to the script should now be in the Startup folder.
+
+* Bug fix
+** Server socket permission denied
+   https://github.com/magit/with-editor/issues/7#issuecomment-548822576
+
+   When you encounter a message like "Creating directory: Permission
+   denied, /run/user/1001", You need to change 'server-socket-dir.
+
+   (I saw the bug when I use magit operations, where the linux account
+   doesn't have root privilege)
+
+   #+begin_src elisp
+(setq
+ server-name "emacs"
+ ;; default server-socket-dir is (getenv "XDG_RUNTIME_DIR")
+ server-socket-dir "/home/user-account/emacs-server-socket")
+   #+end_src
