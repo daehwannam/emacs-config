@@ -1,0 +1,33 @@
+
+(when (fboundp 'tab-bar-mode)
+  (require 'make-repeatable-command)
+  (defun tab-bar-move-tab-reverse (&optional arg)
+    (interactive "p")
+    (tab-bar-move-tab (- (or arg 1))))
+    
+  (progn
+    (define-key tab-prefix-map "8" 'tab-new)
+    (define-key tab-prefix-map "9" 'tab-close-other)
+    (define-key tab-prefix-map "o" (make-repeatable-command 'tab-next))
+    (define-key tab-prefix-map "O" (make-repeatable-command 'tab-previous))
+    (define-key tab-prefix-map "m" (make-repeatable-command 'tab-bar-move-tab))
+    (define-key tab-prefix-map "M" (make-repeatable-command 'tab-bar-move-tab-reverse)))
+
+  ;; Default tab-bar-mode key map
+  ;;
+  ;; (comment
+  ;;  (define-key tab-prefix-map "2" 'tab-new)
+  ;;  (define-key tab-prefix-map "1" 'tab-close-other)
+  ;;  (define-key tab-prefix-map "0" 'tab-close)
+  ;;  (define-key tab-prefix-map "o" 'tab-next)
+  ;;  (define-key tab-prefix-map "m" 'tab-move)
+  ;;  (define-key tab-prefix-map "r" 'tab-rename)
+  ;;  (define-key tab-prefix-map "\r" 'tab-bar-select-tab-by-name)
+  ;;  (define-key tab-prefix-map "b" 'switch-to-buffer-other-tab)
+  ;;  (define-key tab-prefix-map "f" 'find-file-other-tab)
+  ;;  (define-key tab-prefix-map "\C-f" 'find-file-other-tab))
+
+  (fset 'tab-prefix-map tab-prefix-map)
+  (define-key global-map (kbd "C-z") 'tab-prefix-map)
+
+  (tab-bar-mode))

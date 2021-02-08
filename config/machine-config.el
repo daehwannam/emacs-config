@@ -39,13 +39,13 @@
      )
     (installable-packages
      (basic (vlf magit key-chord modalka evil dash multi-term counsel))
-     (vbox (vlf magit key-chord modalka evil dash  multi-term auctex latex-preview-pane material-theme elpy flycheck py-autopep8 blacken sphinx-doc workgroups2 perspective counsel iedit wgrep which-key counsel-projectile eyebrowse persp-projectile paredit markdown-mode tuareg ein hy-mode)) ; removed: highlight
-     ;; (engels (vlf magit key-chord modalka evil dash elpy flycheck py-autopep8 blacken wgrep which-key projectile flx-ido  eyebrowse))
-     (engels (vlf magit key-chord modalka evil dash  multi-term elpy flycheck py-autopep8 blacken sphinx-doc wgrep which-key counsel counsel-projectile eyebrowse markdown-mode hy-mode))
+     (vbox (vlf magit key-chord modalka evil dash  multi-term auctex latex-preview-pane material-theme elpy flycheck py-autopep8 blacken sphinx-doc workgroups2 perspective counsel iedit wgrep which-key counsel-projectile persp-projectile paredit markdown-mode tuareg ein hy-mode)) ; removed: highlight
+     ;; (engels (vlf magit key-chord modalka evil dash elpy flycheck py-autopep8 blacken wgrep which-key projectile flx-ido))
+     (engels (vlf magit key-chord modalka evil dash  multi-term elpy flycheck py-autopep8 blacken sphinx-doc wgrep which-key counsel counsel-projectile markdown-mode hy-mode))
      ;; (engels (vlf magit key-chord modalka evil dash elpy py-autopep8 blacken))
      (programming (vlf magit key-chord modalka evil dash multi-term counsel elpy flycheck py-autopep8 blacken))
-     (ms-laptop (vlf magit key-chord modalka evil dash eyebrowse))
-     (ms-desktop (vlf magit key-chord modalka evil dash eyebrowse))
+     (ms-laptop (vlf magit key-chord modalka evil dash))
+     (ms-desktop (vlf magit key-chord modalka evil dash))
      (semparse (jsonnet-mode))
      )))
 
