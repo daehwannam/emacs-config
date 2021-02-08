@@ -19,9 +19,11 @@
       (comment
        (key-chord-define-global "xo" 'other-window-repeat)
        (key-chord-define-global "xs" 'save-buffer))
-      ))
+      )
 
-  (comment
-   (when (require 'space-chord nil t)
-     ;; keyboard-quit is not working
-     (comment (space-chord-define-global "g" 'keyboard-quit)))))
+    (comment
+     (when (require 'space-chord nil t)
+       ;; keyboard-quit is not working
+       (comment (space-chord-define-global "g" 'keyboard-quit)))))
+  :config
+  (key-chord-mode t))

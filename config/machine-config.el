@@ -5,7 +5,7 @@
   ;; https://stackoverflow.com/questions/14071991/how-to-create-an-empty-file-by-elisp/14072295
   ;;
   ;; options are sorted in descending order of priority
-  (write-region "(default-machine option1 option2)" nil "~/.emacs.d/config/options.txt"))
+  (write-region "(basic other-machine option1 option2)" nil "~/.emacs.d/config/options.txt"))
 (defvar machine-options (car (read-from-string (get-string-from-file "~/.emacs.d/config/options.txt"))))
 
 (defvar machine-config-list)
