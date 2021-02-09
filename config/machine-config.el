@@ -16,7 +16,7 @@
     (path-to-inferior-lisp-program (vbox "/usr/bin/sbcl"))
     (etags-list (vbox ("/usr/share/emacs/25.3/lisp" "~/.emacs.d")))
     (org-agenda-directory-pattern
-     (ms ("e:/data/Dropbox/org/schedule/" ".*\\.org\\(\\.txt\\)?$"))
+     (ms-desktop ("e:/data/Dropbox/org/schedule/" ".*\\.org\\(\\.txt\\)?$"))
      (vbox ("~/data/Dropbox/org/schedule/" ".*\\.org\\(\\.txt\\)?$")))
     (pyvenv-workon-home-path
      (hegel "~/bin/anaconda2/envs/")
