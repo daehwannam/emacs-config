@@ -26,6 +26,14 @@
 ** Find files by names
    https://emacs.stackexchange.com/a/29001/26068
    M-x find-name-dired  ; requires regex such as "*some-file*" (a file name containing "some-file")
+** GUI emacs font size change (text-scale-adjust)
+   - increase font size
+     - C-x C-=
+     - C-x C-+p
+   - decrease font size
+     - C-x C--
+   - set to default font size
+     - C-x C-0
 
 * My command
 ** xah-open-in-external-app
