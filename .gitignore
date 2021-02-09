@@ -16,6 +16,9 @@
 config/options.txt
 config/custom/custom.el
 
+# ignore temporary files
+_tmp_*
+
 # include special directories (that include .gitkeep)
 config/bin/*
 config/bin/*/

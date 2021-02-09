@@ -136,6 +136,22 @@
    $ sudo service ssh restart
 
 * General commands
+** ls
+*** Explanation for "ls -l"
+   - drwxrwxrwx
+     - d : "d"->directory / "-"->file / "l"->link
+     - r : read permission
+     - w : write permission
+     - x : execution permission
+     - 1st rwx : owner permission
+     - 2nd rwx : group permission
+     - 3rd rwx : other permission
+
+   - Permission change examples:
+     $ chmod 755 file-name
+     $ chmod 711 file-name
+     $ chmod 777 file-name
+
 ** scp example
    - with port number
      $ scp -P 60001 user@domain.name.com:/home/user/some_file ./copied_file
