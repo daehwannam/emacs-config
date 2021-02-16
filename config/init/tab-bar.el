@@ -6,8 +6,16 @@
     (tab-bar-move-tab (- (or arg 1))))
 
   (progn
+    (define-key tab-prefix-map "8" 'tab-new)
+    (define-key tab-prefix-map "9" 'tab-close-other)
+    (define-key tab-prefix-map "o" (make-repeatable-command 'tab-next))
+    (define-key tab-prefix-map "O" (make-repeatable-command 'tab-previous))
+    (define-key tab-prefix-map "m" (make-repeatable-command 'tab-bar-move-tab))
+    (define-key tab-prefix-map "M" (make-repeatable-command 'tab-bar-move-tab-reverse)))
+
+  (progn
     ;; advice for tab-next and tab-previous
-    (defun tab-bar-switch-to-next-tab-advice (orig-fun &rest args)
+    (defun tab-bar-redisplay-advice (orig-fun &rest args)
       (apply orig-fun args)
       (progn
 	;; to fix the problem of disappeared text with vertical
@@ -15,23 +23,21 @@
 	;; tab-previous in emacs terminal mode
 	;;
 	;; https://emacs.stackexchange.com/a/29226
-	(let ((seconds 0.01))
-	  ;; delayed command execution
-	  (run-with-timer seconds nil #'force-mode-line-update 't))
+	(progn
+	  (let ((seconds 0.01))
+	    ;; delayed command execution
+	    (run-with-timer seconds nil #'force-mode-line-update 't)
+	    (comment (run-with-timer seconds nil
+				     (lambda () (dotimes (number (count-windows)) (other-window 1)))))))
 	(comment (force-mode-line-update t))
 	(comment
 	 (dotimes (number (count-windows))
 	   (other-window 1)))))
 
-    (advice-add 'tab-bar-switch-to-next-tab :around #'tab-bar-switch-to-next-tab-advice))
-    
-  (progn
-    (define-key tab-prefix-map "8" 'tab-new)
-    (define-key tab-prefix-map "9" 'tab-close-other)
-    (define-key tab-prefix-map "o" (make-repeatable-command 'tab-next))
-    (define-key tab-prefix-map "O" (make-repeatable-command 'tab-previous))
-    (define-key tab-prefix-map "m" (make-repeatable-command 'tab-bar-move-tab))
-    (define-key tab-prefix-map "M" (make-repeatable-command 'tab-bar-move-tab-reverse)))
+    (comment (dolist (tab-bar-func '(tab-new tab-close tab-close-other tab-next tab-previous)) ...))
+    (comment (dolist (tab-bar-func '(tab-bar-new-tab tab-bar-close-tab tab-bar-close-other-tabs tab-bar-switch-to-next-tab))))
+    (dolist (tab-bar-func '(tab-new tab-close tab-close-other tab-next tab-previous))
+      (advice-add tab-bar-func :around #'tab-bar-redisplay-advice)))
 
   ;; Default tab-bar-mode key map
   ;;
