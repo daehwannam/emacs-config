@@ -44,6 +44,7 @@
      (engels (vlf magit key-chord modalka evil dash  multi-term elpy flycheck py-autopep8 blacken sphinx-doc wgrep which-key counsel counsel-projectile markdown-mode hy-mode))
      ;; (engels (vlf magit key-chord modalka evil dash elpy py-autopep8 blacken))
      (programming (vlf magit key-chord modalka evil dash multi-term counsel elpy flycheck py-autopep8 blacken))
+     (lsp-setup (lsp-mode lsp-ui flycheck company-mode lsp-treemacs lsp-ivy dap-mode))
      (ms-laptop (vlf magit key-chord modalka evil dash))
      (ms-desktop (vlf magit key-chord modalka evil dash))
      (semparse (jsonnet-mode))

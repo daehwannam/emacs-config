@@ -31,7 +31,12 @@
 	    (comment (assert (eq default-elpy-rpc-virtualenv-path 'default)))
 	    (setq elpy-rpc-virtualenv-path
 		  (or (machine-config-get 'elpy-rpc-virtualenv-path)
-		      (joindirs pyvenv-workon-home-path elpy-rpc-virtualenv-name)))))))
+		      (joindirs pyvenv-workon-home-path elpy-rpc-virtualenv-name)))))
+	(comment
+	 ;; use the current virtual environment as RPC server
+	 ;; https://github.com/jorgenschaefer/elpy/issues/1878#issuecomment-761518001
+	 ;; (this code is not tested yet)
+	 (setq elpy-rpc-virtualenv-path 'current))))
 
     (when (machine-config-get 'pyvenv-name)
       (pyvenv-workon (machine-config-get 'pyvenv-name))) ; use "M-x pyvenv-deactivate" to deactivate
