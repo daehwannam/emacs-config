@@ -14,7 +14,7 @@
   (require 'directory-files-recursive)
 
 
-  (define-key global-map "\C-cl" 'org-store-link)
+  (comment (define-key global-map "\C-cl" 'org-store-link))
   (define-key global-map "\C-ca" 'org-agenda)
   (setq org-log-done t)
 

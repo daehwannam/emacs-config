@@ -1,8 +1,14 @@
 
 (use-existing-pkg lsp-mode
   :init
-  ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
-  (setq lsp-keymap-prefix "c l")
+  (progn
+    ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
+    (setq lsp-keymap-prefix "C-c l")
+    (comment
+     (fset 'lsp-command-map lsp-command-map)
+     (key-chord-define-global "cl" 'lsp-command-map))
+    (comment (setq lsp-auto-guess-root t))
+    (setq lsp-log-io nil))
   :hook (;; list 'XXX-mode paired with 'lsp or 'lsp-deferred
 	 ;; 'lsp-deferred is for deferring LSP server startup until the buffer is visible
          (python-mode . lsp-deferred)

@@ -5,7 +5,7 @@
   ;; https://stackoverflow.com/questions/14071991/how-to-create-an-empty-file-by-elisp/14072295
   ;;
   ;; options are sorted in descending order of priority
-  (write-region "(basic other-machine option1 option2)" nil "~/.emacs.d/config/options.txt"))
+  (write-region "(base other-machine option1 option2)" nil "~/.emacs.d/config/options.txt"))
 (defvar machine-options (car (read-from-string (get-string-from-file "~/.emacs.d/config/options.txt"))))
 
 (defvar machine-config-list)
@@ -38,13 +38,14 @@
      (engels nil)
      )
     (installable-packages
+     (base (vlf magit key-chord modalka evil avy hydra dash counsel multi-term))
      (basic (vlf magit key-chord modalka evil dash multi-term counsel))
      (vbox (vlf magit key-chord modalka evil dash  multi-term auctex latex-preview-pane material-theme elpy flycheck py-autopep8 blacken sphinx-doc workgroups2 perspective counsel iedit wgrep which-key counsel-projectile persp-projectile paredit markdown-mode tuareg ein hy-mode)) ; removed: highlight
      ;; (engels (vlf magit key-chord modalka evil dash elpy flycheck py-autopep8 blacken wgrep which-key projectile flx-ido))
      (engels (vlf magit key-chord modalka evil dash  multi-term elpy flycheck py-autopep8 blacken sphinx-doc wgrep which-key counsel counsel-projectile markdown-mode hy-mode))
      ;; (engels (vlf magit key-chord modalka evil dash elpy py-autopep8 blacken))
      (programming (vlf magit key-chord modalka evil dash multi-term counsel elpy flycheck py-autopep8 blacken))
-     (lsp-setup (lsp-mode lsp-ui flycheck company-mode lsp-treemacs lsp-ivy dap-mode))
+     (lsp-setup (lsp-mode lsp-ui flycheck company lsp-treemacs lsp-ivy dap-mode))
      (ms-laptop (vlf magit key-chord modalka evil dash))
      (ms-desktop (vlf magit key-chord modalka evil dash))
      (semparse (jsonnet-mode))

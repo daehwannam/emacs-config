@@ -203,7 +203,9 @@ print("hello world")
 
    M-x desktop-save
    M-x desktop-change-dir
-
+** Hydra
+   - examples:
+     https://github.com/abo-abo/hydra/wiki/Emacs
 * KeyChanges
 ** Windows: auto-hot key
    $Ctrl::CapsLock

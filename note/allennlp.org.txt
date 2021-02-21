@@ -1,95 +1,100 @@
 
-* Vocabulary
-  - Vocabulary has several namespaces
-  - for each namespace, it has information of relationships between tokens and indices
+* Abstract Classes
+** Vocabulary
+   - Vocabulary has several namespaces
+   - for each namespace, it has information of relationships between tokens and indices
+** TokenIndexer
+   - its namespace corresponds to that of Vocabulary
+   - the results of indexing tokens can be complex dictionary
+     e.g. the output of PretrainedTransformerIndexer include
+          - token_ids
+          - mask
+          - type_ids
+** token_indexers: Dict[str, TokenIndexer] and its keys
+   token_indexers is a dictionary of pairs whose key is a name and value is an indexer
+*** with Field.get_padding_lengths
+    token_indexers' key is used by Field.get_padding_lengths such as TextField.get_padding_lengths
+    - TextField.get_padding_lengths
+      The key of padding_lengths is combination of keys of token_indexers and TextField._indexed_tokens,
+      where the latter is always "tokens" when Field._indexed_tokens made by SingleIdTokenIndexer.tokens_to_indices in Field.index ("tokens" is hard-coded in SingleIdTokenIndexer.tokens_to_indices).
+*** with TextFieldEmbedder
+    token_indexers' key is used by TextFieldEmbedder such as BasicTextFieldEmbedder
+    - token_indexers: pairs of indexer names and TokenIndexers
+    - TextFieldEmbedder: pairs of indexer names and TokenEmbedders
+** Field.as_tensor
+   it returns a nested dictionary that has the same keys of padding_lengths returned by Field.get_padding_lengths
+** TextField vs. LabelField
+   TextField and LabelField use different implementations of 'batch_tensors'
+   LabelField inherits 'batch_tensors' from Field, so it directly returns 'torch.tensor'
+** FromParam
+   https://guide.allennlp.org/using-config-files#4
+   https://docs.allennlp.org/main/api/models/model/#model-objects
+   documentaion of some class, such as Model or Trainer, describes which argument should not get an "entry" in configuration file
+   e.g. Model.vocab should not get an entry of a configuration file
+** Registrable.register and Lazy
+   when a constructor with Lazy type annotation is registered by "Registrable.register", the object can be created with some complex process
+** Early importing Registerable classes
+   https://guide.allennlp.org/using-config-files#7
+   - argument "--include-package"
+   - file ".allennlp_plugins"
+* Modules
+** Elmo
+   - any tokenizer can be used (such as WhitespaceTokenizer), but the same tokenizer used for pre-training is the best.
+   - ELMoTokenCharactersIndexer
+   - ElmoTokenEmbedder
+** Pretrained transformer
+   - PretrainedTransformerTokenizer
+   - PretrainedTransformerIndexer
+   - PretrainedTransformerEmbedder
+* Process of running
+** processing text to tensors
+   - an Instance consists of Fields
+   - the length information of a Field can be obtained by Field.get_padding_lengths()
+     e.g.
+     >>> padding_lengths = field.get_padding_lengths()
+     - just as a footnote, LabelField.get_padding_lengths returns an empty dictionary,
+       so it doesn't consider padding_lengths
+   - for batching, multiple padding_lengths values are merged into an unified padding_lengths
+     which has the maximum value for each position
+     - the number of padding_lengths values before merging = batch size
+   - a Field can be converted into a dictionary of tensors by Field.as_tensor when a padding_lengths is given
+     e.g.
+     >>> tensor: DataArray = field.as_tensor(padding_lengths)
+     >>> tensor: TextFieldTensors = text_field.as_tensor(padding_lengths)
+     >>> {'tokens': {'tokens': tensor([ [ 244,   31,  230,  ...,], ...])}}
+     where TextFieldTensors = Dict[str, Dict[str, torch.Tensor]]
+     - a key of DataArray is an indexer name
+   - multiple tensors can be merged into a batched tensor
+     e.g.
+     >>> batched_tensor: DataArray = field.batch_tensors([tensor1, tensor2, ...])
+   - TextFieldEmbedder, such as BasicTextFieldEmbedder, converts TextFieldTensors into torch.Tensor
+     - BasicTextFieldEmbedder consists of several TokenEmbedders
+       where each TokenEmbedder is specialized for embedding each Field
+       - examples of TokenEmbedders include
+	 - Embedding
+	 - TokenCharactersEncoder
+	 - PretrainedTransformerEmbedder
+	 - and so on
+   - usually, TextFieldEmbedder is used for each argument of Model.forward
+     - the argument is a batched tensor for a Field
+       - It could be a TextFieldTensor (for features)
+         or a torch.IntTensor (sometimes for labels)
+     - each argument's name corresponds to each field name of an Instance
+** Batching
+   - Instance also has methods Instance.get_padding_lengths and
+     Instance.as_tensor_dict, which are used for converting an Instance into tensor_dict
+     - Instance.get_padding_lengths uses Field.get_padding_lengths
+       - however, resulted padding_lengths doesn't include the lengths of LabelField
+     - Instance.as_tensor_dict uses Field.as_tensor
+       - the result of Instance.as_tensor_dict is the dictionary
+  	 from pairs of field_name and field.as_tensor(...)
+  	 - it's type is Dict[str, DataArray]
 
-* TokenIndexer
-  - its namespace corresponds to that of Vocabulary
-  - the results of indexing tokens can be complex dictionary
-    e.g. the output of PretrainedTransformerIndexer include
-         - token_ids
-         - mask
-         - type_ids
-
-* token_indexers: Dict[str, TokenIndexer] and its keys
-  token_indexers is a dictionary of pairs whose key is a name and value is an indexer
-** with Field.get_padding_lengths
-   token_indexers' key is used by Field.get_padding_lengths such as TextField.get_padding_lengths
-   - TextField.get_padding_lengths
-     The key of padding_lengths is combination of keys of token_indexers and TextField._indexed_tokens,
-     where the latter is always "tokens" when Field._indexed_tokens made by SingleIdTokenIndexer.tokens_to_indices in Field.index ("tokens" is hard-coded in SingleIdTokenIndexer.tokens_to_indices).
-** with TextFieldEmbedder
-   token_indexers' key is used by TextFieldEmbedder such as BasicTextFieldEmbedder
-   - token_indexers: pairs of indexer names and TokenIndexers
-   - TextFieldEmbedder: pairs of indexer names and TokenEmbedders
-
-* Field.as_tensor
-  it returns a nested dictionary that has the same keys of padding_lengths returned by Field.get_padding_lengths
-
-* TextField vs. LabelField
-  TextField and LabelField use different implementations of 'batch_tensors'
-  LabelField inherits 'batch_tensors' from Field, so it directly returns 'torch.tensor'
-
-* FromParam
-  https://guide.allennlp.org/using-config-files#4
-  https://docs.allennlp.org/main/api/models/model/#model-objects
-  documentaion of some class, such as Model or Trainer, describes which argument should not get an "entry" in configuration file
-  e.g. Model.vocab should not get an entry of a configuration file
-
-* Registrable.register and Lazy
-  when a constructor with Lazy type annotation is registered by "Registrable.register", the object can be created with some complex process
-
-* Early importing Registerable classes
-  https://guide.allennlp.org/using-config-files#7
-  - argument "--include-package"
-  - file ".allennlp_plugins"
-
-* Random seed example
-  https://guide.allennlp.org/hyperparameter-optimization#3
-  {numpy_seed: seed,
-   pytorch_seed: seed,
-   random_seed: seed, ...}
-
-* processing text to tensors
-  - an Instance consists of Fields
-  - the length information of a Field can be obtained by Field.get_padding_lengths()
-    e.g.
-    >>> padding_lengths = field.get_padding_lengths()
-    - however, LabelField.get_padding_lengths returns an empty dictionary, so it doesn't affect Instance.get_padding_lengths
-  - for batching, multiple padding_lengths values are merged into an unified padding_lengths
-    which has the maximum value for each position
-    - the number of padding_lengths values before merging = batch size
-  - a Field can be converted into a dictionary of tensors by Field.as_tensor when a padding_lengths is given
-    e.g.
-    >>> tensor: DataArray = field.as_tensor(padding_lengths)
-    >>> tensor: TextFieldTensors = text_field.as_tensor(padding_lengths)
-    >>> {'tokens': {'tokens': tensor([[ 244,   31,  230,  ...,], ...])}}
-    where TextFieldTensors = Dict[str, Dict[str, torch.Tensor]]
-    - a key of DataArray is an indexer name
-  - multiple tensors can be merged into a batched tensor
-    e.g.
-    >>> batched_tensor: DataArray = field.batch_tensors([tensor1, tensor2, ...])
-  - TextFieldEmbedder, such as BasicTextFieldEmbedder, converts TextFieldTensors into torch.Tensor
-    - BasicTextFieldEmbedder consists of several TokenEmbedders
-      where each TokenEmbedder is specialized for embedding each Field
-      - examples of TokenEmbedders include
-	- Embedding
-	- TokenCharactersEncoder
-	- PretrainedTransformerEmbedder
-	- and so on
-  - usually, TextFieldEmbedder is used for each argument of Model.forward
-    - the argument is batched tensor for a Field
-      - It could be TextFieldTensors (for features)
-        or torch.IntTensor (sometimes for labels)
-    - each argument's name corresponds to each field name of an Instance
-
-* Batching
-  # - (IM NOT SURE WHEN IT'S USED) Instance also has methods
-  #   Instance.get_padding_lengths and Instance.as_tensor_dict, which
-  #   are used for converting an Instance into tensor_dict
-  #   - Instance.get_padding_lengths uses Field.get_padding_lengths
-  #     - however, resulted padding_lengths doesn't include the lengths of LabelField
-  #   - Instance.as_tensor_dict uses Field.as_tensor
-  #     - the result of Instance.as_tensor_dict is the dictionary
-  # 	from pairs of field_name and field.as_tensor(...)
-  # 	- it's type is Dict[str, DataArray]
+* Configuration
+** allennlp.commands.TrainModel.from_partial_objects
+   configuration file for 'allennlp train' command corresponds to the parameters of 'allennlp.commands.TrainModel.from_partial_objects' except the first three parameters
+** Random seed example
+   https://guide.allennlp.org/hyperparameter-optimization#3
+   {numpy_seed: seed,
+    pytorch_seed: seed,
+    random_seed: seed, ...}

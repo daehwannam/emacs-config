@@ -4,3 +4,11 @@
 
 * Install
   pip3 install torch torchvision
+
+* expand vs. repeat
+  https://guide.allennlp.org/document-ranking#4
+
+  both .expand and .repeat can change the size of dimensions.
+  but theres some differences:
+  - .expand cannot change the number of dimensions
+  - .expand doesn't copy memory

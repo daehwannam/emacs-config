@@ -11,7 +11,7 @@
 
     (comment
       (progn
-	(key-chord-define-global "xb" 'switch-to-buffer)
+	(key-chord-define-global "xb" 'switch-to-buffer)w
 	(key-chord-define-global "je" 'eval-last-sexp)
 	(key-chord-define-global "fn" 'forward-list)
 	(key-chord-define-global "fp" 'backward-list)

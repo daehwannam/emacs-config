@@ -12,7 +12,7 @@
       (progn
 	;; keymap with key-chord
 	;; https://stackoverflow.com/a/25475574
-	(define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
+	(comment (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map))
 	(key-chord-define-global "cp" projectile-command-map))
 
       (setq projectile-completion-system 'ivy))
