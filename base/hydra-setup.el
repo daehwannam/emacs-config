@@ -1,6 +1,8 @@
 
 (progn
+  ;; Examples
   ;; https://github.com/abo-abo/hydra/wiki/Emacs
+  ;; https://github.com/abo-abo/hydra/blob/master/hydra-examples.el
 
   (defmacro keycall (key-string &rest args)
     `(funcall (key-binding (kbd ,key-string)) ,@args))
@@ -91,6 +93,42 @@
       (comment (global-set-key (kbd "M-f") #'hydra-move/forward-word))
       (comment (global-set-key (kbd "M-b") #'hydra-move/backward-word))
       (global-set-key (kbd "M-'") hydra-def)))
+
+  (comment
+    (defhydra hydra-vi-move ()
+      "move"
+      ("i" nil "quit")  ; stop hydra
+      ("h" backward-char)
+      ("j" next-line)
+      ("k" previous-line)
+      ("l" forward-char)
+      ("M-h" backward-word)
+      ("M-l" forward-word)
+      ("M-H" backward-sexp)
+      ("M-J" forward-list)
+      ("M-K" backward-list)
+      ("M-L" forward-sexp)
+      ("C-v" scroll-up-small)
+      ("M-v" scroll-down-small)
+      ("a" move-beginning-of-line)
+      ("e" move-end-of-line)
+      ("z <RET>" (recenter-top-bottom 0))
+      ("z ." recenter-top-bottom)
+      ("z -" reverse-recenter-top-bottom)
+      ("H" (move-to-window-line-top-bottom 0))
+      ("M" move-to-window-line-top-bottom)
+      ("L" (progn (reverse-move-to-window-line-top-bottom)
+		  (previous-line)))
+      ("s" isearch-forward)
+      ("r" isearch-backward)
+      ("M->" end-of-buffer)
+      ("M-<" beginning-of-buffer)
+      ("<SPC>" set-mark-command)
+      ("x x" exchange-point-and-mark)
+      ("S" swiper))
+
+    (global-set-key (kbd "M-'") #'hydra-vi-move/body)
+    (comment (key-chord-define-global "fd" #'hydra-vi-move/body)))
 
   (progn
     (defun other-window-backwards () (interactive) (other-window -1))

@@ -10,22 +10,61 @@
           - token_ids
           - mask
           - type_ids
+*** Example: using PretrainedTransformerIndexer with PretrainedTransformerTokenizer
+    #+begin_src python
+# model & input &tokenization
+text = "Some text with an extraordinarily long identifier."
+transformer_model = 'bert-base-cased'
+tokenizer = PretrainedTransformerTokenizer(model_name=transformer_model)
+tokens = tokenizer.tokenize(text)
+
+# tokens to indices
+token_indexer = PretrainedTransformerIndexer(model_name=transformer_model)
+token_indexers = {'bert_tokens': token_indexer}
+text_field = TextField(tokens, token_indexers)
+tensor_dict = text_field.as_tensor(text_field.get_padding_lengths())
+batched_tensor_dict = text_field.batch_tensors([tensor_dict])
+
+# indices to embeddings
+embedded_tokens = embedder(batched_tensor_dict)
+    #+end_src
+
+    #+begin_example
+    tokens: [[CLS], Some, text, with, an, extra, ##ord, ##ina, ##rily, long, id, ##ent, ##ifier, ., [SEP]]
+    tensor_dict: {'bert_tokens': {'token_ids': tensor([  101,  1789,  3087,  1114,  1126,  3908,  6944,  2983, 11486,  1263, 25021,  3452, 17792,   119,   102]),
+                                  'mask': tensor([True, True, True, True, True, True, True, True, True, True, True, True, True, True, True]),
+				  'type_ids': tensor([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])}}
+    embedded_tokens: tensor([[[ 0.4259,  0.1420,  0.1182,  ..., -0.1887,  0.4505,  0.1054],
+                              [ 0.4018, -0.1443,  0.3954,  ..., -0.0100,  0.3334,  0.3635],
+                              [ 0.2489,  0.2416,  0.3365,  ...,  0.0949,  0.4748,  0.0973],
+                              ...,
+                              [ 0.0340, -0.2158,  0.0057,  ...,  0.3255,  0.2093,  0.4995],
+                              [ 0.1863,  0.1893, -0.0344,  ..., -0.0134,  0.5061,  0.4039],
+                              [ 0.7173,  0.0563, -0.5152,  ...,  0.0256,  0.3780,  0.1898]]],
+                            grad_fn=<CatBackward>)
+    embedded_tokens.size(): torch.Size([1, 15, 768])
+    #+end_example
 ** token_indexers: Dict[str, TokenIndexer] and its keys
-   token_indexers is a dictionary of pairs whose key is a name and value is an indexer
+   token_indexers is a dictionary of pairs whose key is a indexer's name and value is a TokenIndexer
 *** with Field.get_padding_lengths
     token_indexers' key is used by Field.get_padding_lengths such as TextField.get_padding_lengths
     - TextField.get_padding_lengths
       The key of padding_lengths is combination of keys of token_indexers and TextField._indexed_tokens,
       where the latter is always "tokens" when Field._indexed_tokens made by SingleIdTokenIndexer.tokens_to_indices in Field.index ("tokens" is hard-coded in SingleIdTokenIndexer.tokens_to_indices).
+    e.g. Output of get_padding_lengths
+    [[*Example: using PretrainedTransformerIndexer with PretrainedTransformerTokenizer][Example: using PretrainedTransformerIndexer with PretrainedTransformerTokenizer]]
+    >>> text_field.get_padding_lengths()
+    ==> {'bert_tokens___token_ids': 15, 'bert_tokens___mask': 15, 'bert_tokens___type_ids': 15}
 *** with TextFieldEmbedder
     token_indexers' key is used by TextFieldEmbedder such as BasicTextFieldEmbedder
     - token_indexers: pairs of indexer names and TokenIndexers
     - TextFieldEmbedder: pairs of indexer names and TokenEmbedders
-** Field.as_tensor
-   it returns a nested dictionary that has the same keys of padding_lengths returned by Field.get_padding_lengths
-** TextField vs. LabelField
-   TextField and LabelField use different implementations of 'batch_tensors'
-   LabelField inherits 'batch_tensors' from Field, so it directly returns 'torch.tensor'
+** Field
+*** Field.as_tensor
+    it returns a nested dictionary that has the same keys of padding_lengths returned by Field.get_padding_lengths
+*** TextField vs. LabelField
+    TextField and LabelField use different implementations of 'batch_tensors'
+    LabelField inherits 'batch_tensors' from Field, so it directly returns 'torch.tensor'
 ** FromParam
    https://guide.allennlp.org/using-config-files#4
    https://docs.allennlp.org/main/api/models/model/#model-objects

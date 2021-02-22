@@ -14,8 +14,12 @@
   (require 'directory-files-recursive)
 
 
-  (comment (define-key global-map "\C-cl" 'org-store-link))
-  (define-key global-map "\C-ca" 'org-agenda)
+  (comment
+   (define-key global-map "\C-cl" 'org-store-link)
+   (define-key global-map "\C-ca" 'org-agenda))
+  (progn
+    (define-key global-map (kbd "C-c l") 'org-store-link)
+    (define-key global-map (kbd "C-c a") 'org-agenda))
   (setq org-log-done t)
 
 

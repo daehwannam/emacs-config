@@ -30,7 +30,7 @@
 (progn
  ;; hydra may be laggy and it's not compatible with key-chord
  (load "~/.emacs.d/base/hydra-setup.el"))
-;; (load "~/.emacs.d/base/key-config.el")
+(load "~/.emacs.d/base/key-config.el")
 (comment (load "~/.emacs.d/base/modalka-setup.el"))
 
 ;;; common utility

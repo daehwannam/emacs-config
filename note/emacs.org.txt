@@ -150,6 +150,9 @@
       - Change the value of "scale"
 	e.g. 1.0 --> 1.5
 *** code block with org-babel
+    https://orgmode.org/manual/Literal-Examples.html
+    - type "<s" then press <TAB>
+    - type "<e" then press <TAB> for untyped example
 **** write the result of standard output
      #+begin_src python :results output
      # indentation
