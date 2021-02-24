@@ -170,3 +170,6 @@
 ** Convert ipython notebook file(.ipynb) to python file(.py)
    https://stackoverflow.com/a/37799207
    $ jupyter nbconvert --to script 'my-notebook.ipynb'
+
+* unittest
+  https://m.blog.naver.com/wideeyed/221841799910
