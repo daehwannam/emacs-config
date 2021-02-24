@@ -22,7 +22,8 @@
 
       ;; minor error fix
       ;; :hint nil -> hiding hint
-      ("-" (progn (insert "-") (hydra-keyboard-quit)) :exit t))
+      ;; ("-" (progn (insert "-") (hydra-keyboard-quit)) :exit t)
+      )
     (global-set-key (kbd "C-y") #'hydra-yank-pop/yank))
 
 
