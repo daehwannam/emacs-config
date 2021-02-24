@@ -1,4 +1,6 @@
 
+(install-package-unless-installed 'hydra)
+
 (progn
   ;; Examples
   ;; https://github.com/abo-abo/hydra/wiki/Emacs

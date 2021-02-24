@@ -1,4 +1,6 @@
 
+(install-package-unless-installed 'key-chord)
+
 (use-existing-pkg key-chord
   :init
   (progn

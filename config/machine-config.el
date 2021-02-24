@@ -38,8 +38,8 @@
      (engels nil)
      )
     (installable-packages
-     (base (vlf magit key-chord modalka evil avy hydra dash counsel multi-term))
-     (basic (vlf magit key-chord modalka evil dash multi-term counsel))
+     ;; (base (vlf magit key-chord modalka evil avy hydra dash counsel multi-term))
+     (basic (vlf magit dash multi-term counsel))
      (vbox (vlf magit key-chord modalka evil dash  multi-term auctex latex-preview-pane material-theme elpy flycheck py-autopep8 blacken sphinx-doc workgroups2 perspective counsel iedit wgrep which-key counsel-projectile persp-projectile paredit markdown-mode tuareg ein hy-mode)) ; removed: highlight
      ;; (engels (vlf magit key-chord modalka evil dash elpy flycheck py-autopep8 blacken wgrep which-key projectile flx-ido))
      (engels (vlf magit key-chord modalka evil dash  multi-term elpy flycheck py-autopep8 blacken sphinx-doc wgrep which-key counsel counsel-projectile markdown-mode hy-mode))
