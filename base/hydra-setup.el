@@ -134,8 +134,8 @@
 
   (progn
     (defun other-window-backwards () (interactive) (other-window -1))
-    (defhydra hydra-window ()
-      "window"
+    (defhydra hydra-window-switch-split ()
+      "window switch/split"
       ("o" other-window)
       ("O" other-window-backwards)
 
@@ -147,31 +147,35 @@
 
       ("9" delete-other-windows)
       ("8" split-window-below)
-      ("7" split-window-right)
+      ("7" split-window-right))
 
+    (global-set-key (kbd "C-x o") #'hydra-window-switch-split/other-window)
+    (global-set-key (kbd "C-x O") #'hydra-window-switch-split/other-window-backwards)
+    (global-set-key (kbd "C-x 0") #'hydra-window-switch-split/delete-window)
+
+    (global-set-key (kbd "C-x 1") #'hydra-window-switch-split/delete-other-windows)
+    (global-set-key (kbd "C-x 2") #'hydra-window-switch-split/split-window-below)
+    (global-set-key (kbd "C-x 3") #'hydra-window-switch-split/split-window-right)
+
+    (global-set-key (kbd "C-x 9") #'hydra-window-switch-split/delete-other-windows)
+    (global-set-key (kbd "C-x 8") #'hydra-window-switch-split/split-window-below)
+    (global-set-key (kbd "C-x 7") #'hydra-window-switch-split/split-window-right))
+
+  (progn
+    (defun other-window-backwards () (interactive) (other-window -1))
+    (defhydra hydra-window-size ()
+      "window size"
       ("^" enlarge-window)
       ("%" shrink-window)
       ("}" enlarge-window-horizontally)
       ("{" shrink-window-horizontally)
       ("+" balance-windows))
 
-    (global-set-key (kbd "C-x o") #'hydra-window/other-window)
-    (global-set-key (kbd "C-x O") #'hydra-window/other-window-backwards)
-    (global-set-key (kbd "C-x 0") #'hydra-window/delete-window)
-
-    (global-set-key (kbd "C-x 1") #'hydra-window/delete-other-windows)
-    (global-set-key (kbd "C-x 2") #'hydra-window/split-window-below)
-    (global-set-key (kbd "C-x 3") #'hydra-window/split-window-right)
-
-    (global-set-key (kbd "C-x 9") #'hydra-window/delete-other-windows)
-    (global-set-key (kbd "C-x 8") #'hydra-window/split-window-below)
-    (global-set-key (kbd "C-x 7") #'hydra-window/split-window-right)
-
-    (global-set-key (kbd "C-x ^") #'hydra-window/enlarge-window)
-    (global-set-key (kbd "C-x %") #'hydra-window/shrink-window)
-    (global-set-key (kbd "C-x }") #'hydra-window/enlarge-window-horizontally)
-    (global-set-key (kbd "C-x {") #'hydra-window/shrink-window-horizontally)
-    (global-set-key (kbd "C-x +") #'hydra-window/balance-windows))
+    (global-set-key (kbd "C-x ^") #'hydra-window-size/enlarge-window)
+    (global-set-key (kbd "C-x %") #'hydra-window-size/shrink-window)
+    (global-set-key (kbd "C-x }") #'hydra-window-size/enlarge-window-horizontally)
+    (global-set-key (kbd "C-x {") #'hydra-window-size/shrink-window-horizontally)
+    (global-set-key (kbd "C-x +") #'hydra-window-size/balance-windows))
 
   (progn
     (defun other-frame-backwards () (interactive) (other-frame -1))
