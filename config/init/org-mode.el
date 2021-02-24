@@ -14,8 +14,12 @@
   (require 'directory-files-recursive)
 
 
-  (define-key global-map "\C-cl" 'org-store-link)
-  (define-key global-map "\C-ca" 'org-agenda)
+  (comment
+   (define-key global-map "\C-cl" 'org-store-link)
+   (define-key global-map "\C-ca" 'org-agenda))
+  (progn
+    (define-key global-map (kbd "C-c l") 'org-store-link)
+    (define-key global-map (kbd "C-c a") 'org-agenda))
   (setq org-log-done t)
 
 
@@ -146,4 +150,20 @@
   ;;; table
   (add-hook 'org-mode-hook (lambda () (local-set-key (kbd "C-c C-x M-c") 'org-table-insert-column)))
   (add-hook 'org-mode-hook (lambda () (local-set-key (kbd "C-c C-x M-r") 'org-table-insert-row)))
-  )
+
+
+  (progn
+    ;; https://orgmode.org/worg/orgcard.html
+    (defhydra hydra-org-motion ()
+      "buffer-move"
+      ("q" nil "quit")
+      ("n" org-next-visible-heading)
+      ("p" org-previous-visible-heading)
+      ("f" org-forward-heading-same-level)
+      ("b" org-backward-heading-same-level))
+
+    (progn
+      (define-key org-mode-map (kbd "C-C C-n") 'hydra-org-motion/org-next-visible-heading)
+      (define-key org-mode-map (kbd "C-c C-p") 'hydra-org-motion/org-previous-visible-heading)
+      (define-key org-mode-map (kbd "C-c C-f") 'hydra-org-motion/org-forward-heading-same-level)
+      (define-key org-mode-map (kbd "C-c C-b") 'hydra-org-motion/org-backward-heading-same-level))))

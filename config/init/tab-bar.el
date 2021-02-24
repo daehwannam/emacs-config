@@ -1,17 +1,20 @@
 
 (when (fboundp 'tab-bar-mode)
-  (require 'make-repeatable-command)
   (defun tab-bar-move-tab-reverse (&optional arg)
     (interactive "p")
     (tab-bar-move-tab (- (or arg 1))))
 
-  (progn
+  (comment
+    (require 'make-repeatable-command)
     (define-key tab-prefix-map "8" 'tab-new)
     (define-key tab-prefix-map "9" 'tab-close-other)
     (define-key tab-prefix-map "o" (make-repeatable-command 'tab-next))
     (define-key tab-prefix-map "O" (make-repeatable-command 'tab-previous))
     (define-key tab-prefix-map "m" (make-repeatable-command 'tab-bar-move-tab))
-    (define-key tab-prefix-map "M" (make-repeatable-command 'tab-bar-move-tab-reverse)))
+    (define-key tab-prefix-map "M" (make-repeatable-command 'tab-bar-move-tab-reverse))
+
+    (fset 'tab-prefix-map tab-prefix-map)
+    (define-key global-map (kbd "C-z") 'tab-prefix-map))
 
   (progn
     ;; advice for tab-next and tab-previous
@@ -39,6 +42,30 @@
     (dolist (tab-bar-func '(tab-new tab-close tab-close-other tab-next tab-previous))
       (advice-add tab-bar-func :around #'tab-bar-redisplay-advice)))
 
+  (progn
+   (let ((hydra-def
+	  (defhydra hydra-tab-bar ()
+	    "tab-bar"
+
+	    ;; from default key bindings
+            ("2" tab-new)
+            ("1" tab-close-other)
+            ("0" tab-close)
+            ("o" tab-next)
+            ("m" tab-move)
+            ("r" tab-rename)
+            ("<RET>" tab-bar-select-tab-by-name)
+            ("b" switch-to-buffer-other-tab)
+            ("f" find-file-other-tab)
+            ("C-f" find-file-other-tab)
+
+	    ;; by bindings
+	    ("8" tab-new)
+	    ("9" tab-close-other)
+	    ("O" tab-previous)
+	    ("M" tab-bar-move-tab-reverse))))
+     (global-set-key (kbd "C-z") hydra-def)))
+
   ;; Default tab-bar-mode key map
   ;;
   ;; (comment
@@ -52,8 +79,5 @@
   ;;  (define-key tab-prefix-map "b" 'switch-to-buffer-other-tab)
   ;;  (define-key tab-prefix-map "f" 'find-file-other-tab)
   ;;  (define-key tab-prefix-map "\C-f" 'find-file-other-tab))
-
-  (fset 'tab-prefix-map tab-prefix-map)
-  (define-key global-map (kbd "C-z") 'tab-prefix-map)
 
   (tab-bar-mode))

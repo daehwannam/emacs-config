@@ -96,11 +96,6 @@
 (global-set-key (kbd "C-x M-l") (make-repeatable-command 'recenter-top-bottom-other))
 
 
-;; Avy: https://github.com/abo-abo/avy
-(when (fboundp 'avy-goto-char-2)
-  (global-set-key (kbd "M-g ;") 'avy-goto-char-2))
-
-
 (comment
  (progn
    ;; disables shortcuts for making long region (mark-page)

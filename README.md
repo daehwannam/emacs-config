@@ -1,1 +1,1 @@
-My emacs configuration setting
+My emacs configuration
