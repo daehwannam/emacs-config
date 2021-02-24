@@ -10,7 +10,7 @@
     `(funcall (key-binding (kbd ,key-string)) ,@args))
 
   (progn
-    (defhydra hydra-yank-pop ()
+    (defhydra hydra-yank-pop (:hint nil)
       "yank"
       ("C-y" yank nil)
       ("M-y" yank-pop nil)
@@ -18,8 +18,13 @@
 
       ("y" (yank-pop 1) "next")
       ("Y" (yank-pop -1) "prev")
-      ("l" counsel-yank-pop "list" :color blue)) ; or browse-kill-ring
+      ("l" counsel-yank-pop "list" :color blue) ; or browse-kill-ring
+
+      ;; minor error fix
+      ;; :hint nil -> hiding hint
+      ("-" (progn (insert "-") (hydra-keyboard-quit)) :exit t))
     (global-set-key (kbd "C-y") #'hydra-yank-pop/yank))
+
 
   (comment
    (defhydra hydra-move ()
