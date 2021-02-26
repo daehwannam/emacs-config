@@ -13,8 +13,9 @@
 *** Example: using PretrainedTransformerIndexer with PretrainedTransformerTokenizer
     It's a modified code from https://guide.allennlp.org/representing-text-as-features#6
 
-    [setup]
+    [code]
     #+begin_src python
+from allennlp.data import Vocabulary
 from allennlp.data.fields import TextField
 from allennlp.data.token_indexers import (
     PretrainedTransformerIndexer,
@@ -29,37 +30,42 @@ from allennlp.modules.token_embedders import (
 
 import warnings
 warnings.filterwarnings("ignore")
-    #+end_src
 
-    [body]
-    #+begin_src python
+
 # model & input &tokenization
 text = "Some text with an extraordinarily long identifier."
 transformer_model = 'bert-base-cased'
 tokenizer = PretrainedTransformerTokenizer(model_name=transformer_model)
 tokens = tokenizer.tokenize(text)
+print("tokens:", tokens)
 
 # tokens to indices
+vocab = Vocabulary()
 token_indexer = PretrainedTransformerIndexer(model_name=transformer_model)
 token_indexers = {'bert_tokens': token_indexer}
 text_field = TextField(tokens, token_indexers)
+text_field.index(vocab)
 padding_lengths = text_field.get_padding_lengths()
+print("padding_lengths:", padding_lengths)
 tensor_dict = text_field.as_tensor(padding_lengths)
+print("tensor_dict:", tensor_dict)
 batched_tensor_dict = text_field.batch_tensors([tensor_dict])
 
 # indices to embeddings
 token_embedder = PretrainedTransformerEmbedder(model_name=transformer_model)  # [dhnam]
 text_field_embedder = BasicTextFieldEmbedder(token_embedders={'bert_tokens': token_embedder})
 embedded_tokens = text_field_embedder(batched_tensor_dict)
+print("embedded_tokens:", embedded_tokens)
+print("embedded_tokens.size():", embedded_tokens.size())
     #+end_src
 
     [result]
     #+begin_example
     tokens: [[CLS], Some, text, with, an, extra, ##ord, ##ina, ##rily, long, id, ##ent, ##ifier, ., [SEP]]
+    padding_lengths: {'bert_tokens___token_ids': 15, 'bert_tokens___mask': 15, 'bert_tokens___type_ids': 15}
     tensor_dict: {'bert_tokens': {'token_ids': tensor([  101,  1789,  3087,  1114,  1126,  3908,  6944,  2983, 11486,  1263, 25021,  3452, 17792,   119,   102]),
                                   'mask': tensor([True, True, True, True, True, True, True, True, True, True, True, True, True, True, True]),
 				  'type_ids': tensor([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])}}
-    padding_lengths: {'bert_tokens___token_ids': 15, 'bert_tokens___mask': 15, 'bert_tokens___type_ids': 15}
     embedded_tokens: tensor([[[ 0.4259,  0.1420,  0.1182,  ..., -0.1887,  0.4505,  0.1054],
                               [ 0.4018, -0.1443,  0.3954,  ..., -0.0100,  0.3334,  0.3635],
                               [ 0.2489,  0.2416,  0.3365,  ...,  0.0949,  0.4748,  0.0973],
@@ -78,9 +84,9 @@ embedded_tokens = text_field_embedder(batched_tensor_dict)
       The key of padding_lengths is combination of keys of token_indexers and TextField._indexed_tokens,
       where the latter is always "tokens" when Field._indexed_tokens made by SingleIdTokenIndexer.tokens_to_indices in Field.index ("tokens" is hard-coded in SingleIdTokenIndexer.tokens_to_indices).
     e.g. Output of get_padding_lengths
-    [[*Example: using PretrainedTransformerIndexer with PretrainedTransformerTokenizer][Example: using PretrainedTransformerIndexer with PretrainedTransformerTokenizer]]
-    >>> text_field.get_padding_lengths()
-    ==> {'bert_tokens___token_ids': 15, 'bert_tokens___mask': 15, 'bert_tokens___type_ids': 15}
+         [[*Example: using PretrainedTransformerIndexer with PretrainedTransformerTokenizer][Example: using PretrainedTransformerIndexer with PretrainedTransformerTokenizer]]
+         >>> text_field.get_padding_lengths()
+         ==> {'bert_tokens___token_ids': 15, 'bert_tokens___mask': 15, 'bert_tokens___type_ids': 15}
 *** with TextFieldEmbedder
     token_indexers' key is used by TextFieldEmbedder such as BasicTextFieldEmbedder
     - token_indexers: pairs of indexer names and TokenIndexers
@@ -90,28 +96,32 @@ embedded_tokens = text_field_embedder(batched_tensor_dict)
     it returns a nested dictionary that has the same keys of padding_lengths returned by Field.get_padding_lengths
 *** TextField vs. LabelField
     TextField and LabelField use different implementations of 'batch_tensors'
-    LabelField inherits 'batch_tensors' from Field, so it directly returns 'torch.tensor'
+    LabelField inherits 'batch_tensors' from Field, so it directly returns 'torch.Tensor'
+*** MetadataField
+    - A MetadataField is a Field that does not get converted into torch.Tensor
+    - MetadataField.as_tensor returns the object which is passed to its initializer
 ** FromParam
    https://guide.allennlp.org/using-config-files#4
    https://docs.allennlp.org/main/api/models/model/#model-objects
 *** Configuration entry
     documentaion of some class, such as Model or Trainer, describes which argument should not get an "entry" in configuration file
     e.g. Model.vocab should not get an entry of a configuration file
-** Registrable.register and Lazy
-   - when a constructor with a argument of Lazy type annotation is registered by "Registrable.register",
-     the argument is created in the constructor rather than complete object is passed as the argument.
-   - lazy arguments can be created with some complex process
-   - a Lazy object instantiate the specific type object via "Lazy.construct" with additional keyword arguments
-*** example with TrainModel.from_partial_objects
-    in TrainModel.from_partial_objects, Vocabulary object is passed to Lazy.construct for Model:
-    #+begin_src python
+** Registrable
+*** Registrable.register and Lazy
+    - when a constructor with a argument of Lazy type annotation is registered by "Registrable.register",
+      the argument is created in the constructor rather than complete object is passed as the argument.
+    - lazy arguments can be created with some complex process
+    - a Lazy object instantiate the specific type object via "Lazy.construct" with additional keyword arguments
+**** example with TrainModel.from_partial_objects
+     in TrainModel.from_partial_objects, Vocabulary object is passed to Lazy.construct for Model:
+     #+begin_src python
 vocabulary_ = vocabulary.construct(instances=instance_generator)
 if not vocabulary_:
     vocabulary_ = Vocabulary.from_instances(instance_generator)
 model_ = model.construct(vocab=vocabulary_)
-    #+end_src
-*** example 2
-    #+begin_src python
+     #+end_src
+**** example 2
+     #+begin_src python
 import json
 
 from allennlp.common import FromParams, Params, Registrable, Lazy
@@ -156,11 +166,86 @@ params = Params(json.loads(param_str))
 model = ModelWithGaussian.from_params(params=params)
 print("Mean:", model.gaussian.mean)
 print("Variance:", model.gaussian.variance)
-    #+end_src
-** Early importing Registerable classes
-   https://guide.allennlp.org/using-config-files#7
-   - argument "--include-package"
-   - file ".allennlp_plugins"
+     #+end_src
+*** Early importing Registerable classes
+    https://guide.allennlp.org/using-config-files#7
+    - argument "--include-package"
+    - file ".allennlp_plugins"
+** Instance
+*** Instance.get_padding_lengths
+     - Instance.get_padding_lengths uses Field.get_padding_lengths
+       - however, resulted padding_lengths doesn't include the lengths of LabelField
+     e.g.
+     [code]
+     #+begin_src python
+from collections import Counter, defaultdict
+
+from allennlp.data.instance import Instance
+from allennlp.data.fields import TextField, LabelField, SequenceLabelField
+from allennlp.data.token_indexers import SingleIdTokenIndexer
+from allennlp.data.tokenizers import Token
+from allennlp.data.vocabulary import Vocabulary
+
+
+# Create Fields
+tokens = [Token('The'), Token('best'), Token('movie'), Token('ever'), Token('!')]
+token_indexers = {'token_indexer': SingleIdTokenIndexer('token_namespace')}  # [dhnam]
+text_field = TextField(tokens, token_indexers=token_indexers)
+
+label_field = LabelField('pos', label_namespace='lab')  # [dhnam]
+
+sequence_label_field = SequenceLabelField(
+    ['DET', 'ADJ', 'NOUN', 'ADV', 'PUNKT'],
+    text_field,
+    label_namespace='lab'
+)  # [dhnam]
+
+# Create an Instance
+fields = {
+    'text_field': text_field,
+    'label_field': label_field,
+}
+instance = Instance(fields)
+
+# You can add fields later
+instance.add_field('label_seq', sequence_label_field)
+
+# You can simply use print() to see the instance's content
+print(instance)
+
+# Create a Vocabulary
+counter = defaultdict(Counter)
+instance.count_vocab_items(counter)
+vocab = Vocabulary(counter)
+
+# Convert all strings in all of the fields into integer IDs by calling index_fields()
+instance.index_fields(vocab)
+
+# Instances know how to turn themselves into a dict of tensors.  When we call this
+# method in our data code, we additionally give a `padding_lengths` argument.
+# We will pass this dictionary to the model as **tensors, so be sure the keys
+# match what the model expects.
+tensors = instance.as_tensor_dict()
+print(tensors)
+     #+end_src
+
+     [result]
+     #+begin_example
+     {'text_field': {'token_indexer': {'tokens': tensor([2, 3, 4, 5, 6])}}, 'label_field': tensor(2), 'label_seq': tensor([3, 4, 5, 6, 7])}
+     #+end_example
+
+     [warnings]
+     #+begin_example
+     Your label namespace was 'lab'. We recommend you use a namespace ending with 'labels' or 'tags', so we don't add UNK and PAD tokens by default to your vocabulary.  See documentation for `non_padded_namespaces` parameter in Vocabulary.
+
+     Your label namespace was 'lab'. We recommend you use a namespace ending with 'labels' or 'tags', so we don't add UNK and PAD tokens by default to your vocabulary.  See documentation for `non_padded_namespaces` parameter in Vocabulary.
+     #+end_example
+*** Instance.as_tensor_dict
+     - Instance.as_tensor_dict uses Field.as_tensor
+       - the result of Instance.as_tensor_dict is the dictionary
+  	 from pairs of field_name and field.as_tensor(...)
+  	 - it's type is Dict[str, DataArray]
+
 * Modules
 ** Elmo
    - any tokenizer can be used (such as WhitespaceTokenizer), but the same tokenizer used for pre-training is the best.

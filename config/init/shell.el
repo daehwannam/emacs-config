@@ -168,37 +168,78 @@
   (comint-send-input))
 
 (progn
-  (key-chord-define shell-mode-map "fp" 'comint-previous-matching-input-from-input)
-  (key-chord-define shell-mode-map "fn" 'comint-next-matching-input-from-input))
+  (comment
+   (defhydra hydra-comint-previous-next-matching-input-from-input ()
+     "comint previous/next matching input"
+     ("p" comint-previous-matching-input-from-input)
+     ("n" comint-next-matching-input-from-input))
+   (progn
+     (key-chord-define comint-mode-map "fp" 'hydra-comint-previous-next-matching-input-from-input/comint-previous-matching-input-from-input)
+     (key-chord-define comint-mode-map "fn" 'hydra-comint-previous-next-matching-input-from-input/comint-next-matching-input-from-input)))
+  (progn
+    (define-key comint-mode-map (kbd "M-p") 'comint-previous-matching-input-from-input)
+    (define-key comint-mode-map (kbd "M-n") 'comint-next-matching-input-from-input))
+
+  (progn
+    (defhydra hydra-comint-previous-next-prompt ()
+      "comint previous/next promp"
+      ("p" comint-previous-prompt)
+      ("n" comint-next-prompt))
+    (define-key comint-mode-map (kbd "C-c C-p") #'hydra-comint-previous-next-prompt/comint-previous-prompt)
+    (define-key comint-mode-map (kbd "C-c C-n") #'hydra-comint-previous-next-prompt/comint-next-prompt)))
 
 (progn
+  (progn
+    (defhydra hydra-compilation-previous-next-error ()
+      "compilation previous/next error"
+      ("p" compilation-previous-error)
+      ("n" compilation-next-error))
+    (define-key compilation-shell-minor-mode-map (kbd "C-c M-p") #'hydra-compilation-previous-next-error/compilation-previous-error)
+    (define-key compilation-shell-minor-mode-map  (kbd "C-c M-n") #'hydra-compilation-previous-next-error/compilation-next-error))
+
   (define-key compilation-shell-minor-mode-map (kbd "C-M-]") 'compilation-next-error)
   (define-key compilation-shell-minor-mode-map (kbd "C-M-[") 'compilation-previous-error)
   (define-key compilation-shell-minor-mode-map (kbd "C-M-n") 'forward-list)
   (define-key compilation-shell-minor-mode-map (kbd "C-M-p") 'backward-list))
 
-(progn
-  (defun comint-previous-input-or-compilation-previous-error (arg)
-    "Cycle backwards through input history, saving input, or move
+(comment
+ (defun comint-previous-input-or-compilation-previous-error (arg)
+   "Cycle backwards through input history, saving input, or move
 point to the previous error in the compilation buffer"
-    (interactive "*p")
-    (if (comint-after-pmark-p)
-	(comint-previous-input arg)
-      (compilation-previous-error arg)))
+   (interactive "*p")
+   (if (comint-after-pmark-p)
+       (comint-previous-input arg)
+     (compilation-previous-error arg)))
 
-  (defun comint-next-input-or-compilation-next-error (arg)
-    "Cycle forwards through input history, saving input, or move
+ (defun comint-next-input-or-compilation-next-error (arg)
+   "Cycle forwards through input history, saving input, or move
 point to the next error in the compilation buffer"
-    (interactive "*p")
-    (if (comint-after-pmark-p)
-	(comint-next-input arg)
-      (compilation-next-error arg)))
+   (interactive "*p")
+   (if (comint-after-pmark-p)
+       (comint-next-input arg)
+     (compilation-next-error arg)))
 
-  (add-hook 'compilation-shell-minor-mode-hook
-	    (lambda () (local-set-key (kbd "M-p") 'comint-previous-input-or-compilation-previous-error)))
+ (defun comint-previous-matching-input-from-input-or-compilation-previous-error (arg)
+   "Cycle backwards through input history, saving input, or move
+point to the previous error in the compilation buffer"
+   (interactive "*p")
+   (if (comint-after-pmark-p)
+       (comint-previous-matching-input-from-input arg)
+     (compilation-previous-error arg)))
 
-  (add-hook 'compilation-shell-minor-mode-hook
-	    (lambda () (local-set-key (kbd "M-n") 'comint-next-input-or-compilation-next-error))))
+ (defun comint-next-matching-input-from-input-or-compilation-next-error (arg)
+   "Cycle forwards through input history, saving input, or move
+point to the next error in the compilation buffer"
+   (interactive "*p")
+   (if (comint-after-pmark-p)
+       (comint-next-matching-input-from-input arg)
+     (compilation-next-error arg)))
+
+ (add-hook 'compilation-shell-minor-mode-hook
+	   (lambda () (local-set-key (kbd "M-p") 'comint-previous-matching-input-from-input-or-compilation-previous-error)))
+
+ (add-hook 'compilation-shell-minor-mode-hook
+	   (lambda () (local-set-key (kbd "M-n") 'comint-next-matching-input-from-input-or-compilation-next-error))))
 
 (defun py3-shell (&optional buffer)
   (interactive
