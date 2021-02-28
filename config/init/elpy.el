@@ -25,13 +25,15 @@
 	  (pyvenv-mode 1))
 
 	(progn
-	  ;; RPC setup
-	  (setq elpy-rpc-virtualenv-name "elpy-rpc")
-	  (let ((default-elpy-rpc-virtualenv-path elpy-rpc-virtualenv-path))
-	    (comment (assert (eq default-elpy-rpc-virtualenv-path 'default)))
-	    (setq elpy-rpc-virtualenv-path
-		  (or (machine-config-get 'elpy-rpc-virtualenv-path)
-		      (joindirs pyvenv-workon-home-path elpy-rpc-virtualenv-name)))))
+	  (setq elpy-rpc-virtualenv-path 'current)
+	  (comment
+	   ;; RPC setup
+	   (setq elpy-rpc-virtualenv-name "elpy-rpc")
+	   (let ((default-elpy-rpc-virtualenv-path elpy-rpc-virtualenv-path))
+	     (comment (assert (eq default-elpy-rpc-virtualenv-path 'default)))
+	     (setq elpy-rpc-virtualenv-path
+		   (or (machine-config-get 'elpy-rpc-virtualenv-path)
+		       (joindirs pyvenv-workon-home-path elpy-rpc-virtualenv-name))))))
 	(comment
 	 ;; use the current virtual environment as RPC server
 	 ;; https://github.com/jorgenschaefer/elpy/issues/1878#issuecomment-761518001
