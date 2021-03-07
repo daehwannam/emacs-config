@@ -9,7 +9,7 @@
 ;; ‘M-x insert-kbd-macro’ – Insert a named keyboard macro at point.
 ;; (global-set-key (kbd "C-c a") 'my-macro)
 
-(when (machine-config-get 'ai-edu-key-binding)
+(when (machine-config-get-first 'ai-edu-key-binding)
    (fset 'find-and-region-_x_
 	 "\C-s_X_\C-m\C-@\C-b\C-b\C-b\C-x\C-x")
    (add-hook 'python-mode-hook

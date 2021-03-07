@@ -16,8 +16,8 @@
       ("M-y" yank-pop nil)
       ("M-Y" (yank-pop 1) nil)
 
-      ("y" (yank-pop 1) "next")
-      ("Y" (yank-pop -1) "prev")
+      ;; ("y" (yank-pop 1) "next")
+      ;; ("Y" (yank-pop -1) "prev")
       ("l" counsel-yank-pop "list" :color blue) ; or browse-kill-ring
 
       ;; minor error fix

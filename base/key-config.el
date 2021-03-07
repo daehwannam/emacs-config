@@ -18,6 +18,6 @@
     (global-set-key (kbd "M-'") 'insert-space-command)))
 
 
-(progn
+(comment
   (global-set-key (kbd "M-P") 'backward-sexp)
   (global-set-key (kbd "M-N") 'forward-sexp))

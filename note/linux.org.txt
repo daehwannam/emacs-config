@@ -169,6 +169,12 @@
      $ ps -fu dhnam  # with full-format
    - show all processes(-e) with full-format(-f)
      $ ps -ef
+   - show all users with processes
+     $ ps -ef | awk 'NR>1 {print $1}' | sort -u
+
+     note:
+     - NR>1 : skip the first row
+     - {print $1} : print the first field
 
 ** alias
    ex)
@@ -264,7 +270,7 @@
       $ sudo sh cuda-10.1.run --silent --toolkit --toolkitpath=/usr/local/cuda-10.1
    3. cuDNN
       download page: https://developer.nvidia.com/rdp/cudnn-download
-      - download the version of cuDNN for the corresponding version of  CUDA toolkit
+      - download the version of cuDNN for the corresponding version of CUDA toolkit
       https://docs.nvidia.com/deeplearning/sdk/cudnn-install/index.html#installlinux-tar
       1. Navigate to your <cudnnpath> directory containing the cuDNN Tar file.
       2. Unzip the cuDNN package.

@@ -125,7 +125,7 @@
 		 ;; If the current buffer is a dead shell buffer, use it.
 		 (current-buffer)))
   (shell buffer)
-  ;; (insert (concat "conda activate " (machine-config-get 'pyvenv-name)))
+  ;; (insert (concat "conda activate " (machine-config-get-first 'pyvenv-name)))
   (insert (concat "source activate " env-name))
   (comint-send-input))
 
@@ -163,7 +163,7 @@
 		 (current-buffer)))
   (shell buffer)
   (compilation-shell-minor-mode) ; for compliation mode's features
-  ;; (insert (concat "conda activate " (machine-config-get 'pyvenv-name)))
+  ;; (insert (concat "conda activate " (machine-config-get-first 'pyvenv-name)))
   (insert (concat "conda activate " env-name))
   (comint-send-input))
 

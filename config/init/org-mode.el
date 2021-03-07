@@ -36,8 +36,8 @@
   ;; check OS type
   ;; http://ergoemacs.org/emacs/elisp_determine_OS_version.html
 
-  (when (machine-config-get 'org-agenda-directory-pattern)
-    (setq org-agenda-files (apply 'directory-files-recursively (machine-config-get 'org-agenda-directory-pattern))))
+  (when (machine-config-get-first 'org-agenda-directory-pattern)
+    (setq org-agenda-files (apply 'directory-files-recursively (machine-config-get-first 'org-agenda-directory-pattern))))
   ;; (cond
   ;; 					; ((string-equal system-type "windows-nt") ; Microsoft Windows
   ;;  ((string-equal machine-domain "ms") ; Microsoft Windows

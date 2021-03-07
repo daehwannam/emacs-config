@@ -24,7 +24,8 @@
      (vbox "~/program/miniconda3/envs/")
      (kant "~/program/miniconda3/envs/")
      (erasmus "~/program/miniconda3/envs/")
-     (py3-env "~/bin/anaconda3/envs/"))
+     (anaconda-env "~/program/anaconda3/envs/")
+     (miniconda-env "~/program/miniconda3/envs/"))
     (pyvenv-name
      ;; (py3-env "py3")
      ;; (engels "default")
@@ -40,12 +41,13 @@
      )
     (installable-packages
      ;; (base (vlf magit key-chord modalka evil avy hydra dash counsel multi-term))
-     (basic (vlf magit dash multi-term counsel async))
+     (basic (vlf magit dash multi-term counsel async wgrep which-key paredit highlight-parentheses))
      (vbox (vlf magit key-chord modalka evil dash  multi-term auctex latex-preview-pane material-theme elpy flycheck py-autopep8 blacken sphinx-doc workgroups2 perspective counsel iedit wgrep which-key counsel-projectile persp-projectile paredit markdown-mode tuareg ein hy-mode)) ; removed: highlight
      ;; (engels (vlf magit key-chord modalka evil dash elpy flycheck py-autopep8 blacken wgrep which-key projectile flx-ido))
      (engels (vlf magit key-chord modalka evil dash  multi-term elpy flycheck py-autopep8 blacken sphinx-doc wgrep which-key counsel counsel-projectile markdown-mode hy-mode))
      ;; (engels (vlf magit key-chord modalka evil dash elpy py-autopep8 blacken))
-     (programming (vlf magit key-chord modalka evil dash multi-term counsel elpy flycheck py-autopep8 blacken))
+     (programming (markdown-mode sphinx-doc ein hy-mode))
+     (elpy-setup (elpy flycheck py-autopep8 blacken))
      (lsp-setup (lsp-mode lsp-ui flycheck company lsp-treemacs lsp-ivy dap-mode))
      (ms-laptop (vlf magit key-chord modalka evil dash))
      (ms-desktop (vlf magit key-chord modalka evil dash))
@@ -56,11 +58,14 @@
 (comment
  (defun machine-config-get (key)
    (car (cdr (cl-assoc machine-options (cdr (assoc key machine-config-list))
-		       :test (lambda (x y) (member y x)))))))
+		       :test (lambda (x y) (member y x))))))
 
-(defun machine-config-get (key)
+ (defun machine-config-get (key)
    (car (cdr (cl-assoc machine-options (cdr (assoc key machine-config-list))
-		       :test (lambda (x y) (eq (car x) y))))))
+		       :test (lambda (x y) (eq (car x) y)))))))
+
+(defun machine-config-get-first (key)
+  (car (machine-config-get-all key)))
 
 (defun machine-config-get-all (key)
   (mapcar (lambda (x) (car (cdr x)))

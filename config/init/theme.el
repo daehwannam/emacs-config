@@ -15,7 +15,7 @@
  )
 
 ;;; color theme change
-(let ((theme-style (machine-config-get 'theme-style)))
+(let ((theme-style (machine-config-get-first 'theme-style)))
   (cond
    ((eq theme-style 'white)
     (load-theme 'leuven)
@@ -49,7 +49,11 @@
     ;; (custom-set-faces
     ;;  '(org-scheduled ((t (:foreground "PaleGreen")))))
 
-    (comment (set-face-foreground 'mode-line-buffer-id "firebrick")))))
+    (comment (set-face-foreground 'mode-line-buffer-id "firebrick")))
+
+   (when (package-installed-p 'highlight-parentheses)
+     (custom-set-faces
+      '(show-paren-match ((t (:background "black" :foreground "magenta"))))))))
 
 
 ;; (when (require 'material-theme nil t)
