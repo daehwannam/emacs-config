@@ -15,6 +15,12 @@
    - Make the default environment
      $ conda create -n default python=3
    - Update ~/.bashrc to replace "base" with "default"
+     e.g.
+     #+begin_src bash
+     CONDA=miniconda3  # anaconda3 or miniconda3 or ...
+     export PATH="/home/dhnam/program/$CONDA/envs/default/bin:$PATH"
+     conda activate default
+     #+end_src
 
 * Install
    - install pip

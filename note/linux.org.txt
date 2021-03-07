@@ -1,3 +1,25 @@
+* Initial setup
+  You can refer configuration files in "~/.emacs.d/note/config-scripts/"
+  1. Install conda: [[file:conda.org.txt::*Install conda][Install conda]]
+     - make the default environment
+  2. Install emacs via conda
+  3. Emacs config setup
+     - Clone emacs-config
+       #+begin_src bash
+       cd ~
+       git clone https://github.com/daehwannam/emacs-config.git
+       mv emacs-config ~/.emacs.d
+       #+end_src
+     - Update "~/.emacs.d/config/options.txt"
+     - (Optional) Install elpy: [[file:elpy.org.txt::*Setup][Setup]]
+  4. Install tmux via conda
+     - (Optional) install logging plugin: [[file:tmux.org.txt::*logging][logging]]
+  5. (Optional) Install the latest nvidia driver: [[*NVIDIA Driver][NVIDIA Driver]]
+  6. (Optional) Install cudatoolkit & cudnn via conda
+  7. (Optional) Install others via conda
+     - git
+     - ...
+
 * Bash
 ** make empty file
    $ touch file.txt
@@ -127,15 +149,15 @@
    https://askubuntu.com/questions/686239/how-do-i-check-the-version-of-ubuntu-i-am-running
    $ lsb_release -a
 
-* Setup
-** SSH multiple port
-   Modify /etc/ssh/sshd_config:
-   ~ Port 22
-   ~ Port 61112
-   Then type as follow:
-   $ sudo service ssh restart
+* Utilities
+** ssh
+*** SSH multiple port setup
+    Modify /etc/ssh/sshd_config:
+    ~ Port 22
+    ~ Port 61112
+    Then type as follow:
+    $ sudo service ssh restart
 
-* General commands
 ** ls
 *** Explanation for "ls -l"
    - drwxrwxrwx
@@ -245,12 +267,10 @@
    e.g.
    $ xdg-open "example.pdf"
 
-* pskill
-  https://stackoverflow.com/a/27820938
-  $ pkill -f python
+** pskill
+   https://stackoverflow.com/a/27820938
+   $ pkill -f python
    
-* Special commands
-
 * NVIDIA GPU & CUDA
 ** components
    https://eungbean.github.io/2018/08/08/Ubuntu-Installation2-1/

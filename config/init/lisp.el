@@ -90,6 +90,7 @@
 
    (global-highlight-parentheses-mode t)))
 
-(when (fboundp 'show-paren-mode)
-  (setq show-paren-delay 0)
-  (add-hook 'paredit-mode-hook 'show-paren-mode))
+(comment
+ (when (fboundp 'show-paren-mode)
+   (setq show-paren-delay 0)
+   (add-hook 'paredit-mode-hook 'show-paren-mode)))
