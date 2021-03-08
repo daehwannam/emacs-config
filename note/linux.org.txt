@@ -18,6 +18,7 @@
   6. (Optional) Install cudatoolkit & cudnn via conda
   7. (Optional) Install others via conda
      - git
+     - screen
      - ...
 
 * Bash
