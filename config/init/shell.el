@@ -177,8 +177,8 @@
      (key-chord-define comint-mode-map "fp" 'hydra-comint-previous-next-matching-input-from-input/comint-previous-matching-input-from-input)
      (key-chord-define comint-mode-map "fn" 'hydra-comint-previous-next-matching-input-from-input/comint-next-matching-input-from-input)))
   (progn
-    (define-key comint-mode-map (kbd "M-p") 'comint-previous-matching-input-from-input)
-    (define-key comint-mode-map (kbd "M-n") 'comint-next-matching-input-from-input))
+    (define-key comint-mode-map (kbd "M-P") 'comint-previous-matching-input-from-input)
+    (define-key comint-mode-map (kbd "M-N") 'comint-next-matching-input-from-input))
 
   (progn
     (defhydra hydra-comint-previous-next-prompt ()

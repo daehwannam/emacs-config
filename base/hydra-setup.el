@@ -184,6 +184,8 @@
       (defun other-window-backwards () (interactive) (other-window -1))
       (defhydra hydra-window-switch-split ()
 	"window switch/split"
+	("q" nil "quit")  ; stop hydra
+
 	("o" other-window)
 	("O" other-window-backwards)
 
