@@ -13,12 +13,15 @@
      - Update "~/.emacs.d/config/options.txt"
      - (Optional) Install elpy: [[file:elpy.org.txt::*Setup][Setup]]
   4. Install tmux via conda
+     - copy ~/.tmux.conf from "~/.emacs.d/note/config-scripts/.tmux.conf"
      - (Optional) install logging plugin: [[file:tmux.org.txt::*logging][logging]]
-  5. (Optional) Install the latest nvidia driver: [[*NVIDIA Driver][NVIDIA Driver]]
-  6. (Optional) Install cudatoolkit & cudnn via conda
-  7. (Optional) Install others via conda
+  5. Install screen via conda
+     - copy ~/.screenrc from "~/.emacs.d/note/config-scripts/.screenrc"
+  6. (Optional) Install the latest nvidia driver: [[*NVIDIA Driver][NVIDIA Driver]]
+  7. (Optional) Install cudatoolkit & cudnn: [[*install guides][install guides]]
+     - (Optional) Install cudatoolkit & cudnn via conda: [[*Install CUDA toolkit and cuDNN via conda][Install CUDA toolkit and cuDNN via conda]]
+  8. (Optional) Install others via conda
      - git
-     - screen
      - ...
 
 * Bash
@@ -333,6 +336,15 @@
       $ sudo apt-get install nvidia-430
     - minimum driver version
       https://stackoverflow.com/a/30820690
+**** manual install
+     - download .run file from NVIDIA site
+     - remove existing nvidia drivers
+       $ sudo apt-get remove --purge nvidia-*
+     - install the new nvidia driver
+       $ sudo service lightdm stop ## if you are using 11.04 replace `lightdm` with `gdm`
+       $ sudo sh NVIDIA-Linux-x86_64-285.05.09.run
+     - reboot
+
 
 *** CUDA toolkits
     https://eungbean.github.io/2018/08/08/Ubuntu-Installation2-1/
@@ -391,6 +403,10 @@
        $ sudo cp cuda/lib64/libcudnn* /usr/local/cuda/lib64
        $ sudo chmod a+r /usr/local/cuda/include/cudnn.h /usr/local/cuda/lib64/libcudnn*
 
+*** Install CUDA toolkit and cuDNN via conda
+    $ conda install -c anaconda cudatoolkit=10.2
+    $ conda install -c nvidia nvcc_linux-64
+    $ conda install -c anaconda cudnn
 
 ** get gpu information
    - Information of 1st GPU
