@@ -11,3 +11,7 @@
 					  :hoverProvider
 					  ;; :signatureHelpProvider
 					  )))))
+
+(comment
+ ;; eldoc-doc-buffer: C-h .
+ )
