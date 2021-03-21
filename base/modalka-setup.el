@@ -272,8 +272,8 @@
 
       ;; turn on modalka-mode
       ;; (require 'evil)
-      (modalka-global-mode t)))
+      (modalka-global-mode t))
 
-  (cl-position 'mode-line-position mode-line-format)
+    (cl-position 'mode-line-position mode-line-format))
 
   :after (key-chord))

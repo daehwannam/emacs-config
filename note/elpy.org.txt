@@ -8,7 +8,8 @@
 
   $ conda create -n elpy-rpc python=3
   $ conda activate elpy-rpc
-  $ python -m pip install 'jedi<0.18.0' flake8 importmagic autopep8 black yapf pylint
+  # $ python -m pip install 'jedi<0.18.0' flake8 importmagic autopep8 black yapf pylint
+  $ python -m pip install 'jedi<0.17.2' flake8 importmagic autopep8 black yapf pylint
   # elpy-goto-definition doesn't work with jedi-0.18.x
   # pylint is similar to flake8 but has more functions
   # $ python -m pip install jedi flake8 importmagic autopep8 black yapf pylint
@@ -40,6 +41,10 @@
   ignore = E501
   max-line-length = 97
   --------------------------------------------------------------
+
+  Caution:
+    - the config file should not contain empty lines between configurations
+    - The configurations are applied after restarting processes
 
 * Commands
   http://ohyecloudy.com/emacsian/2015/08/12/elpy-python-ide/
