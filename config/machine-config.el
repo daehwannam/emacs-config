@@ -49,7 +49,7 @@
      (engels (vlf magit key-chord modalka evil dash  multi-term elpy flycheck py-autopep8 blacken sphinx-doc wgrep which-key counsel counsel-projectile markdown-mode hy-mode))
      ;; (engels (vlf magit key-chord modalka evil dash elpy py-autopep8 blacken))
      (programming (markdown-mode sphinx-doc ein hy-mode))
-     (python-setup (highlight-indent-guides))
+     (python-setup (highlight-indentation))
      (elpy-setup (elpy flycheck py-autopep8 blacken))
      (min-elpy-setup (elpy))
      (lsp-setup (dash lsp-mode lsp-ui flycheck company lsp-treemacs lsp-ivy dap-mode))
