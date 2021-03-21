@@ -199,7 +199,8 @@
 	("8" split-window-below)
 	("7" split-window-right)
 
-	("p" kill-path-to-clipboard "kill-path"))
+	;; ("p" kill-path-to-clipboard "kill-path")
+	)
 
       (global-set-key (kbd "C-x o") #'hydra-window-switch-split/other-window)
       (global-set-key (kbd "C-x O") #'hydra-window-switch-split/other-window-backwards)
