@@ -1,4 +1,8 @@
 
+* Setup
+  Install pyls in global environment:
+  $ conda install python-language-server
+
 * Configuration
   https://github.com/palantir/python-language-server#configuration
   The default of pyls configuraiton is ~/.config/pycodestyle

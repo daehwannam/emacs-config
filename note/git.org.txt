@@ -43,6 +43,11 @@
 
   if you want to add additional submodules you have to perform git submodule init; git submodule update every time you clone the repo. It will not automatically get the submodules.
 
+  $ cd src
+  $ git submodule init
+  $ git submodule update
+
+  $ cd dhnamutil
   $ git submodule init
   $ git submodule update
 
