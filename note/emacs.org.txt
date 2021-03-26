@@ -45,8 +45,7 @@
 
    See the StackExchange answer
    https://emacs.stackexchange.com/a/2531
-   "when pressing C-/ in terminal, it actually invokes C-_."
-   
+   "when pressing C-/ in terminal, it actually invokes C-_."   
 ** Change text colors with describe-char
    https://emacs.stackexchange.com/a/18199/26068
 # ** Enhance mark & region selection speed
@@ -58,6 +57,14 @@
 #      - make sure it's not font-lock problem. M-x fundamental-mode and or M-x font-lock-mode to turn it off.
 #      - linum-mode makes emacs super slow. Turn it off.
 #      - lots rare unicode characters in buffer makes emacs slow.
+** directory-local
+   https://blog.allardhendriksen.nl/posts/tracking-project-virtual-environments-with-pyvenv-tracking-mode/
+   https://endlessparentheses.com/a-quick-guide-to-directory-local-variables.html
+
+   - Move to the project root
+   - M-x add-dir-local-variable
+     - python-mode
+     - pyvenv-workon --> some-python-environment
 
 * Emacs Lisp
 ** Key binding to function

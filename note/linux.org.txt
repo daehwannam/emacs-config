@@ -230,6 +230,12 @@
    show directory size
    $ sudo du -sh /path/to/dir
 
+   show files' sizes in the directory
+   $ du -sh /path/to/dir/*
+
+   show all files' sizes in the current directory
+   $ du -hs .[^.]*
+
 ** find
 *** remove found files
     https://stackoverflow.com/a/41386937
@@ -282,7 +288,26 @@
 ** pskill
    https://stackoverflow.com/a/27820938
    $ pkill -f python
-   
+** lsblk
+   https://unix.stackexchange.com/a/227458
+   Check whether a mounted device, such as sda or sdb, is SDD or HDD:
+   $ lsblk -d -o name,rota
+
+   The example output is:
+       NAME ROTA
+       sda     0
+       sdb     0
+       sdc     1
+   where 1 is HDD(rotational device) and 0 is SDD.
+** chown &* chgrp
+   Basic usage
+   $ chown user some/file/or/directory
+   $ chgrp user some/file/or/directory
+
+   Change owner and group of multiple files recursively
+   https://superuser.com/a/260939
+   $ chown -R user:group file1 file2
+
 * NVIDIA GPU & CUDA
 ** components
    https://eungbean.github.io/2018/08/08/Ubuntu-Installation2-1/

@@ -1,6 +1,5 @@
 
 (use-existing-pkg pyvenv
-  :ensure t
   :init
   (progn
     (comment
@@ -17,7 +16,9 @@
       (when pyvenv-workon-home-path
 	(setenv "WORKON_HOME" pyvenv-workon-home-path)
 	(pyvenv-mode 1)
-	(pyvenv-tracking-mode 1)))))
+	(comment
+	 ;; pyvenv-tracking-mode is very slow
+	 (pyvenv-tracking-mode 1))))))
 
 (when (package-installed-p 'elpy)  
 
