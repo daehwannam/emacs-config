@@ -26,6 +26,8 @@
      (erasmus "~/program/miniconda3/envs/")
      (anaconda-env "~/program/anaconda3/envs/")
      (miniconda-env "~/program/miniconda3/envs/"))
+    (elpy-simple-config
+     (min-elpy-setup t))
     (pyvenv-name
      ;; (py3-env "py3")
      ;; (engels "default")
@@ -47,8 +49,11 @@
      (engels (vlf magit key-chord modalka evil dash  multi-term elpy flycheck py-autopep8 blacken sphinx-doc wgrep which-key counsel counsel-projectile markdown-mode hy-mode))
      ;; (engels (vlf magit key-chord modalka evil dash elpy py-autopep8 blacken))
      (programming (markdown-mode sphinx-doc ein hy-mode))
+     (python-setup (highlight-indentation))
      (elpy-setup (elpy flycheck py-autopep8 blacken))
-     (lsp-setup (lsp-mode lsp-ui flycheck company lsp-treemacs lsp-ivy dap-mode))
+     (min-elpy-setup (elpy))
+     (lsp-setup (dash lsp-mode lsp-ui flycheck company lsp-treemacs lsp-ivy dap-mode))
+     (eglot-setup (eglot))
      (ms-laptop (vlf magit key-chord modalka evil dash))
      (ms-desktop (vlf magit key-chord modalka evil dash))
      (semparse (jsonnet-mode))

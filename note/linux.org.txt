@@ -11,6 +11,9 @@
        mv emacs-config ~/.emacs.d
        #+end_src
      - Update "~/.emacs.d/config/options.txt"
+       e.g. (machine-id eglot-setup min-elpy-setup miniconda-env python-setup programming basic)
+            (machine-id elpy-setup miniconda-env programming basic)
+            (machine-id lsp-mode min-elpy-setup miniconda-env programming basic)
      - (Optional) Install elpy: [[file:elpy.org.txt::*Setup][Setup]]
   4. Install tmux via conda
      - copy ~/.tmux.conf from "~/.emacs.d/note/config-scripts/.tmux.conf"

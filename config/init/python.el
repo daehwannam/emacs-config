@@ -9,6 +9,15 @@
 ;;; python-mode linum-mode setting
 (add-hook 'python-mode-hook 'linum-mode)
 
+(if (package-installed-p 'highlight-indentation)
+    (progn
+      (add-hook 'python-mode-hook 'highlight-indentation-mode))
+  (when (package-installed-p 'highlight-indent-guides)
+    (custom-set-variables
+     '(highlight-indent-guides-method 'column))
+    (add-hook 'python-mode-hook 'highlight-indent-guides-mode)))
+
+
 ;; use C-j as newline-and-indent
 (defun non-electric-indent-mode ()
   (electric-indent-mode -1))
@@ -478,4 +487,3 @@ Similarly for Soar, Scheme, etc."
 	(if (use-region-p)
 	    (replace-regexp "." "/" nil (region-beginning) (region-end))
 	  (replace-regexp "." "/" nil start end))))))
-

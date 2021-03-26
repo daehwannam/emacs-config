@@ -1,0 +1,20 @@
+
+* Setup
+  Install the following packages in the environment your're using:
+  $ python -m pip install python-language-server[all]  # install various packages
+
+  Also you can additionally install other packages:
+  $ python -m pip install pyls-black pyls-isort pyls-mypy
+
+** Fixing a pyls-mypy issue
+   https://github.com/tomv564/pyls-mypy/issues/37
+   mypy package may have an issue due to a missing future import
+   $ pip install future
+
+** Customization
+   M-x customize-group RET lsp-pyls
+
+* Miscellaneous
+** Project
+   Project information is saved in "~/.emacs.d/.lsp-session-v1"
+

@@ -39,8 +39,15 @@
      '(hi-pink ((t (:background "pink" :foreground "color-34"))))
      '(hi-green ((t (:background "green" :foreground "magenta"))))
      '(hi-blue ((t (:background "light blue" :foreground "red"))))
-     '(mlinum-highlight-face ((t (:inherit default :foreground "brightwhite" :background "black"))))
-     )
+     '(mlinum-highlight-face ((t (:inherit default :foreground "brightwhite" :background "black")))))
+
+    (progn
+      ;; flymake color
+      ;; https://groups.google.com/g/gnu.emacs.help/c/gJpdhosRByY
+      (require 'flymake)
+      (custom-set-faces
+       '(flymake-errline ((((class color)) (:foreground "red"))))
+       '(flymake-warnline ((((class color)) (:foreground "yellow"))))))
 
     (when (fboundp 'ein:run)
       (custom-set-faces
