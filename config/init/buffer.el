@@ -9,43 +9,48 @@
     ;; http://emacs.stackexchange.com/questions/202/close-all-dired-buffers
     (global-set-key "\C-x\C-b" 'ibuffer)))
 
+(require 'make-repeatable-command)
+
 (comment
-  ;; other window with repeatition
-  ;; http://stackoverflow.com/questions/91071/emacs-switch-to-previous-window
-  ;;(load "make-repeatable-command") ;(load "~/.emacs.d/package/make-repeatable-command.el")
-  (require 'make-repeatable-command)
+ ;; other window with repeatition
+ ;; http://stackoverflow.com/questions/91071/emacs-switch-to-previous-window
+ ;;(load "make-repeatable-command") ;(load "~/.emacs.d/package/make-repeatable-command.el")
+  
+ ;; switch buffers
+ ;; http://emacs.stackexchange.com/questions/728/how-do-i-switch-buffers-quickly
+ ;;(global-set-key (kbd "C-c p") 'previous-buffer)
+ ;;(global-set-key (kbd "C-c n") 'next-buffer)
 
-  ;; switch buffers
-  ;; http://emacs.stackexchange.com/questions/728/how-do-i-switch-buffers-quickly
-  ;;(global-set-key (kbd "C-c p") 'previous-buffer)
-  ;;(global-set-key (kbd "C-c n") 'next-buffer)
+ ;;(global-set-key (kbd "C-c C-p") (make-repeatable-command 'previous-buffer))
+ ;;(global-set-key (kbd "C-c C-n") (make-repeatable-command 'next-buffer))
 
-  ;;(global-set-key (kbd "C-c C-p") (make-repeatable-command 'previous-buffer))
-  ;;(global-set-key (kbd "C-c C-n") (make-repeatable-command 'next-buffer))
+ ;;(global-set-key (kbd "C-M-p") (make-repeatable-command 'previous-buffer))
+ ;;(global-set-key (kbd "C-M-n") (make-repeatable-command 'next-buffer))
 
-  ;;(global-set-key (kbd "C-M-p") (make-repeatable-command 'previous-buffer))
-  ;;(global-set-key (kbd "C-M-n") (make-repeatable-command 'next-buffer))
+ ;;(global-set-key (kbd "C-c C-b") (make-repeatable-command 'previous-buffer))
+ ;;(global-set-key (kbd "C-c C-f") (make-repeatable-command 'next-buffer))
 
-  ;;(global-set-key (kbd "C-c C-b") (make-repeatable-command 'previous-buffer))
-  ;;(global-set-key (kbd "C-c C-f") (make-repeatable-command 'next-buffer))
+ ;; (global-set-key (kbd "ESC <f7>") (make-repeatable-command 'previous-buffer)) ; M-<f7>
+ ;; (global-set-key (kbd "ESC <f8>") (make-repeatable-command 'next-buffer)) ; M-<f8>
 
-  ;; (global-set-key (kbd "ESC <f7>") (make-repeatable-command 'previous-buffer)) ; M-<f7>
-  ;; (global-set-key (kbd "ESC <f8>") (make-repeatable-command 'next-buffer)) ; M-<f8>
+ ;; (global-set-key (kbd "<f7>") (make-repeatable-command 'previous-buffer)) ; M-<f7>
+ ;; (global-set-key (kbd "<f8>") (make-repeatable-command 'next-buffer)) ; M-<f8>
 
-  ;; (global-set-key (kbd "<f7>") (make-repeatable-command 'previous-buffer)) ; M-<f7>
-  ;; (global-set-key (kbd "<f8>") (make-repeatable-command 'next-buffer)) ; M-<f8>
+ ;; (global-set-key (kbd "C-x <left>") (make-repeatable-command 'previous-buffer)) ; M-<f7>
+ ;; (global-set-key (kbd "C-x <right>") (make-repeatable-command 'next-buffer)) ; M-<f8>
+ )
 
-  (global-set-key (kbd "C-x <left>") (make-repeatable-command 'previous-buffer)) ; M-<f7>
-  (global-set-key (kbd "C-x <right>") (make-repeatable-command 'next-buffer)) ; M-<f8>
-  )
-
-(progn
-  (defhydra hydra-prev-next-buffer ()
-    "prev-next-buffer"
-    ("<left>" previous-buffer)
-    ("<right>" next-buffer))
-  (global-set-key (kbd "C-x <left>") #'hydra-prev-next-buffer/previous-buffer)
-  (global-set-key (kbd "C-x <right>") #'hydra-prev-next-buffer/next-buffer))
+(if (and nil (package-installed-p 'hydra))
+    (progn
+      (defhydra hydra-prev-next-buffer ()
+	"prev-next-buffer"
+	("<left>" previous-buffer)
+	("<right>" next-buffer))
+      (global-set-key (kbd "C-x <left>") #'hydra-prev-next-buffer/previous-buffer)
+      (global-set-key (kbd "C-x <right>") #'hydra-prev-next-buffer/next-buffer))
+  (progn
+    (global-set-key (kbd "C-x <left>") (make-repeatable-command 'previous-buffer))
+    (global-set-key (kbd "C-x <right>") (make-repeatable-command 'next-buffer))))
 
 (progn
   (require 'buffer-move)

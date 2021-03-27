@@ -4,7 +4,7 @@
     (interactive "p")
     (tab-bar-move-tab (- (or arg 1))))
 
-  (comment
+  (progn
     (require 'make-repeatable-command)
     (define-key tab-prefix-map "8" 'tab-new)
     (define-key tab-prefix-map "9" 'tab-close-other)
@@ -42,7 +42,7 @@
     (dolist (tab-bar-func '(tab-new tab-close tab-close-other tab-next tab-previous))
       (advice-add tab-bar-func :around #'tab-bar-redisplay-advice)))
 
-  (progn
+  (comment
    (let ((hydra-def
 	  (defhydra hydra-tab-bar ()
 	    "tab-bar"

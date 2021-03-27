@@ -176,26 +176,42 @@
    (progn
      (key-chord-define comint-mode-map "fp" 'hydra-comint-previous-next-matching-input-from-input/comint-previous-matching-input-from-input)
      (key-chord-define comint-mode-map "fn" 'hydra-comint-previous-next-matching-input-from-input/comint-next-matching-input-from-input)))
+
   (progn
     (define-key comint-mode-map (kbd "M-P") 'comint-previous-matching-input-from-input)
     (define-key comint-mode-map (kbd "M-N") 'comint-next-matching-input-from-input))
 
-  (progn
-    (defhydra hydra-comint-previous-next-prompt ()
-      "comint previous/next promp"
-      ("p" comint-previous-prompt)
-      ("n" comint-next-prompt))
-    (define-key comint-mode-map (kbd "C-c C-p") #'hydra-comint-previous-next-prompt/comint-previous-prompt)
-    (define-key comint-mode-map (kbd "C-c C-n") #'hydra-comint-previous-next-prompt/comint-next-prompt)))
+  (if (and nil (package-installed-p 'hydra))
+      (progn
+	(defhydra hydra-comint-previous-next-prompt ()
+	  "comint previous/next promp"
+	  ("p" comint-previous-prompt)
+	  ("n" comint-next-prompt))
+	(define-key comint-mode-map (kbd "C-c C-p")
+	  #'hydra-comint-previous-next-prompt/comint-previous-prompt)
+	(define-key comint-mode-map (kbd "C-c C-n")
+	  #'hydra-comint-previous-next-prompt/comint-next-prompt))
+    (progn
+      (define-key comint-mode-map (kbd "C-c C-n") (make-repeatable-command 'comint-next-prompt))
+      (define-key comint-mode-map (kbd "C-c C-n") (make-repeatable-command 'comint-next-prompt)))))
 
 (progn
-  (progn
-    (defhydra hydra-compilation-previous-next-error ()
-      "compilation previous/next error"
-      ("p" compilation-previous-error)
-      ("n" compilation-next-error))
-    (define-key compilation-shell-minor-mode-map (kbd "C-c M-p") #'hydra-compilation-previous-next-error/compilation-previous-error)
-    (define-key compilation-shell-minor-mode-map  (kbd "C-c M-n") #'hydra-compilation-previous-next-error/compilation-next-error))
+  (comment
+   (if (and nil (package-installed-p 'hydra))
+       (progn
+	 (defhydra hydra-compilation-previous-next-error ()
+	   "compilation previous/next error"
+	   ("p" compilation-previous-error)
+	   ("n" compilation-next-error))
+	 (define-key compilation-shell-minor-mode-map
+	   (kbd "C-c M-p") #'hydra-compilation-previous-next-error/compilation-previous-error)
+	 (define-key compilation-shell-minor-mode-map
+	   (kbd "C-c M-n") #'hydra-compilation-previous-next-error/compilation-next-error))
+     (progn
+       (define-key compilation-shell-minor-mode-map (kbd "C-c M-p")
+	 (make-repeatable-command 'compilation-previous-error))
+       (define-key compilation-shell-minor-mode-map (kbd "C-c M-n")
+	 (make-repeatable-command 'compilation-next-error)))))
 
   (define-key compilation-shell-minor-mode-map (kbd "C-M-]") 'compilation-next-error)
   (define-key compilation-shell-minor-mode-map (kbd "C-M-[") 'compilation-previous-error)

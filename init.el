@@ -28,8 +28,8 @@
 (comment (load "~/.emacs.d/base/evil-setup.el"))
 (load "~/.emacs.d/base/key-chord-setup.el")
 (progn
- ;; hydra may be laggy and it's not compatible with key-chord
- (load "~/.emacs.d/base/hydra-setup.el"))
+  ;; hydra may be laggy and it's not compatible with key-chord
+  (load "~/.emacs.d/base/hydra-setup.el"))
 (load "~/.emacs.d/base/key-config.el")
 (comment (load "~/.emacs.d/base/modalka-setup.el"))
 (load "~/.emacs.d/base/modalka-simple-setup.el")

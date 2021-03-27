@@ -118,7 +118,7 @@
   (kill-buffer)
   (other-window -1))
 
-(global-set-key (kbd "C-x K") 'kill-other-window-buffer)
+;; (global-set-key (kbd "C-x K") 'kill-other-window-buffer)
 
 ;; kill other window
 (defun delete-other-window ()
@@ -140,7 +140,7 @@
   (other-window 1)
   (find-file filename))
 
-(global-set-key (kbd "C-x F") 'split-window-below-or-right-and-find-file)
+(comment (global-set-key (kbd "C-x F") 'split-window-below-or-right-and-find-file))
 
 
 (defun split-window-below-or-right-and-execute-extended-command (prefixarg &optional command-name)
@@ -197,7 +197,7 @@ give to the command you invoke, if it asks for an argument."
             (sit-for (if (numberp suggest-key-bindings)
                          suggest-key-bindings
                        2))))))))
-(global-set-key (kbd "M-X") 'split-window-below-or-right-and-execute-extended-command)
+(comment (global-set-key (kbd "M-X") 'split-window-below-or-right-and-execute-extended-command))
 
 
 (defun split-window-below-or-right-and-switch-to-buffer (buffer-or-name &optional norecord force-same-window)
@@ -275,28 +275,28 @@ Return the buffer switched to."
       (select-window (selected-window)))
     (set-buffer buffer)))
 
-(global-set-key (kbd "C-x B") 'split-window-below-or-right-and-switch-to-buffer)
+(comment (global-set-key (kbd "C-x B") 'split-window-below-or-right-and-switch-to-buffer))
 
 
-(when (fboundp 'god-mode)
-  ;; (global-set-key (kbd "C-x C-o") (make-repeatable-command 'other-window))
-  ;; (global-set-key (kbd "C-x C-5 C-o") (make-repeatable-command 'other-frame))
+(comment
+ (when (fboundp 'god-mode)
+   ;; (global-set-key (kbd "C-x C-o") (make-repeatable-command 'other-window))
+   ;; (global-set-key (kbd "C-x C-5 C-o") (make-repeatable-command 'other-frame))
 
-  ;; (global-set-key (kbd "C-x C-ㅐ") (make-repeatable-command 'other-window))
+   ;; (global-set-key (kbd "C-x C-ㅐ") (make-repeatable-command 'other-window))
 
-  ;; ;; other-frame key setting
-  ;; (global-set-key (kbd "C-c C-o") (make-repeatable-command 'other-frame))
+   ;; ;; other-frame key setting
+   ;; (global-set-key (kbd "C-c C-o") (make-repeatable-command 'other-frame))
 
-  ;; (global-set-key (kbd "C-c C-ㅐ") (make-repeatable-command 'other-frame))
+   ;; (global-set-key (kbd "C-c C-ㅐ") (make-repeatable-command 'other-frame))
 
-  ;; ;; make-frame-command & delete-frame key setting
-  ;; (global-set-key (kbd "C-c C-0") 'delete-frame)
-  ;; (global-set-key (kbd "C-c C-1") 'delete-other-frames)
-  ;; (global-set-key (kbd "C-c C-2") 'make-frame-command)
+   ;; ;; make-frame-command & delete-frame key setting
+   ;; (global-set-key (kbd "C-c C-0") 'delete-frame)
+   ;; (global-set-key (kbd "C-c C-1") 'delete-other-frames)
+   ;; (global-set-key (kbd "C-c C-2") 'make-frame-command)
 
-  ;; window size adjust (NOT WORK)
-  (global-set-key (kbd "C-x C-^") (make-repeatable-command 'enlarge-window))
-  (global-set-key (kbd "C-x C-%") (make-repeatable-command 'shrink-window))
-  (global-set-key (kbd "C-x C-}") (make-repeatable-command 'enlarge-window-horizontally))
-  (global-set-key (kbd "C-x C-{") (make-repeatable-command 'shrink-window-horizontally))
-  )
+   ;; window size adjust (NOT WORK)
+   (global-set-key (kbd "C-x C-^") (make-repeatable-command 'enlarge-window))
+   (global-set-key (kbd "C-x C-%") (make-repeatable-command 'shrink-window))
+   (global-set-key (kbd "C-x C-}") (make-repeatable-command 'enlarge-window-horizontally))
+   (global-set-key (kbd "C-x C-{") (make-repeatable-command 'shrink-window-horizontally))))

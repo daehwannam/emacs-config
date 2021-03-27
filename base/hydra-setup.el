@@ -9,7 +9,7 @@
   (defmacro keycall (key-string &rest args)
     `(funcall (key-binding (kbd ,key-string)) ,@args))
 
-  (progn
+  (comment
     (defhydra hydra-yank-pop (:hint nil)
       "yank"
       ("C-y" yank nil)
@@ -18,12 +18,13 @@
 
       ;; ("y" (yank-pop 1) "next")
       ;; ("Y" (yank-pop -1) "prev")
-      ("l" counsel-yank-pop "list" :color blue) ; or browse-kill-ring
+      ;; ("l" counsel-yank-pop "list" :color blue) ; or browse-kill-ring
+      ("l" counsel-yank-pop nil)
 
       ;; minor error fix
       ;; :hint nil -> hiding hint
-      ;; ("-" (progn (insert "-") (hydra-keyboard-quit)) :exit t)
-      )
+      ("-" (progn (insert "-") (hydra-keyboard-quit)) nil :exit t))
+
     (global-set-key (kbd "C-y") #'hydra-yank-pop/yank))
 
 
@@ -179,7 +180,7 @@
    (global-set-key (kbd "C-x {") #'hydra-window/shrink-window-horizontally)
    (global-set-key (kbd "C-x +") #'hydra-window/balance-windows))
 
-  (progn
+  (comment
     (progn
       (defun other-window-backwards () (interactive) (other-window -1))
       (defhydra hydra-window-switch-split ()
@@ -229,12 +230,7 @@
       (global-set-key (kbd "C-x {") #'hydra-window-size/shrink-window-horizontally)
       (global-set-key (kbd "C-x +") #'hydra-window-size/balance-windows)))
 
-  (progn
-    (defun other-frame-backwards () (interactive) (other-frame -1))
-    (defhydra hydra-frame ()
-      "frame"
-      ("o" other-frame)
-      ("O" other-frame-backwards)
+  (comment
 
       ("0" delete-frame)
 
@@ -252,5 +248,4 @@
     (global-set-key (kbd "C-c 2") #'hydra-frame/make-frame-command)
 
     (global-set-key (kbd "C-c 9") #'hydra-frame/delete-other-frames)
-    (global-set-key (kbd "C-c 8") #'hydra-frame/make-frame-command)))
-
+    (global-set-key (kbd "C-c 8") #'hydra-frame/make-frame-command))
