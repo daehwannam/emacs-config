@@ -45,9 +45,18 @@
       ;; flymake color
       ;; https://groups.google.com/g/gnu.emacs.help/c/gJpdhosRByY
       (require 'flymake)
-      (custom-set-faces
-       '(flymake-errline ((((class color)) (:foreground "red"))))
-       '(flymake-warnline ((((class color)) (:foreground "yellow"))))))
+      (progn
+	;; text color
+	(custom-set-faces
+	 '(flymake-errline ((((class color)) (:foreground "red"))))
+	 '(flymake-warnline ((((class color)) (:foreground "yellow"))))))
+
+      (progn
+	;; mode-line color
+	;; warning counter uses the color of 'compilation-warning
+	;; ==> (put 'flymake-warning 'mode-line-face 'compilation-warning)
+	(custom-set-faces
+	 '(compilation-warning ((t (:foreground "brightmagenta" :weight bold)))))))
 
     (when (fboundp 'ein:run)
       (custom-set-faces
@@ -67,4 +76,4 @@
 ;;   (load-theme 'material t) ;; load material theme
 ;; )
 
-;(load-theme 'tsdh-light)
+					;(load-theme 'tsdh-light)
