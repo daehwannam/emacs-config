@@ -123,10 +123,10 @@
     https://askubuntu.com/a/94104
 
 ** Creating a new user
-   $ adduser username
+   $ sudo adduser username
 
 ** Add a sudo user to sudo group
-   $ usermod -aG sudo username
+   $ sudo usermod -aG sudo username
 
 ** Login as another user
    https://askubuntu.com/questions/222984/can-i-log-in-with-other-users-account

@@ -152,18 +152,26 @@
   (add-hook 'org-mode-hook (lambda () (local-set-key (kbd "C-c C-x M-r") 'org-table-insert-row)))
 
 
-  (progn
-    ;; https://orgmode.org/worg/orgcard.html
-    (defhydra hydra-org-motion ()
-      "buffer-move"
-      ("q" nil "quit")
-      ("n" org-next-visible-heading)
-      ("p" org-previous-visible-heading)
-      ("f" org-forward-heading-same-level)
-      ("b" org-backward-heading-same-level))
+  (require 'make-repeatable-command)
 
+  (if (and nil (package-installed-p 'hydra))
+      (progn
+	;; https://orgmode.org/worg/orgcard.html
+	(defhydra hydra-org-motion ()
+	  "buffer-move"
+	  ("q" nil "quit")
+	  ("n" org-next-visible-heading)
+	  ("p" org-previous-visible-heading)
+	  ("f" org-forward-heading-same-level)
+	  ("b" org-backward-heading-same-level))
+
+	(progn
+	  (define-key org-mode-map (kbd "C-C C-n") 'hydra-org-motion/org-next-visible-heading)
+	  (define-key org-mode-map (kbd "C-c C-p") 'hydra-org-motion/org-previous-visible-heading)
+	  (define-key org-mode-map (kbd "C-c C-f") 'hydra-org-motion/org-forward-heading-same-level)
+	  (define-key org-mode-map (kbd "C-c C-b") 'hydra-org-motion/org-backward-heading-same-level)))
     (progn
-      (define-key org-mode-map (kbd "C-C C-n") 'hydra-org-motion/org-next-visible-heading)
-      (define-key org-mode-map (kbd "C-c C-p") 'hydra-org-motion/org-previous-visible-heading)
-      (define-key org-mode-map (kbd "C-c C-f") 'hydra-org-motion/org-forward-heading-same-level)
-      (define-key org-mode-map (kbd "C-c C-b") 'hydra-org-motion/org-backward-heading-same-level))))
+      (define-key org-mode-map (kbd "C-C C-n") (make-repeatable-command 'org-next-visible-heading))
+      (define-key org-mode-map (kbd "C-c C-p") (make-repeatable-command 'org-previous-visible-heading))
+      (define-key org-mode-map (kbd "C-c C-f") (make-repeatable-command 'org-forward-heading-same-level))
+      (define-key org-mode-map (kbd "C-c C-b") (make-repeatable-command 'org-backward-heading-same-level)))))
