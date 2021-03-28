@@ -1,3 +1,3 @@
 
 # https://superuser.com/a/422128
-escape ^||
+escape ^|\  # Ctrl-\

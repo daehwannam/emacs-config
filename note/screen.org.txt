@@ -14,3 +14,6 @@
    by default logfile name is "./screenlog.0"
 ** logging wiht file-name
    $ screen -S socken_name -L -Logfile log_file_name
+** kill all sessions
+   # https://unix.stackexchange.com/a/94528
+   $ pskill screen

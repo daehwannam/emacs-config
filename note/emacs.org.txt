@@ -216,6 +216,15 @@ print("hello world")
 ** Hydra
    - examples:
      https://github.com/abo-abo/hydra/wiki/Emacs
+** ansi-term
+   - M-x ansi-term
+   - C-u M-x ansi-term  # for another ansi-term
+** eshell
+   - M-x eshell
+   - C-u M-x eshell  # for another eshell
+
+   - eshell works with GNU screen
+   
 * KeyChanges
 ** Windows: auto-hot key
    $Ctrl::CapsLock
