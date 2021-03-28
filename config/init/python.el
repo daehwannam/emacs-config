@@ -487,3 +487,13 @@ Similarly for Soar, Scheme, etc."
 	(if (use-region-p)
 	    (replace-regexp "." "/" nil (region-beginning) (region-end))
 	  (replace-regexp "." "/" nil start end))))))
+
+(comment
+  (when (package-installed-p 'conda)
+    (require 'conda)
+    ;; if you want interactive shell support, include:
+    (conda-env-initialize-interactive-shells)
+    ;; if you want eshell support, include:
+    (conda-env-initialize-eshell)
+    ;; if you want auto-activation (see below for details), include:
+    (conda-env-autoactivate-mode t)))
