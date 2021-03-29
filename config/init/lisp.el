@@ -37,7 +37,7 @@
     (add-hook 'lisp-mode-hook             'enable-paredit-mode)
     (add-hook 'lisp-interaction-mode-hook 'enable-paredit-mode)
     (add-hook 'scheme-mode-hook           'enable-paredit-mode)
-    (add-hook 'scheme-mode-hook           'hy-mode))
+    (add-hook 'hy-mode-hook               'enable-paredit-mode))
   
   (progn
     (define-key paredit-mode-map (kbd "C-M-p") 'backward-list)

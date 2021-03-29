@@ -1,23 +1,34 @@
 
-* tail call optimization
-** code
-  - https://github.com/Bogdanp/tcopy/tree/master/tcopy
-  - http://code.activestate.com/recipes/474088-tail-call-optimization-decorator/
-  - https://chrispenner.ca/posts/python-tail-recursion
-** discussion
-  - https://www.reddit.com/r/Python/comments/96i85o/convenient_tail_call_elimination_decorator_for/
+* Python language
+** tail call optimization
+*** code
+   - https://github.com/Bogdanp/tcopy/tree/master/tcopy
+   - http://code.activestate.com/recipes/474088-tail-call-optimization-decorator/
+   - https://chrispenner.ca/posts/python-tail-recursion
+*** discussion
+   - https://www.reddit.com/r/Python/comments/96i85o/convenient_tail_call_elimination_decorator_for/
 
-* python2 to python3
-  $ 2to3 -w example.py [or directory]
+** python2 to python3
+   $ 2to3 -w example.py [or directory]
 
-  if you don't want to make backup files:
-  $ 2to3 -wn example.py [or directory]
+   if you don't want to make backup files:
+   $ 2to3 -wn example.py [or directory]
 
-* typing
-** traverse types
-   - typing.get_origin
-   - typing.get_args
-   https://stackoverflow.com/questions/38703556/unpacking-pythons-type-annotations
+** typing
+*** traverse types
+    - typing.get_origin
+    - typing.get_args
+    https://stackoverflow.com/questions/38703556/unpacking-pythons-type-annotations
+
+** AST
+*** AST example
+    https://stackoverflow.com/a/41801728
+    #+begin_src python
+    import ast
+    tree = ast.parse("print('Hello Python!!')")
+    print(ast.dump(tree))
+    exec(compile(tree, filename="<ast>", mode="exec"))
+    #+end_src
 
 * Hy language
 ** emacs hy-mode
