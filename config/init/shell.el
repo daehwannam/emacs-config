@@ -192,7 +192,7 @@
 	(define-key comint-mode-map (kbd "C-c C-n")
 	  #'hydra-comint-previous-next-prompt/comint-next-prompt))
     (progn
-      (define-key comint-mode-map (kbd "C-c C-n") (make-repeatable-command 'comint-next-prompt))
+      (define-key comint-mode-map (kbd "C-c C-p") (make-repeatable-command 'comint-previous-prompt))
       (define-key comint-mode-map (kbd "C-c C-n") (make-repeatable-command 'comint-next-prompt)))))
 
 (progn

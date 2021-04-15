@@ -129,3 +129,7 @@
  (when (fboundp 'show-paren-mode)
    (setq show-paren-delay 0)
    (add-hook 'paredit-mode-hook 'show-paren-mode)))
+
+(progn
+  ;; hissp & lissp
+  (add-to-list 'auto-mode-alist '("\\.lissp\\'" . lisp-mode)))

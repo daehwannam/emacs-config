@@ -21,6 +21,7 @@
 	 (pyvenv-tracking-mode 1))))))
 
 (when (package-installed-p 'elpy)  
+  (require 'elpy)
 
   (defun elpy-set-project-root (new-root) ; redefined
     "Set the Elpy project root to NEW-ROOT."
@@ -45,16 +46,19 @@
   (progn
     ;; change default project source
     (setq elpy-project-root-finder-functions
-	  '(elpy-project-find-src-root
-	    elpy-project-find-projectile-root
-	    elpy-project-find-python-root
-	    elpy-project-find-git-root
-	    elpy-project-find-hg-root
-	    elpy-project-find-svn-root))
+	  (cons 'get-python-default-project-root elpy-project-root-finder-functions))
+    (comment
+     (setq elpy-project-root-finder-functions
+	   '(elpy-project-find-src-root
+	     elpy-project-find-projectile-root
+	     elpy-project-find-python-root
+	     elpy-project-find-git-root
+	     elpy-project-find-hg-root
+	     elpy-project-find-svn-root))
 
-    (defun elpy-project-find-src-root ()
-      "Return the current src repository root, if any."
-      (locate-dominating-file default-directory ".src"))))
+     (defun elpy-project-find-src-root ()
+       "Return the current src repository root, if any."
+       (locate-dominating-file default-directory ".src")))))
 
 (if (machine-config-get-first 'elpy-simple-config)
     (progn
@@ -62,12 +66,15 @@
        (add-hook 'python-mode-hook (lambda () (local-set-key (kbd "C-c Z") 'elpy-set-project-root)))
        (add-hook 'python-mode-hook (lambda () (local-set-key (kbd "C-c C-z") 'elpy-shell-switch-to-shell))))
 
-      (require 'elpy)  ; unnecessar yif elpy-enable is called
       (comment
-       (remove-hook 'elpy-modules 'elpy-module-flymake) 
-       (elpy-enable))
+       ; unnecessar yif elpy-enable is called
+       (require 'elpy))
+      (progn
+	(remove-hook 'elpy-modules 'elpy-module-flymake) 
+	(elpy-enable))
       (define-key python-mode-map (kbd "C-c Z") 'elpy-set-project-root)
-      (define-key python-mode-map (kbd "C-c C-z") 'elpy-shell-switch-to-shell))
+      (define-key python-mode-map (kbd "C-c C-z") 'elpy-shell-switch-to-shell)
+      (define-key python-mode-map (kbd "C-c C-c") 'elpy-shell-send-region-or-buffer))
 
   (use-existing-pkg elpy
     ;; elpy : https://github.com/jorgenschaefer/elpy
@@ -195,11 +202,12 @@
 	  (add-hook 'ein:notebook-mode-hook 'linum-mode)
 	  (setq ein:worksheet-enable-undo t)))
 
-      (defun get-python-default-project-root ()
-	(locate-dominating-file default-directory ".src"))
+      (comment
+       (defun get-python-default-project-root ()
+	 (locate-dominating-file default-directory ".src"))
 
-      (setq elpy-project-root-finder-functions
-	    (cons 'get-python-default-project-root elpy-project-root-finder-functions)))
+       (setq elpy-project-root-finder-functions
+	     (cons 'get-python-default-project-root elpy-project-root-finder-functions))))
 
     :bind (("C-c Z" . elpy-set-project-root)
 	   ("C-c W" . py-repl-kill-ring-save))))

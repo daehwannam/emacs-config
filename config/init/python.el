@@ -354,9 +354,8 @@ Similarly for Soar, Scheme, etc."
   (add-hook 'hy-mode-hook
 	    (lambda () (local-set-key (kbd "C-c Z") 'hy-shell-set-project-root)))
 
-  (comment
-   (defun get-python-default-project-root ()
-     (locate-dominating-file default-directory ".src")))
+  (defun get-python-default-project-root ()
+    (expand-file-name (locate-dominating-file default-directory ".src")))
 
   (comment
    (defun run-hy-with-default-project-root ()

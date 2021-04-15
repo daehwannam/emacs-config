@@ -21,3 +21,4 @@
 		     'grep-mode))
 
 ;; (global-set-key (kbd "C-x C-M-s") 'rgrep)
+(key-chord-define-global "rj" 'rgrep)
