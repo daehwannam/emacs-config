@@ -126,7 +126,8 @@
    $ sudo adduser username
 
 ** Add a sudo user to sudo group
-   $ sudo usermod -aG sudo username
+   $ sudo usermod -aG sudo username  # for Ubuntu
+   $ usermod -aG wheel username  # for Red Hat
 
 ** Login as another user
    https://askubuntu.com/questions/222984/can-i-log-in-with-other-users-account
