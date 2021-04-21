@@ -41,8 +41,8 @@ map <c-x>< scrollToLeft
 map <c-x>> scrollToRight
 
 # Identical to `scroll-(down|up)-command`.
-# map <a-v> scrollFullPageUp
-# map <c-v> scrollFullPageDown
+# map <a-v> scrollFullPageUp  # similar to down-arrow
+# map <c-v> scrollFullPageDown  # similar to up-arrow
 
 # Identical to Emacs `scroll-(up|down)-line`
 # No KBD shortcut in Emacs by default.
@@ -130,9 +130,9 @@ map <c-x><c-@> Marks.activateGotoMode
 # NOTE: Vimium requires that you press the `<enter>` key
 # before shortcuts `<c-S>` and `<c-R>` will actually work.
 #------------------------------------------------------------------
-map / enterFindMode  # map <c-s> enterFindMode
-map n performFind  # map <c-S> performFind
-map p performBackwardsFind  # map <c-r> performBackwardsFind
+map / enterFindMode  # map <c-s> enterFindMode  # similar to F3 or Ctrl-f
+map n performFind  # map <c-S> performFind  # similar to F3 or Enter
+map p performBackwardsFind  # map <c-r> performBackwardsFind  # similar to Shift-F3 or Shift-Enter
 # map <c-R> performBackwardsFind
 
 # Not implemented in Emacs.
