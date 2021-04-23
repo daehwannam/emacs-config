@@ -126,7 +126,8 @@
    $ sudo adduser username
 
 ** Add a sudo user to sudo group
-   $ sudo usermod -aG sudo username
+   $ sudo usermod -aG sudo username  # for Ubuntu
+   $ usermod -aG wheel username  # for Red Hat
 
 ** Login as another user
    https://askubuntu.com/questions/222984/can-i-log-in-with-other-users-account
@@ -307,6 +308,11 @@
    Change owner and group of multiple files recursively
    https://superuser.com/a/260939
    $ chown -R user:group file1 file2
+** shutdown
+   - scheduled shutdown
+     https://askubuntu.com/questions/505929/shutdown-after-a-certain-time
+     $ date  # to check the current time
+     $ sudo shutdown -P 8:30
 
 * NVIDIA GPU & CUDA
 ** components
