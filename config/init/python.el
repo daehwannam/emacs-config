@@ -496,3 +496,8 @@ Similarly for Soar, Scheme, etc."
     (conda-env-initialize-eshell)
     ;; if you want auto-activation (see below for details), include:
     (conda-env-autoactivate-mode t)))
+
+(progn
+  (require 'make-repeatable-command)
+  (define-key python-mode-map (kbd "C-c >") (make-repeatable-command 'python-indent-shift-right))
+  (define-key python-mode-map (kbd "C-c <") (make-repeatable-command 'python-indent-shift-left)))
