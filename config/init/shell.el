@@ -3,7 +3,7 @@
   (interactive)
   (shell (get-buffer-create (generate-new-buffer-name "*shell*"))))
 
-(key-chord-define-global "oe" 'shell-new-instance)	; Open shEll
+(key-chord-define-global "o1" 'shell-new-instance)
 
 ;; http://stackoverflow.com/questions/2472273/how-do-i-run-a-sudo-command-in-emacs
 (defun sudo-shell-command (command)
@@ -180,7 +180,7 @@
 				  nil t nil 'pyvenv-workon-history nil nil)))
 
 					; Open envIronment
-  (key-chord-define-global "oi" 'conda-shell-with-default-name))
+  (key-chord-define-global "o2" 'conda-shell-with-default-name))
 
 (progn
   (comment
