@@ -90,3 +90,5 @@
             (set-visited-file-name new-name)
             (set-buffer-modified-p nil)))))))
 
+(progn
+  (key-chord-define-global "qq" 'kill-buffer))
