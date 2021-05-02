@@ -90,6 +90,7 @@
             (set-visited-file-name new-name)
             (set-buffer-modified-p nil)))))))
 
-(progn
+(comment
   (key-chord-define-global "kk" 'kill-buffer)
-  (key-chord-define-global "ff" 'find-file))
+  (key-chord-define-global "ff" 'find-file)
+  )
