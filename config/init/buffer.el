@@ -91,4 +91,5 @@
             (set-buffer-modified-p nil)))))))
 
 (progn
-  (key-chord-define-global "qq" 'kill-buffer))
+  (key-chord-define-global "kk" 'kill-buffer)
+  (key-chord-define-global "ff" 'find-file))
