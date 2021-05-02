@@ -186,6 +186,11 @@ print("hello world")
     https://emacs.stackexchange.com/questions/20833/how-to-deal-with-zip-archives-in-dired
     - dired-do-compress: Z
     - dired-do-compress-to: c
+*** Change files names in dired
+    - C-x C-q: dired-toggle-read-only
+      - C-c C-c: apply changes
+      - C-c ESC: abort
+
 ** Tramp
 *** Remote
     C-x C-f /ssh:you@remotehost:/home/user/file
