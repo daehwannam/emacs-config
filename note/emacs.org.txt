@@ -229,6 +229,10 @@ print("hello world")
    - C-u M-x eshell  # for another eshell
 
    - eshell works with GNU screen
+** Counsel & swiper
+   - Raw-string match
+     Use the below command during ivy search.
+     M-r: ivy-toggle-regexp-quote
    
 * KeyChanges
 ** Windows: auto-hot key
