@@ -32,8 +32,11 @@
 (progn
   ;; Injection macro .#
   ;;
-  ;; it evaluates a form at read time
+  ;; It evaluates a form at read time:
   ;; https://hissp.readthedocs.io/en/latest/tutorial.html#reader-macros
+  ;;
+  ;; It's also similar to "Sharpsign Dot" reader macro of Common Lisp:
+  ;; http://www.lispworks.com/documentation/HyperSpec/Body/02_dhf.htm
 
   .#(defmacro do-twice (x)
       `(progn ,x ,x))
@@ -43,9 +46,3 @@
       `(progn (do-twice ,x) (do-twice ,x)))
 
   (do-4times (print "Hi")))
-
-;;  (do-4times (print "Hi"))
-
-;; (progn
-;;   .#(defmacro x () (print 'hi) 42)
-;;   (x))
