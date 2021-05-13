@@ -177,4 +177,9 @@
       (define-key org-mode-map (kbd "C-c C-b") (make-repeatable-command 'org-backward-heading-same-level))))
 
   (when (fboundp 'org-fragtog-mode)
-    (add-hook 'org-mode-hook 'org-fragtog-mode)))
+    (add-hook 'org-mode-hook 'org-fragtog-mode))
+
+  (defun org-format-latex-change-scale (scale)
+    (interactive "nScale: " )
+    (plist-put org-format-latex-options :scale scale))
+  )

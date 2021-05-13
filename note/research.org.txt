@@ -129,6 +129,9 @@
    https://i.hsfzxjy.site/2019-08-01-proof-of-gumbel-max-trick/
    https://medium.com/swlh/on-the-gumbel-max-trick-5e340edd1e01
 
+   Assume:
+     \[\sum_{k=1}^n \alpha_k = 1\] and \[0 \leq \alpha_k \leq 1\]
+     \[G_k \sim Gumbel(0, 1)\] for each k=1,..,n
 
    Let \[u_k=\log{\alpha_k}+G_k\]
 
