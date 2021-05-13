@@ -105,3 +105,26 @@
 
 * Semantic parsing dataset
   https://github.com/allenai/acl2018-semantic-parsing-tutorial
+
+* Gumbel max trick
+** Sampling from probability density function with uniform distribution
+   - f(x): probability density function (PDF)
+   - F(x): cumulative distribution function (CDF)
+   - F^-1(p): inverse function of CDF, whose domain is [0, 1]
+   - Uniform(0, 1): uniform distribution from 0 to 1
+
+   p ~ Uniform(0, 1)
+   x' = F^-1(p) ; it's same that x' is sampled from f(x)
+** Sampling from Gumbel distribution
+   Gumbel distribution requires location mu and scale beta.
+   We assume scale beta = 1
+
+   f(x; mu) = exp(-((x - mu) + exp(-(x - mu))))
+   F(x; mu) = exp(-exp(-(x - mu)))
+   F^-1(x; mu) = mu - log(-log(p))
+
+   p ~ Uniform(0, 1)
+   x' = F^-1(p; mu) ; it's same that x' is sampled from f(x; mu) or Gumbel(mu, 1)
+** Gumbel max trick proof
+   https://i.hsfzxjy.site/2019-08-01-proof-of-gumbel-max-trick/
+   https://medium.com/swlh/on-the-gumbel-max-trick-5e340edd1e01
