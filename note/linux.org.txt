@@ -228,14 +228,17 @@
    df -h
 
 ** du
-   show directory size
-   $ sudo du -sh /path/to/dir
+   - show directory size
+     $ sudo du -sh /path/to/dir
 
-   show files' sizes in the directory
-   $ du -sh /path/to/dir/*
+   - show files' sizes in the directory
+     $ du -sh /path/to/dir/*
 
-   show all files' sizes in the current directory
-   $ du -hs .[^.]*
+     e.g. show each user's directory size
+     $ du -sh /home/*
+
+   - show all files' sizes in the current directory
+     $ du -hs .[^.]*
 
 ** find
 *** remove found files

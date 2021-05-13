@@ -228,8 +228,10 @@
        (define-key compilation-shell-minor-mode-map (kbd "C-c M-n")
 	 (make-repeatable-command 'compilation-next-error)))))
 
-  (define-key compilation-shell-minor-mode-map (kbd "C-M-]") 'compilation-next-error)
-  (define-key compilation-shell-minor-mode-map (kbd "C-M-[") 'compilation-previous-error)
+  (define-key compilation-shell-minor-mode-map (kbd "C-c ]")
+    (make-repeatable-command 'compilation-next-error))
+  (define-key compilation-shell-minor-mode-map (kbd "C-c [")
+    (make-repeatable-command 'compilation-previous-error))
   (define-key compilation-shell-minor-mode-map (kbd "C-M-n") 'forward-list)
   (define-key compilation-shell-minor-mode-map (kbd "C-M-p") 'backward-list))
 
