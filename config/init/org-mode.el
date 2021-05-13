@@ -174,4 +174,7 @@
       (define-key org-mode-map (kbd "C-C C-n") (make-repeatable-command 'org-next-visible-heading))
       (define-key org-mode-map (kbd "C-c C-p") (make-repeatable-command 'org-previous-visible-heading))
       (define-key org-mode-map (kbd "C-c C-f") (make-repeatable-command 'org-forward-heading-same-level))
-      (define-key org-mode-map (kbd "C-c C-b") (make-repeatable-command 'org-backward-heading-same-level)))))
+      (define-key org-mode-map (kbd "C-c C-b") (make-repeatable-command 'org-backward-heading-same-level))))
+
+  (when (fboundp 'org-fragtog-mode)
+    (add-hook 'org-mode-hook 'org-fragtog-mode)))

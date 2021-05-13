@@ -128,3 +128,29 @@
 ** Gumbel max trick proof
    https://i.hsfzxjy.site/2019-08-01-proof-of-gumbel-max-trick/
    https://medium.com/swlh/on-the-gumbel-max-trick-5e340edd1e01
+
+
+   Let \[u_k=\log{\alpha_k}+G_k\]
+
+   \begin{align*}
+     \mathbb{P}(Z=k)&=\mathbb{P}(u_k \geq u_j,\forall j \neq k)\\
+     &=\int_{-\infty}^\infty \mathbb{P}(u_k \geq u_j, \forall j \neq k|u_k)\mathbb{P}(u_k) du_k\\
+     &=\int_{-\infty}^\infty \prod_{j\neq k}\mathbb{P}(u_k \geq u_j|u_k)\mathbb{P}(u_k) du_k\\
+     &=\int_{-\infty}^\infty \prod_{j\neq k}\mathbb{P}(0 \leq u_k - u_j|u_k)\mathbb{P}(u_k) du_k\\
+     &=\int_{-\infty}^\infty \prod_{j\neq k}\mathbb{P}(0 \leq u_k - (\log \alpha_k + G_k)|u_k)\mathbb{P}(u_k) du_k\\
+     &=\int_{-\infty}^\infty \prod_{j\neq k}e^{-e^{-u_k+\log \alpha_j}} \mathbb{P}(u_k) du_k\\
+     &=\int_{-\infty}^\infty \prod_{j\neq k}e^{-e^{-u_k+\log \alpha_j}} \mathbb{P}(U_k=u_k) du_k\\
+     &=\int_{-\infty}^\infty \prod_{j\neq k}e^{-e^{-u_k+\log \alpha_j}} \mathbb{P}(G_k=u_k-\log\alpha_k) du_k\\
+     &=\int_{-\infty}^\infty \prod_{j\neq k}e^{-e^{-u_k+\log \alpha_j}} e^{-(u_k-\log\alpha_k+e^{-(u_k-\log\alpha_k)})} du_k\\
+     &=\int_{-\infty}^\infty e^{-\sum_{j\neq k}\alpha_je^{-u_k}} \alpha_k e^{-(u_k+\alpha_k e^{-u_k})} du_k\\
+     &=\alpha_k \int_{-\infty}^\infty e^{-u_k-(\alpha_k+\sum_{j\neq k}\alpha_j)e^{-u_k}} du_k\\
+     &=\alpha_k \int_{-\infty}^\infty e^{-u_k-e^{-u_k}} du_k\\
+     &= \alpha_k\\
+   \end{align*}
+
+   - computing the integral part
+     \[\int_{-\infty}^\infty e^{-x-e^{-x}} dx = 1\]
+     - https://www.integral-calculator.com/
+       - expression: exp(-x-exp(-x))
+       - range: -infinity ~ +infinity
+   

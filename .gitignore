@@ -36,3 +36,6 @@ elpa/*
 elpa/*/
 
 !.gitkeep
+
+# latex preview image directory name
+ltximg
