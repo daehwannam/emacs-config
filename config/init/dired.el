@@ -50,30 +50,43 @@
 (add-hook 'dired-mode-hook
 	  (lambda () (local-set-key (kbd "M-p") #'dired-open-prev)))
 
-;; File path copy
-;; https://stackoverflow.com/a/9414763
-(defun kill-path-to-clipboard ()
-  "Copy the current buffer file name to the clipboard."
-  (interactive)
-  (let ((filename (if (equal major-mode 'dired-mode)
-                      default-directory
-                    (or (buffer-file-name) default-directory))))
-    (when filename
-      (kill-new filename)
-      (message "'%s'" filename))))
+(progn
+ ;; File path copy
+ ;; https://stackoverflow.com/a/9414763
+ (defun kill-path-to-clipboard ()
+   "Copy the current buffer file name to the clipboard."
+   (interactive)
+   (let ((path (if (equal major-mode 'dired-mode)
+                   default-directory
+                 (or (buffer-file-name) default-directory))))
+     (when path
+       (kill-new path)
+       (message "'%s'" path))))
 
-(key-chord-define-global "wp" 'kill-path-to-clipboard)
+ (defun kill-file-name-to-clipboard ()
+   "Copy the current buffer file name to the clipboard."
+   (interactive)
+   (let ((path (if (equal major-mode 'dired-mode)
+                   default-directory
+                 (or (buffer-file-name) default-directory))))
+     (when path
+       (let ((file-name (file-name-nondirectory path)))
+	 (kill-new file-name)
+	 (message "'%s'" file-name)))))
 
-(defun kill-other-window-path-to-clipboard (count)
-  "Copy the other window's path."
-  (interactive "p")
-  (let ((path (progn (other-window count)
-		(let ((path default-directory))
-		  (other-window (- count))
-		  path))))
-    (when path
-      (kill-new path)
-      (message "'%s'" path))))
+ (key-chord-define-global "wp" 'kill-path-to-clipboard)
+ (key-chord-define-global "wn" 'kill-file-name-to-clipboard)
+
+ (defun kill-other-window-path-to-clipboard (count)
+   "Copy the other window's path."
+   (interactive "p")
+   (let ((path (progn (other-window count)
+		      (let ((path default-directory))
+			(other-window (- count))
+			path))))
+     (when path
+       (kill-new path)
+       (message "'%s'" path)))))
 
 (fset 'dired-do-copy-into-other-window
    "\C-[xkill-other-window-path-to-clipboard\C-mC\C-y")
