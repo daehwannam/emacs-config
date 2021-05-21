@@ -17,3 +17,6 @@
 
   For the consistent path without version, use the following path:
        C:\Application\emacs-27.2-x86_64\bin\runemacs.exe
+
+* Startup folder
+  - Windows + R --> shell:startup
