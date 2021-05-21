@@ -11,3 +11,6 @@
   - then, linux commands can be used
     ex. ssh-keygen ssh-copy-id
 
+* Emacs shortcut
+  "emacs.exe" open two windows, so "runemacs.exe" should be used as shortcut instead.
+  e.g. C:\Application\emacs-27.2-x86_64\bin\runemacs.exe
