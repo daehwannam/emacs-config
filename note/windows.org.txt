@@ -14,3 +14,6 @@
 * Emacs shortcut
   "emacs.exe" open two windows, so "runemacs.exe" should be used as shortcut instead.
   e.g. C:\Application\emacs-27.2-x86_64\bin\runemacs.exe
+
+  For the consistent path without version, use the following path:
+       C:\Application\emacs-27.2-x86_64\bin\runemacs.exe
