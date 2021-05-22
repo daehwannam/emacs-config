@@ -182,4 +182,7 @@
   (defun org-format-latex-change-scale (scale)
     (interactive "nScale: " )
     (plist-put org-format-latex-options :scale scale))
+
+  (use-existing-pkg poporg
+    :bind (("C-c /" . poporg-dwim)))
   )
