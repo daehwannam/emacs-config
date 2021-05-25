@@ -19,23 +19,74 @@
 					;(load "make-repeatable-command") ;(load "~/.emacs.d/package/make-repeatable-command.el")
   (require 'make-repeatable-command)
   (progn
-   (global-set-key (kbd "C-x o") (make-repeatable-command 'other-window))
-   (global-set-key (kbd "C-x O") (make-repeatable-command 'other-window-backwards))
-   (global-set-key (kbd "C-x 5 o") (make-repeatable-command 'other-frame))
-   (global-set-key (kbd "C-x 5 O") (make-repeatable-command 'other-frame-backwards))
+    (progn
+      (global-set-key (kbd "C-x o") (make-repeatable-command 'other-window))
+      (global-set-key (kbd "C-x O") (make-repeatable-command 'other-window-backwards))
+      (global-set-key (kbd "C-x 5 o") (make-repeatable-command 'other-frame))
+      (global-set-key (kbd "C-x 5 O") (make-repeatable-command 'other-frame-backwards))
 
-   (global-set-key (kbd "C-x ㅐ") (make-repeatable-command 'other-window))
+      (global-set-key (kbd "C-x ㅐ") (make-repeatable-command 'other-window))
 
-   ;; other-frame key setting
-   (global-set-key (kbd "C-c o") (make-repeatable-command 'other-frame))
-   (global-set-key (kbd "C-c O") (make-repeatable-command 'other-frame-backwards))
+      (global-set-key (kbd "C-x 9") 'delete-other-windows)
+      (global-set-key (kbd "C-x 8") 'split-window-below)
+      (global-set-key (kbd "C-x 7") 'split-window-right))
 
-   (global-set-key (kbd "C-c ㅐ") (make-repeatable-command 'other-frame))
+    (progn
+      ;; other-frame key setting
+      (global-set-key (kbd "C-c o") (make-repeatable-command 'other-frame))
+      (global-set-key (kbd "C-c O") (make-repeatable-command 'other-frame-backwards))
 
-   ;; make-frame-command & delete-frame key setting
-   (global-set-key (kbd "C-c 0") 'delete-frame)
-   (global-set-key (kbd "C-c 1") 'delete-other-frames)
-   (global-set-key (kbd "C-c 2") 'make-frame-command))
+      (global-set-key (kbd "C-c ㅐ") (make-repeatable-command 'other-frame))
+
+      ;; make-frame-command & delete-frame key setting
+      (global-set-key (kbd "C-c 0") 'delete-frame)
+      (global-set-key (kbd "C-c 1") 'delete-other-frames)
+      (global-set-key (kbd "C-c 2") 'make-frame-command)
+
+      (global-set-key (kbd "C-c 9") 'delete-other-frames)
+      (global-set-key (kbd "C-c 8") 'make-frame-command)))
+
+  (progn
+    (comment
+      (let ((map (make-sparse-keymap)))
+	(define-key map (kbd "o") (make-repeatable-command 'other-window))
+	(define-key map (kbd "O") (make-repeatable-command 'other-window-backwards))
+	(define-key map (kbd "5 o") (make-repeatable-command 'other-frame))
+	(define-key map (kbd "5 O") (make-repeatable-command 'other-frame-backwards))
+
+	(define-key map (kbd "ㅐ") (make-repeatable-command 'other-window))
+
+	(define-key map (kbd "9") 'delete-other-windows)
+	(define-key map (kbd "8") 'split-window-below)
+	(define-key map (kbd "7") 'split-window-right)
+
+	(define-key map (kbd "0") 'delete-window)
+
+	(defvar window-modification-prefix-map map
+	  "Keymap for window related commands."))
+      (fset 'window-modification-prefix-map window-modification-prefix-map)
+      (key-chord-define-global "ff" 'window-modification-prefix-map))
+
+    (progn
+      (let ((map (make-sparse-keymap)))
+	;; other-frame key setting
+	(define-key map (kbd "o") (make-repeatable-command 'other-frame))
+	(define-key map (kbd "O") (make-repeatable-command 'other-frame-backwards))
+
+	(define-key map (kbd "ㅐ") (make-repeatable-command 'other-frame))
+
+	;; make-frame-command & delete-frame key setting
+	(define-key map (kbd "0") 'delete-frame)
+	(define-key map (kbd "1") 'delete-other-frames)
+	(define-key map (kbd "2") 'make-frame-command)
+
+	(define-key map (kbd "9") 'delete-other-frames)
+	(define-key map (kbd "8") 'make-frame-command)
+
+	(defvar frame-modification-prefix-map map
+	  "Keymap for frame related commands."))
+      (fset 'frame-modification-prefix-map frame-modification-prefix-map)
+      (key-chord-define-global "rr" 'frame-modification-prefix-map)))
 
   (progn
    ;; window size adjust
@@ -78,22 +129,13 @@
     (key-chord-define-global "kf" 'other-frame)
     (key-chord-define-global "kd" 'other-frame-backwards)))
 
-(progn
-  (comment
-    (global-unset-key (kbd "C-x 1"))
-    (global-unset-key (kbd "C-x 2"))
-    (global-unset-key (kbd "C-x 3"))
+(comment
+ (global-unset-key (kbd "C-x 1"))
+ (global-unset-key (kbd "C-x 2"))
+ (global-unset-key (kbd "C-x 3"))
 
-    (global-unset-key (kbd "C-c 1"))
-    (global-unset-key (kbd "C-c 2")))
-
-  (progn
-    (global-set-key (kbd "C-x 9") 'delete-other-windows)
-    (global-set-key (kbd "C-x 8") 'split-window-below)
-    (global-set-key (kbd "C-x 7") 'split-window-right)
-
-    (global-set-key (kbd "C-c 9") 'delete-other-frames)
-    (global-set-key (kbd "C-c 8") 'make-frame-command)))
+ (global-unset-key (kbd "C-c 1"))
+ (global-unset-key (kbd "C-c 2")))
 
 ;; kill buffer and delete window
 (defun kill-buffer-and-delete-window ()

@@ -44,16 +44,16 @@
     (define-key paredit-mode-map (kbd "C-M-n") 'forward-list)
 
     (comment
-      (defhydra paredit-forward-backward ()
-	"paredit backward-down/forward-up"
-	("f" paredit-forward)
-	("b" paredit-backward))
-      (define-key paredit-mode-map (kbd "C-M-f") #'paredit-forward-backward/paredit-forward)
-      (define-key paredit-mode-map (kbd "C-M-b") #'paredit-forward-backward/paredit-backward))
+     (defhydra paredit-forward-backward ()
+       "paredit backward-down/forward-up"
+       ("f" paredit-forward)
+       ("b" paredit-backward))
+     (define-key paredit-mode-map (kbd "C-M-f") #'paredit-forward-backward/paredit-forward)
+     (define-key paredit-mode-map (kbd "C-M-b") #'paredit-forward-backward/paredit-backward))
 
     (comment
-      (define-key global-map (kbd "M-F") #'paredit-forward)
-      (define-key global-map (kbd "M-B") #'paredit-backward))
+     (define-key global-map (kbd "M-F") #'paredit-forward)
+     (define-key global-map (kbd "M-B") #'paredit-backward))
 
     (if (and nil (package-installed-p 'hydra))
 	(progn
@@ -102,7 +102,12 @@
       (define-key global-map (kbd "C-M-p") 'backward-list)
       (define-key global-map (kbd "C-M-n") 'forward-list))
     (define-key global-map (kbd "C-c n") #'paredit-backward-down-forward-up/paredit-backward-down)
-    (define-key global-map (kbd "C-c p") #'paredit-backward-down-forward-up/paredit-forward-up)))
+    (define-key global-map (kbd "C-c p") #'paredit-backward-down-forward-up/paredit-forward-up))
+
+  (comment
+   (when (fboundp 'highlight-map)
+     ;; paredit overwrites M-s and M-S bindings
+     (define-key paredit-mode-map (kbd "C-c h") 'highlight-map))))
 
 (progn
   (comment
