@@ -74,6 +74,9 @@
 	(elpy-enable))
       (define-key python-mode-map (kbd "C-c Z") 'elpy-set-project-root)
       (define-key python-mode-map (kbd "C-c C-z") 'elpy-shell-switch-to-shell)
+      (comment
+       (key-chord-define python-mode-map "zz" 'elpy-shell-switch-to-shell)
+       (key-chord-define inferior-python-mode-map "zz" 'elpy-shell-switch-to-buffer))
       (define-key python-mode-map (kbd "C-c C-c") 'elpy-shell-send-region-or-buffer))
 
   (use-existing-pkg elpy

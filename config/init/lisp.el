@@ -43,78 +43,50 @@
     (define-key paredit-mode-map (kbd "C-M-p") 'backward-list)
     (define-key paredit-mode-map (kbd "C-M-n") 'forward-list)
 
-    (comment
-      (defhydra paredit-forward-backward ()
-	"paredit backward-down/forward-up"
-	("f" paredit-forward)
-	("b" paredit-backward))
-      (define-key paredit-mode-map (kbd "C-M-f") #'paredit-forward-backward/paredit-forward)
-      (define-key paredit-mode-map (kbd "C-M-b") #'paredit-forward-backward/paredit-backward))
+    (progn
+      (defhydra paredit-slurp-barf-sexp ()
+	"paredit slurp/barf"
+	(")" paredit-forward-slurp-sexp)
+	("(" paredit-backward-slurp-sexp)
+	("}" paredit-forward-barf-sexp)
+	("{" paredit-backward-barf-sexp)
+	("0" paredit-forward-barf-sexp)
+	("9" paredit-backward-barf-sexp))
 
-    (comment
-      (define-key global-map (kbd "M-F") #'paredit-forward)
-      (define-key global-map (kbd "M-B") #'paredit-backward))
+      (key-chord-define paredit-mode-map "()" #'paredit-slurp-barf-sexp/body)
+      (key-chord-define paredit-mode-map "{}" #'paredit-slurp-barf-sexp/body))
 
-    (if (and nil (package-installed-p 'hydra))
-	(progn
-	  (defhydra paredit-slurp-barf-sexp ()
-	    "paredit slurp/barf"
-	    (")" paredit-forward-slurp-sexp)
-	    ("(" paredit-backward-slurp-sexp)
-	    ("}" paredit-forward-barf-sexp)
-	    ("{" paredit-backward-barf-sexp))
-	  (define-key paredit-mode-map (kbd "C-c )") #'paredit-slurp-barf-sexp/paredit-forward-slurp-sexp)
-	  (define-key paredit-mode-map (kbd "C-c (") #'paredit-slurp-barf-sexp/paredit-backward-slurp-sexp)
-	  (define-key paredit-mode-map (kbd "C-c }") #'paredit-slurp-barf-sexp/paredit-forward-slurp-sexp)
-	  (define-key paredit-mode-map (kbd "C-c {") #'paredit-slurp-barf-sexp/paredit-backward-slurp-sexp))
-      (progn
-        (define-key paredit-mode-map (kbd "C-c )") (make-repeatable-command #'paredit-forward-slurp-sexp))
-	(define-key paredit-mode-map (kbd "C-c (") (make-repeatable-command #'paredit-backward-slurp-sexp))
-	(define-key paredit-mode-map (kbd "C-c }") (make-repeatable-command #'paredit-forward-slurp-sexp))
-	(define-key paredit-mode-map (kbd "C-c {") (make-repeatable-command #'paredit-backward-slurp-sexp))))
+    (progn
+      (defun copy-and-forward-sexp (&optional arg)
+	"Save the sexp following point to the kill ring.
+ARG has the same meaning as for `kill-sexp'."
+	(interactive "p")
+	(save-excursion
+	  (let ((orig-point (point)))
+	    (forward-sexp (or arg 1))
+	    (if (eq last-command 'copy-and-forward-sexp)
+		(kill-append (buffer-substring orig-point (point)) nil)
+	      (kill-ring-save orig-point (point)))))
+	(forward-sexp arg)
+	(setq last-command 'copy-and-forward-sexp))
 
-    (if (and nil(package-installed-p 'hydra))
-	(progn
-	  (defhydra paredit-backward-down-forward-up ()
-	    "paredit backward-down/forward-up"
-	    ("n" paredit-backward-down)
-	    ("p" paredit-forward-up))
-	  (define-key paredit-mode-map (kbd "C-c n") #'paredit-backward-down-forward-up/paredit-backward-down)
-	  (define-key paredit-mode-map (kbd "C-c p") #'paredit-backward-down-forward-up/paredit-forward-up))
-      (progn
-	(define-key paredit-mode-map (kbd "C-c n") (make-repeatable-command #'paredit-backward-down))
-	(define-key paredit-mode-map (kbd "C-c p") (make-repeatable-command #'paredit-forward-up))))
+      (key-chord-define paredit-mode-map "kk" (make-repeatable-command #'copy-and-forward-sexp)))
+
+    (progn
+      (define-key paredit-mode-map (kbd "C-M-w") #'paredit-kill-region))
+
+    (progn
+      (define-key paredit-mode-map (kbd "M-D") (make-repeatable-command #'paredit-backward-down))
+      (define-key paredit-mode-map (kbd "M-U") (make-repeatable-command #'paredit-forward-up)))
 
     (progn
       (define-key paredit-mode-map (kbd "C-M-p") 'backward-list)
       (define-key paredit-mode-map (kbd "C-M-n") 'forward-list)))
 
-  (progn
-    (comment
-     (define-key global-map (kbd "C-M-f") 'paredit-forward)
-     (define-key global-map (kbd "C-M-b") 'paredit-backward)
-     (define-key global-map (kbd "C-M-d") 'paredit-forward-down)
-     (define-key global-map (kbd "C-M-u") 'paredit-forward-up))
-
-    (progn
-      (comment (define-key global-map (kbd "C-M-P") 'paredit-backward-down))
-      (comment (define-key global-map (kbd "C-M-U") 'paredit-backward-up))
-      (define-key global-map (kbd "C-M-p") 'backward-list)
-      (define-key global-map (kbd "C-M-n") 'forward-list))
-    (define-key global-map (kbd "C-c n") #'paredit-backward-down-forward-up/paredit-backward-down)
-    (define-key global-map (kbd "C-c p") #'paredit-backward-down-forward-up/paredit-forward-up)))
-
-(progn
   (comment
-   (defhydra forward-backward-list ()
-     "paredit backward-down/forward-up"
-     ("f" forward-list)
-     ("b" backward-list))
-   (define-key global-map (kbd "C-M-f") #'forward-backward-list/forward-list)
-   (define-key global-map (kbd "C-M-b") #'forward-backward-list/backard-list))
-  (comment
-    (define-key global-map (kbd "M-F") #'forward-sexp)
-    (define-key global-map (kbd "M-B") #'backward-sexp)))
+   (when (fboundp 'highlight-map)
+     ;; paredit overwrites M-s and M-S bindings
+     (define-key paredit-mode-map (kbd "C-c h") 'highlight-map))))
 
 (comment
  (when (package-installed-p 'highlight-parentheses)

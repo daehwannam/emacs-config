@@ -1,5 +1,5 @@
 
-(progn
+(comment
   (defvar rectangle-map
     (let ((map (make-sparse-keymap)))
       (define-key map (kbd "k") 'kill-rectangle)

@@ -34,9 +34,15 @@
      '(mode-line-buffer-id ((t (:background "grey65" :foreground "firebrick" :weight bold :height 0.9))))
      (set-face-foreground 'hl-line nil))
 
+    (comment
+     ;; "color-xx" is only for 256-color terimanl
+     (custom-set-faces
+      '(hi-yellow ((t (:background "yellow1" :foreground "color-33"))))
+      '(hi-pink ((t (:background "pink" :foreground "color-34"))))))
+
     (custom-set-faces
-     '(hi-yellow ((t (:background "yellow1" :foreground "color-33"))))
-     '(hi-pink ((t (:background "pink" :foreground "color-34"))))
+     '(hi-yellow ((t (:background "yellow1" :foreground "dodger blue"))))
+     '(hi-pink ((t (:background "pink" :foreground "forest green"))))
      '(hi-green ((t (:background "green" :foreground "magenta"))))
      '(hi-blue ((t (:background "light blue" :foreground "red"))))
      '(mlinum-highlight-face ((t (:inherit default :foreground "brightwhite" :background "black")))))

@@ -6,15 +6,20 @@
 
   (progn
     (require 'make-repeatable-command)
+    ;; (define-self-insert-commands-unless-bound tab-prefix-map "ii")
     (define-key tab-prefix-map "8" 'tab-new)
     (define-key tab-prefix-map "9" 'tab-close-other)
     (define-key tab-prefix-map "o" (make-repeatable-command 'tab-next))
     (define-key tab-prefix-map "O" (make-repeatable-command 'tab-previous))
     (define-key tab-prefix-map "m" (make-repeatable-command 'tab-bar-move-tab))
     (define-key tab-prefix-map "M" (make-repeatable-command 'tab-bar-move-tab-reverse))
+    (define-key tab-prefix-map "a" 'self-insert-command)
 
     (fset 'tab-prefix-map tab-prefix-map)
-    (define-key global-map (kbd "C-z") 'tab-prefix-map))
+    (define-key global-map (kbd "C-z") 'tab-prefix-map)
+    (progn
+      (comment (define-self-insert-commands-unless-bound tab-prefix-map "ww"))
+      (key-chord-define-global "qe" 'tab-prefix-map)))
 
   (progn
     ;; advice for tab-next and tab-previous
