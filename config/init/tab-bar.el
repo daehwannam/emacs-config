@@ -17,7 +17,9 @@
 
     (fset 'tab-prefix-map tab-prefix-map)
     (define-key global-map (kbd "C-z") 'tab-prefix-map)
-    (key-chord-define-global "ww" 'tab-prefix-map))
+    (progn
+      (comment (define-self-insert-commands-unless-bound tab-prefix-map "ww"))
+      (key-chord-define-global "qe" 'tab-prefix-map)))
 
   (progn
     ;; advice for tab-next and tab-previous

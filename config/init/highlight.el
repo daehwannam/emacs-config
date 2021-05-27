@@ -10,4 +10,4 @@
 
   (fset 'highlight-map highlight-map)
   
-  (key-chord-define global-map "HH" highlight-map))
+  (key-chord-define global-map "hh" highlight-map))

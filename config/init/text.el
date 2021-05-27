@@ -17,7 +17,6 @@
   (replace-regexp "^[[:space:]]*\n\\([[:space:]]*\n\\)+" "\n"))
 (shrink-empty-lines)
 
-
 ;; https://stackoverflow.com/a/25886353
 (defun toggle-camelcase-underscores ()
   "Toggle between camelcase and underscore notation for the symbol at point."
@@ -38,7 +37,6 @@
 
 (global-set-key (kbd "M-_") 'toggle-camelcase-underscores)
 
-
 (defun kill-ring-save-at-point ()
   "Copy the symbol at point."
   (interactive)
@@ -52,9 +50,8 @@
       )))
 
 (comment (global-set-key (kbd "C-x M-w") 'kill-ring-save-at-point))
-(global-set-key (kbd "M-W") 'kill-ring-save-at-point)
+(comment (global-set-key (kbd "M-W") 'kill-ring-save-at-point))
 (key-chord-define-global "w." 'kill-ring-save-at-point)
-
 
 (defun just-one-space-in-region (beg end)
   "replace all whitespace in the region with single spaces"
@@ -89,3 +86,28 @@
 	       (bound-key-p (kbd "M-'"))
 	       (t (error "No key for 'just-one-space is found")))))
     (global-set-key k 'just-one-space-conditionally)))
+
+(progn
+  ;; https://www.emacswiki.org/emacs/CopyingWholeLines
+  (defun copy-and-next-line (arg)
+    "Copy lines (as many as prefix argument) in the kill ring.
+      Ease of use features:
+      - Move to start of next line.
+      - Appends the copy on sequential calls.
+      - Use newline as last char even on the last line of the buffer.
+      - If region is active, copy its lines."
+    (interactive "p")
+    (let ((beg (line-beginning-position))
+          (end (line-end-position arg)))
+      (when mark-active
+        (if (> (point) (mark))
+            (setq beg (save-excursion (goto-char (mark)) (line-beginning-position)))
+          (setq end (save-excursion (goto-char (mark)) (line-end-position)))))
+      (if (eq last-command 'copy-and-next-line)
+          (kill-append (buffer-substring beg end) (< end beg))
+        (kill-ring-save beg end)))
+    (kill-append "\n" nil)
+    (beginning-of-line (or (and arg (1+ arg)) 2))
+    (if (and arg (not (= 1 arg))) (message "%d lines copied" arg)))
+
+  (key-chord-define (current-global-map) "kk" (make-repeatable-command #'copy-and-next-line)))

@@ -67,7 +67,7 @@
       (fset 'window-modification-prefix-map window-modification-prefix-map)
       (key-chord-define-global "ff" 'window-modification-prefix-map))
 
-    (progn
+    (comment
       (let ((map (make-sparse-keymap)))
 	;; other-frame key setting
 	(define-key map (kbd "o") (make-repeatable-command 'other-frame))

@@ -13,7 +13,7 @@
     (append
      '(progn)
      (mapcar (lambda (ch)
-	       `(unless (lookup-key ,keymap (kbd ,(char-to-string ch)))
-		  (define-key ,keymap (kbd ,(char-to-string ch))
-		    (lambda (x) (insert ,(or prefix "") ,(char-to-string ch))))))
+	       `(unless (lookup-key ,keymap (kbd (char-to-string ,ch)))
+		  (define-key ,keymap (kbd (char-to-string ,ch))
+		    (lambda () (interactive) (insert (or ,prefix "") (char-to-string ,ch))))))
 	     (append (number-sequence ?A ?Z) (number-sequence ?a ?z))))))
