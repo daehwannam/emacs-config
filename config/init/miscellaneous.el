@@ -28,4 +28,6 @@
       (message "Canceled frame close")))
 
   (when (or t (daemonp))
-    (global-set-key (kbd "C-x C-c") 'save-buffers-kill-emacs-with-asking)))
+    (global-set-key (kbd "C-x C-c") 'save-buffers-kill-emacs-with-asking)
+    (global-set-key (kbd "C-x C-c") 'save-buffers-kill-emacs-with-asking)
+    (key-chord-define-global "xc" 'save-buffers-kill-emacs-with-asking)))

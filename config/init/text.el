@@ -97,7 +97,7 @@
       - Use newline as last char even on the last line of the buffer.
       - If region is active, copy its lines."
     (interactive "p")
-    (let ((beg (line-beginning-position))
+    (let ((beg (point))
           (end (line-end-position arg)))
       (when mark-active
         (if (> (point) (mark))
