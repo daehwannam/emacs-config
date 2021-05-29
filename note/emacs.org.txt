@@ -34,6 +34,10 @@
      - C-x C--
    - set to default font size
      - C-x C-0
+** set-fill-prefix: remembering prefix of the current line
+   - it's bound to "C-x ."
+   - Then, "M-j" (default-indent-new-line) fills the new line with the prefix
+   - To cancel the effect, move the cursor to the beginning of the current line, then call 'set-fill-prefix
 
 * My command
 ** xah-open-in-external-app
