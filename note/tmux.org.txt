@@ -92,3 +92,7 @@
    $ lsof | grep tmp/tmux
 
    "default" is the default socket (when run without -L option)
+
+** go to specific window number
+   <prefix> [number]
+   e.g. go to window 2:  <prefix> 2
