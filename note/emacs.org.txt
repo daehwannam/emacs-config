@@ -202,6 +202,8 @@ print("hello world")
     - C-x C-q: dired-toggle-read-only
       - C-c C-c: apply changes
       - C-c ESC: abort
+*** Find files by name with regex
+    M-x find-name-dired
 *** Export
 **** to pdf
      C-c C-e l p (org-latex-export-to-pdf)

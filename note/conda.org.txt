@@ -53,6 +53,15 @@
 ** List environment directories
    https://stackoverflow.com/a/54155338
    $ conda config --show envs_dirs
+** Install anaconda package in a minconda's environment
+   $ conda install anaconda
+
+* Packages
+** Check the versions of an installed package
+   $ conda list -n <env> -f <package>
+   e.g
+     $ conda list -n tabert cudatoolkit
+     $ conda list -n tabert -f pytorch
 
 * Anaconda update
   conda install pytorch torchvision -c pytorch
