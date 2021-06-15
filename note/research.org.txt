@@ -157,3 +157,27 @@
        - expression: exp(-x-exp(-x))
        - range: -infinity ~ +infinity
    
+* Reinforcement learning basic
+** Model-based vs. model-free
+   https://ai.stackexchange.com/a/4465
+   - model-based: a model tries to capture the environment, so it estimates transition function and reward function
+   - model-free: a model doesn't estimate transition function and reward function
+** Monte-carlo vs. temporal-difference
+   https://lilianweng.github.io/lil-log/2018/02/19/a-long-peek-into-reinforcement-learning.html#monte-carlo-methods
+   - monte-carlo: learning from complete episodes
+   - temporal-difference: learning from incomplete episodes
+** On-policy vs. off-policy
+   https://stats.stackexchange.com/a/184794
+   - learning from episodes sampled from the current policy (such as SARSA)
+   - learning from episodes sampeld from another policy (such as Q-learning)
+** Epsilon-greedy
+   - epsilon-greedy is used for off-policy algorithms
+   - epsilon-greedy should not be used with policy gradient methods
+     - howevery epsilon-greedy policy can be used with off-policy policy gradients
+
+* Writing
+** reference
+*** et al. notation
+    https://www.scribendi.com/academy/articles/how_to_use_et_al.en.html
+    - Lucas et al. (1995) explores...
+    - (Lucas et al., 1995)
