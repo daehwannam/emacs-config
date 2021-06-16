@@ -350,6 +350,13 @@
       add following commands to ~/.bashrc
       $ export PATH=/usr/local/cuda-10.1/bin:$PATH
       $ export LD_LIBRARY_PATH=/usr/local/cuda-10.1/lib64:$LD_LIBRARY_PATH
+** CUDA path
+   conventionally, /usr/local/cuda-x.x is used for CUDA path.
+   However, each user's local directory can be used as CUDA directory
+   e.g.
+     https://blog.csdn.net/weixin_41278720/article/details/81255265
+     export PATH=$HOME/cuda-10.2/bin:$PATH
+     export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$HOME/cuda-10.2/lib64/
       
 ** install guides
 *** NVIDIA Driver
@@ -386,7 +393,6 @@
        $ sudo service lightdm stop ## if you are using 11.04 replace `lightdm` with `gdm`
        $ sudo sh NVIDIA-Linux-x86_64-285.05.09.run
      - reboot
-
 
 *** CUDA toolkits
     https://eungbean.github.io/2018/08/08/Ubuntu-Installation2-1/
@@ -450,6 +456,26 @@
     $ conda install -c anaconda cudatoolkit=10.2
     $ conda install -c nvidia nvcc_linux-64
     $ conda install -c anaconda cudnn
+**** conda cudatoolkit vs nvidia cudatoolkit
+     https://programmersought.com/article/60204317600/
+
+     "cudatoolkit installed by conda install is only a subset of the
+     cudatoolkit provided by NVIDIA, and usually only contains the
+     runtime environment required by deep learning frameworks such as
+     PyTorch and TensorFlow, that is, runtime lib, but there is no
+     nvcc."
+
+     - also, conda cudatoolkit include cudnn files such as "libcudnn.so"
+**** conda nvcc_linux-64
+     Conda nvcc_linux-64 package has several versions.
+     However, the version is not corresponding to actual that of nvcc
+
+     When I installed it by
+     $ conda install -c nvidia nvcc_linux-64=10.0
+
+     The installed nvcc had version 10.2
+     $ which nvcc
+     $ nvcc -V
 
 ** get gpu information
    - Information of 1st GPU
