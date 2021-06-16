@@ -258,4 +258,7 @@ Version 2019-11-04"
   (defun dired-do-direct-flagged-delete (&optional nomessage)
     (interactive)
     (let ((delete-by-moving-to-trash nil))
-      (dired-do-flagged-delete nomessage))))
+      (dired-do-flagged-delete nomessage)))
+
+  (define-key dired-mode-map (kbd "C-c D") 'dired-do-direct-delete)
+  (define-key dired-mode-map (kbd "C-c X") 'dired-do-direct-flagged-delete))
