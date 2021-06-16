@@ -2,6 +2,10 @@
 * rclone
 ** install
    $ conda install -c conda-forge rclone
+** rclone config
+*** New remote
+    - Google Application Client Id: client_id> (Default)
+    - Remote config: y/n> n (working on a remote or headless machine)
 ** Tramp
    https://www.gnu.org/software/tramp/#Using-rclone
    /rclone:storage:/path/to/file

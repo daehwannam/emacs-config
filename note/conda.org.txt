@@ -33,28 +33,31 @@
      $ conda install spacy=2.2.3
 
 * Conda environment
-** Python 2
-   $ conda create -n py2 python=2.7 anaconda
-** Python 3
-   $ conda create -n py3 python=3.8 anaconda
-** Python 3 without specifying anaconda
-   $ conda create -n py3 python=3
+** install / delete / update
+*** Python 2
+    $ conda create -n py2 python=2.7 anaconda
+*** Python 3
+    $ conda create -n py3 python=3.8 anaconda
+*** Python 3 without specifying anaconda
+    $ conda create -n py3 python=3
 
-   - append "anaconda" results in install all things for base anaconda,
-     such as "jupyter", "spyder", etc
-   - https://stackoverflow.com/questions/38066873/create-anaconda-python-environment-with-all-packages
-** Simple Python 3 version
-   $ conda create -n default python=3
+    - append "anaconda" results in install all things for base anaconda,
+      such as "jupyter", "spyder", etc
+    - https://stackoverflow.com/questions/38066873/create-anaconda-python-environment-with-all-packages
+*** Simple Python 3 version
+    $ conda create -n default python=3
+*** Removing environments
+    # https://stackoverflow.com/a/49128056/6710003
+    $ conda env remove -n ENV_NAME
+*** List environment directories
+    https://stackoverflow.com/a/54155338
+    $ conda config --show envs_dirs
+*** Install anaconda package in a minconda's environment
+    $ conda install anaconda
 ** Check conda version
    $ conda --version
-** Removing environments
-   # https://stackoverflow.com/a/49128056/6710003
-   $ conda env remove -n ENV_NAME
-** List environment directories
-   https://stackoverflow.com/a/54155338
-   $ conda config --show envs_dirs
-** Install anaconda package in a minconda's environment
-   $ conda install anaconda
+** The path of the current conda environment
+   $ echo $CONDA_PREFIX
 
 * Packages
 ** Check the versions of an installed package
