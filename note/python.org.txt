@@ -1,4 +1,15 @@
 
+* Python execution
+** run string input (-c)
+   $ python -c 'import torch; print(torch.__version__)'
+** run string input with echo
+   echo -e "for i in range(3):\n    print(i)" | python
+   echo -e "import nltk\nnltk.download('averaged_perceptron_tagger')\nnltk.download('wordnet')" | python
+** python run file as module (-m)
+   $ python -m pack1.pack2.module  # pack1/pack2/module.py is the module's path
+
+   this code can execute the block of __main__ in "module.py"
+
 * Python language
 ** tail call optimization
 *** code
@@ -169,11 +180,6 @@ num_list_dict: dict[str, list[int]] = {'abc': [1, 2, 3], 'xyz': [4, 5, 6]}
 
 *** ignoring breakpoints
     $ PYTHONBREAKPOINT=0 python main.py
-
-* python run file as module
-  $ python -m pack1.pack2.module  # pack1/pack2/module.py is the module's path
-
-  this code can execute the block of __main__ in "module.py"
 
 * Other packages
 ** Spacy
