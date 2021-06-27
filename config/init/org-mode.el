@@ -145,7 +145,13 @@
       ;; This helps to keep indentation 4
       ;; However, it doesn't allow python code to be indented with
       ;; org-mode's headline.
-      (setq org-src-preserve-indentation t)))
+      (setq org-src-preserve-indentation t))
+
+    (progn
+      ;; Disable automatic tab insertion
+      ;;
+      ;; https://www.emacswiki.org/emacs/NoTabs
+      (setq-default indent-tabs-mode nil)))
 
   ;;; table
   (add-hook 'org-mode-hook (lambda () (local-set-key (kbd "C-c C-x M-c") 'org-table-insert-column)))
