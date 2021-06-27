@@ -138,7 +138,7 @@
 	;; "<s + TAB" --> code block
 	))
 
-    (progn
+    (comment
       ;; To keep python indentation in org-babel
       ;; https://stackoverflow.com/a/20903001
       ;;

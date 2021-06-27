@@ -76,5 +76,5 @@
   /<path to anaconda>/envs/<env name>/etc/conda/activate.d/
 
   e.g.
-    ~/program/miniconda3/envs/default/etc/conda/activate.d/
-
+    # ~/program/miniconda3/envs/default/etc/conda/activate.d/
+    echo $CONDA_PREFIX/etc/conda/activate.d/
