@@ -69,7 +69,7 @@
 * Anaconda update
   conda install pytorch torchvision -c pytorch
 
-* Bash script
+* Activating bash script
   https://blog.kovalevskyi.com/multiple-version-of-cuda-libraries-on-the-same-machine-b9502d50ae77
   Anaconda can run any bash scripts each time when the environment is
   activated. Such scripts should be placed in the following path:
@@ -78,3 +78,16 @@
   e.g.
     # ~/program/miniconda3/envs/default/etc/conda/activate.d/
     echo $CONDA_PREFIX/etc/conda/activate.d/
+
+* Conda root path
+  $ echo $(dirname $(which conda))/..
+  $ echo $(realpath $(dirname $(which conda))/..)
+
+* Conda activate in bash script
+  https://github.com/conda/conda/issues/7980#issuecomment-441358406
+
+  # $ source ~/anaconda3/etc/profile.d/conda.sh
+  # $ conda activate my_env
+
+  $ source $(dirname $(which conda))/../etc/profile.d/conda.sh
+  $ conda activate my_env
