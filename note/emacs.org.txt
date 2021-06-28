@@ -34,6 +34,10 @@
      - C-x C--
    - set to default font size
      - C-x C-0
+** set-fill-prefix: remembering prefix of the current line
+   - it's bound to "C-x ."
+   - Then, "M-j" (default-indent-new-line) fills the new line with the prefix
+   - To cancel the effect, move the cursor to the beginning of the current line, then call 'set-fill-prefix
 
 * My command
 ** xah-open-in-external-app
@@ -198,6 +202,8 @@ print("hello world")
     - C-x C-q: dired-toggle-read-only
       - C-c C-c: apply changes
       - C-c ESC: abort
+*** Find files by name with regex
+    M-x find-name-dired
 *** Export
 **** to pdf
      C-c C-e l p (org-latex-export-to-pdf)
@@ -249,12 +255,14 @@ print("hello world")
 ** Windows: auto-hot key
    $Ctrl::CapsLock
    $CapsLock::Ctrl
-
 *** run on startup
     http://autohotkey.com/docs/FAQ.htm#Startup
     1. Find the script file, select it, and press Control+C.
     2. Press Win+R to open the Run dialog, then enter shell:startup and click OK or Enter. This will open the Startup folder for the current user. To instead open the folder for all users, enter shell:common startup (however, in that case you must be an administrator to proceed).
     3. Right click inside the window, and click "Paste Shortcut". The shortcut to the script should now be in the Startup folder.
+** Linux
+   - xmodemap
+   - autokey
 
 * Bug fix
 ** Server socket permission denied

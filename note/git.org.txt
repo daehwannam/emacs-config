@@ -71,7 +71,7 @@
 
   $ git clone $URL
   $ cd $PROJECT_NAME
-  $ git reset --hard $SHA1
+  $ git reset --hard $COMMIT_HASH
 
 * git clone a specific tag
   git clone --depth 1 --branch <tag_name> <repo_url>

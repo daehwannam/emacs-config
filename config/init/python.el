@@ -91,7 +91,9 @@
     (kill-new result)
     (setq deactivate-mark t)))
 
-(define-key python-mode-map (kbd "C-c M-w") 'py-repl-kill-ring-save-without-empty-lines)
+(progn
+  (require 'python)  ; to access python-mode-map
+  (define-key python-mode-map (kbd "C-c M-w") 'py-repl-kill-ring-save-without-empty-lines))
 
 ;; python docstring
 ;; https://github.com/naiquevin/sphinx-doc.el

@@ -77,10 +77,10 @@ map <c-g><c-i> enterInsertMode
 map <c-g><c-f> focusInput
 
 # Similar to Emacs `find-file`.
-map of LinkHints.activateMode  # map <c-x><c-f> LinkHints.activateMode
-map oF LinkHints.activateModeToOpenInNewForegroundTab  # map <c-x><c-F> LinkHints.activateModeToOpenInNewForegroundTab
-map oa LinkHints.activateModeToOpenInNewTab  #map <c-x><a-F> LinkHints.activateModeToOpenInNewTab
-map oA LinkHints.activateModeWithQueue  # map <c-x><a-f> LinkHints.activateModeWithQueue
+map al LinkHints.activateMode  # map <c-x><c-f> LinkHints.activateMode
+map aL LinkHints.activateModeToOpenInNewForegroundTab  # map <c-x><c-F> LinkHints.activateModeToOpenInNewForegroundTab
+map ao LinkHints.activateModeToOpenInNewTab  #map <c-x><a-F> LinkHints.activateModeToOpenInNewTab
+map aA LinkHints.activateModeWithQueue  # map <c-x><a-f> LinkHints.activateModeWithQueue
 
 # Similar to Emacs `list-directory`.
 map <c-x><c-d> Vomnibar.activate
@@ -143,8 +143,8 @@ map p performBackwardsFind  # map <c-r> performBackwardsFind  # similar to Shift
 
 # Not implemented in Emacs.
 # Similar to Emacs `(previous|next)-buffer`.
-# map <a-b> previousTab  # map <c-x><left> previousTab  # default: <c-<pageup>>
-# map <a-f> nextTab  # map <c-x><right> nextTab  # default: <c-<pagedown>>
+map <a-b> previousTab  # map <c-x><left> previousTab  # default: <c-<pageup>>
+map <a-f> nextTab  # map <c-x><right> nextTab  # default: <c-<pagedown>>
 
 # Not implemented in Emacs.
 # Similar to Emacs `(previous|next)-buffer`.

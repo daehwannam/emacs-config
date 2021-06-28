@@ -198,7 +198,6 @@ Version 2019-11-04"
 (add-hook 'dired-mode-hook
 	  (lambda () (local-set-key (kbd "C-c C-o") 'xah-open-in-external-app)))
 
-
 (progn
   ;; Copy files asynchronously
   ;;
@@ -238,3 +237,28 @@ Version 2019-11-04"
       (other-window 1)))
 
   (define-key dired-mode-map "Y" 'ora-dired-rsync))
+
+(progn
+  ;; Deletion with Trash
+  (setq delete-by-moving-to-trash t)
+
+  (comment
+   (defun toggle-delete-by-moving-to-trash ()
+     (interactive)
+     (setq delete-by-moving-to-trash (not delete-by-moving-to-trash))
+     (if delete-by-moving-to-trash
+	 (message "Trashing is activated")
+       (message "Deleting is activated"))))
+
+  (defun dired-do-direct-delete (&optional arg)
+    (interactive "P")
+    (let ((delete-by-moving-to-trash nil))
+      (dired-do-delete arg)))
+
+  (defun dired-do-direct-flagged-delete (&optional nomessage)
+    (interactive)
+    (let ((delete-by-moving-to-trash nil))
+      (dired-do-flagged-delete nomessage)))
+
+  (define-key dired-mode-map (kbd "C-c D") 'dired-do-direct-delete)
+  (define-key dired-mode-map (kbd "C-c X") 'dired-do-direct-flagged-delete))
