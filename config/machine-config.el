@@ -58,6 +58,7 @@
      (ms-laptop (vlf magit key-chord modalka evil dash))
      (ms-desktop (vlf magit key-chord modalka evil dash))
      (semparse (jsonnet-mode))
+     (web-edit (atomic-chrome))
      )))
 
 ;;; emacs configuration association list
