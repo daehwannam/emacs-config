@@ -188,4 +188,18 @@
   (defun org-format-latex-change-scale (scale)
     (interactive "nScale: " )
     (plist-put org-format-latex-options :scale scale))
+
+  (progn
+    ;; Bibliography with BibTeX
+    ;; https://orgmode.org/worg/exporters/anno-bib-template-worg.html
+    (setq org-latex-pdf-process
+          '("pdflatex -interaction nonstopmode -output-directory %o %f"
+            "bibtex %b"
+            "pdflatex -interaction nonstopmode -output-directory %o %f"
+            "pdflatex -interaction nonstopmode -output-directory %o %f")))
+
+  (progn
+    ;; Latex syntax highlight
+    ;; https://stackoverflow.com/a/29918961
+    (setq org-highlight-latex-and-related '(latex script entities)))
   )
