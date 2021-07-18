@@ -121,7 +121,7 @@
 
    f(x; mu) = exp(-((x - mu) + exp(-(x - mu))))
    F(x; mu) = exp(-exp(-(x - mu)))
-   F^-1(x; mu) = mu - log(-log(p))
+   F^-1(p; mu) = mu - log(-log(p))
 
    p ~ Uniform(0, 1)
    x' = F^-1(p; mu) ; it's same that x' is sampled from f(x; mu) or Gumbel(mu, 1)
