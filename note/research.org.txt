@@ -125,7 +125,33 @@
 
    p ~ Uniform(0, 1)
    x' = F^-1(p; mu) ; it's same that x' is sampled from f(x; mu) or Gumbel(mu, 1)
-** Gumbel max trick proof
+** Gumbel max statistics(stability) trick
+   - Reference
+     - "On the Partition Function and Random Maximum A-Posteriori Perturbations"
+        https://arxiv.org/abs/1206.6410
+   # \begin{align*}
+   # G_k + \log \alpha_k &= \max\{G_i + \log \alpha_i) \\
+   # \mathbb{P}(X=\max\{G_i + \log \alpha_i)\}
+   # &= \prod_{i \ne k} \mathbb{P}(X \ge G_i + \log \alpha_i) \\
+   # &= \prod_{i \ne k} \mathbb{P}(G_i \le X -\log \alpha_i) \\
+   # &= \prod_{i \ne k} F(X -\log \alpha_i) \\
+   # &= ... then-how?
+   # \end{align*}
+
+   $\max\{G_i + \log \alpha_i)$ is a random variable and C is a constant
+   \begin{align*}
+   \mathbb{P}(\max\{G_i + \log \alpha_i) \le C\}
+   &= \prod_{i=1..n} \mathbb{P}(G_i + \log \alpha_i \le C) \\
+   &= \prod_{i=1..n} \mathbb{P}(G_i \le C -\log \alpha_i) \\
+   &= \prod_{i=1..n} F(C -\log \alpha_i) \\
+   &= (skip) \\
+   &= F(C -\log \sum_{i=1..n} \alpha_i)
+   \end{align*}
+
+   $F(C -\log \sum_{i=1..n} \alpha_i)$ is the cumulative distribution of $Gumbel(\log \sum_{i=1..n}\alpha_i)$
+
+   
+** Gumbel arg-max trick proof
    https://i.hsfzxjy.site/2019-08-01-proof-of-gumbel-max-trick/
    https://medium.com/swlh/on-the-gumbel-max-trick-5e340edd1e01
 
@@ -156,7 +182,12 @@
      - https://www.integral-calculator.com/
        - expression: exp(-x-exp(-x))
        - range: -infinity ~ +infinity
-   
+
+** Truncated Gumbel distribution
+   - Reference
+     - "On the Partition Function and Random Maximum A-Posteriori Perturbations"
+     - "Stochastic Beams and Where to Find Them: The Gumbel-Top-k Trick for Sampling Sequences Without Replacement"
+
 * Reinforcement learning basic
 ** Model-based vs. model-free
    https://ai.stackexchange.com/a/4465
