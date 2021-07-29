@@ -11,3 +11,5 @@
    /rclone:storage:/path/to/file
 ** tutorials
    - https://www.andyibanez.com/posts/rclone-basics-encryption/
+** Commands
+   - rclone copy /source/file/name gdrive:/remote/file/name

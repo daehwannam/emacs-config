@@ -1,11 +1,24 @@
 
 * TikZ
-** External
+** Externalizing
    https://olezfdtd.wordpress.com/2012/03/28/precompile-pgfplots-using-tikzexternalize/
    http://www.maths.adelaide.edu.au/anthony.roberts/LaTeX/pgfplotBasics.pdf
    https://www.overleaf.com/learn/latex/Questions/I_have_a_lot_of_tikz,_matlab2tikz_or_pgfplots_figures,_so_I%27m_getting_a_compilation_timeout._Can_I_externalise_my_figures%3F
 
-   - use \tikzsetnextfilename{filename} before each \begin{tikzpicture}.
+   tikzexternalize commands prevent compiling tikz images multiple times
+
+   - Call latex with "shell-escape" option
+     e.g.
+     $ pdflatex --shell-escape mydocument.tex
+   - Add the folowing lines to the preamble:
+     #+begin_src
+     \usepgfplotslibrary{external} 
+     \tikzexternalize[prefix=TikzPictures/]
+     #+end_src
+   - (Optional) Use \tikzsetnextfilename{filename} before each \begin{tikzpicture}.
+
+** GUI tools
+   - tikzit: https://tikzit.github.io/
 
 * pdfcrop
   https://tex.stackexchange.com/questions/434404/remove-only-top-and-bottom-margins-using-pdfcrop

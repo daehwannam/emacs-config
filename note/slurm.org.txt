@@ -49,7 +49,7 @@
     - N : 총 할당받을 노드개수
     - n, --ntasks : 실행할 task 개수
     - t, -time : 최대 실행시간
-    --gress=gpu : 노드별 gpu 개수
+    --gres=gpu : 노드별 gpu 개수
 **** srun only
      2 nodes, 2 gpu per node
 

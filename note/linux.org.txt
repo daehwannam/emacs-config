@@ -393,6 +393,16 @@
        $ sudo service lightdm stop ## if you are using 11.04 replace `lightdm` with `gdm`
        $ sudo sh NVIDIA-Linux-x86_64-285.05.09.run
      - reboot
+**** Disabling nouveau kernel driver
+     https://askubuntu.com/a/951892
+     1. Open https://askubuntu.com/a/951892
+     2. Write the following scripts:
+        #+begin_src
+        blacklist nouveau
+        options nouveau modeset=0
+        #+end_src
+     3. sudo update-initramfs -u
+     4. reboot
 
 *** CUDA toolkits
     https://eungbean.github.io/2018/08/08/Ubuntu-Installation2-1/

@@ -1,0 +1,53 @@
+* Calendar
+  - M-x calendar
+  - org-calendar-goto-agenda: type "c"
+    https://emacs.stackexchange.com/questions/29632/org-mode-calendar-integration
+
+* LaTeX
+** example latex formula in org mode
+   \[E=mc^2\]
+
+   \begin{equation}
+     f(x) =  \sum\limits_0^\infty(f^{(n)}(x)|_{x=0} \cdot x)
+   \end{equation}
+** org-latex-preview
+   https://orgmode.org/manual/Previewing-LaTeX-fragments.html#Previewing-LaTeX-fragments
+   - turn on visualizing latex in the current entry (or in marked region)
+     C-c C-x C-l (org-latex-preview)
+   - turn off visualizing latex in the current entry
+     C-u C-c C-x C-l (org-latex-preview with a prefix argument)
+   - turn on visualizing latex in the current buffer
+     C-u C-u C-c C-x C-l (org-latex-preview with two prefix arguments)
+   - turn off visualizing latex in the current buffer
+     C-u C-u C-u C-c C-x C-l (org-latex-preview with three prefix arguments)
+*** changing equation font size
+    https://emacs.stackexchange.com/a/19881
+    - M-x customize
+    - Search "org-format"
+    - Enter "Org Format Latex Options"
+    - Change the value of "scale"
+      e.g. 1.0 --> 1.5
+** dynamically enable/disable latex preview
+   org-fragtog-mode
+
+* code block with org-babel
+  https://orgmode.org/manual/Literal-Examples.html
+  - type "<s" then press <TAB>
+  - type "<e" then press <TAB> for untyped example
+** write the result of standard output
+   #+begin_src python :results output
+   # indentation
+   import sys
+   print("hello world")
+   #+end_src
+
+   #+RESULTS:
+   : hello world
+** python virtual environment
+   Change python environment before evaluating code block by "M-x pyvenv-workon"
+
+* Export
+  - C-c C-e: org-export-dispatch
+
+  - C-c C-e l p: export to pdf
+  - C-c C-e l o: export to pdf and open it
