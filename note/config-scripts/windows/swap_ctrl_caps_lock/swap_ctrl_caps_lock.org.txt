@@ -1,8 +1,0 @@
-
-- Reference: http://pre.tir.tw/008/blog/output/swap_CapsLock_Ctrl.html
-- swap_ctrl_caps_lock.reg
-  - it changes ctrl with caps lock
-  - log-out is necessary
-- 'delete_reg.bat'
-  - it removes the registry key
-  - it requires administrative privileges

@@ -1,2 +1,0 @@
-
-sbcl --script ttt.lisp
