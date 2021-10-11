@@ -5,3 +5,7 @@
                            nil)))
   (when executable-name
     (setq-default ispell-program-name executable-name)))
+
+(progn
+  ;; https://stackoverflow.com/a/27044941
+  (setq ispell-dictionary "english"))
