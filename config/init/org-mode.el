@@ -13,6 +13,25 @@
 
   (require 'directory-files-recursive)
 
+  (progn
+    ;; enable indenting content of headings by
+    ;; org-metaleft and org-metaright
+    ;;
+    ;; It's working with (setq org-startup-indented nil)
+    (setq org-adapt-indentation t))
+
+  (comment
+   (progn
+     ;; hard indentation setup
+     ;; https://orgmode.org/manual/Hard-indentation.html
+     (setq org-adapt-indentation t)
+     (setq org-hide-leading-stars t)
+     (setq org-odd-levels-only nil)))
+
+  (comment
+   (progn
+     ;; https://www.reddit.com/r/emacs/comments/97naje/what_is_everyones_org_mode_indentation_preferences/
+     (setq org-startup-indented t)))
 
   (comment
    (define-key global-map "\C-cl" 'org-store-link)
@@ -80,7 +99,9 @@
     ;; https://emacs.stackexchange.com/a/43768
     (let ((shell-symbol (if (version< emacs-version "26.0") 'sh 'shell)))
       (org-babel-do-load-languages
-       'org-babel-load-languages `((python . t) (,shell-symbol . t))))
+       'org-babel-load-languages `((python . t)
+                                   (,shell-symbol . t)
+                                   (latex . t))))
 
     ;; https://www.reddit.com/r/orgmode/comments/64tiq9/syntax_highlighting_in_code_blocks/dg548nx/
     ;; Code black highlighting and indentation
@@ -139,13 +160,14 @@
 	))
 
     (comment
-      ;; To keep python indentation in org-babel
-      ;; https://stackoverflow.com/a/20903001
-      ;;
-      ;; This helps to keep indentation 4
-      ;; However, it doesn't allow python code to be indented with
-      ;; org-mode's headline.
-      (setq org-src-preserve-indentation t))
+     ;; To keep python indentation in org-babel
+     ;; https://stackoverflow.com/a/20903001
+     ;;
+     ;; This helps to keep indentation 4
+     ;; However, it doesn't allow python code to be indented with
+     ;; org-mode's headline.
+     ;; e.g. It's not working with org-metaleft and org-metaright
+     (setq org-src-preserve-indentation t))
 
     (progn
       ;; Disable automatic tab insertion
@@ -202,4 +224,34 @@
     ;; Latex syntax highlight
     ;; https://stackoverflow.com/a/29918961
     (setq org-highlight-latex-and-related '(latex script entities)))
+
+  (progn
+    (progn
+      ;; define customization for background color of inline image
+      (defcustom org-inline-image-background nil
+        "The color used as the default background for inline images.
+When nil, use the default face background."
+        :group 'org
+        :type '(choice color (const nil)))
+
+      (defun create-image-with-background-color (args)
+        "Specify background color of Org-mode inline image through modify `ARGS'."
+        (let* ((file (car args))
+               (type (cadr args))
+               (data-p (caddr args))
+               (props (cdddr args)))
+          ;; Get this return result style from `create-image'.
+          (append (list file type data-p)
+                  (list :background (or org-inline-image-background (face-background 'default)))
+                  props)))
+
+      (advice-add 'create-image :filter-args
+                  #'create-image-with-background-color))
+
+    (progn
+      ;; set image background color
+      ;; (custom-set-variables '(org-inline-image-background "dark gray"))
+      ;; (custom-set-variables '(org-inline-image-background "white"))
+      (custom-set-variables '(org-inline-image-background "light gray"))
+      ))
   )

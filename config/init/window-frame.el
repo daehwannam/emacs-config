@@ -156,11 +156,13 @@
 ;; kill other window buffer
 (defun kill-other-window-buffer ()
   (interactive)
-  (other-window 1)
-  (kill-buffer)
-  (other-window -1))
+  (let ((curr-window (selected-window)))
+    (other-window 1)
+    (kill-buffer)
+    (unless (equal (selected-window) curr-window)
+      (other-window -1))))
 
-;; (global-set-key (kbd "C-x K") 'kill-other-window-buffer)
+(global-set-key (kbd "C-x K") 'kill-other-window-buffer)
 
 ;; kill other window
 (defun delete-other-window ()
