@@ -14,18 +14,23 @@
 ;; https://tex.stackexchange.com/a/161303
 (setq LaTeX-command-style '(("" "%(PDF)%(latex) -shell-escape %S%(PDFout)")))
 
-(progn
-  ;; Using pdf-tools as the default view for AUCTeX
-  ;;
-  ;; https://emacs.stackexchange.com/a/19475
-  ;; https://emacs.stackexchange.com/a/19475
+(when (package-installed-p 'pdf-tools)
+  (progn
+    ;; install pdf-tools if didin't yet
+    (pdf-tools-install))
 
-  ;; to use pdfview with auctex
-  (setq TeX-view-program-selection '((output-pdf "PDF Tools"))
-        ;; TeX-view-program-list '(("PDF Tools" TeX-pdf-tools-sync-view))
-        ;; TeX-source-correlate-start-server t ; not sure if last line is neccessary
-        )
+  (progn
+    ;; Using pdf-tools as the default view for AUCTeX
+    ;;
+    ;; https://emacs.stackexchange.com/a/19475
+    ;; https://emacs.stackexchange.com/a/19475
 
-  ;; to have the buffer refresh after compilation
-  (add-hook 'TeX-after-compilation-finished-functions
-            #'TeX-revert-document-buffer))
+    ;; to use pdfview with auctex
+    (setq TeX-view-program-selection '((output-pdf "PDF Tools"))
+          ;; TeX-view-program-list '(("PDF Tools" TeX-pdf-tools-sync-view))
+          ;; TeX-source-correlate-start-server t ; not sure if last line is neccessary
+          )
+
+    ;; to have the buffer refresh after compilation
+    (add-hook 'TeX-after-compilation-finished-functions
+              #'TeX-revert-document-buffer)))
