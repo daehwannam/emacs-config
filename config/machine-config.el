@@ -12,8 +12,12 @@
 (setq machine-config-list
   '((theme-style (white-theme-machine white))
     (ai-edu-key-binding (vbox t))
-    (path-to-slime-helper (vbox "~/quicklisp/slime-helper.el"))
-    (path-to-inferior-lisp-program (vbox "/usr/bin/sbcl"))
+    (path-to-slime-helper
+     (vbox "~/quicklisp/slime-helper.el")
+     (ubuntu-laptop "~/quicklisp/slime-helper.el"))
+    (path-to-inferior-lisp-program
+     (vbox "/usr/bin/sbcl")
+     (ubuntu-laptop "/home/dhnam/program/miniconda3/envs/default/bin/sbcl"))
     (etags-list (vbox ("/usr/share/emacs/25.3/lisp" "~/.emacs.d")))
     (org-agenda-directory-pattern
      (ms-desktop ("e:/data/Dropbox/org/schedule/" ".*\\.org\\(\\.txt\\)?$"))
@@ -41,6 +45,8 @@
     (elpy-autopep8-activate
      (engels nil)
      )
+    (eaf-path
+     (eaf-setup "~/.emacs.d/package/emacs-application-framework/"))
     (installable-packages
      ;; (base (vlf magit key-chord modalka evil avy hydra dash counsel multi-term))
      (basic (vlf magit dash multi-term counsel async wgrep which-key paredit poporg))
