@@ -20,7 +20,7 @@
 	 ;; pyvenv-tracking-mode is very slow
 	 (pyvenv-tracking-mode 1))))))
 
-(when (package-installed-p 'elpy)  
+(when (package-installed-p 'elpy)
   (require 'elpy)
 
   (defun elpy-set-project-root (new-root) ; redefined
