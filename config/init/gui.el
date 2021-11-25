@@ -3,7 +3,7 @@
 
 ;;To disable the menu bar, place the following line in your .emacs file:
 ;; (menu-bar-mode -1) 
-(menu-bar-mode t)
+(comment (menu-bar-mode t))
 
 (comment
  ;;To disable the scrollbar, use the following line:

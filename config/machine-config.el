@@ -47,6 +47,9 @@
      )
     (eaf-path
      (eaf-setup "~/.emacs.d/package/emacs-application-framework/"))
+    (exwm-enabled
+     (exwm-setup t))
+
     (installable-packages
      ;; (base (vlf magit key-chord modalka evil avy hydra dash counsel multi-term))
      (basic (vlf magit dash multi-term counsel async wgrep which-key paredit poporg))
@@ -65,6 +68,7 @@
      (ms-desktop (vlf magit key-chord modalka evil dash))
      (semparse (jsonnet-mode))
      (web-edit (atomic-chrome))
+     (exwm-setup (exwm))
      )))
 
 ;;; emacs configuration association list
