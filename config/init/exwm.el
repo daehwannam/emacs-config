@@ -37,6 +37,8 @@
         ;; enable key-chord and hydra
         ;; https://www.reddit.com/r/emacs/comments/8yf6dx/key_chords_in_exwm/
         (setq exwm-input-line-mode-passthrough t))
+      (exwm-input-set-key (kbd "C-q o") (make-repeatable-command 'other-window))
+      ;; TODO: use 'exwm-input-global-keys for key-chords
       ))
 
   (exwm-config-mine))
