@@ -11,13 +11,31 @@
 ;; https://tex.stackexchange.com/a/967
 (add-hook 'LaTeX-mode-hook #'turn-on-flyspell)
 
-;; https://tex.stackexchange.com/a/161303
-(setq LaTeX-command-style '(("" "%(PDF)%(latex) -shell-escape %S%(PDFout)")))
+(progn
+  ;; - Adding options -> https://tex.stackexchange.com/a/161303
+  ;;
+  ;; - Fixing errors below -> https://emacs-china.org/t/auctex-setup-synctex-with-pdf-tools-not-working/11257
+  ;; ---------------------------------------------------------------------------------------------------------
+  ;; pdf-info-query: epdfinfo: Unable to create synctex scanner, did you run latex with `--synctex=1' ?
+  ;; ---------------------------------------------------------------------------------------------------------
+
+  (comment (setq LaTeX-command-style '(("" "%(PDF)%(latex) -shell-escape %S%(PDFout)"))))
+  (setq LaTeX-command-style '(("" "%(PDF)%(latex) -shell-escape %S%(PDFout) --synctex=1"))))
 
 (when (package-installed-p 'pdf-tools)
   (progn
     ;; install pdf-tools if didin't yet
     (pdf-tools-install))
+
+  (custom-set-variables
+   ;; Fix for the following error:
+   ;; ---------------------------------------------------------------------------------
+   ;; Warning (pdf-view): These modes are incompatible with `pdf-view-mode',
+   ;; 	please deactivate them (or customize pdf-view-incompatible-modes): linum-mode
+   ;; ---------------------------------------------------------------------------------
+
+   '(pdf-view-incompatible-modes
+     '(linum-relative-mode helm-linum-relative-mode nlinum-mode nlinum-hl-mode nlinum-relative-mode yalinum-mode)))
 
   (progn
     ;; Using pdf-tools as the default view for AUCTeX

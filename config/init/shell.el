@@ -17,6 +17,10 @@
 ;  (with-temp-buffer
 ;    (cd "/sudo::/")
 ;    (async-shell-command command)))
+(progn
+  ;; hide output of 'async-shell-command
+  ;; https://emacs.stackexchange.com/a/58341
+  (add-to-list 'display-buffer-alist '("*Async Shell Command*" display-buffer-no-window (nil))))
 
 (global-set-key (kbd "C-c M-!") 'sudo-shell-command)
 
