@@ -31,6 +31,12 @@
     (exwm-simple-init)
     (progn
       (exwm-config-example)  ; same with (exwm-config-default)
-      (ido-mode nil)))
+      (ido-mode nil)
+
+      (comment
+        ;; enable key-chord and hydra
+        ;; https://www.reddit.com/r/emacs/comments/8yf6dx/key_chords_in_exwm/
+        (setq exwm-input-line-mode-passthrough t))
+      ))
 
   (exwm-config-mine))
