@@ -52,3 +52,9 @@
     ;; to have the buffer refresh after compilation
     (add-hook 'TeX-after-compilation-finished-functions
               #'TeX-revert-document-buffer)))
+
+(progn
+  ;; enable forward search
+  ;; https://lists.gnu.org/archive/html/auctex/2021-07/msg00018.html
+  (setq TeX-source-correlate-mode t
+        TeX-source-correlate-start-server t))

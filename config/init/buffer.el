@@ -85,8 +85,8 @@
     ("q" nil "quit")
     ("j" buf-move-left)
     ("l" buf-move-right)
-    ("k" buf-move-up)
-    ("i" buf-move-down)))
+    ("i" buf-move-up)
+    ("k" buf-move-down)))
 
 (progn
   ;; https://stackoverflow.com/a/384346
