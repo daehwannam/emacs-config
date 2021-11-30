@@ -37,8 +37,26 @@
         ;; enable key-chord and hydra
         ;; https://www.reddit.com/r/emacs/comments/8yf6dx/key_chords_in_exwm/
         (setq exwm-input-line-mode-passthrough t))
-      (exwm-input-set-key (kbd "C-q o") (make-repeatable-command 'other-window))
-      ;; TODO: use 'exwm-input-global-keys for key-chords
+
+      (progn
+        ;; global commands
+        ;; (global-set-key (kbd "C-t") tab-prefix-map)
+        )
+
+      (comment
+       ;; commands for exwm globally
+       ;;
+       ;; (exwm-input-set-key (kbd "C-q o") (make-repeatable-command 'other-window))
+       ;; (exwm-input-set-key (kbd "C-q O") (make-repeatable-command 'other-window-backwards))
+       ;; TODO: use 'exwm-input-global-keys for key-chords
+       )
+
+      (progn
+        ;; commands for line-mode
+        (define-key exwm-mode-map (kbd "C-q C-w") 'exwm-input-send-next-key)
+        ;; (key-chord-define exwm-mode-map "qe" 'tab-prefix-map)
+        )
+
       ))
 
   (exwm-config-mine))
