@@ -40,7 +40,7 @@
 
       (progn
         ;; global commands
-        ;; (global-set-key (kbd "C-t") tab-prefix-map)
+        (global-set-key (kbd "C-t") tab-prefix-map)
         )
 
       (comment
@@ -53,7 +53,8 @@
 
       (progn
         ;; commands for line-mode
-        (define-key exwm-mode-map (kbd "C-q C-w") 'exwm-input-send-next-key)
+        (comment (define-key exwm-mode-map (kbd "C-q C-w") 'exwm-input-send-next-key))
+        (define-key exwm-mode-map (kbd "C-;") 'exwm-input-send-next-key)
         ;; (key-chord-define exwm-mode-map "qe" 'tab-prefix-map)
         )
 
