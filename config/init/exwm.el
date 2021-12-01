@@ -46,20 +46,41 @@
       (progn
         ;; commands for exwm globally
 
-        (progn
+        (comment
           ;; these keys enable "C-q" prefix
           (exwm-input-set-key (kbd "C-q o") (make-repeatable-command 'other-window))
           (exwm-input-set-key (kbd "C-q O") (make-repeatable-command 'other-window-backwards)))
-        (exwm-input-set-key (kbd "C-t") tab-prefix-map)
+        (comment (exwm-input-set-key (kbd "C-t") tab-prefix-map))
+
+        (comment
+         ;; key chord doesn't work
+         (progn
+           (key-chord-define global-map "qd" 'ctl-x-map)
+           (exwm-input-set-key [(aref "qd" 0)] 'ctl-x-map)
+           (exwm-input-set-key [(aref "qd" 1)] 'ctl-x-map))
+         (progn
+           (key-chord-define global-map "q3" 'tab-prefix-map)
+           (exwm-input-set-key [(aref "q3" 0)] 'tab-prefix-map)
+           (exwm-input-set-key [(aref "q3" 1)] 'tab-prefix-map)))
         ;; TODO: use 'exwm-input-global-keys for key-chords
         )
 
       (progn
         ;; commands for line-mode
         (comment (define-key exwm-mode-map (kbd "C-q C-w") 'exwm-input-send-next-key))
+        (comment
+          ;; key chord doesn't work
+          (progn
+            (exwm-input-set-key [(aref "qw" 0)] 'ctl-x-map)
+            (exwm-input-set-key [(aref "qw" 1)] 'ctl-x-map))
+          (progn
+            (exwm-input-set-key [(aref "qe" 0)] 'tab-prefix-map)
+            (exwm-input-set-key [(aref "qe" 1)] 'tab-prefix-map)))
+
         (define-key exwm-mode-map (kbd "C-;") 'exwm-input-send-next-key)
-        ;; (key-chord-define exwm-mode-map "qe" 'tab-prefix-map)
-        )
+        (exwm-input-set-key (kbd "s-q") 'ctl-x-map)
+        (exwm-input-set-key (kbd "s-e") 'tab-prefix-map)
+         )
 
       ))
 
