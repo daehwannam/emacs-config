@@ -40,16 +40,19 @@
 
       (progn
         ;; global commands
-        (global-set-key (kbd "C-t") tab-prefix-map)
+        ;; (global-set-key (kbd "C-t") tab-prefix-map)
         )
 
-      (comment
-       ;; commands for exwm globally
-       ;;
-       ;; (exwm-input-set-key (kbd "C-q o") (make-repeatable-command 'other-window))
-       ;; (exwm-input-set-key (kbd "C-q O") (make-repeatable-command 'other-window-backwards))
-       ;; TODO: use 'exwm-input-global-keys for key-chords
-       )
+      (progn
+        ;; commands for exwm globally
+
+        (progn
+          ;; these keys enable "C-q" prefix
+          (exwm-input-set-key (kbd "C-q o") (make-repeatable-command 'other-window))
+          (exwm-input-set-key (kbd "C-q O") (make-repeatable-command 'other-window-backwards)))
+        (exwm-input-set-key (kbd "C-t") tab-prefix-map)
+        ;; TODO: use 'exwm-input-global-keys for key-chords
+        )
 
       (progn
         ;; commands for line-mode
