@@ -26,56 +26,56 @@
       (fringe-mode 1))
     (progn
       (require 'exwm)
-      (require 'exwm-config)))
+      (require 'exwm-config))
 
-  (defun exwm-config-my-base ()
-    "This is modifed from `exwm-config-example' or `exwm-config-default'"
+    (defun exwm-config-my-base ()
+      "This is modifed from `exwm-config-example' or `exwm-config-default'"
 
-    ;; Set the initial workspace number.
-    (unless (get 'exwm-workspace-number 'saved-value)
-      (setq exwm-workspace-number 1))
-    ;; Make class name the buffer name
-    (add-hook 'exwm-update-class-hook
-              (lambda ()
-                (exwm-workspace-rename-buffer exwm-class-name)))
-    ;; Global keybindings.
-    (unless (get 'exwm-input-global-keys 'saved-value)
-      (setq exwm-input-global-keys
-            `(
-              ;; 's-r': Reset (to line-mode).
-              ([?\s-r] . exwm-reset)
-              ;; 's-w': Switch workspace.
-              ([?\s-w] . exwm-workspace-switch)
-              ;; 's-&': Launch application.
-              ([?\s-&] . (lambda (command)
-                           (interactive (list (read-shell-command "$ ")))
-                           (start-process-shell-command command nil command)))
-              ;; 's-N': Switch to certain workspace.
-              ,@(mapcar (lambda (i)
-                          `(,(kbd (format "s-%d" i)) .
-                            (lambda ()
-                              (interactive)
-                              (exwm-workspace-switch-create ,i))))
-                        (number-sequence 0 9)))))
-    ;; Line-editing shortcuts
-    (unless (get 'exwm-input-simulation-keys 'saved-value)
-      (setq exwm-input-simulation-keys
-            '(([?\C-b] . [left])
-              ([?\C-f] . [right])
-              ([?\C-p] . [up])
-              ([?\C-n] . [down])
-              ([?\C-a] . [home])
-              ([?\C-e] . [end])
-              ([?\M-v] . [prior])
-              ([?\C-v] . [next])
-              ([?\C-d] . [delete])
-              ([?\C-k] . [S-end delete]))))
-    ;; Enable EXWM
-    (exwm-enable)
-    ;; Configure Ido
-    (comment (exwm-config-ido))
-    ;; Other configurations
-    (exwm-config-misc))
+      ;; Set the initial workspace number.
+      (unless (get 'exwm-workspace-number 'saved-value)
+        (setq exwm-workspace-number 1))
+      ;; Make class name the buffer name
+      (add-hook 'exwm-update-class-hook
+                (lambda ()
+                  (exwm-workspace-rename-buffer exwm-class-name)))
+      ;; Global keybindings.
+      (unless (get 'exwm-input-global-keys 'saved-value)
+        (setq exwm-input-global-keys
+              `(
+                ;; 's-r': Reset (to line-mode).
+                ([?\s-r] . exwm-reset)
+                ;; 's-w': Switch workspace.
+                ([?\s-w] . exwm-workspace-switch)
+                ;; 's-&': Launch application.
+                ([?\s-&] . (lambda (command)
+                             (interactive (list (read-shell-command "$ ")))
+                             (start-process-shell-command command nil command)))
+                ;; 's-N': Switch to certain workspace.
+                ,@(mapcar (lambda (i)
+                            `(,(kbd (format "s-%d" i)) .
+                              (lambda ()
+                                (interactive)
+                                (exwm-workspace-switch-create ,i))))
+                          (number-sequence 0 9)))))
+      ;; Line-editing shortcuts
+      (unless (get 'exwm-input-simulation-keys 'saved-value)
+        (setq exwm-input-simulation-keys
+              '(([?\C-b] . [left])
+                ([?\C-f] . [right])
+                ([?\C-p] . [up])
+                ([?\C-n] . [down])
+                ([?\C-a] . [home])
+                ([?\C-e] . [end])
+                ([?\M-v] . [prior])
+                ([?\C-v] . [next])
+                ([?\C-d] . [delete])
+                ([?\C-k] . [S-end delete]))))
+      ;; Enable EXWM
+      (comment (exwm-enable))
+      ;; Configure Ido
+      (comment (exwm-config-ido))
+      ;; Other configurations
+      (exwm-config-misc)))
 
   (defun exwm-config-mine ()
     (exwm-simple-init)
@@ -158,16 +158,20 @@
 	    "Keymap for workspace related commands."))
 
         (fset 'exwm-my-workspace-prefix-map exwm-my-workspace-prefix-map)
-        (exwm-input-set-key (kbd "s-q") 'exwm-my-workspace-prefix-map))
+        (exwm-input-set-key (kbd "s-w") 'exwm-my-workspace-prefix-map))
 
-      (exwm-input-set-key (kbd "s-w") 'ctl-x-map)
-      (exwm-input-set-key (kbd "s-e") 'tab-prefix-map))
+      (comment (exwm-input-set-key (kbd "s-q") 'ctl-x-map))
+      (comment (exwm-input-set-key (kbd "s-e") 'tab-prefix-map))
+      (exwm-input-set-key (kbd "C-3") 'tab-prefix-map))
+
+    (progn
+      ;; prefix keys for line-mode are defined in `exwm-input-prefix-keys'
+      ;; https://github.com/ch11ng/exwm/wiki#global-key-bindings
+      )
 
     (comment
      ;; key chord doesn't work
-     ;; commands for line-mode
-     ;;
-     ;; prefix keys for lie-mode are defined in `exwm-input-prefix-keys'
+     ;; local key bindings
      (comment (define-key exwm-mode-map (kbd "C-q C-w") 'exwm-input-send-next-key))
      (comment
       ;; key chord doesn't work
@@ -181,7 +185,9 @@
     (progn
       ;; local key bindings
       ;; https://github.com/ch11ng/exwm/wiki#local-key-bindings
-      (define-key exwm-mode-map (kbd "C-;") 'exwm-input-send-next-key))
+      (define-key exwm-mode-map (kbd "C-;") 'exwm-input-send-next-key)
+      (define-key exwm-mode-map (kbd "C-q") 'ctl-x-map)
+      (define-key exwm-mode-map (kbd "s-!") 'shell-command))
 
     (progn
       ;; simulation keys
@@ -217,6 +223,10 @@
               ([?\C-/] . [?\C-y])
               )))
 
+    (progn
+      ;; volume
+      (require 'volume nil t))
+
     (comment
      ;; system tray
      ;; https://github.com/ch11ng/exwm/wiki#system-tray
@@ -226,6 +236,44 @@
      ;; TODO: use polybar
      ;; https://www.youtube.com/watch?v=usCfMstCZ7E
      )
-    )
+
+    (comment
+      ;; polybar
+      ;; https://github.com/daviwil/emacs-from-scratch/blob/master/show-notes/Emacs-Desktop-05.org
+      ;; https://www.youtube.com/watch?v=bzRF8TlKQhY
+      ;;
+      ;; NOTE: Disable exwm-systemtray before restarting Emacs so that the tray works!
+
+      (defvar efs/polybar-process nil
+        "Holds the process of the running Polybar instance, if any")
+
+      (defun efs/kill-panel ()
+        (interactive)
+        (when efs/polybar-process
+          (ignore-errors
+            (kill-process efs/polybar-process)))
+        (setq efs/polybar-process nil))
+
+      (defun efs/start-panel ()
+        (interactive)
+        (efs/kill-panel)
+        (setq efs/polybar-process (start-process-shell-command "polybar" nil "polybar panel")))
+
+      ;; Start the Polybar panel
+      (efs/start-panel))
+
+    (comment
+     ;; enable input method
+     ;; https://github.com/ch11ng/exwm/wiki#input-method
+
+     ;; using xim input
+     (require 'exwm-xim)
+     (exwm-xim-enable)
+     (push ?\C-\\ exwm-input-prefix-keys) ;; use Ctrl + \ to switch input method)
+     )
+
+    (progn
+     ;; Enabling EXWM should be the last
+     (exwm-enable)))
 
   (exwm-config-mine))
