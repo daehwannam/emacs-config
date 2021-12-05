@@ -40,3 +40,11 @@
   :config
   (setq atomic-chrome-url-major-mode-alist
 	'(("overleaf\\.com" . latex-mode))))
+
+(progn
+  (defun quit-window-and-other-window-backwards ()
+    (interactive)
+    (quit-window)
+    (other-window-backwards))
+
+  (add-hook 'eww-mode-hook (lambda () (local-set-key (kbd "Q") #'quit-window-and-other-window-backwards))))

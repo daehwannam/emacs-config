@@ -5,12 +5,20 @@
 
 (key-chord-define-global "o1" 'shell-new-instance)
 
+(defun shell-new-instance-other-window (count)
+  (interactive "p")
+  (split-window-sensibly)
+  (other-window count)
+  (shell-new-instance))
+
+(key-chord-define-global "o3" 'shell-new-instance-other-window)
+
 ;; http://stackoverflow.com/questions/2472273/how-do-i-run-a-sudo-command-in-emacs
 (defun sudo-shell-command (command)
   (interactive "MShell command (root): ")
   (shell-command (concat "echo " (shell-quote-argument (read-passwd "Password? "))
-                       " | sudo -S " command))
-)
+                         " | sudo -S " command))
+  )
 
 ;(defun sudo-shell-command (command)
 ;  (interactive "MShell command (root): ")
@@ -185,6 +193,14 @@
 
 					; Open envIronment
   (key-chord-define-global "o2" 'conda-shell-with-default-name))
+
+(defun conda-shell-with-default-name-other-window (count)
+  (interactive "p")
+  split-window-sensibly
+  (other-window count)
+  (conda-shell-with-default-name))
+
+(key-chord-define-global "o4" 'conda-shell-with-default-name-other-window)
 
 (progn
   (comment
