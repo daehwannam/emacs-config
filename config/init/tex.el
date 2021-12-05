@@ -51,7 +51,14 @@
 
     ;; to have the buffer refresh after compilation
     (add-hook 'TeX-after-compilation-finished-functions
-              #'TeX-revert-document-buffer)))
+              #'TeX-revert-document-buffer))
+
+  (progn
+    (setq quelpa-update-melpa-p nil)
+    (quelpa '(pdf-continuous-scroll-mode
+              :fetcher github
+              :repo "dalanicolai/pdf-continuous-scroll-mode.el"))
+   (add-hook 'pdf-view-mode-hook 'pdf-continuous-scroll-mode)))
 
 (progn
   ;; enable forward search
