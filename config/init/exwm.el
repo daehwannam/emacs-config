@@ -107,28 +107,6 @@
       ;; (global-set-key (kbd "s-e") 'some-command)
       )
 
-    (comment
-     ;; key chord doesn't work
-     ;; commands for exwm globally
-
-     (comment
-      ;; these keys enable "C-q" prefix
-      (exwm-input-set-key (kbd "C-q o") (make-repeatable-command 'other-window))
-      (exwm-input-set-key (kbd "C-q O") (make-repeatable-command 'other-window-backwards)))
-     (comment (exwm-input-set-key (kbd "C-t") tab-prefix-map))
-
-     (comment
-      ;; key chord doesn't work
-      (progn
-        (key-chord-define global-map "qd" 'ctl-x-map)
-        (exwm-input-set-key [(aref "qd" 0)] 'ctl-x-map)
-        (exwm-input-set-key [(aref "qd" 1)] 'ctl-x-map))
-      (progn
-        (key-chord-define global-map "q3" 'tab-prefix-map)
-        (exwm-input-set-key [(aref "q3" 0)] 'tab-prefix-map)
-        (exwm-input-set-key [(aref "q3" 1)] 'tab-prefix-map)))
-     )
-
     (progn
       ;; commands for exwm globally
       ;; https://github.com/ch11ng/exwm/wiki#global-key-bindings
@@ -169,25 +147,13 @@
       ;; https://github.com/ch11ng/exwm/wiki#global-key-bindings
       )
 
-    (comment
-     ;; key chord doesn't work
-     ;; local key bindings
-     (comment (define-key exwm-mode-map (kbd "C-q C-w") 'exwm-input-send-next-key))
-     (comment
-      ;; key chord doesn't work
-      (progn
-        (exwm-input-set-key [(aref "qw" 0)] 'ctl-x-map)
-        (exwm-input-set-key [(aref "qw" 1)] 'ctl-x-map))
-      (progn
-        (exwm-input-set-key [(aref "qe" 0)] 'tab-prefix-map)
-        (exwm-input-set-key [(aref "qe" 1)] 'tab-prefix-map))))
-
     (progn
       ;; local key bindings
       ;; https://github.com/ch11ng/exwm/wiki#local-key-bindings
       (define-key exwm-mode-map (kbd "C-;") 'exwm-input-send-next-key)
       (define-key exwm-mode-map (kbd "C-q") 'ctl-x-map)
-      (define-key exwm-mode-map (kbd "s-!") 'shell-command))
+      (define-key exwm-mode-map (kbd "M-!") 'shell-command)
+      (define-key exwm-mode-map (kbd "M-#") 'lookup-word-from-web-other-window-for-exwm))
 
     (progn
       ;; simulation keys
@@ -261,16 +227,6 @@
 
       ;; Start the Polybar panel
       (efs/start-panel))
-
-    (comment
-     ;; enable input method
-     ;; https://github.com/ch11ng/exwm/wiki#input-method
-
-     ;; using xim input
-     (require 'exwm-xim)
-     (exwm-xim-enable)
-     (push ?\C-\\ exwm-input-prefix-keys) ;; use Ctrl + \ to switch input method)
-     )
 
     (progn
      ;; Enabling EXWM should be the last
