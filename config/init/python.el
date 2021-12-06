@@ -1,4 +1,25 @@
 
+(use-existing-pkg pyvenv
+  :init
+  (progn
+    (comment
+     ;; directory-local
+     ;; https://blog.allardhendriksen.nl/posts/tracking-project-virtual-environments-with-pyvenv-tracking-mode/
+     ;; https://endlessparentheses.com/a-quick-guide-to-directory-local-variables.html
+     ;;
+     ;; - Move to the project root
+     ;; - M-x add-dir-local-variable
+     ;;   - python-mode
+     ;;   - pyvenv-workon --> some-python-environment
+     )
+    (let ((pyvenv-workon-home-path (machine-config-get-first 'pyvenv-workon-home-path)))
+      (when pyvenv-workon-home-path
+	(setenv "WORKON_HOME" pyvenv-workon-home-path)
+	(pyvenv-mode 1)
+	(comment
+	 ;; pyvenv-tracking-mode is very slow
+	 (pyvenv-tracking-mode 1))))))
+
 ;---;;; python-mode
 ;---;; https://www.emacswiki.org/emacs/ProgrammingWithPythonModeDotEl
 ;---;; https://gitlab.com/python-mode-devs/python-mode
