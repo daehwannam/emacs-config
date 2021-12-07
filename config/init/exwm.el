@@ -254,8 +254,8 @@
         (t (error "Unknown monitor configuration")))
 
       (setq exwm-workspace-warp-cursor t)
-      (setq mouse-autoselect-window t
-            focus-follows-mouse t)
+      (setq mouse-autoselect-window t)
+      (setq focus-follows-mouse t)
 
       (comment
        (defun exwm-change-screen-hook ()

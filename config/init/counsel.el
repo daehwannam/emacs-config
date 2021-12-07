@@ -32,7 +32,8 @@
       (global-set-key (kbd "C-c C-r") 'ivy-resume))
 
     (progn
-      (global-set-key (kbd "C-x b") 'counsel-switch-buffer))
+      (global-set-key (kbd "C-x b") 'counsel-switch-buffer)
+      (global-set-key (kbd "C-x B") 'switch-to-buffer))
 
     (progn
       ;; counsel-mode

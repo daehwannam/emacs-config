@@ -53,4 +53,18 @@
   ;; $ sudo apt-get install fonts-inconsolata
 
   (when (find-font (font-spec :name "Inconsolata-12"))
-    (set-frame-font "Inconsolata-12")))
+    (progn
+      ;; https://emacs.stackexchange.com/a/16314
+      (set-face-font 'default "Inconsolata-12"))
+    (comment
+     ;; this make non full-sized frames for exwm
+     (defun make-frame-command-font-advice (&rest args)
+       (set-frame-font "Inconsolata-12"))
+     (advice-add 
+      'make-frame-command
+      :after
+      'make-frame-command-font-advice
+      '((name . "make-frame-command-font-advice")))
+     (progn
+       ;; for thee fist frame
+       (make-frame-command-font-advice)))))
