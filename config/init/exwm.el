@@ -38,6 +38,20 @@
       (add-hook 'exwm-update-class-hook
                 (lambda ()
                   (exwm-workspace-rename-buffer exwm-class-name)))
+      (progn
+        ;; workspace start number
+        ;; https://www.reddit.com/r/emacs/comments/arqg6z/comment/egp2e1u/?utm_source=share&utm_medium=web2x&context=3
+
+        (setq exwm-my-workspace-start-number 1)
+        (assert (member exwm-my-workspace-start-number '(0 1)))  ; should be 0 or 1
+        (setq exwm-workspace-index-map
+              (lambda (index) (number-to-string (+ exwm-my-workspace-start-number index))))
+        (dotimes (i 10)
+          (exwm-input-set-key (kbd (format "s-%d" i))
+                              `(lambda ()
+                                 (interactive)
+                                 (exwm-workspace-switch-create
+                                  (% (+ ,i 10 (- exwm-my-workspace-start-number)) 10))))))
       ;; Global keybindings.
       (unless (get 'exwm-input-global-keys 'saved-value)
         (setq exwm-input-global-keys
@@ -56,7 +70,8 @@
                               (lambda ()
                                 (interactive)
                                 (exwm-workspace-switch-create ,i))))
-                          (number-sequence 0 9)))))
+                          (number-sequence (+ 0 exwm-my-workspace-start-number 
+                                           (% (+ 9 exwm-my-workspace-start-number) 10)))))))
       ;; Line-editing shortcuts
       (unless (get 'exwm-input-simulation-keys 'saved-value)
         (setq exwm-input-simulation-keys
@@ -70,6 +85,13 @@
                 ([?\C-v] . [next])
                 ([?\C-d] . [delete])
                 ([?\C-k] . [S-end delete]))))
+
+      (progn
+        ;; cursor and mouse config
+        ;; https://github.com/daviwil/emacs-from-scratch/blob/5ebd390119a48cac6258843c7d5e570f4591fdd4/show-notes/Emacs-Desktop-04.org
+        (setq exwm-workspace-warp-cursor t)
+        (setq mouse-autoselect-window t)
+        (setq focus-follows-mouse t))
       ;; Enable EXWM
       (comment (exwm-enable))
       ;; Configure Ido
@@ -243,7 +265,11 @@
       (pcase (machine-config-get-first 'exwm-multiple-monitor-type)
         (descartes-triple
          (progn
-           (setq exwm-randr-workspace-monitor-plist '(0 "HDMI-1-1" 1 "DVI-I-1" 2 "HDMI-4"))
+           ;; mapping workspace indices with monitors
+           (setq exwm-randr-workspace-monitor-plist
+                 '(0 "HDMI-1-1" 1 "DVI-I-1" 2 "HDMI-4"
+                     3 "HDMI-1-1" 4 "DVI-I-1" 5 "HDMI-4"))
+           ;; run xrandr
            (add-hook 'exwm-randr-screen-change-hook
                      (lambda ()
                        (start-process-shell-command
@@ -252,10 +278,6 @@
                                 --output HDMI-1-1 --auto --left-of DVI-I-1 \
                                 --output HDMI-4 --auto --right-of DVI-I-1")))))
         (t (error "Unknown monitor configuration")))
-
-      (setq exwm-workspace-warp-cursor t)
-      (setq mouse-autoselect-window t)
-      (setq focus-follows-mouse t)
 
       (comment
        (defun exwm-change-screen-hook ()
