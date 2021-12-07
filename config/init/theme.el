@@ -34,6 +34,13 @@
      '(mode-line-buffer-id ((t (:background "grey65" :foreground "firebrick" :weight bold :height 0.9))))
      (set-face-foreground 'hl-line nil))
 
+    (progn
+      ;; disable fringe color
+      (fringe-mode 1)
+      (set-face-attribute 'fringe nil
+                          :foreground (face-foreground 'default)
+                          :background (face-background 'default)))
+
     (comment
      ;; "color-xx" is only for 256-color terimanl
      (custom-set-faces

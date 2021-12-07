@@ -229,7 +229,73 @@
       (efs/start-panel))
 
     (progn
-     ;; Enabling EXWM should be the last
-     (exwm-enable)))
+      ;; enable switching betwen buffers in other workspaces
+      ;;
+      ;; https://github.com/ch11ng/exwm/wiki#x-window-handling-among-workspaces
+      (setq exwm-workspace-show-all-buffers t)
+      (setq exwm-layout-show-all-buffers t))
+
+    (when (machine-config-get-first 'exwm-multiple-monitor-type)
+      ;; multiple monitor test
+      ;; https://github.com/daviwil/emacs-from-scratch/blob/5ebd390119a48cac6258843c7d5e570f4591fdd4/show-notes/Emacs-Desktop-04.org
+      (require 'exwm-randr)
+
+      (pcase (machine-config-get-first 'exwm-multiple-monitor-type)
+        (descartes-triple
+         (progn
+           (setq exwm-randr-workspace-monitor-plist '(0 "HDMI-1-1" 1 "DVI-I-1" 2 "HDMI-4"))
+           (add-hook 'exwm-randr-screen-change-hook
+                     (lambda ()
+                       (start-process-shell-command
+                        "xrandr" nil
+                        "xrandr --output DVI-I-1 --auto \
+                                --output HDMI-1-1 --auto --left-of DVI-I-1 \
+                                --output HDMI-4 --auto --right-of DVI-I-1")))))
+        (t (error "Unknown monitor configuration")))
+
+      (setq exwm-workspace-warp-cursor t)
+      (setq mouse-autoselect-window t
+            focus-follows-mouse t)
+
+      (comment
+       (defun exwm-change-screen-hook ()
+         (let ((xrandr-output-regexp "\n\\([^ ]+\\) connected ")
+               default-output)
+           (with-temp-buffer
+             (call-process "xrandr" nil t nil)
+             (goto-char (point-min))
+             (re-search-forward xrandr-output-regexp nil 'noerror)
+             (setq default-output (match-string 1))
+             (forward-line)
+             (if (not (re-search-forward xrandr-output-regexp nil 'noerror))
+                 (call-process "xrandr" nil nil nil "--output" default-output "--auto")
+               (call-process
+                "xrandr" nil nil nil
+                "--output" (match-string 1) "--primary" "--auto"
+                "--output" default-output "--off")
+               (setq exwm-randr-workspace-monitor-plist (list 0 (match-string 1)))))))
+
+       (add-hook 'exwm-randr-screen-change-hook 'exwm-change-screen-hook))
+
+      (exwm-randr-enable))
+
+    (progn
+      ;; Enabling EXWM should be the last
+      (exwm-enable))
+
+    (comment
+      ;; docking and undocking config
+      ;;
+      ;; https://github.com/daviwil/emacs-from-scratch/blob/5ebd390119a48cac6258843c7d5e570f4591fdd4/show-notes/Emacs-Desktop-04.org#docking-and-undocking
+
+      (defun efs/update-displays ()
+        (efs/run-in-background "autorandr --change --force")
+        (message "Display config: %s"
+                 (string-trim (shell-command-to-string "autorandr --current")))
+        (efs/set-wallpaper))
+
+      ;; React to display connectivity changes, do initial display update
+      (add-hook 'exwm-randr-screen-change-hook #'efs/update-displays)
+      (efs/update-displays)))
 
   (exwm-config-mine))

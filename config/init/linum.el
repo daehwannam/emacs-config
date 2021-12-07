@@ -6,8 +6,16 @@
 ;; (add-hook 'prog-mode-hook 'linum-mode)
 
 ;(setq linum-format "%d ")
-(setq linum-format "%4d \u2502 ")
 
+(progn
+  (setq linum-format "%4d \u2502 ")
+  (comment
+   ;; https://emacs.stackexchange.com/a/5343
+   ;; disable fringe color
+   (fringe-mode 1)
+   (set-face-attribute 'fringe nil
+                       :foreground (face-foreground 'default)
+                       :background (face-background 'default))))
 
 ;;; copy line number
 ;; http://ergoemacs.org/emacs/elisp_cut_copy_yank_kill-ring.html

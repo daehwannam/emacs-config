@@ -49,6 +49,8 @@
      (eaf-setup "~/.emacs.d/package/emacs-application-framework/"))
     (exwm-enabled
      (exwm-setup t))
+    (exwm-multiple-monitor-type
+     (descartes descartes-triple))
 
     (installable-packages
      ;; (base (vlf magit key-chord modalka evil avy hydra dash counsel multi-term))
