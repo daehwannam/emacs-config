@@ -73,8 +73,12 @@
                                 (exwm-workspace-switch-create ,i))))
                           (number-sequence (+ 0 exwm-my-workspace-start-number)
                                            (% (+ 9 exwm-my-workspace-start-number) 10))))))
+
       ;; Line-editing shortcuts
       (unless (get 'exwm-input-simulation-keys 'saved-value)
+        ;; simulation keys
+        ;; https://github.com/ch11ng/exwm/wiki#simulation-keys
+
         (setq exwm-input-simulation-keys
               '(([?\C-b] . [left])
                 ([?\C-f] . [right])
@@ -85,7 +89,25 @@
                 ([?\M-v] . [prior])
                 ([?\C-v] . [next])
                 ([?\C-d] . [delete])
-                ([?\C-k] . [S-end delete]))))
+                ([?\C-k] . [S-end C-c delete]) ; updated
+
+                ;; the below is newly added
+                ([?\C-w] . [?\C-x])
+                ([?\C-y] . [?\C-v])
+                ([?\M-w] . [?\C-c])
+                ;; ([C-S-f] . [S-right])
+                ;; ([C-S-b] . [S-left])
+                ;; ([C-F] . [S-right])
+                ;; ([C-B] . [S-left])
+                ([?\M-f] . [C-right])
+                ([?\M-b] . [C-left])
+                ;; ([M-S-f] . [C-S-right])
+                ;; ([M-S-b] . [C-S-left])
+                ;; ([M-F] . [C-S-right])
+                ;; ([M-B] . [C-S-left])
+
+                ([?\C-/] . [?\C-y])
+                )))
 
       (progn
         ;; cursor and mouse config
@@ -193,40 +215,6 @@
           (start-process-shell-command command nil command))))
 
     (progn
-      ;; simulation keys
-      ;; https://github.com/ch11ng/exwm/wiki#simulation-keys
-
-      (setq exwm-input-simulation-keys
-            '(([?\C-b] . [left])
-              ([?\C-f] . [right])
-              ([?\C-p] . [up])
-              ([?\C-n] . [down])
-              ([?\C-a] . [home])
-              ([?\C-e] . [end])
-              ([?\M-v] . [prior])
-              ([?\C-v] . [next])
-              ([?\C-d] . [delete])
-              ([?\C-k] . [S-end C-c delete]) ; updated
-
-              ;; the below is newly added
-              ([?\C-w] . [?\C-x])
-              ([?\C-y] . [?\C-v])
-              ([?\M-w] . [?\C-c])
-              ;; ([C-S-f] . [S-right])
-              ;; ([C-S-b] . [S-left])
-              ;; ([C-F] . [S-right])
-              ;; ([C-B] . [S-left])
-              ([?\M-f] . [C-right])
-              ([?\M-b] . [C-left])
-              ;; ([M-S-f] . [C-S-right])
-              ;; ([M-S-b] . [C-S-left])
-              ;; ([M-F] . [C-S-right])
-              ;; ([M-B] . [C-S-left])
-
-              ([?\C-/] . [?\C-y])
-              )))
-
-    (progn
       ;; volume
       (require 'volume nil t))
 
@@ -316,9 +304,9 @@
 
           (defun exwm-other-workspace-in-group-backwards () (interactive) (exwm-other-workspace-in-group -1)))
 
-        (define-key exwm-my-workspace-prefix-map (kbd "o")
+        (global-set-key (kbd "C-c o")
           (make-repeatable-command 'exwm-other-workspace-in-group))
-	(define-key exwm-my-workspace-prefix-map (kbd "O")
+	(global-set-key (kbd "C-c O")
           (make-repeatable-command 'exwm-other-workspace-in-group-backwards)))
 
       (comment

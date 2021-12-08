@@ -24,24 +24,27 @@
      ))
    (t ;; (eq theme-style 'dark)
     (load-theme 'manoj-dark)
+
     (custom-set-faces
-     ;; custom-set-faces was added by Custom.
-     ;; If you edit it by hand, you could mess it up, so be careful.
-     ;; Your init file should contain only one such instance.
-     ;; If there is more than one, they won't work right.
-     (comment '(mode-line-buffer-id ((t (:background "grey65" :foreground "color-160" :weight bold :height 0.9)))))  ; color-160 is not compatible with GUI
-     (comment '(mode-line-buffer-id ((t (:background "grey65" :foreground "red" :weight bold :height 0.9)))))
-     '(mode-line-buffer-id ((t (:background "grey65" :foreground "firebrick" :weight bold :height 0.9))))
+     ;; mode-line config
+     '(mode-line ((t (:stipple nil :background "midnight blue" :foreground "grey120" :box nil :height 0.9))))
+     '(mode-line-buffer-id ((t (:background "gray80" :foreground "firebrick" :weight bold :height 0.9))))
+     '(mode-line-inactive ((t (:background "grey30" :foreground "grey80" :box nil :weight light :height 0.9))))
      (set-face-foreground 'hl-line nil))
 
-    (when (display-graphic-p)
+    (custom-set-faces
+     ;; hl-line config (highlighting line without losing character color)
+     (set-face-foreground 'hl-line nil))
+
+    (progn
+      ;; tab-bar color
       (custom-set-variables
        '(tab-bar-close-button-show nil))
       (custom-set-faces
        '(tab-bar-mode t)
        '(tab-bar ((t (:inherit variable-pitch :background "black" :foreground "black"))))
-       '(tab-bar-tab ((t (:inherit default))))
-       '(tab-bar-tab-inactive ((t (:inherit tab-bar-tab :background "dark gray" :foreground "black"))))))
+       '(tab-bar-tab ((t (:inherit default :background "navy" :foreground "white"))))
+       '(tab-bar-tab-inactive ((t (:inherit tab-bar-tab :background "black" :foreground "grey100"))))))
 
     (progn
       ;; disable fringe color
@@ -50,13 +53,11 @@
                           :foreground (face-foreground 'default)
                           :background (face-background 'default)))
 
-    (comment
-     ;; "color-xx" is only for 256-color terimanl
-     (custom-set-faces
-      '(hi-yellow ((t (:background "yellow1" :foreground "color-33"))))
-      '(hi-pink ((t (:background "pink" :foreground "color-34"))))))
 
     (custom-set-faces
+     ;; highlighting color
+     ;;
+     ;; e.g. highlight-symbol-at-point highlight-regexp
      '(hi-yellow ((t (:background "yellow1" :foreground "dodger blue"))))
      '(hi-pink ((t (:background "pink" :foreground "forest green"))))
      '(hi-green ((t (:background "green" :foreground "magenta"))))
@@ -71,31 +72,15 @@
 	;; text color
 	(custom-set-faces
 	 '(flymake-errline ((((class color)) (:foreground "red"))))
-	 '(flymake-warnline ((((class color)) (:foreground "yellow"))))))
-
-      (progn
-	;; mode-line color
-	;; warning counter uses the color of 'compilation-warning
-	;; ==> (put 'flymake-warning 'mode-line-face 'compilation-warning)
-	(custom-set-faces
-	 '(compilation-warning ((t (:foreground "brightmagenta" :weight bold)))))))
+	 '(flymake-warnline ((((class color)) (:foreground "yellow")))))))
 
     (when (fboundp 'ein:run)
       (custom-set-faces
        '(ein:cell-input-area ((t (:background "black"))))))
 
-    ;; (custom-set-faces
-    ;;  '(org-scheduled ((t (:foreground "PaleGreen")))))
-
-    (comment (set-face-foreground 'mode-line-buffer-id "firebrick")))
+    (comment(custom-set-faces
+             '(org-scheduled ((t (:foreground "PaleGreen")))))))
 
    (when (package-installed-p 'highlight-parentheses)
      (custom-set-faces
       '(show-paren-match ((t (:background "black" :foreground "magenta"))))))))
-
-
-;; (when (require 'material-theme nil t)
-;;   (load-theme 'material t) ;; load material theme
-;; )
-
-					;(load-theme 'tsdh-light)
