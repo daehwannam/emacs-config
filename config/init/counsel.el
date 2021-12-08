@@ -31,7 +31,7 @@
       ;; ivy-resume resumes the last Ivy-based completion.
       (global-set-key (kbd "C-c C-r") 'ivy-resume))
 
-    (progn
+    (unless (machine-config-get-first 'exwm-enabled)
       (global-set-key (kbd "C-x b") 'counsel-switch-buffer)
       (global-set-key (kbd "C-x B") 'switch-to-buffer))
 

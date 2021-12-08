@@ -34,6 +34,15 @@
      '(mode-line-buffer-id ((t (:background "grey65" :foreground "firebrick" :weight bold :height 0.9))))
      (set-face-foreground 'hl-line nil))
 
+    (when (display-graphic-p)
+      (custom-set-variables
+       '(tab-bar-close-button-show nil))
+      (custom-set-faces
+       '(tab-bar-mode t)
+       '(tab-bar ((t (:inherit variable-pitch :background "black" :foreground "black"))))
+       '(tab-bar-tab ((t (:inherit default))))
+       '(tab-bar-tab-inactive ((t (:inherit tab-bar-tab :background "dark gray" :foreground "black"))))))
+
     (progn
       ;; disable fringe color
       (fringe-mode 1)

@@ -53,6 +53,9 @@
                                  (exwm-workspace-switch-create
                                   (% (+ ,i 10 (- exwm-my-workspace-start-number)) 10))))))
       ;; Global keybindings.
+      (defun my-exwm-execute-shell-command (command)
+        (interactive (list (read-shell-command "$ ")))
+        (start-process-shell-command command nil command))
       (unless (get 'exwm-input-global-keys 'saved-value)
         (setq exwm-input-global-keys
               `(
@@ -61,17 +64,15 @@
                 ;; 's-w': Switch workspace.
                 ([?\s-w] . exwm-workspace-switch)
                 ;; 's-&': Launch application.
-                ([?\s-&] . (lambda (command)
-                             (interactive (list (read-shell-command "$ ")))
-                             (start-process-shell-command command nil command)))
+                ([?\s-&] . my-exwm-execute-shell-command)
                 ;; 's-N': Switch to certain workspace.
                 ,@(mapcar (lambda (i)
                             `(,(kbd (format "s-%d" i)) .
                               (lambda ()
                                 (interactive)
                                 (exwm-workspace-switch-create ,i))))
-                          (number-sequence (+ 0 exwm-my-workspace-start-number 
-                                           (% (+ 9 exwm-my-workspace-start-number) 10)))))))
+                          (number-sequence (+ 0 exwm-my-workspace-start-number)
+                                           (% (+ 9 exwm-my-workspace-start-number) 10))))))
       ;; Line-editing shortcuts
       (unless (get 'exwm-input-simulation-keys 'saved-value)
         (setq exwm-input-simulation-keys
@@ -127,6 +128,8 @@
     (progn
       ;; normal emacs global commands
       ;; (global-set-key (kbd "s-e") 'some-command)
+
+      (global-set-key (kbd "M-&") 'my-exwm-execute-shell-command)
       )
 
     (progn
@@ -153,7 +156,14 @@
           (define-key map (kbd "s") 'exwm-workspace-switch)
           (define-key map (kbd "0") 'exwm-workspace-delete)
           (define-key map (kbd "8") 'exwm-workspace-add)
-
+          (comment
+           ;; not working
+           (advice-add
+            ;; to fix a bug which doesn't fill screen fully when new workspace is created
+            'exwm-workspace-add
+            :after
+            #'(lambda (&rest args) (exwm-layout--refresh-workspace (selected-frame)))
+            '((name . "exwm-workspace-add-fullscreen-advice"))))
 	  (defvar exwm-my-workspace-prefix-map map
 	    "Keymap for workspace related commands."))
 
@@ -175,7 +185,12 @@
       (define-key exwm-mode-map (kbd "C-;") 'exwm-input-send-next-key)
       (define-key exwm-mode-map (kbd "C-q") 'ctl-x-map)
       (define-key exwm-mode-map (kbd "M-!") 'shell-command)
-      (define-key exwm-mode-map (kbd "M-#") 'lookup-word-from-web-other-window-for-exwm))
+      (define-key exwm-mode-map (kbd "M-#") 'lookup-word-from-web-other-window-for-exwm)
+      (define-key exwm-mode-map (kbd "C-x b") 'switch-to-buffer)
+      (define-key exwm-mode-map (kbd "M-&") 'my-exwm-execute-shell-command)
+        (lambda (command)
+          (interactive (list (read-shell-command "$ ")))
+          (start-process-shell-command command nil command))))
 
     (progn
       ;; simulation keys
@@ -262,7 +277,7 @@
       ;; https://github.com/daviwil/emacs-from-scratch/blob/5ebd390119a48cac6258843c7d5e570f4591fdd4/show-notes/Emacs-Desktop-04.org
       (require 'exwm-randr)
 
-      (pcase (machine-config-get-first 'exwm-multiple-monitor-type)
+      (pcase (machine-config-get-first 'exwm-multiple-physical-monitor-layout)
         (descartes-triple
          (progn
            ;; mapping workspace indices with monitors
@@ -277,7 +292,34 @@
                         "xrandr --output DVI-I-1 --auto \
                                 --output HDMI-1-1 --auto --left-of DVI-I-1 \
                                 --output HDMI-4 --auto --right-of DVI-I-1")))))
-        (t (error "Unknown monitor configuration")))
+        (t (error "Unknown monitor physical layout configuration")))
+
+      (progn
+        (setq exwm-workspace-group-max-size
+              (pcase (machine-config-get-first 'exwm-multiple-physical-layout)
+                (triple 3)
+                (t (error "Unknown monitor layout configuration"))))
+        (progn
+          (defun exwm-other-workspace-in-group (count)
+            (interactive "p")
+            (let* ((num-groups (/ (+ exwm-workspace-current-index exwm-workspace-group-max-size)
+                                  exwm-workspace-group-max-size))
+                   (group-size (min (- (exwm-workspace--count)
+                                       (* (1- num-groups) exwm-workspace-group-max-size))
+                                    3))
+                   (member-idx (- exwm-workspace-current-index
+                                  (* (1- num-groups) exwm-workspace-group-max-size)))
+                   (next-member-idx (% (+ count member-idx group-size) group-size))
+                   (next-workspace-idx (+ (* (1- num-groups) exwm-workspace-group-max-size)
+                                          next-member-idx)))
+              (exwm-workspace-switch next-workspace-idx)))
+
+          (defun exwm-other-workspace-in-group-backwards () (interactive) (exwm-other-workspace-in-group -1)))
+
+        (define-key exwm-my-workspace-prefix-map (kbd "o")
+          (make-repeatable-command 'exwm-other-workspace-in-group))
+	(define-key exwm-my-workspace-prefix-map (kbd "O")
+          (make-repeatable-command 'exwm-other-workspace-in-group-backwards)))
 
       (comment
        (defun exwm-change-screen-hook ()
@@ -318,6 +360,6 @@
 
       ;; React to display connectivity changes, do initial display update
       (add-hook 'exwm-randr-screen-change-hook #'efs/update-displays)
-      (efs/update-displays)))
+      (efs/update-displays))
 
   (exwm-config-mine))
