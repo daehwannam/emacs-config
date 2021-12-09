@@ -14,8 +14,7 @@
 
 (when exwm-cmd-arg-passed
   (let ((exwm-enabled (machine-config-get-first 'exwm-enabled)))
-    ;; conditional eval
-    (when exwm-enabled))
+    (comment (assert exwm-enabled)))
 
   (defun exwm-simple-init ()
     (progn
@@ -112,7 +111,7 @@
       (progn
         ;; cursor and mouse config
         ;; https://github.com/daviwil/emacs-from-scratch/blob/5ebd390119a48cac6258843c7d5e570f4591fdd4/show-notes/Emacs-Desktop-04.org
-        (setq exwm-workspace-warp-cursor t)
+        (setq exwm-workspace-warp-cursor nil)
         (setq mouse-autoselect-window t)
         (setq focus-follows-mouse t))
       ;; Enable EXWM
@@ -152,6 +151,7 @@
       ;; (global-set-key (kbd "s-e") 'some-command)
 
       (global-set-key (kbd "M-&") 'my-exwm-execute-shell-command)
+      (comment (global-set-key (kbd "C-x b") 'switch-to-buffer))
       )
 
     (progn
@@ -260,8 +260,8 @@
       (setq exwm-workspace-show-all-buffers t)
       (setq exwm-layout-show-all-buffers t))
 
-    (when (machine-config-get-first 'exwm-multiple-monitor-type)
-      ;; multiple monitor test
+    (when (machine-config-get-first 'exwm-multiple-monitor-layout-type)
+      ;; multiple monitor testf
       ;; https://github.com/daviwil/emacs-from-scratch/blob/5ebd390119a48cac6258843c7d5e570f4591fdd4/show-notes/Emacs-Desktop-04.org
       (require 'exwm-randr)
 
@@ -284,7 +284,7 @@
 
       (progn
         (setq exwm-workspace-group-max-size
-              (pcase (machine-config-get-first 'exwm-multiple-physical-layout)
+              (pcase (machine-config-get-first 'exwm-multiple-monitor-layout-type)
                 (triple 3)
                 (t (error "Unknown monitor layout configuration"))))
         (progn

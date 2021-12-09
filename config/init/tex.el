@@ -1,5 +1,5 @@
 
-(add-hook 'LaTeX-mode-hook 'linum-mode)
+(comment (add-hook 'LaTeX-mode-hook 'linum-mode))
 
 ;;; preview pane mode
 ;; https://www.emacswiki.org/emacs/LaTeXPreviewPane

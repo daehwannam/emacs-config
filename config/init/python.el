@@ -28,7 +28,7 @@
 ;---add-to-list 'interpreter-mode-alist '("python" . python-mode))
 
 ;;; python-mode linum-mode setting
-(add-hook 'python-mode-hook 'linum-mode)
+(comment (add-hook 'python-mode-hook 'linum-mode))
 
 (if (package-installed-p 'highlight-indentation)
     (progn

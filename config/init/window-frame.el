@@ -88,18 +88,24 @@
       (fset 'frame-modification-prefix-map frame-modification-prefix-map)
       (key-chord-define-global "rr" 'frame-modification-prefix-map)))
 
+  (when exwm-cmd-arg-passed
+    (global-set-key (kbd "C-c o") (make-repeatable-command 'exwm-other-workspace-in-group))
+    (global-set-key (kbd "C-c O") (make-repeatable-command 'exwm-other-workspace-in-group-backwards))
+    (global-set-key (kbd "C-c ㅐ") (make-repeatable-command 'exwm-other-workspace-in-group)))
+
   (progn
-   ;; window size adjust
-   (global-set-key (kbd "C-x ^") (make-repeatable-command 'enlarge-window))
-   (global-set-key (kbd "C-x %") (make-repeatable-command 'shrink-window))
-   (global-set-key (kbd "C-x }") (make-repeatable-command 'enlarge-window-horizontally))
-   (global-set-key (kbd "C-x {") (make-repeatable-command 'shrink-window-horizontally))))
+    ;; window size adjust
+    (global-set-key (kbd "C-x ^") (make-repeatable-command 'enlarge-window))
+    (global-set-key (kbd "C-x %") (make-repeatable-command 'shrink-window))
+    (global-set-key (kbd "C-x }") (make-repeatable-command 'enlarge-window-horizontally))
+    (global-set-key (kbd "C-x {") (make-repeatable-command 'shrink-window-horizontally))))
 
 (comment
   (progn
     (global-unset-key (kbd "C-x o"))
     (global-unset-key (kbd "C-x 0"))
     (global-unset-key (kbd "C-x 1"))
+    
     (global-unset-key (kbd "C-x 2"))
     (global-unset-key (kbd "C-x 3"))
 

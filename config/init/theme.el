@@ -27,9 +27,9 @@
 
     (custom-set-faces
      ;; mode-line config
-     '(mode-line ((t (:stipple nil :background "midnight blue" :foreground "grey120" :box nil :height 0.9))))
-     '(mode-line-buffer-id ((t (:background "gray80" :foreground "firebrick" :weight bold :height 0.9))))
-     '(mode-line-inactive ((t (:background "grey30" :foreground "grey80" :box nil :weight light :height 0.9))))
+     '(mode-line ((t (:stipple nil :background "gray30" :foreground "grey120" :box nil :height 0.9))))
+     '(mode-line-buffer-id ((t (:background "gray65" :foreground "firebrick" :weight bold :height 0.9))))
+     '(mode-line-inactive ((t (:background "grey15" :foreground "grey80" :box nil :weight light :height 0.9))))
      (set-face-foreground 'hl-line nil))
 
     (custom-set-faces
@@ -43,8 +43,8 @@
       (custom-set-faces
        '(tab-bar-mode t)
        '(tab-bar ((t (:inherit variable-pitch :background "black" :foreground "black"))))
-       '(tab-bar-tab ((t (:inherit default :background "navy" :foreground "white"))))
-       '(tab-bar-tab-inactive ((t (:inherit tab-bar-tab :background "black" :foreground "grey100"))))))
+       '(tab-bar-tab ((t (:inherit default :background "gray35" :foreground "white"))))
+       '(tab-bar-tab-inactive ((t (:inherit tab-bar-tab :background "black" :foreground "grey90"))))))
 
     (progn
       ;; disable fringe color

@@ -52,9 +52,9 @@
      (exwm-setup t))
     (exwm-multiple-physical-monitor-layout
      (descartes descartes-triple))
-    (exwm-multiple-monitor-layout
+    (exwm-multiple-monitor-layout-type
      (descartes triple)
-     (ubuntu-laptop triple))
+     (ubuntu-laptop nil))
 
     (installable-packages
      ;; (base (vlf magit key-chord modalka evil avy hydra dash counsel multi-term))
