@@ -74,8 +74,16 @@
 	 (kill-new file-name)
 	 (message "'%s'" file-name)))))
 
+(defun kill-buffer-name-to-clipboard ()
+   "Copy the current buffer file name to the clipboard."
+   (interactive)
+   (let ((name (buffer-name)))
+     (kill-new name)
+     (message "'%s'" name)))
+
  (key-chord-define-global "wp" 'kill-path-to-clipboard)
  (key-chord-define-global "wn" 'kill-file-name-to-clipboard)
+ (key-chord-define-global "wb" 'kill-buffer-name-to-clipboard)
 
  (defun kill-other-window-path-to-clipboard (count)
    "Copy the other window's path."

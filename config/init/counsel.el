@@ -31,8 +31,11 @@
       ;; ivy-resume resumes the last Ivy-based completion.
       (global-set-key (kbd "C-c C-r") 'ivy-resume))
 
-    (global-set-key (kbd "C-x b") 'counsel-switch-buffer)
-    (global-set-key (kbd "C-x B") 'switch-to-buffer)
+    (key-chord-define-global "qb" 'counsel-switch-buffer)
+    (comment
+     (unless (and (boundp 'exwm-cmd-arg-passed) exwm-cmd-arg-passed)
+       (global-set-key (kbd "C-x b") 'counsel-switch-buffer)
+       (global-set-key (kbd "C-x B") 'switch-to-buffer)))
 
     (progn
       ;; counsel-mode

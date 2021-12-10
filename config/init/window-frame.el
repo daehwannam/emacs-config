@@ -88,10 +88,11 @@
       (fset 'frame-modification-prefix-map frame-modification-prefix-map)
       (key-chord-define-global "rr" 'frame-modification-prefix-map)))
 
-  (when exwm-cmd-arg-passed
-    (global-set-key (kbd "C-c o") (make-repeatable-command 'exwm-other-workspace-in-group))
-    (global-set-key (kbd "C-c O") (make-repeatable-command 'exwm-other-workspace-in-group-backwards))
-    (global-set-key (kbd "C-c ㅐ") (make-repeatable-command 'exwm-other-workspace-in-group)))
+  (comment
+   (when (and (boundp 'exwm-cmd-arg-passed) exwm-cmd-arg-passed)
+     (global-set-key (kbd "C-c o") (make-repeatable-command 'exwm-other-workspace-in-group))
+     (global-set-key (kbd "C-c O") (make-repeatable-command 'exwm-other-workspace-in-group-backwards))
+     (global-set-key (kbd "C-c ㅐ") (make-repeatable-command 'exwm-other-workspace-in-group))))
 
   (progn
     ;; window size adjust
