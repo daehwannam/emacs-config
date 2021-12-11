@@ -311,7 +311,18 @@
            ;; mapping workspace indices with monitors
            (setq exwm-randr-workspace-monitor-plist
                  '(0 "HDMI-1-1" 1 "DVI-I-1" 2 "HDMI-4"
-                     3 "HDMI-1-1" 4 "DVI-I-1" 5 "HDMI-4"))
+                     3 "HDMI-1-1" 4 "DVI-I-1" 5 "HDMI-4"
+                     6 "HDMI-1-1" 7 "DVI-I-1" 8 "HDMI-4"
+                     9 "HDMI-1-1" 10 "DVI-I-1" 11 "HDMI-4"
+                     12 "HDMI-1-1" 13 "DVI-I-1" 14 "HDMI-4"
+                     15 "HDMI-1-1" 16 "DVI-I-1" 17 "HDMI-4"
+                     18 "HDMI-1-1" 19 "DVI-I-1" 20 "HDMI-4"
+                     21 "HDMI-1-1" 22 "DVI-I-1" 23 "HDMI-4"
+                     24 "HDMI-1-1" 25 "DVI-I-1" 26 "HDMI-4"
+                     27 "HDMI-1-1" 28 "DVI-I-1" 29 "HDMI-4"
+                     ;; TODO: refactoring this code using recursive function
+                     ))
+
            ;; run xrandr
            (add-hook 'exwm-randr-screen-change-hook
                      (lambda ()
