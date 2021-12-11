@@ -13,124 +13,49 @@
   (add-to-list 'command-switch-alist '("--exwm" . exwm-cmd-arg-handler)))
 
 (when exwm-cmd-arg-passed
-  (let ((exwm-enabled (machine-config-get-first 'exwm-enabled)))
-    (comment (assert exwm-enabled)))
 
-  (defun exwm-simple-init ()
+  (defun exwm-simple-frame-init ()
     (progn
       "this code block has the same effect with `exwm-config-misc'"
       (toggle-scroll-bar -1)
       (menu-bar-mode -1)
       (tool-bar-mode -1)
       (fringe-mode 1))
+
+    (progn
+      ;; auto fullscreen for frames
+      (add-to-list 'default-frame-alist '(fullscreen . maximized)))
+
+    (progn
+      ;; cursor and mouse config
+      ;; https://github.com/daviwil/emacs-from-scratch/blob/5ebd390119a48cac6258843c7d5e570f4591fdd4/show-notes/Emacs-Desktop-04.org
+      (setq exwm-workspace-warp-cursor nil)
+      (setq mouse-autoselect-window t)
+      (setq focus-follows-mouse t)))
+
+  (defun exwm-config-my-base ()
+    "This is modifed from `exwm-config-example' or `exwm-config-default'"
+
     (progn
       (require 'exwm)
       (require 'exwm-config))
+  
+    ;; set the initial workspace number.
+    (unless (get 'exwm-workspace-number 'saved-value)
+      (setq exwm-workspace-number 1))
 
-    (defun exwm-config-my-base ()
-      "This is modifed from `exwm-config-example' or `exwm-config-default'"
-
-      ;; Set the initial workspace number.
-      (unless (get 'exwm-workspace-number 'saved-value)
-        (setq exwm-workspace-number 1))
-      ;; Make class name the buffer name
-      (add-hook 'exwm-update-class-hook
-                (lambda ()
-                  (exwm-workspace-rename-buffer exwm-class-name)))
-      (progn
-        ;; workspace start number
-        ;; https://www.reddit.com/r/emacs/comments/arqg6z/comment/egp2e1u/?utm_source=share&utm_medium=web2x&context=3
-
-        (setq exwm-my-workspace-start-number 1)
-        (assert (member exwm-my-workspace-start-number '(0 1)))  ; should be 0 or 1
-        (setq exwm-workspace-index-map
-              (lambda (index) (number-to-string (+ exwm-my-workspace-start-number index))))
-        (dotimes (i 10)
-          (exwm-input-set-key (kbd (format "s-%d" i))
-                              `(lambda ()
-                                 (interactive)
-                                 (exwm-workspace-switch-create
-                                  (% (+ ,i 10 (- exwm-my-workspace-start-number)) 10))))))
-      ;; Global keybindings.
-      (defun exwm-my-execute-shell-command (command)
-        (interactive (list (read-shell-command "$ ")))
-        (start-process-shell-command command nil command))
-      (unless (get 'exwm-input-global-keys 'saved-value)
-        (setq exwm-input-global-keys
-              `(
-                ;; 's-r': Reset (to line-mode).
-                ([?\s-r] . exwm-reset)
-                ;; 's-w': Switch workspace.
-                ;; ([?\s-w] . exwm-workspace-switch)
-                ;; 's-&': Launch application.
-                ([?\s-&] . exwm-my-execute-shell-command)
-                ;; my commands
-                ([?\s-q] . ctl-x-map)
-                ([?\s-w] . tab-prefix-map)
-                ([?\s-d] . exwm-my-workspace-prefix-map)
-                ;; 's-N': Switch to certain workspace.
-                ,@(mapcar (lambda (i)
-                            `(,(kbd (format "s-%d" i)) .
-                              (lambda ()
-                                (interactive)
-                                (exwm-workspace-switch-create ,i))))
-                          (number-sequence (+ 0 exwm-my-workspace-start-number)
-                                           (% (+ 9 exwm-my-workspace-start-number) 10))))))
-
-      ;; Line-editing shortcuts
-      (unless (get 'exwm-input-simulation-keys 'saved-value)
-        ;; simulation keys
-        ;; https://github.com/ch11ng/exwm/wiki#simulation-keys
-
-        (setq exwm-input-simulation-keys
-              '(([?\C-b] . [left])
-                ([?\C-f] . [right])
-                ([?\C-p] . [up])
-                ([?\C-n] . [down])
-                ([?\C-a] . [home])
-                ([?\C-e] . [end])
-                ([?\M-v] . [prior])
-                ([?\C-v] . [next])
-                ([?\C-d] . [delete])
-                ([?\C-k] . [S-end C-c delete]) ; updated
-
-                ;; the below is newly added
-                ([?\C-w] . [?\C-x])
-                ([?\C-y] . [?\C-v])
-                ([?\M-w] . [?\C-c])
-                ;; ([C-S-f] . [S-right])
-                ;; ([C-S-b] . [S-left])
-                ;; ([C-F] . [S-right])
-                ;; ([C-B] . [S-left])
-                ([?\M-f] . [C-right])
-                ([?\M-b] . [C-left])
-                ;; ([M-S-f] . [C-S-right])
-                ;; ([M-S-b] . [C-S-left])
-                ;; ([M-F] . [C-S-right])
-                ;; ([M-B] . [C-S-left])
-
-                ([?\C-/] . [?\C-y])
-                )))
-
-      (progn
-        ;; auto fullscreen for frames
-        (add-to-list 'default-frame-alist '(fullscreen . maximized)))
-
-      (progn
-        ;; cursor and mouse config
-        ;; https://github.com/daviwil/emacs-from-scratch/blob/5ebd390119a48cac6258843c7d5e570f4591fdd4/show-notes/Emacs-Desktop-04.org
-        (setq exwm-workspace-warp-cursor nil)
-        (setq mouse-autoselect-window t)
-        (setq focus-follows-mouse t))
-      
-      (comment
-       ;; Configure Ido
-       (exwm-config-ido))
-      ;; Other configurations
-      (exwm-config-misc)))
+    ;; make class name the buffer name
+    (add-hook 'exwm-update-class-hook
+              (lambda () (exwm-workspace-rename-buffer exwm-class-name)))
+    
+    (comment
+     ;; Configure Ido
+     (exwm-config-ido))
+    ;; Other configurations
+    (exwm-config-misc))
 
   (defun exwm-config-mine ()
-    (exwm-simple-init)
+    (exwm-simple-frame-init)
     (exwm-config-my-base)
 
     (progn
@@ -149,27 +74,8 @@
              (user-error "Target buffer %S is not an X window managed by EXWM!"
                          buf))))))
 
-    (comment
-     ;; enable key-chord and hydra
-     ;; https://www.reddit.com/r/emacs/comments/8yf6dx/key_chords_in_exwm/
-     (setq exwm-input-line-mode-passthrough t))
-
     (progn
-      ;; normal emacs global commands
-      ;; (global-set-key (kbd "s-e") 'some-command)
-
-      (comment (global-set-key (kbd "M-&") 'async-shell-command))
-      (global-set-key (kbd "C-x b") 'switch-to-buffer)
-      )
-
-    (progn
-      ;; commands for exwm globally
-      ;; https://github.com/ch11ng/exwm/wiki#global-key-bindings
-      ;;
-      ;; global keys are defined in `exwm-input-global-keys'
-      ;;
-      ;; direct customization of `exwm-input-global-keys' should be done before calling `exwm-enable'
-
+      ;; workspace switching functions
       (progn
         (defun exwm-other-workspace (count)
           (interactive "p")
@@ -186,6 +92,9 @@
           (define-key map (kbd "s") 'exwm-workspace-switch)
           (define-key map (kbd "0") 'exwm-workspace-delete)
           (define-key map (kbd "8") 'exwm-workspace-add)
+
+          (define-key map (kbd "k") 'exwm-workspace-group-delete-current-group)
+
           (comment
            ;; not working
            (advice-add
@@ -203,24 +112,6 @@
       (comment (exwm-input-set-key (kbd "s-e") 'tab-prefix-map))
       (comment (exwm-input-set-key (kbd "C-3") 'tab-prefix-map)))
 
-    (progn
-      ;; prefix keys for line-mode are defined in `exwm-input-prefix-keys'
-      ;; https://github.com/ch11ng/exwm/wiki#global-key-bindings
-      )
-
-    (progn
-      ;; local key bindings
-      ;; https://github.com/ch11ng/exwm/wiki#local-key-bindings
-      (define-key exwm-mode-map (kbd "C-;") 'exwm-input-send-next-key)
-      (define-key exwm-mode-map (kbd "C-q") 'ctl-x-map)
-      (define-key exwm-mode-map (kbd "M-!") 'shell-command)
-      (define-key exwm-mode-map (kbd "M-#") 'lookup-word-from-web-other-window-for-exwm)
-      (comment (define-key exwm-mode-map (kbd "C-x b") 'switch-to-buffer))
-      (comment (define-key exwm-mode-map (kbd "M-&") 'exwm-my-execute-shell-command))
-        (lambda (command)
-          (interactive (list (read-shell-command "$ ")))
-          (start-process-shell-command command nil command)))
-    
     (progn
       ;; volume
       (require 'volume nil t))
@@ -257,8 +148,11 @@
        (efs/kill-panel)
        (setq efs/polybar-process (start-process-shell-command "polybar" nil "polybar panel")))
 
-     (comment
+     ;; Start the Polybar panel
+     (efs/start-panel))
 
+    (progn
+      (comment
        (defun efs/exwm-update-title ()
          (pcase exwm-class-name
            ("Firefox" (exwm-workspace-rename-buffer (format "Firefox: %s" exwm-title)))
@@ -267,26 +161,23 @@
        ;; When window title updates, use it to set the buffer name
        (add-hook 'exwm-update-title-hook #'efs/exwm-update-title))
 
-     (progn
-       ;; https://github.com/ch11ng/exwm/issues/198#issuecomment-249723369
-       ;;
-       ;; similar methods:
-       ;; https://github.com/daviwil/emacs-from-scratch/blob/39f63fe133cd4c41e13bbd1551c6517162851411/show-notes/Emacs-Desktop-03.org#customizing-buffer-name-based-on-window-title
-       ;; https://www.youtube.com/watch?v=HGGU5Zvljj8
+      (progn
+        ;; https://github.com/ch11ng/exwm/issues/198#issuecomment-249723369
+        ;;
+        ;; similar methods:
+        ;; https://github.com/daviwil/emacs-from-scratch/blob/39f63fe133cd4c41e13bbd1551c6517162851411/show-notes/Emacs-Desktop-03.org#customizing-buffer-name-based-on-window-title
+        ;; https://www.youtube.com/watch?v=HGGU5Zvljj8
 
-       (defun exwm-rename-buffer ()
-         (interactive)
-         (exwm-workspace-rename-buffer
-          (concat exwm-class-name ":"
-                  (if (<= (length exwm-title) 50) exwm-title
-                    (concat (substring exwm-title 0 49) "...")))))
+        (defun exwm-rename-buffer ()
+          (interactive)
+          (exwm-workspace-rename-buffer
+           (concat exwm-class-name ":"
+                   (if (<= (length exwm-title) 50) exwm-title
+                     (concat (substring exwm-title 0 49) "...")))))
 
-       ;; Add these hooks in a suitable place (e.g., as done in exwm-config-default)
-       (add-hook 'exwm-update-class-hook 'exwm-rename-buffer)
-       (add-hook 'exwm-update-title-hook 'exwm-rename-buffer))
-
-     ;; Start the Polybar panel
-     (efs/start-panel))
+        ;; Add these hooks in a suitable place (e.g., as done in exwm-config-default)
+        (add-hook 'exwm-update-class-hook 'exwm-rename-buffer)
+        (add-hook 'exwm-update-title-hook 'exwm-rename-buffer)))
 
     (progn
       ;; enable switching betwen buffers in other workspaces
@@ -295,62 +186,33 @@
       (setq exwm-workspace-show-all-buffers t)
       (setq exwm-layout-show-all-buffers t))
 
-    (progn
-      ;; https://github.com/ch11ng/exwm/wiki#input-method
-      (require 'exwm-xim)
-      (exwm-xim-enable))
-
     (when (machine-config-get-first 'exwm-multiple-monitor-layout-type)
-      ;; multiple monitor testf
-      ;; https://github.com/daviwil/emacs-from-scratch/blob/5ebd390119a48cac6258843c7d5e570f4591fdd4/show-notes/Emacs-Desktop-04.org
-      (require 'exwm-randr)
-
-      (pcase (machine-config-get-first 'exwm-multiple-physical-monitor-layout)
-        (descartes-triple
-         (progn
-           ;; mapping workspace indices with monitors
-           (setq exwm-randr-workspace-monitor-plist
-                 '(0 "HDMI-1-1" 1 "DVI-I-1" 2 "HDMI-4"
-                     3 "HDMI-1-1" 4 "DVI-I-1" 5 "HDMI-4"
-                     6 "HDMI-1-1" 7 "DVI-I-1" 8 "HDMI-4"
-                     9 "HDMI-1-1" 10 "DVI-I-1" 11 "HDMI-4"
-                     12 "HDMI-1-1" 13 "DVI-I-1" 14 "HDMI-4"
-                     15 "HDMI-1-1" 16 "DVI-I-1" 17 "HDMI-4"
-                     18 "HDMI-1-1" 19 "DVI-I-1" 20 "HDMI-4"
-                     21 "HDMI-1-1" 22 "DVI-I-1" 23 "HDMI-4"
-                     24 "HDMI-1-1" 25 "DVI-I-1" 26 "HDMI-4"
-                     27 "HDMI-1-1" 28 "DVI-I-1" 29 "HDMI-4"
-                     ;; TODO: refactoring this code using recursive function
-                     ))
-
-           ;; run xrandr
-           (add-hook 'exwm-randr-screen-change-hook
-                     (lambda ()
-                       (start-process-shell-command
-                        "xrandr" nil
-                        "xrandr --output DVI-I-1 --auto \
-                                --output HDMI-1-1 --auto --left-of DVI-I-1 \
-                                --output HDMI-4 --auto --right-of DVI-I-1")))))
-        (t (error "Unknown monitor physical layout configuration")))
+      ;; multiple monitor setting
 
       (progn
+        ;; workspace-group functions
         (setq exwm-workspace-group-max-size
               (pcase (machine-config-get-first 'exwm-multiple-monitor-layout-type)
                 (triple 3)
                 (t (error "Unknown monitor layout configuration"))))
         (setq exwm-workspace-number exwm-workspace-group-max-size)
+
+        (defun exwm-get-workspace-group-index (workspace-idx)
+          (/ workspace-idx exwm-workspace-group-max-size))
+        (defun exwm-get-workspace-group-member-idx (workspace-idx)
+          (- workspace-idx (* (exwm-get-workspace-group-index workspace-idx)
+                              exwm-workspace-group-max-size)))
         (progn
           (defun exwm-other-workspace-in-group (count)
             (interactive "p")
-            (let* ((num-groups (/ (+ exwm-workspace-current-index exwm-workspace-group-max-size)
-                                  exwm-workspace-group-max-size))
+            (let* ((group-idx (exwm-get-workspace-group-index exwm-workspace-current-index))
                    (group-size (min (- (exwm-workspace--count)
-                                       (* (1- num-groups) exwm-workspace-group-max-size))
+                                       (* group-idx exwm-workspace-group-max-size))
                                     exwm-workspace-group-max-size))
                    (member-idx (- exwm-workspace-current-index
-                                  (* (1- num-groups) exwm-workspace-group-max-size)))
+                                  (* group-idx exwm-workspace-group-max-size)))
                    (next-member-idx (% (+ count member-idx group-size) group-size))
-                   (next-workspace-idx (+ (* (1- num-groups) exwm-workspace-group-max-size)
+                   (next-workspace-idx (+ (* group-idx exwm-workspace-group-max-size)
                                           next-member-idx)))
               (exwm-workspace-switch next-workspace-idx)))
 
@@ -363,46 +225,214 @@
         
         (comment
          (global-set-key (kbd "C-c o") (make-repeatable-command 'exwm-other-workspace-in-group))
-	 (global-set-key (kbd "C-c O") (make-repeatable-command 'exwm-other-workspace-in-group-backwards))))
+	 (global-set-key (kbd "C-c O") (make-repeatable-command 'exwm-other-workspace-in-group-backwards)))
 
-      (comment
-       (defun exwm-change-screen-hook ()
-         (let ((xrandr-output-regexp "\n\\([^ ]+\\) connected ")
-               default-output)
-           (with-temp-buffer
-             (call-process "xrandr" nil t nil)
-             (goto-char (point-min))
-             (re-search-forward xrandr-output-regexp nil 'noerror)
-             (setq default-output (match-string 1))
-             (forward-line)
-             (if (not (re-search-forward xrandr-output-regexp nil 'noerror))
-                 (call-process "xrandr" nil nil nil "--output" default-output "--auto")
-               (call-process
-                "xrandr" nil nil nil
-                "--output" (match-string 1) "--primary" "--auto"
-                "--output" default-output "--off")
-               (setq exwm-randr-workspace-monitor-plist (list 0 (match-string 1)))))))
+        (defun exwm-workspace-group-switch-create (group-idx)
+          (let* ((current-member-idx (exwm-get-workspace-group-member-idx exwm-workspace-current-index))
+                 (new-workspace-idx (+ (* group-idx exwm-workspace-group-max-size)
+                                       current-member-idx)))
+            (dotimes (i exwm-workspace-group-max-size)
+              (exwm-workspace-switch-create (+ (* group-idx exwm-workspace-group-max-size) i)))
+            (exwm-workspace-switch new-workspace-idx)))
 
-       (add-hook 'exwm-randr-screen-change-hook 'exwm-change-screen-hook))
+        (defun exwm-workspace-group-delete (group-idx)
+          (if (= group-idx 0)
+              (user-error "Attempt to delete the sole workspace group")
+            (let* ((current-member-idx (exwm-get-workspace-group-member-idx exwm-workspace-current-index))
+                   (new-workspace-idx (+ (* (1- group-idx) exwm-workspace-group-max-size)
+                                          current-member-idx)))
+              (dotimes (i exwm-workspace-group-max-size)
+                (exwm-workspace-delete (+ (* group-idx exwm-workspace-group-max-size) i)))
+              (exwm-workspace-switch new-workspace-idx))))
 
-      (exwm-randr-enable)))
+        (defun exwm-workspace-group-delete-current-group ()
+          (interactive)
+          (if (y-or-n-p (format "Are you sure you want to close this workspace group? "))
+	      (exwm-workspace-group-delete
+               (exwm-get-workspace-group-index exwm-workspace-current-index))
+            (message "Canceled workspace group close"))))
+
+      (progn
+        ;; xrandr config
+        ;; https://github.com/daviwil/emacs-from-scratch/blob/5ebd390119a48cac6258843c7d5e570f4591fdd4/show-notes/Emacs-Desktop-04.org
+
+        (require 'exwm-randr)
+        (defvar exwm-my-monitor-names (comment (list "HDMI-1-1" "DVI-I-1" "HDMI-4")))
+
+        (progn
+          (require 'cl-lib)
+          (defun get-exwm-randr-workspace-monitor-plist (max-num-groups)
+            "mapping workspace indices with monitors"
+            (let ((max-num-workspaces (* max-num-groups exwm-workspace-group-max-size)))
+              (cl-labels
+                  ((get-plist (num)
+                              (when (< num max-num-workspaces)
+                                (cons num (cons (nth (% num exwm-workspace-group-max-size)
+                                                     exwm-my-monitor-names)
+                                                (get-plist (1+ num)))))))
+                (get-plist 0)))))
+
+        (pcase (machine-config-get-first 'exwm-multiple-physical-monitor-layout)
+          (descartes-triple
+           (setq exwm-my-monitor-names (list "HDMI-1-1" "DVI-I-1" "HDMI-4"))
+           (progn
+             (setq exwm-randr-workspace-monitor-plist (get-exwm-randr-workspace-monitor-plist 10))
+             (comment
+              (setq setq exwm-randr-workspace-monitor-plist
+                    '(0 "HDMI-1-1" 1 "DVI-I-1" 2 "HDMI-4"
+                        3 "HDMI-1-1" 4 "DVI-I-1" 5 "HDMI-4" ...)))
+
+             ;; run xrandr
+             (add-hook 'exwm-randr-screen-change-hook
+                       (lambda ()
+                         (start-process-shell-command
+                          "xrandr" nil
+                          (format "xrandr --output %s --auto \
+                                --output %s --auto --left-of %s \
+                                --output %s --auto --right-of %s"
+                                  (nth 1 exwm-my-monitor-names)
+                                  (nth 0 exwm-my-monitor-names) (nth 1 exwm-my-monitor-names)
+                                  (nth 2 exwm-my-monitor-names) (nth 1 exwm-my-monitor-names)))))))
+          (t (error "Unknown monitor physical layout configuration")))
+
+        (exwm-randr-enable)))
 
     (progn
-      (exwm-config-mine)
-      ;; Enabling EXWM should be the last
-      (exwm-enable))
+      ;; key bindings
 
-    (comment
-      ;; docking and undocking config
-      ;;
-      ;; https://github.com/daviwil/emacs-from-scratch/blob/5ebd390119a48cac6258843c7d5e570f4591fdd4/show-notes/Emacs-Desktop-04.org#docking-and-undocking
+      (progn
+        ;; normal emacs global commands
+        ;; (global-set-key (kbd "s-e") 'some-command)
 
-      (defun efs/update-displays ()
-        (efs/run-in-background "autorandr --change --force")
-        (message "Display config: %s"
-                 (string-trim (shell-command-to-string "autorandr --current")))
-        (efs/set-wallpaper))
+        (comment (global-set-key (kbd "M-&") 'async-shell-command))
+        (global-set-key (kbd "C-x b") 'switch-to-buffer)
+        (key-chord-define-global "qb" 'ivy-switch-buffer)
+        (key-chord-define-global "qd" 'exwm-my-workspace-prefix-map))
 
-      ;; React to display connectivity changes, do initial display update
-      (add-hook 'exwm-randr-screen-change-hook #'efs/update-displays)
-      (efs/update-displays)))
+      (comment
+       ;; enable key-chord and hydra
+       ;; https://www.reddit.com/r/emacs/comments/8yf6dx/key_chords_in_exwm/
+       (comment (setq exwm-input-line-mode-passthrough t))
+       (defun toggle-exwm-input-line-mode-passthrough ()
+         (setq exwm-input-line-mode-passthrough (not exwm-input-line-mode-passthrough))))
+
+
+      (progn
+        ;; commands for exwm globally
+        ;;
+        ;; https://github.com/ch11ng/exwm/wiki#global-key-bindings
+        ;;
+        ;; - global keys are defined in `exwm-input-global-keys'
+        ;; - direct customization of `exwm-input-global-keys' should be done before calling `exwm-enable'
+
+        (defun exwm-my-execute-shell-command (command)
+          (interactive (list (read-shell-command "$ ")))
+          (start-process-shell-command command nil command))
+
+        (progn
+          ;; workspace start number
+          ;; https://www.reddit.com/r/emacs/comments/arqg6z/comment/egp2e1u/?utm_source=share&utm_medium=web2x&context=3
+
+          (defvar exwm-my-workspace-start-number 1)
+          (assert (member exwm-my-workspace-start-number '(0 1))) ; should be 0 or 1
+          (setq exwm-workspace-index-map
+                (lambda (index) (number-to-string (+ exwm-my-workspace-start-number index)))))
+
+        (setq exwm-environment-switch-create
+              (if (machine-config-get-first 'exwm-multiple-monitor-layout-type)
+                  'exwm-workspace-group-switch-create
+                'exwm-workspace-switch-create))
+
+        (progn
+          (assert (not (get 'exwm-input-global-keys 'saved-value)))
+
+          (setq exwm-input-global-keys
+                `(
+                  ([?\s-r] . exwm-reset)
+                  ([?\s-&] . exwm-my-execute-shell-command)
+                  ([?\s-q] . ctl-x-map)
+                  ([?\s-w] . tab-prefix-map)
+                  ([?\s-d] . exwm-my-workspace-prefix-map)
+
+                  ;; 's-N': Switch to certain workspace.
+                  ,@(mapcar (lambda (i)
+                              `(,(kbd (format "s-%d" i)) .
+                                (lambda ()
+                                  (interactive)
+                                  (,exwm-environment-switch-create
+                                   ,(% (+ i 10 (- exwm-my-workspace-start-number)) 10)))))
+                            (number-sequence 0 9))))))
+
+      ;; line-editing shortcuts
+      (unless (get 'exwm-input-simulation-keys 'saved-value)
+        ;; simulation keys
+        ;; https://github.com/ch11ng/exwm/wiki#simulation-keys
+
+        (setq exwm-input-simulation-keys
+              '(([?\C-b] . [left])
+                ([?\C-f] . [right])
+                ([?\C-p] . [up])
+                ([?\C-n] . [down])
+                ([?\C-a] . [home])
+                ([?\C-e] . [end])
+                ([?\M-v] . [prior])
+                ([?\C-v] . [next])
+                ([?\C-d] . [delete])
+                ([?\C-k] . [S-end C-c delete]) ; updated
+
+                ;; the below is newly added
+                ([?\C-w] . [?\C-x])
+                ([?\C-y] . [?\C-v])
+                ([?\M-w] . [?\C-c])
+                ;; ([C-S-f] . [S-right])
+                ;; ([C-S-b] . [S-left])
+                ;; ([C-F] . [S-right])
+                ;; ([C-B] . [S-left])
+                ([?\M-f] . [C-right])
+                ([?\M-b] . [C-left])
+                ;; ([M-S-f] . [C-S-right])
+                ;; ([M-S-b] . [C-S-left])
+                ;; ([M-F] . [C-S-right])
+                ;; ([M-B] . [C-S-left])
+
+                ([?\C-/] . [?\C-y])
+                )))
+
+      (progn
+        ;; prefix keys for line-mode are defined in `exwm-input-prefix-keys'
+        ;; https://github.com/ch11ng/exwm/wiki#global-key-bindings
+        )
+
+      (progn
+        ;; local key bindings
+        ;; https://github.com/ch11ng/exwm/wiki#local-key-bindings
+        (define-key exwm-mode-map (kbd "C-;") 'exwm-input-send-next-key)
+        (define-key exwm-mode-map (kbd "C-q") 'ctl-x-map)
+        (define-key exwm-mode-map (kbd "M-!") 'shell-command)
+        (define-key exwm-mode-map (kbd "M-#") 'lookup-word-from-web-other-window-for-exwm)
+        (comment (define-key exwm-mode-map (kbd "C-x b") 'switch-to-buffer))
+        (comment (define-key exwm-mode-map (kbd "M-&") 'exwm-my-execute-shell-command))
+        (lambda (command)
+          (interactive (list (read-shell-command "$ ")))
+          (start-process-shell-command command nil command)))
+      ))
+
+  (progn
+    (exwm-config-mine)
+    ;; Enabling EXWM should be the last
+    (exwm-enable))
+
+  (comment
+   ;; docking and undocking config
+   ;;
+   ;; https://github.com/daviwil/emacs-from-scratch/blob/5ebd390119a48cac6258843c7d5e570f4591fdd4/show-notes/Emacs-Desktop-04.org#docking-and-undocking
+
+   (defun efs/update-displays ()
+     (efs/run-in-background "autorandr --change --force")
+     (message "Display config: %s"
+              (string-trim (shell-command-to-string "autorandr --current")))
+     (efs/set-wallpaper))
+
+   ;; React to display connectivity changes, do initial display update
+   (add-hook 'exwm-randr-screen-change-hook #'efs/update-displays)
+   (efs/update-displays)))

@@ -11,7 +11,9 @@
 
 
 (progn
-  (setq old-save-buffers-kill-function (key-binding (kbd "C-x C-c")))
+  (comment (setq old-save-buffers-kill-function (key-binding (kbd "C-x C-c"))))
+  (comment (setq old-save-buffers-kill-function #'save-buffers-kill-emacs))
+  (setq old-save-buffers-kill-function #'save-buffers-kill-terminal)
 
   (defun save-buffers-kill-emacs-with-asking ()
     "Close only if y was pressed."

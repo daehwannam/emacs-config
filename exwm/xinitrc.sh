@@ -1,3 +1,5 @@
+#!/usr/bin/sh
+
 # Disable access control for the current user.
 xhost +SI:localuser:$USER
 
@@ -20,7 +22,16 @@ xset r rate 200 60
 # Below is the modifed code from "/home/$USER/.emacs.d/elpa/exwm-0.26/xinitrc"
 #
 
-# Common configuration
+# fcitx setting
+# https://wiki.archlinux.org/title/fcitx#Set_environment_variables_for_IM_modules
+export GTK_IM_MODULE=fcitx
+export QT_IM_MODULE=fcitx
+export XMODIFIERS=@im=fcitx
+fcitx &  # run fcitx daemon
+
+### Common configuration ###
+
+# Set keyboard repeat rate
 xset r rate 250 50
 
 # Run custom script
