@@ -8,7 +8,7 @@
 !base/
 !config/
 !README.md
-!note/
+!exwm/
 
 # ignore some patterns or files
 *~
