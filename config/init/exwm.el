@@ -407,7 +407,7 @@
         ;; local key bindings
         ;; https://github.com/ch11ng/exwm/wiki#local-key-bindings
         (define-key exwm-mode-map (kbd "C-;") 'exwm-input-send-next-key)
-        (define-key exwm-mode-map (kbd "C-q") 'ctl-x-map)
+        (comment (define-key exwm-mode-map (kbd "C-q") 'ctl-x-map))
         (define-key exwm-mode-map (kbd "M-!") 'shell-command)
         (define-key exwm-mode-map (kbd "M-#") 'lookup-word-from-web-other-window-for-exwm)
         (comment (define-key exwm-mode-map (kbd "C-x b") 'switch-to-buffer))
