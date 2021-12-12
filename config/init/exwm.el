@@ -297,6 +297,14 @@
 
         (exwm-randr-enable)))
 
+    ;; (progn
+    ;;   ;; run machine-specific config
+    ;;   (start-process-shell-command
+    ;;    "machine-specific-config" nil
+    ;;    "bash"
+    ;;    "/home/dhnam/.emacs.d/exwm/machine-config.sh"
+    ;;    "/home/dhnam/.emacs.d/exwm/option.txt"))
+
     (progn
       ;; key bindings
 

@@ -43,7 +43,7 @@
       (custom-set-faces
        '(tab-bar-mode t)
        '(tab-bar ((t (:inherit variable-pitch :background "black" :foreground "black"))))
-       '(tab-bar-tab ((t (:inherit default :background "gray30" :foreground "white"))))
+       '(tab-bar-tab ((t (:inherit default :background "gray30" :foreground "white" :box (:line-width 2 :color "grey40")))))
        '(tab-bar-tab-inactive ((t (:inherit tab-bar-tab :background "black" :foreground "grey90"))))))
 
     (progn

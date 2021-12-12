@@ -22,14 +22,20 @@ xset r rate 200 60
 # Below is the modifed code from "/home/$USER/.emacs.d/elpa/exwm-0.26/xinitrc"
 #
 
+# config for each machine
+THIS_PATH=`realpath $0`
+DIR_PATH=`dirname $THIS_PATH`
+
+bash $DIR_PATH/machine-config.sh
+
+### Common configuration ###
+
 # fcitx setting
 # https://wiki.archlinux.org/title/fcitx#Set_environment_variables_for_IM_modules
 export GTK_IM_MODULE=fcitx
 export QT_IM_MODULE=fcitx
 export XMODIFIERS=@im=fcitx
 fcitx &  # run fcitx daemon
-
-### Common configuration ###
 
 # Set keyboard repeat rate
 xset r rate 250 50
