@@ -22,13 +22,13 @@ xset r rate 200 60
 # Below is the modifed code from "/home/$USER/.emacs.d/elpa/exwm-0.26/xinitrc"
 #
 
-# config for each machine
+### config for each machine ###
 THIS_PATH=`realpath $0`
 DIR_PATH=`dirname $THIS_PATH`
 
 bash $DIR_PATH/pre-machine-config.sh
 
-### Common configuration ###
+### common configuration ###
 
 # fcitx setting
 # https://wiki.archlinux.org/title/fcitx#Set_environment_variables_for_IM_modules
@@ -40,12 +40,12 @@ fcitx &  # run fcitx daemon
 # Set keyboard repeat rate
 xset r rate 250 50
 
-# Run custom script
+# run custom script
 if [ -f "~/.exwm-config"]; then
     bash ~/.exwm-config
 fi
 
-# Finally start Emacs
+### run emacs ###
 # export BASH_ENV=~/.bashrc  # not working
 
 exec emacs --exwm

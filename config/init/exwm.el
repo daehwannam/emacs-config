@@ -94,6 +94,7 @@
           (define-key map (kbd "8") 'exwm-workspace-add)
 
           (define-key map (kbd "k") 'exwm-workspace-group-delete-current-group)
+          (define-key map (kbd "w") 'exwm-workspace-group-swap-current-group-number)
 
           (comment
            ;; not working
@@ -236,21 +237,41 @@
             (exwm-workspace-switch new-workspace-idx)))
 
         (defun exwm-workspace-group-delete (group-idx)
-          (if (= group-idx 0)
-              (user-error "Attempt to delete the sole workspace group")
-            (let* ((current-member-idx (exwm-get-workspace-group-member-idx exwm-workspace-current-index))
-                   (new-workspace-idx (+ (* (1- group-idx) exwm-workspace-group-max-size)
-                                          current-member-idx)))
-              (dotimes (i exwm-workspace-group-max-size)
-                (exwm-workspace-delete (+ (* group-idx exwm-workspace-group-max-size) i)))
-              (exwm-workspace-switch new-workspace-idx))))
+          (let ((prev-workspace-idx exwm-workspace-current-index))
+            (dolist (i (reverse (number-sequence 0 (1- exwm-workspace-group-max-size))))
+              (exwm-workspace-delete (+ (* group-idx exwm-workspace-group-max-size) i)))
+            (let ((new-workspace-idx (% (+ prev-workspace-idx (exwm-workspace--count))
+                                        (exwm-workspace--count))))
+             (exwm-workspace-switch new-workspace-idx))))
 
         (defun exwm-workspace-group-delete-current-group ()
           (interactive)
-          (if (y-or-n-p (format "Are you sure you want to close this workspace group? "))
-	      (exwm-workspace-group-delete
-               (exwm-get-workspace-group-index exwm-workspace-current-index))
-            (message "Canceled workspace group close"))))
+          (if (<= (exwm-workspace--count) exwm-workspace-group-max-size)
+              (user-error "Attempt to delete the sole workspace group")
+            (if (y-or-n-p (format "Are you sure you want to close this workspace group? "))
+	        (exwm-workspace-group-delete
+                 (exwm-get-workspace-group-index exwm-workspace-current-index))
+              (message "Canceled workspace group close"))))
+
+        (defun exwm-workspace-swap-by-workspace-indices (index1 index2)
+          (exwm-workspace-swap (exwm-workspace--workspace-from-frame-or-index index1)
+                               (exwm-workspace--workspace-from-frame-or-index index2)))
+
+        (defun exwm-workspace-group-swap (group-idx1 group-idx2)
+          (dotimes (i exwm-workspace-group-max-size)
+            (exwm-workspace-swap-by-workspace-indices
+             (+ (* group-idx1 exwm-workspace-group-max-size) i)
+             (+ (* group-idx2 exwm-workspace-group-max-size) i))))
+
+        (defun exwm-workspace-group-swap-current-group-number (group-number)
+          (interactive "nEnter workspace group number: ")
+          (if (> group-number (exwm-workspace--count))
+              (user-error "Workspace group number is out of range")
+              (let ((group-idx (- group-number exwm-my-workspace-start-number))
+                    (current-group-idx (exwm-get-workspace-group-index exwm-workspace-current-index)))
+                (if (= group-idx current-group-idx)
+                    (user-error "Cannot swap with the same workspace group")
+                    (exwm-workspace-group-swap current-group-idx group-idx))))))
 
       (progn
         ;; xrandr config
@@ -297,6 +318,35 @@
 
         (exwm-randr-enable)))
 
+    (progn
+      ;; application commands
+      (defun exwm-my-command-execute-shell (command)
+        (interactive (list (read-shell-command "$ ")))
+        (start-process-shell-command command nil command))
+
+      (defun exwm-my-command-open-web-browser ()
+        (interactive)
+        (start-process-shell-command "web-browser" nil "google-chrome --new-window")
+        (comment (start-process-shell-command "web-browser" nil "xdg-open https://")))
+
+      (defun exwm-my-command-open-web-browser-incognito ()
+        (interactive)
+        (start-process-shell-command "web-browser" nil "google-chrome --new-window --incognito")
+        (comment (start-process-shell-command "web-browser" nil "xdg-open https://")))
+
+      (defun exwm-my-command-open-terminal-emulator ()
+        (interactive)
+        (start-process-shell-command "terminal" nil "alacritty"))
+
+      (let ((map (make-sparse-keymap)))
+        (define-key map (kbd "w") 'exwm-my-command-open-web-browser)
+        (define-key map (kbd "W") 'exwm-my-command-open-web-browser-incognito)
+        (define-key map (kbd "e") 'exwm-my-command-open-terminal-emulator)
+
+	(defvar exwm-my-command-prefix-map map
+	  "Keymap for workspace related commands."))
+      (fset 'exwm-my-command-prefix-map exwm-my-command-prefix-map))
+
     ;; (progn
     ;;   ;; run machine-specific config
     ;;   (start-process-shell-command
@@ -314,6 +364,7 @@
 
         (comment (global-set-key (kbd "M-&") 'async-shell-command))
         (global-set-key (kbd "C-x b") 'switch-to-buffer)
+        (global-set-key (kbd "C-x B") 'ivy-switch-buffer)
         (key-chord-define-global "qb" 'ivy-switch-buffer)
         (key-chord-define-global "qd" 'exwm-my-workspace-prefix-map))
 
@@ -332,10 +383,6 @@
         ;;
         ;; - global keys are defined in `exwm-input-global-keys'
         ;; - direct customization of `exwm-input-global-keys' should be done before calling `exwm-enable'
-
-        (defun exwm-my-execute-shell-command (command)
-          (interactive (list (read-shell-command "$ ")))
-          (start-process-shell-command command nil command))
 
         (progn
           ;; workspace start number
@@ -357,7 +404,8 @@
           (setq exwm-input-global-keys
                 `(
                   ([?\s-r] . exwm-reset)
-                  ([?\s-&] . exwm-my-execute-shell-command)
+                  ([?\s-&] . exwm-my-command-execute-shell)
+                  ([?\s-m] . exwm-my-command-prefix-map)
                   ([?\s-q] . ctl-x-map)
                   ([?\s-w] . tab-prefix-map)
                   ([?\s-d] . exwm-my-workspace-prefix-map)
