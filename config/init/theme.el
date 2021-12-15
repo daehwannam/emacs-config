@@ -74,6 +74,10 @@
 	 '(flymake-errline ((((class color)) (:foreground "red"))))
 	 '(flymake-warnline ((((class color)) (:foreground "yellow")))))))
 
+    (progn
+      (custom-set-faces
+       '(highlight-indentation-face ((t (:background "gray30"))))))
+
     (when (fboundp 'ein:run)
       (custom-set-faces
        '(ein:cell-input-area ((t (:background "black"))))))
