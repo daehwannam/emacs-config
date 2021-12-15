@@ -1,6 +1,6 @@
 
 (when (member 'exwm-setup machine-options)
-  (add-to-list `load-path (expand-file-name "~/.emacs.d/config/package/awesome-tray/"))
+  (comment (add-to-list `load-path (expand-file-name "~/.emacs.d/config/package/awesome-tray/")))
   (require 'awesome-tray)
 
   (progn
@@ -10,6 +10,30 @@
     (defun awesome-tray-module-date-info ()
       (comment (format-time-string "%m-%d %H:%M %a"))
       (format-time-string "%H:%M %a %m-%d-%Y")))
+  (progn
+    (defun awesome-tray-my-module-battery-info ()
+      (let ((current-seconds (awesome-tray-current-seconds)))
+        (if (> (- current-seconds awesome-tray-battery-status-last-time) awesome-tray-battery-update-duration)
+            (let* ((battery-info (funcall battery-status-function))
+                   (battery-type (battery-format "%L" battery-info))
+                   (battery-load (concat (battery-format "%p" battery-info) "%"))
+                   battery-status)
+              (setq awesome-tray-battery-status-last-time current-seconds)
+
+              ;; Short battery type.
+              (cond ((string-equal battery-type "on-line")
+                     (setq battery-type "ON")
+                     (setq battery-status (battery-format "-%p%%" battery-info)))
+                    ((string-equal battery-type "off-line")
+                     (setq battery-type "OFF")
+                     (setq battery-status (battery-format "-%p%% %t" battery-info))))
+
+              ;; Update battery cache.
+              (setq awesome-tray-battery-status-cache (concat battery-load battery-status)))
+          awesome-tray-battery-status-cache)))
+
+    (push '("battery" . (awesome-tray-my-module-battery-info awesome-tray-module-battery-face))
+          awesome-tray-module-alist))
 
   (defun awesome-tray-enable ()
     ;; Save mode-line colors when first time.
