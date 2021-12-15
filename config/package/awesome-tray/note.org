@@ -1,0 +1,3 @@
+
+- source: https://github.com/manateelazycat/awesome-tray
+- commit: 35b4c301d768cba199b73bac8270f2e4415673a1

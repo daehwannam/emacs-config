@@ -153,6 +153,10 @@
      (efs/start-panel))
 
     (progn
+      ;; custom-minibuffer
+      (load "~/.emacs.d/config/init/dependent/awesome-tray.el"))
+
+    (progn
       (comment
        (defun efs/exwm-update-title ()
          (pcase exwm-class-name
