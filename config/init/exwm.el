@@ -29,7 +29,7 @@
     (progn
       ;; cursor and mouse config
       ;; https://github.com/daviwil/emacs-from-scratch/blob/5ebd390119a48cac6258843c7d5e570f4591fdd4/show-notes/Emacs-Desktop-04.org
-      (setq exwm-workspace-warp-cursor nil)
+      (comment (setq exwm-workspace-warp-cursor t))
       (setq mouse-autoselect-window t)
       (setq focus-follows-mouse t)))
 
@@ -340,7 +340,7 @@
 
       (defun exwm-my-command-open-terminal-emulator ()
         (interactive)
-        (start-process-shell-command "terminal" nil "alacritty"))
+        (start-process-shell-command "terminal" nil "kitty"))
 
       (let ((map (make-sparse-keymap)))
         (define-key map (kbd "w") 'exwm-my-command-open-web-browser)
