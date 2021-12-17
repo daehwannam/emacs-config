@@ -1,9 +1,11 @@
 
 
-;; http://pragmaticemacs.com/emacs/dired-human-readable-sizes-and-sort-by-size/
-;; https://www.gnu.org/software/emacs/manual/html_node/emacs/Dired-Updating.html
 (require 'dired )
-(setq dired-listing-switches "-alh")
+
+(progn
+  ;; http://pragmaticemacs.com/emacs/dired-human-readable-sizes-and-sort-by-size/
+  ;; https://www.gnu.org/software/emacs/manual/html_node/emacs/Dired-Updating.html
+  (setq dired-listing-switches "-alh"))
 
 
 ;; https://www.emacswiki.org/emacs/DiredSortDirectoriesFirst
