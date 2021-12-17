@@ -458,16 +458,22 @@
 
                 ([?\C-/] . [?\C-y])))
 
-        ;; local bindings
-        (add-hook 'exwm-manage-finish-hook
-                  (lambda ()
-                    (when (and exwm-class-name
-                               (string= exwm-class-name "Google-chrome"))
-                      (exwm-input-set-local-simulation-keys
-                       (append
-                        exwm-input-simulation-keys
-                        '(([?\M-p] . [C-prior])
-                          ([?\M-n] . [C-next])))))))
+        (progn
+          ;; local bindings
+          (add-hook 'exwm-manage-finish-hook
+                    (lambda ()
+                      (when (and exwm-class-name
+                                 (string= exwm-class-name "Google-chrome"))
+                        (exwm-input-set-local-simulation-keys
+                         (append
+                          exwm-input-simulation-keys
+                          '(([?\M-p] . [C-prior])
+                            ([?\M-n] . [C-next])))))))
+          (add-hook 'exwm-manage-finish-hook
+                    (lambda ()
+                      (when (and exwm-class-name
+                                 (string= exwm-class-name "kitty"))
+                        (exwm-input-set-local-simulation-keys nil)))))
         )
 
       (progn
