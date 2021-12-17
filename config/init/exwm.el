@@ -428,6 +428,7 @@
         ;; simulation keys
         ;; https://github.com/ch11ng/exwm/wiki#simulation-keys
 
+        ;; global bindings
         (setq exwm-input-simulation-keys
               '(([?\C-b] . [left])
                 ([?\C-f] . [right])
@@ -455,8 +456,19 @@
                 ;; ([M-F] . [C-S-right])
                 ;; ([M-B] . [C-S-left])
 
-                ([?\C-/] . [?\C-y])
-                )))
+                ([?\C-/] . [?\C-y])))
+
+        ;; local bindings
+        (add-hook 'exwm-manage-finish-hook
+                  (lambda ()
+                    (when (and exwm-class-name
+                               (string= exwm-class-name "Google-chrome"))
+                      (exwm-input-set-local-simulation-keys
+                       (append
+                        exwm-input-simulation-keys
+                        '(([?\M-p] . [C-prior])
+                          ([?\M-n] . [C-next])))))))
+        )
 
       (progn
         ;; prefix keys for line-mode are defined in `exwm-input-prefix-keys'
