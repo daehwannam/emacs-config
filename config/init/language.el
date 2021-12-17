@@ -34,6 +34,10 @@
       )))
 
   (progn
+    ;; for linux
+    (global-set-key (kbd "<Hangul>") 'toggle-input-method))
+
+  (progn
     ;; Preventing delay for composing Korean character 
     ;; https://injae.github.io/ide/2018/11/25/%EC%9D%B4%EB%A7%A5%EC%8A%A4%EB%82%B4%EC%9E%A5%ED%95%9C%EA%B8%80%EC%9E%85%EB%A0%A5%EA%B8%B0%EC%82%AC%EC%9A%A9%EB%B2%95/
 
