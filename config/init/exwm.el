@@ -430,33 +430,34 @@
 
         ;; global bindings
         (setq exwm-input-simulation-keys
-              '(([?\C-b] . [left])
-                ([?\C-f] . [right])
-                ([?\C-p] . [up])
-                ([?\C-n] . [down])
-                ([?\C-a] . [home])
-                ([?\C-e] . [end])
-                ([?\M-v] . [prior])
-                ([?\C-v] . [next])
-                ([?\C-d] . [delete])
-                ([?\C-k] . [S-end C-c delete]) ; updated
+              (comment
+               '(([?\C-b] . [left])
+                 ([?\C-f] . [right])
+                 ([?\C-p] . [up])
+                 ([?\C-n] . [down])
+                 ([?\C-a] . [home])
+                 ([?\C-e] . [end])
+                 ([?\M-v] . [prior])
+                 ([?\C-v] . [next])
+                 ([?\C-d] . [delete])
+                 ([?\C-k] . [S-end C-c delete]) ; updated
 
-                ;; the below is newly added
-                ([?\C-w] . [?\C-x])
-                ([?\C-y] . [?\C-v])
-                ([?\M-w] . [?\C-c])
-                ;; ([C-S-f] . [S-right])
-                ;; ([C-S-b] . [S-left])
-                ;; ([C-F] . [S-right])
-                ;; ([C-B] . [S-left])
-                ([?\M-f] . [C-right])
-                ([?\M-b] . [C-left])
-                ;; ([M-S-f] . [C-S-right])
-                ;; ([M-S-b] . [C-S-left])
-                ;; ([M-F] . [C-S-right])
-                ;; ([M-B] . [C-S-left])
+                 ;; the below is newly added
+                 ([?\C-w] . [?\C-x])
+                 ([?\C-y] . [?\C-v])
+                 ([?\M-w] . [?\C-c])
+                 ;; ([C-S-f] . [S-right])
+                 ;; ([C-S-b] . [S-left])
+                 ;; ([C-F] . [S-right])
+                 ;; ([C-B] . [S-left])
+                 ([?\M-f] . [C-right])
+                 ([?\M-b] . [C-left])
+                 ;; ([M-S-f] . [C-S-right])
+                 ;; ([M-S-b] . [C-S-left])
+                 ;; ([M-F] . [C-S-right])
+                 ;; ([M-B] . [C-S-left])
 
-                ([?\C-/] . [?\C-y])))
+                 ([?\C-/] . [?\C-y]))))
 
         (progn
           ;; local bindings
@@ -467,7 +468,28 @@
                         (exwm-input-set-local-simulation-keys
                          (append
                           exwm-input-simulation-keys
-                          '(([?\M-p] . [C-prior])
+                          '(([?\C-b] . [left])
+                            ([?\C-f] . [right])
+                            ([?\C-p] . [up])
+                            ([?\C-n] . [down])
+                            ([?\C-a] . [home])
+                            ([?\C-e] . [end])
+                            ([?\M-v] . [prior])
+                            ([?\C-v] . [next])
+                            ([?\C-d] . [delete])
+                            ([?\C-k] . [S-end C-c delete]) ; updated
+
+                            ;; the below is newly added
+                            ([?\C-w] . [?\C-x])
+                            ([?\C-y] . [?\C-v])
+                            ([?\M-w] . [?\C-c])
+
+                            ([?\M-f] . [C-right])
+                            ([?\M-b] . [C-left])
+
+                            ([?\C-/] . [?\C-y])
+
+                            ([?\M-p] . [C-prior])
                             ([?\M-n] . [C-next])))))))
           (add-hook 'exwm-manage-finish-hook
                     (lambda ()
