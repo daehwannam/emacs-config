@@ -453,6 +453,7 @@ in the current window."
                 (append
                  '(([?\s-r] . exwm-reset)
                    ([?\s-&] . exwm-my-command-execute-shell)
+                   ([?\s-!] . shell-command)
                    ([?\s-m] . exwm-my-command-prefix-map)
                    ([?\s-q] . ctl-x-map)
                    ([?\s-w] . tab-prefix-map)
