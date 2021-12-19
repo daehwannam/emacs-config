@@ -435,8 +435,7 @@
                    ([?\s-m] . exwm-my-command-prefix-map)
                    ([?\s-q] . ctl-x-map)
                    ([?\s-w] . tab-prefix-map)
-                   ([?\s-d] . exwm-my-workspace-prefix-map)
-                   ([?\s-k] . kill-matching-buffers))
+                   ([?\s-d] . exwm-my-workspace-prefix-map))
                  `(;; 's-N': Switch to certain workspace.
                    ,@(mapcar (lambda (i)
                                `(,(kbd (format "s-%d" i)) .
@@ -521,6 +520,7 @@
                             ([?\M-n] . [C-next])
                             ([?\M-\[] . [M-left])
                             ([?\M-\]] . [M-right])
+                            ([?\C-t] . [?\C-n])
                             )
                           )))))
           (comment
