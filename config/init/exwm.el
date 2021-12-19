@@ -340,6 +340,7 @@
       (defun exwm-my-command-open-web-browser ()
         (interactive)
         (start-process-shell-command "web-browser" nil "firefox -new-window")
+        (comment (start-process-shell-command "web-browser" nil "google-chrome --app=https://www.google.com/"))
         (comment (start-process-shell-command "web-browser" nil "firefox -new-window https://www.google.com/"))
         (comment (start-process-shell-command "web-browser" nil "google-chrome --app=https://www.google.com/ --start-fullscreen"))
         (comment (start-process-shell-command "web-browser" nil "google-chrome --new-window"))
@@ -349,6 +350,7 @@
         (interactive)
         (start-process-shell-command "web-browser" nil "firefox -private-window")
         (comment (start-process-shell-command "web-browser" nil "firefox -private-window https://www.google.com/"))
+        (comment (start-process-shell-command "web-browser" nil "google-chrome --new-window google.com --incognito"))
         (comment (start-process-shell-command "web-browser" nil "google-chrome --new-window google.com --incognito --start-fullscreen"))
         (comment (start-process-shell-command "web-browser" nil "google-chrome --new-window --incognito"))
         (comment (start-process-shell-command "web-browser" nil "xdg-open https://")))
@@ -365,6 +367,25 @@
 	(defvar exwm-my-command-prefix-map map
 	  "Keymap for workspace related commands."))
       (fset 'exwm-my-command-prefix-map exwm-my-command-prefix-map))
+
+    (progn
+      ;; functions for line-mode
+      (defun counsel-switch-buffer-within-app ()
+        "Switch to another buffer within application.
+Display a preview of the selected ivy completion candidate buffer
+in the current window."
+        (interactive)
+        (let ((ivy-update-fns-alist
+               '((ivy-switch-buffer . counsel--switch-buffer-update-fn)))
+              (ivy-unwind-fns-alist
+               '((ivy-switch-buffer . counsel--switch-buffer-unwind))))
+          (ivy-read "Switch to buffer: " #'internal-complete-buffer
+                    :keymap ivy-switch-buffer-map
+                    :preselect (buffer-name (other-buffer (current-buffer)))
+                    :action #'ivy--switch-buffer-action
+                    :matcher #'ivy--switch-buffer-matcher
+                    :caller 'ivy-switch-buffer
+                    :initial-input exwm-class-name))))
 
     ;; (progn
     ;;   ;; run machine-specific config
@@ -509,26 +530,25 @@
                             )
                           ))))
 
-          (add-hook 'exwm-manage-finish-hook
-                    (lambda ()
-                      (when (and exwm-class-name
-                                 (string= exwm-class-name "Firefox"))
-                        (exwm-input-set-local-simulation-keys
-                         (append
-                          exwm-base-input-simulation-keys
-                          '(([?\M-p] . [C-prior])
-                            ([?\M-n] . [C-next])
-                            ([?\M-\[] . [M-left])
-                            ([?\M-\]] . [M-right])
-                            ([?\C-t] . [?\C-n])
-                            )
-                          )))))
-          (comment
-           (add-hook 'exwm-manage-finish-hook
-                     (lambda ()
-                       (when (and exwm-class-name
-                                  (string= exwm-class-name "kitty"))
-                         (exwm-input-set-local-simulation-keys nil))))))))
+                    (add-hook 'exwm-manage-finish-hook
+                              (lambda ()
+                                (when (and exwm-class-name
+                                           (string= exwm-class-name "Firefox"))
+                                  (exwm-input-set-local-simulation-keys
+                                   (append
+                                    exwm-base-input-simulation-keys
+                                    '(([?\M-p] . [C-prior])
+                                      ([?\M-n] . [C-next])
+                                      ([?\M-\[] . [M-left])
+                                      ([?\M-\]] . [M-right])
+                                      )
+                                    )))))
+                    (comment
+                     (add-hook 'exwm-manage-finish-hook
+                               (lambda ()
+                                 (when (and exwm-class-name
+                                            (string= exwm-class-name "kitty"))
+                                   (exwm-input-set-local-simulation-keys nil))))))))
 
       (progn
         ;; prefix keys for line-mode are defined in `exwm-input-prefix-keys'
@@ -550,7 +570,9 @@
 
         (progn
           (define-key exwm-mode-map (kbd "M-9") 'previous-buffer)
-          (define-key exwm-mode-map (kbd "M-0") 'next-buffer)))
+          (define-key exwm-mode-map (kbd "M-0") 'next-buffer))
+
+        (define-key exwm-mode-map (kbd "s-b") 'counsel-switch-buffer-within-app))
       ))
 
   (progn
