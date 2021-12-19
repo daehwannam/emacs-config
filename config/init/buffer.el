@@ -56,9 +56,13 @@
      (define-key (current-global-map) (kbd "C-x M-p") (make-repeatable-command 'previous-buffer))
      (define-key (current-global-map) (kbd "C-x M-n") (make-repeatable-command 'next-buffer)))
 
+    (progn
+      (define-key (current-global-map) (kbd "M-9") 'previous-buffer)
+      (define-key (current-global-map) (kbd "M-0") 'next-buffer))
+
     (comment
-      (key-chord-define (current-global-map) "pp" (make-repeatable-command 'previous-buffer))
-      (key-chord-define (current-global-map) "nn" (make-repeatable-command 'next-buffer)))
+     (key-chord-define (current-global-map) "pp" (make-repeatable-command 'previous-buffer))
+     (key-chord-define (current-global-map) "nn" (make-repeatable-command 'next-buffer)))
 
     (comment
       (defhydra hydra-prev-next-buffer ()

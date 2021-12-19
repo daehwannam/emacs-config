@@ -113,6 +113,15 @@
       (comment (exwm-input-set-key (kbd "s-e") 'tab-prefix-map))
       (comment (exwm-input-set-key (kbd "C-3") 'tab-prefix-map)))
 
+    (comment
+      ;; disable fullscreen
+      (cl-defun exwm-layout-set-fullscreen (&optional id)
+        "Make window ID fullscreen."
+        (interactive)
+        ;; (exwm-layoaut-unset-fullscreen id)
+        ;; (exwm-layout--show id)
+      ))
+
     (progn
       ;; volume
       (require 'volume nil t))
@@ -330,12 +339,18 @@
 
       (defun exwm-my-command-open-web-browser ()
         (interactive)
-        (start-process-shell-command "web-browser" nil "google-chrome --new-window")
+        (start-process-shell-command "web-browser" nil "firefox -new-window")
+        (comment (start-process-shell-command "web-browser" nil "firefox -new-window https://www.google.com/"))
+        (comment (start-process-shell-command "web-browser" nil "google-chrome --app=https://www.google.com/ --start-fullscreen"))
+        (comment (start-process-shell-command "web-browser" nil "google-chrome --new-window"))
         (comment (start-process-shell-command "web-browser" nil "xdg-open https://")))
 
       (defun exwm-my-command-open-web-browser-incognito ()
         (interactive)
-        (start-process-shell-command "web-browser" nil "google-chrome --new-window --incognito")
+        (start-process-shell-command "web-browser" nil "firefox -private-window")
+        (comment (start-process-shell-command "web-browser" nil "firefox -private-window https://www.google.com/"))
+        (comment (start-process-shell-command "web-browser" nil "google-chrome --new-window google.com --incognito --start-fullscreen"))
+        (comment (start-process-shell-command "web-browser" nil "google-chrome --new-window --incognito"))
         (comment (start-process-shell-command "web-browser" nil "xdg-open https://")))
 
       (defun exwm-my-command-open-terminal-emulator ()
@@ -369,6 +384,7 @@
         (comment (global-set-key (kbd "M-&") 'async-shell-command))
         (global-set-key (kbd "C-x b") 'switch-to-buffer)
         (global-set-key (kbd "C-x B") 'ivy-switch-buffer)
+        (global-set-key (kbd "C-x M-b") 'counsel-switch-buffer)
         (key-chord-define-global "qb" 'ivy-switch-buffer)
         (key-chord-define-global "qd" 'exwm-my-workspace-prefix-map))
 
@@ -402,62 +418,80 @@
                   'exwm-workspace-group-switch-create
                 'exwm-workspace-switch-create))
 
+        (comment
+         (dotimes (workspace-num 9)
+           (lexical-let ((idx (% (+ workspace-num 10 (- exwm-my-workspace-start-number)) 10)))
+             (define-key exwm-my-workspace-prefix-map (kbd (format "%d" workspace-num))
+               #'(lambda () (interactive)
+                   (funcall exwm-environment-switch-create idx))))))
+
         (progn
           (assert (not (get 'exwm-input-global-keys 'saved-value)))
 
           (setq exwm-input-global-keys
-                `(
-                  ([?\s-r] . exwm-reset)
-                  ([?\s-&] . exwm-my-command-execute-shell)
-                  ([?\s-m] . exwm-my-command-prefix-map)
-                  ([?\s-q] . ctl-x-map)
-                  ([?\s-w] . tab-prefix-map)
-                  ([?\s-d] . exwm-my-workspace-prefix-map)
-
-                  ;; 's-N': Switch to certain workspace.
-                  ,@(mapcar (lambda (i)
-                              `(,(kbd (format "s-%d" i)) .
-                                (lambda ()
-                                  (interactive)
-                                  (,exwm-environment-switch-create
-                                   ,(% (+ i 10 (- exwm-my-workspace-start-number)) 10)))))
-                            (number-sequence 0 9))))))
+                (append
+                 '(([?\s-r] . exwm-reset)
+                   ([?\s-&] . exwm-my-command-execute-shell)
+                   ([?\s-m] . exwm-my-command-prefix-map)
+                   ([?\s-q] . ctl-x-map)
+                   ([?\s-w] . tab-prefix-map)
+                   ([?\s-d] . exwm-my-workspace-prefix-map)
+                   ([?\s-k] . kill-matching-buffers))
+                 `(;; 's-N': Switch to certain workspace.
+                   ,@(mapcar (lambda (i)
+                               `(,(kbd (format "s-%d" i)) .
+                                 (lambda ()
+                                   (interactive)
+                                   (,exwm-environment-switch-create
+                                    ,(% (+ i 10 (- exwm-my-workspace-start-number)) 10)))))
+                             (number-sequence 1 7)))
+                 (comment
+                  `(;; 's-N': Switch to certain workspace.
+                    ,@(mapcar (lambda (i)
+                                `(,(kbd (format "s-%d" i)) .
+                                  (lambda ()
+                                    (interactive)
+                                    (,exwm-environment-switch-create
+                                     ,(% (+ i 10 (- exwm-my-workspace-start-number)) 10)))))
+                              (number-sequence 0 9))))))))
 
       ;; line-editing shortcuts
       (unless (get 'exwm-input-simulation-keys 'saved-value)
         ;; simulation keys
         ;; https://github.com/ch11ng/exwm/wiki#simulation-keys
 
+        ;; base bindings
+        (setq exwm-base-input-simulation-keys
+              '(([?\C-b] . [left])
+                ([?\C-f] . [right])
+                ([?\C-p] . [up])
+                ([?\C-n] . [down])
+                ([?\C-a] . [home])
+                ([?\C-e] . [end])
+                ([?\M-v] . [prior])
+                ([?\C-v] . [next])
+                ([?\C-d] . [delete])
+                ([?\C-k] . [S-end C-c delete]) ; updated
+
+                ;; the below is newly added
+                ([?\C-w] . [?\C-x])
+                ([?\C-y] . [?\C-v])
+                ([?\M-w] . [?\C-c])
+                ;; ([C-S-f] . [S-right])
+                ;; ([C-S-b] . [S-left])
+                ;; ([C-F] . [S-right])
+                ;; ([C-B] . [S-left])
+                ([?\M-f] . [C-right])
+                ([?\M-b] . [C-left])
+                ;; ([M-S-f] . [C-S-right])
+                ;; ([M-S-b] . [C-S-left])
+                ;; ([M-F] . [C-S-right])
+                ;; ([M-B] . [C-S-left])
+
+                ([?\C-/] . [?\C-y])))
+
         ;; global bindings
-        (setq exwm-input-simulation-keys
-              (comment
-               '(([?\C-b] . [left])
-                 ([?\C-f] . [right])
-                 ([?\C-p] . [up])
-                 ([?\C-n] . [down])
-                 ([?\C-a] . [home])
-                 ([?\C-e] . [end])
-                 ([?\M-v] . [prior])
-                 ([?\C-v] . [next])
-                 ([?\C-d] . [delete])
-                 ([?\C-k] . [S-end C-c delete]) ; updated
-
-                 ;; the below is newly added
-                 ([?\C-w] . [?\C-x])
-                 ([?\C-y] . [?\C-v])
-                 ([?\M-w] . [?\C-c])
-                 ;; ([C-S-f] . [S-right])
-                 ;; ([C-S-b] . [S-left])
-                 ;; ([C-F] . [S-right])
-                 ;; ([C-B] . [S-left])
-                 ([?\M-f] . [C-right])
-                 ([?\M-b] . [C-left])
-                 ;; ([M-S-f] . [C-S-right])
-                 ;; ([M-S-b] . [C-S-left])
-                 ;; ([M-F] . [C-S-right])
-                 ;; ([M-B] . [C-S-left])
-
-                 ([?\C-/] . [?\C-y]))))
+        (setq exwm-input-simulation-keys (comment exwm-base-input-simulation-keys))
 
         (progn
           ;; local bindings
@@ -467,36 +501,34 @@
                                  (string= exwm-class-name "Google-chrome"))
                         (exwm-input-set-local-simulation-keys
                          (append
-                          exwm-input-simulation-keys
-                          '(([?\C-b] . [left])
-                            ([?\C-f] . [right])
-                            ([?\C-p] . [up])
-                            ([?\C-n] . [down])
-                            ([?\C-a] . [home])
-                            ([?\C-e] . [end])
-                            ([?\M-v] . [prior])
-                            ([?\C-v] . [next])
-                            ([?\C-d] . [delete])
-                            ([?\C-k] . [S-end C-c delete]) ; updated
+                          exwm-base-input-simulation-keys
+                          '(([?\M-p] . [C-prior])
+                            ([?\M-n] . [C-next])
+                            ([?\M-\[] . [M-left])
+                            ([?\M-\]] . [M-right]
+                             )
+                            )
+                          ))))
 
-                            ;; the below is newly added
-                            ([?\C-w] . [?\C-x])
-                            ([?\C-y] . [?\C-v])
-                            ([?\M-w] . [?\C-c])
-
-                            ([?\M-f] . [C-right])
-                            ([?\M-b] . [C-left])
-
-                            ([?\C-/] . [?\C-y])
-
-                            ([?\M-p] . [C-prior])
-                            ([?\M-n] . [C-next])))))))
           (add-hook 'exwm-manage-finish-hook
                     (lambda ()
                       (when (and exwm-class-name
-                                 (string= exwm-class-name "kitty"))
-                        (exwm-input-set-local-simulation-keys nil)))))
-        )
+                                 (string= exwm-class-name "Firefox"))
+                        (exwm-input-set-local-simulation-keys
+                         (append
+                          exwm-base-input-simulation-keys
+                          '(([?\M-p] . [C-prior])
+                            ([?\M-n] . [C-next])
+                            ([?\M-\[] . [M-left])
+                            ([?\M-\]] . [M-right])
+                            )
+                          )))))
+          (comment
+           (add-hook 'exwm-manage-finish-hook
+                     (lambda ()
+                       (when (and exwm-class-name
+                                  (string= exwm-class-name "kitty"))
+                         (exwm-input-set-local-simulation-keys nil))))))))
 
       (progn
         ;; prefix keys for line-mode are defined in `exwm-input-prefix-keys'
@@ -514,7 +546,11 @@
         (comment (define-key exwm-mode-map (kbd "M-&") 'exwm-my-execute-shell-command))
         (lambda (command)
           (interactive (list (read-shell-command "$ ")))
-          (start-process-shell-command command nil command)))
+          (start-process-shell-command command nil command))
+
+        (progn
+          (define-key exwm-mode-map (kbd "M-9") 'previous-buffer)
+          (define-key exwm-mode-map (kbd "M-0") 'next-buffer)))
       ))
 
   (progn
