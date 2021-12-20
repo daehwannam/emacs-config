@@ -47,4 +47,8 @@
     (quit-window)
     (other-window-backwards))
 
-  (add-hook 'eww-mode-hook (lambda () (local-set-key (kbd "Q") #'quit-window-and-other-window-backwards))))
+  (add-hook 'eww-mode-hook (lambda () (local-set-key (kbd "Q") #'quit-window-and-other-window-backwards)))
+
+  (progn
+    ;; disable making new tab when `eww-open-in-new-buffer' is called
+    (setq eww-browse-url-new-window-is-tab nil)))

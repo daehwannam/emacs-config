@@ -8,6 +8,39 @@
       (swiper (buffer-substring start end)))
 
     (progn
+      ;; https://github.com/abo-abo/swiper/issues/1206#issuecomment-345455888
+
+      (defun ivy-ignore-buffers-with-different-major-mode (str)
+        "Return non-nil if STR names a buffer of a different major mode.
+This function is intended for use with `ivy-ignore-buffers'."
+        (let ((current-major-mode (buffer-local-value 'major-mode (current-buffer)))
+              (buf (get-buffer str)))
+          (or (not buf)
+              (not (eq (buffer-local-value 'major-mode buf)
+                       current-major-mode)))))
+
+      (defun counsel-switch-buffer-within-same-major-mode ()
+        "Switch to another buffer within the same major mode.
+Display a preview of the selected ivy completion candidate buffer
+in the current window."
+        (interactive)
+        (let ((ivy-update-fns-alist
+               '((ivy-switch-buffer . counsel--switch-buffer-update-fn)))
+              (ivy-unwind-fns-alist
+               '((ivy-switch-buffer . counsel--switch-buffer-unwind)))
+
+              (ivy-ignore-buffers (cons #'ivy-ignore-buffers-with-different-major-mode
+                                        ivy-ignore-buffers)))
+          (ivy-read "Switch to buffer: " #'internal-complete-buffer
+                    :keymap ivy-switch-buffer-map
+                    :preselect (buffer-name (other-buffer (current-buffer)))
+                    :action #'ivy--switch-buffer-action
+                    :matcher #'ivy--switch-buffer-matcher
+                    :caller 'ivy-switch-buffer)))
+
+      (key-chord-define-global "qi" 'counsel-switch-buffer-within-same-major-mode))
+
+    (progn
       ;; ivy mode
 
       ;; http://oremacs.com/swiper/

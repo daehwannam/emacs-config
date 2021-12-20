@@ -161,7 +161,7 @@
      ;; Start the Polybar panel
      (efs/start-panel))
 
-    (progn
+    (comment
       ;; custom-minibuffer
       (load "~/.emacs.d/config/init/dependent/awesome-tray.el"))
 
@@ -291,7 +291,7 @@
         ;; https://github.com/daviwil/emacs-from-scratch/blob/5ebd390119a48cac6258843c7d5e570f4591fdd4/show-notes/Emacs-Desktop-04.org
 
         (require 'exwm-randr)
-        (defvar exwm-my-monitor-names (comment (list "HDMI-1-1" "DVI-I-1" "HDMI-4")))
+        (defvar exwm-my-monitor-names (comment (list "HDMI-1-1" "DVI-I-1" "HDMI-0")))
 
         (progn
           (require 'cl-lib)
@@ -308,13 +308,13 @@
 
         (pcase (machine-config-get-first 'exwm-multiple-physical-monitor-layout)
           (descartes-triple
-           (setq exwm-my-monitor-names (list "HDMI-1-1" "DVI-I-1" "HDMI-4"))
+           (setq exwm-my-monitor-names (list "HDMI-1-1" "DVI-I-1" "HDMI-0"))
            (progn
              (setq exwm-randr-workspace-monitor-plist (get-exwm-randr-workspace-monitor-plist 10))
              (comment
               (setq setq exwm-randr-workspace-monitor-plist
-                    '(0 "HDMI-1-1" 1 "DVI-I-1" 2 "HDMI-4"
-                        3 "HDMI-1-1" 4 "DVI-I-1" 5 "HDMI-4" ...)))
+                    '(0 "HDMI-1-1" 1 "DVI-I-1" 2 "HDMI-0"
+                        3 "HDMI-1-1" 4 "DVI-I-1" 5 "HDMI-0" ...)))
 
              ;; run xrandr
              (add-hook 'exwm-randr-screen-change-hook
@@ -573,11 +573,13 @@ in the current window."
           (define-key exwm-mode-map (kbd "M-9") 'previous-buffer)
           (define-key exwm-mode-map (kbd "M-0") 'next-buffer))
 
-        (define-key exwm-mode-map (kbd "s-b") 'counsel-switch-buffer-within-app))
+        (define-key exwm-mode-map (kbd "s-i") 'counsel-switch-buffer-within-app))
       ))
 
   (progn
+    ;; pre-config
     (exwm-config-mine)
+
     ;; Enabling EXWM should be the last
     (exwm-enable))
 

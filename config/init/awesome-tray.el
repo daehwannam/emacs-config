@@ -1,11 +1,11 @@
 
-(when (member 'exwm-setup machine-options)
+(when (or t (comment (member 'exwm-setup machine-options)))
   (comment (add-to-list `load-path (expand-file-name "~/.emacs.d/config/package/awesome-tray/")))
   (require 'awesome-tray)
 
   (progn
     ;; customize
-    (setq awesome-tray-active-modules '("battery" "date"))
+    (setq awesome-tray-active-modules '("tab-bar" "battery" "date"))
 
     (defun awesome-tray-module-date-info ()
       (comment (format-time-string "%m-%d %H:%M %a"))
@@ -33,6 +33,16 @@
           awesome-tray-battery-status-cache)))
 
     (push '("battery" . (awesome-tray-my-module-battery-info awesome-tray-module-battery-face))
+          awesome-tray-module-alist)
+
+    (defun awesome-tray-my-tab-bar-info ()
+      (let* ((tabs (funcall tab-bar-tabs-function))
+             (current-idx (tab-bar--current-tab-index tabs))
+             (current-tab-num (1+ current-idx))
+             (num-tabs (length tabs)))
+        (format "%d/%d" current-tab-num num-tabs)))
+
+    (push '("tab-bar" . (awesome-tray-my-tab-bar-info awesome-tray-module-awesome-tab-face))
           awesome-tray-module-alist))
 
   (defun awesome-tray-enable ()

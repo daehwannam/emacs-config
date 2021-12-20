@@ -53,6 +53,8 @@
     (exwm-multiple-monitor-layout-type
      (descartes triple)
      (ubuntu-laptop nil))
+    (exwm-font-height
+     (descartes 145))
 
     (installable-packages
      ;; (base (vlf magit key-chord modalka evil avy hydra dash counsel multi-term))

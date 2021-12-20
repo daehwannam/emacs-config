@@ -59,7 +59,13 @@
   (when (find-font (font-spec :name "Inconsolata-12"))
     (progn
       ;; https://emacs.stackexchange.com/a/16314
-      (set-face-font 'default "Inconsolata-12"))
+      (set-face-font 'default "Inconsolata-12")
+
+      (when (and (boundp 'exwm-cmd-arg-passed) exwm-cmd-arg-passed)
+        (let ((font-height (machine-config-get-first 'exwm-font-height)))
+          (when font-height
+            ;; font size
+            (set-face-attribute 'default nil :height font-height)))))
     (comment
      ;; this make non full-sized frames for exwm
      (defun make-frame-command-font-advice (&rest args)

@@ -1,5 +1,9 @@
 
 (when (fboundp 'tab-bar-mode)
+  (progn
+    ;; hide tabs
+    (setq tab-bar-show nil))
+
   (defun tab-bar-move-tab-reverse (&optional arg)
     (interactive "p")
     (tab-bar-move-tab (- (or arg 1))))
@@ -85,4 +89,4 @@
   ;;  (define-key tab-prefix-map "f" 'find-file-other-tab)
   ;;  (define-key tab-prefix-map "\C-f" 'find-file-other-tab))
 
-  (tab-bar-mode))
+  (comment (tab-bar-mode)))
