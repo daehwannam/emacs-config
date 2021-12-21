@@ -8,7 +8,7 @@ DIR_PATH=`dirname $THIS_PATH`
 ### machine specific config ###
 OPTION_PATH="${DIR_PATH}/option.txt"
 if [ -f $OPTION_PATH ]; then
-    OPTION_VALUE=$(cat $OPTION_PATHcat $OPTION_PATH)
+    OPTION_VALUE=$(cat $OPTION_PATH)
     if [ $OPTION_VALUE = "laptop" ]; then
         :  # pass
     elif [ $OPTION_VALUE = "descartes" ]; then

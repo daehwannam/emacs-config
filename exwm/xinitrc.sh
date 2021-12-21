@@ -26,7 +26,7 @@ xset r rate 200 60
 THIS_PATH=`realpath $0`
 DIR_PATH=`dirname $THIS_PATH`
 
-bash $DIR_PATH/pre-machine-config.sh
+source $DIR_PATH/pre-machine-config.sh
 
 ### common configuration ###
 
