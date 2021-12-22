@@ -45,6 +45,10 @@
     (push '("tab-bar" . (awesome-tray-my-tab-bar-info awesome-tray-module-awesome-tab-face))
           awesome-tray-module-alist))
 
+  (unless (display-graphic-p)
+    ;; prevent to make additional line in terminal emacs
+    (advice-add 'awesome-tray-get-frame-width :filter-return #'1-))
+
   (defun awesome-tray-enable ()
     ;; Save mode-line colors when first time.
     ;; Don't change `awesome-tray-mode-line-colors' anymore.
