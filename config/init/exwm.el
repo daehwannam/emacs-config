@@ -519,6 +519,23 @@ in the current window."
           (add-hook 'exwm-manage-finish-hook
                     (lambda ()
                       (when (and exwm-class-name
+                                 (string= exwm-class-name "Firefox"))
+                        (exwm-input-set-local-simulation-keys
+                         (append
+                          exwm-base-input-simulation-keys
+                          '(([?\C-s] . [?\C-f])
+                            ([?\C-g] . [escape])
+                            ([?\M-p] . [S-f3])
+                            ([?\M-n] . [f3])
+                            ;; ([?\M-p] . [C-prior])
+                            ;; ([?\M-n] . [C-next])
+                            ([?\M-\[] . [M-left])
+                            ([?\M-\]] . [M-right])
+                            )
+                          )))))
+          (add-hook 'exwm-manage-finish-hook
+                    (lambda ()
+                      (when (and exwm-class-name
                                  (string= exwm-class-name "Google-chrome"))
                         (exwm-input-set-local-simulation-keys
                          (append
@@ -526,30 +543,13 @@ in the current window."
                           '(([?\M-p] . [C-prior])
                             ([?\M-n] . [C-next])
                             ([?\M-\[] . [M-left])
-                            ([?\M-\]] . [M-right]
-                             )
-                            )
-                          ))))
-
-                    (add-hook 'exwm-manage-finish-hook
-                              (lambda ()
-                                (when (and exwm-class-name
-                                           (string= exwm-class-name "Firefox"))
-                                  (exwm-input-set-local-simulation-keys
-                                   (append
-                                    exwm-base-input-simulation-keys
-                                    '(([?\M-p] . [C-prior])
-                                      ([?\M-n] . [C-next])
-                                      ([?\M-\[] . [M-left])
-                                      ([?\M-\]] . [M-right])
-                                      )
-                                    )))))
-                    (comment
-                     (add-hook 'exwm-manage-finish-hook
-                               (lambda ()
-                                 (when (and exwm-class-name
-                                            (string= exwm-class-name "kitty"))
-                                   (exwm-input-set-local-simulation-keys nil))))))))
+                            ([?\M-\]] . [M-right])))))))
+          (comment
+           (add-hook 'exwm-manage-finish-hook
+                     (lambda ()
+                       (when (and exwm-class-name
+                                  (string= exwm-class-name "kitty"))
+                         (exwm-input-set-local-simulation-keys nil)))))))
 
       (progn
         ;; prefix keys for line-mode are defined in `exwm-input-prefix-keys'
