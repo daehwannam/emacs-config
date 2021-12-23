@@ -85,3 +85,6 @@
     (setq awesome-tray-active-p t))
 
   (awesome-tray-mode 1))
+
+
+(require 'hide-mode-line nil t)

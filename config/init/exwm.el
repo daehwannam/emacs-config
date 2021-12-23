@@ -185,7 +185,7 @@
         (defun exwm-rename-buffer ()
           (interactive)
           (exwm-workspace-rename-buffer
-           (concat exwm-class-name ":"
+           (concat exwm-class-name ": "
                    (if (<= (length exwm-title) 50) exwm-title
                      (concat (substring exwm-title 0 49) "...")))))
 
@@ -385,7 +385,7 @@ in the current window."
                     :action #'ivy--switch-buffer-action
                     :matcher #'ivy--switch-buffer-matcher
                     :caller 'ivy-switch-buffer
-                    :initial-input exwm-class-name))))
+                    :initial-input (concat (downcase (or exwm-class-name "")) ": ")))))
 
     ;; (progn
     ;;   ;; run machine-specific config
@@ -509,7 +509,8 @@ in the current window."
                 ;; ([M-F] . [C-S-right])
                 ;; ([M-B] . [C-S-left])
 
-                ([?\C-/] . [?\C-y])))
+                ([?\C-/] . [?\C-z])
+                ([?\C-?] . [?\C-y])))
 
         ;; global bindings
         (setq exwm-input-simulation-keys (comment exwm-base-input-simulation-keys))
