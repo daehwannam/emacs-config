@@ -29,3 +29,15 @@
     (global-set-key (kbd "C-x C-c") 'save-buffers-kill-emacs-with-asking)
     (global-set-key (kbd "C-x C-c") 'save-buffers-kill-emacs-with-asking)
     (key-chord-define-global "xc" 'save-buffers-kill-emacs-with-asking)))
+
+(progn
+  ;; proced config
+  (progn
+    ;; open progn current window
+    ;; https://emacs.stackexchange.com/a/44846
+    (add-to-list 'display-buffer-alist '("proced" . (display-buffer-same-window))))
+
+  (defun proced-all (&optional arg)
+    (interactive "P")
+    (let ((proced-filter 'all))
+      (proced arg))))
