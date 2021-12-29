@@ -521,8 +521,12 @@ in the current window."
                 ([?\C-/] . [?\C-z])
                 ([?\C-?] . [?\C-y])))
 
-        ;; global bindings
-        (setq exwm-input-simulation-keys (comment exwm-base-input-simulation-keys))
+        (progn
+         ;; global bindings
+          (setq exwm-input-simulation-keys (comment exwm-base-input-simulation-keys))
+          (comment
+           ;; disable 'C-c' prefix
+           (setq exwm-input-simulation-keys '(([?\C-c] . [?\C-c])))))
 
         (progn
           ;; local bindings
