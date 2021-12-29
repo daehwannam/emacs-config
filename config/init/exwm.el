@@ -339,6 +339,7 @@
 
       (defun exwm-my-command-open-web-browser ()
         (interactive)
+        (comment (start-process-shell-command "web-browser" nil "qutebrowser"))
         (start-process-shell-command "web-browser" nil "firefox -new-window")
         (comment (start-process-shell-command "web-browser" nil "google-chrome --app=https://www.google.com/"))
         (comment (start-process-shell-command "web-browser" nil "firefox -new-window https://www.google.com/"))
@@ -348,6 +349,7 @@
 
       (defun exwm-my-command-open-web-browser-incognito ()
         (interactive)
+        (comment (start-process-shell-command "web-browser" nil "qutebrowser ':open -p'"))
         (start-process-shell-command "web-browser" nil "firefox -private-window")
         (comment (start-process-shell-command "web-browser" nil "firefox -private-window https://www.google.com/"))
         (comment (start-process-shell-command "web-browser" nil "google-chrome --new-window google.com --incognito"))
@@ -386,6 +388,13 @@ in the current window."
                     :matcher #'ivy--switch-buffer-matcher
                     :caller 'ivy-switch-buffer
                     :initial-input (concat (downcase (or exwm-class-name "")) ": ")))))
+
+    (progn
+      ;; disable line-mode for specific applications
+      ;; https://www.reddit.com/r/emacs/comments/o6vzxz/comment/h2v5rn0/?utm_source=share&utm_medium=web2x&context=3
+      (setq exwm-manage-configurations 
+            '(((member exwm-class-name '("Emacs" "Gnome-terminal" "kitty" "qutebrowser"))
+	       char-mode t))))
 
     ;; (progn
     ;;   ;; run machine-specific config
@@ -442,9 +451,9 @@ in the current window."
         (comment
          (dotimes (workspace-num 9)
            (lexical-let ((idx (% (+ workspace-num 10 (- exwm-my-workspace-start-number)) 10)))
-             (define-key exwm-my-workspace-prefix-map (kbd (format "%d" workspace-num))
-               #'(lambda () (interactive)
-                   (funcall exwm-environment-switch-create idx))))))
+                        (define-key exwm-my-workspace-prefix-map (kbd (format "%d" workspace-num))
+                          #'(lambda () (interactive)
+                              (funcall exwm-environment-switch-create idx))))))
 
         (progn
           (assert (not (get 'exwm-input-global-keys 'saved-value)))
