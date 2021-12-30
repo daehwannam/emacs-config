@@ -38,7 +38,7 @@ in the current window."
                     :matcher #'ivy--switch-buffer-matcher
                     :caller 'ivy-switch-buffer)))
 
-      (key-chord-define-global "qi" 'counsel-switch-buffer-within-same-major-mode))
+      (key-chord-define-global "qu" 'counsel-switch-buffer-within-same-major-mode))
 
     (progn
       ;; ivy mode

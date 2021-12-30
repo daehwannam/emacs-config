@@ -96,6 +96,8 @@
           (define-key map (kbd "k") 'exwm-workspace-group-delete-current-group)
           (define-key map (kbd "w") 'exwm-workspace-group-swap-current-group-number)
 
+          (define-key map (kbd "h") 'hide-mode-line-mode)
+
           (comment
            ;; not working
            (advice-add
@@ -209,7 +211,7 @@
               (pcase (machine-config-get-first 'exwm-multiple-monitor-layout-type)
                 (triple 3)
                 (t (error "Unknown monitor layout configuration"))))
-        (setq exwm-workspace-number exwm-workspace-group-max-size)
+        (setq exwm-workspace-number exwm-workspace-group-max-size) ; initial num of workspaces
 
         (defun exwm-get-workspace-group-index (workspace-idx)
           (/ workspace-idx exwm-workspace-group-max-size))
@@ -339,8 +341,8 @@
 
       (defun exwm-my-command-open-web-browser ()
         (interactive)
-        (comment (start-process-shell-command "web-browser" nil "qutebrowser"))
-        (start-process-shell-command "web-browser" nil "firefox -new-window")
+        (start-process-shell-command "web-browser" nil "qutebrowser")
+        (comment (start-process-shell-command "web-browser" nil "firefox -new-window"))
         (comment (start-process-shell-command "web-browser" nil "google-chrome --app=https://www.google.com/"))
         (comment (start-process-shell-command "web-browser" nil "firefox -new-window https://www.google.com/"))
         (comment (start-process-shell-command "web-browser" nil "google-chrome --app=https://www.google.com/ --start-fullscreen"))
@@ -349,8 +351,8 @@
 
       (defun exwm-my-command-open-web-browser-incognito ()
         (interactive)
-        (comment (start-process-shell-command "web-browser" nil "qutebrowser ':open -p'"))
-        (start-process-shell-command "web-browser" nil "firefox -private-window")
+        (start-process-shell-command "web-browser" nil "qutebrowser ':open -p'")
+        (comment (start-process-shell-command "web-browser" nil "firefox -private-window"))
         (comment (start-process-shell-command "web-browser" nil "firefox -private-window https://www.google.com/"))
         (comment (start-process-shell-command "web-browser" nil "google-chrome --new-window google.com --incognito"))
         (comment (start-process-shell-command "web-browser" nil "google-chrome --new-window google.com --incognito --start-fullscreen"))
@@ -387,7 +389,8 @@ in the current window."
                     :action #'ivy--switch-buffer-action
                     :matcher #'ivy--switch-buffer-matcher
                     :caller 'ivy-switch-buffer
-                    :initial-input (concat (downcase (or exwm-class-name "")) ": ")))))
+                    :initial-input (and exwm-class-name
+                                        (concat (downcase (or exwm-class-name "")) ": "))))))
 
     (progn
       ;; disable line-mode for specific applications
@@ -462,11 +465,25 @@ in the current window."
                 (append
                  '(([?\s-r] . exwm-reset)
                    ([?\s-&] . exwm-my-command-execute-shell)
-                   ([?\s-!] . shell-command)
                    ([?\s-m] . exwm-my-command-prefix-map)
+                   ([?\s-d] . exwm-my-workspace-prefix-map)
+
                    ([?\s-q] . ctl-x-map)
                    ([?\s-w] . tab-prefix-map)
-                   ([?\s-d] . exwm-my-workspace-prefix-map))
+
+                   ([?\s-f] . find-file)
+                   ([?\s-b] . switch-to-buffer)
+                   ([?\s-u] . counsel-switch-buffer-within-app)
+                   ([?\s-!] . shell-command)
+
+                   ([?\s-o] . other-window)
+                   ([?\s-i] . other-window-backwards)
+                   ([?\C-\s-o] . exwm-other-workspace-in-group)
+                   ([?\C-\s-i] . exwm-other-workspace-in-group-backwards)
+                   ([?\s-n] . tab-next)
+                   ([?\s-p] . tab-previous)
+                   ([?\s-9] . previous-buffer)
+                   ([?\s-0] . next-buffer))
                  `(;; 's-N': Switch to certain workspace.
                    ,@(mapcar (lambda (i)
                                `(,(kbd (format "s-%d" i)) .
@@ -490,43 +507,46 @@ in the current window."
         ;; simulation keys
         ;; https://github.com/ch11ng/exwm/wiki#simulation-keys
 
-        ;; base bindings
-        (setq exwm-base-input-simulation-keys
-              '(([?\C-b] . [left])
-                ([?\C-f] . [right])
-                ([?\C-p] . [up])
-                ([?\C-n] . [down])
-                ([?\C-a] . [home])
-                ([?\C-e] . [end])
-                ([?\M-v] . [prior])
-                ([?\C-v] . [next])
-                ([?\C-d] . [delete])
-                ([?\C-k] . [S-end C-c delete]) ; updated
+        (progn
+          ;; base bindings
+          ;; 
+          ;; many bindings would cause wrong deployment for multiple monitor setting
+          (setq exwm-base-input-simulation-keys
+                '(([?\C-b] . [left])
+                  ([?\C-f] . [right])
+                  ([?\C-p] . [up])
+                  ([?\C-n] . [down])
+                  ([?\C-a] . [home])
+                  ([?\C-e] . [end])
+                  ([?\M-v] . [prior])
+                  ([?\C-v] . [next])
+                  ([?\C-d] . [delete])
+                  ([?\C-k] . [S-end C-c delete]) ; updated
 
-                ;; the below is newly added
-                ([?\C-w] . [?\C-x])
-                ([?\C-y] . [?\C-v])
-                ([?\M-w] . [?\C-c])
-                ;; ([C-S-f] . [S-right])
-                ;; ([C-S-b] . [S-left])
-                ;; ([C-F] . [S-right])
-                ;; ([C-B] . [S-left])
-                ([?\M-f] . [C-right])
-                ([?\M-b] . [C-left])
-                ;; ([M-S-f] . [C-S-right])
-                ;; ([M-S-b] . [C-S-left])
-                ;; ([M-F] . [C-S-right])
-                ;; ([M-B] . [C-S-left])
+                  ;; the below is newly added
+                  ([?\C-w] . [?\C-x])
+                  ([?\C-y] . [?\C-v])
+                  ([?\M-w] . [?\C-c])
+                  ;; ([C-S-f] . [S-right])
+                  ;; ([C-S-b] . [S-left])
+                  ;; ([C-F] . [S-right])
+                  ;; ([C-B] . [S-left])
+                  ([?\M-f] . [C-right])
+                  ([?\M-b] . [C-left])
+                  ;; ([M-S-f] . [C-S-right])
+                  ;; ([M-S-b] . [C-S-left])
+                  ;; ([M-F] . [C-S-right])
+                  ;; ([M-B] . [C-S-left])
 
-                ([?\C-/] . [?\C-z])
-                ([?\C-?] . [?\C-y])))
+                  ([?\C-/] . [?\C-z])
+                  ([?\C-?] . [?\C-y]))))
 
         (progn
-         ;; global bindings
-          (setq exwm-input-simulation-keys (comment exwm-base-input-simulation-keys))
-          (comment
-           ;; disable 'C-c' prefix
-           (setq exwm-input-simulation-keys '(([?\C-c] . [?\C-c])))))
+          ;; global bindings
+          (comment (setq exwm-input-simulation-keys exwm-base-input-simulation-keys))
+          (progn
+            ;; disable 'C-c' prefix
+            (setq exwm-input-simulation-keys '(([?\C-c] . [?\C-c])))))
 
         (progn
           ;; local bindings
@@ -568,7 +588,10 @@ in the current window."
       (progn
         ;; prefix keys for line-mode are defined in `exwm-input-prefix-keys'
         ;; https://github.com/ch11ng/exwm/wiki#global-key-bindings
-        )
+
+        ;; disable some prefix keys
+        (cl-remove-if (lambda (x) (member x '(?\C-x ?\C-q ?\C-c ?\C-h)))
+                      exwm-input-prefix-keys))
 
       (progn
         ;; local key bindings
@@ -587,7 +610,7 @@ in the current window."
           (define-key exwm-mode-map (kbd "M-9") 'previous-buffer)
           (define-key exwm-mode-map (kbd "M-0") 'next-buffer))
 
-        (define-key exwm-mode-map (kbd "s-i") 'counsel-switch-buffer-within-app))
+        (comment (define-key exwm-mode-map (kbd "s-i") 'counsel-switch-buffer-within-app)))
       ))
 
   (progn
