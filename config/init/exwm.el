@@ -513,17 +513,24 @@ in the current window."
                    ([?\s-B] . ivy-switch-buffer)
                    ([?\s-!] . shell-command)
 
+                   ([?\s-9] . previous-buffer)
+                   ([?\s-0] . next-buffer)
+
                    ([?\s-i] . other-window-backwards)
                    ([?\s-o] . other-window)
-                   ([?\C-\s-i] . exwm-other-workspace-in-group-backwards)
-                   ([?\C-\s-o] . exwm-other-workspace-in-group)
                    ([?\s-p] . tab-previous)
-                   ([?\s-n] . tab-next)
-                   ([?\C-\s-p] . exwm-workspace-group-switch-previous-group)
-                   ([?\C-\s-n] . exwm-workspace-group-switch-next-group)
+                   ([?\s-n] . tab-next))
 
-                   ([?\s-9] . previous-buffer)
-                   ([?\s-0] . next-buffer))
+                 (if (machine-config-get-first 'exwm-multiple-monitor-layout-type)
+                     '(([?\C-\s-i] . exwm-other-workspace-in-group-backwards)
+                       ([?\C-\s-o] . exwm-other-workspace-in-group)
+                       ([?\C-\s-p] . exwm-workspace-group-switch-previous-group)
+                       ([?\C-\s-n] . exwm-workspace-group-switch-next-group))
+                   '(([?\C-\s-i] . exwm-other-workspace-backwards)
+                     ([?\C-\s-o] . exwm-other-workspace)
+                     ([?\C-\s-p] . exwm-other-workspace-backwards)
+                     ([?\C-\s-n] . exwm-other-workspace)))
+
                  `(;; 's-N': Switch to certain workspace.
                    ,@(mapcar (lambda (i)
                                `(,(kbd (format "s-%d" i)) .
@@ -532,6 +539,7 @@ in the current window."
                                    (,exwm-environment-switch-create
                                     ,(% (+ i 10 (- exwm-my-workspace-start-number)) 10)))))
                              (number-sequence 1 7)))
+
                  (comment
                   `(;; 's-N': Switch to certain workspace.
                     ,@(mapcar (lambda (i)

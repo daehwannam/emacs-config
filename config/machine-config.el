@@ -49,7 +49,8 @@
     (eaf-path
      (eaf-setup "~/.emacs.d/package/emacs-application-framework/"))
     (exwm-multiple-physical-monitor-layout
-     (descartes descartes-triple))
+     (descartes descartes-triple)
+     )
     (exwm-multiple-monitor-layout-type
      (descartes triple)
      (ubuntu-laptop nil))
