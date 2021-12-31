@@ -99,9 +99,6 @@
           (define-key map (kbd "0") 'exwm-workspace-delete)
           (define-key map (kbd "8") 'exwm-workspace-add)
 
-          (define-key map (kbd "k") 'exwm-workspace-group-delete-current-group)
-          (define-key map (kbd "w") 'exwm-workspace-group-swap-current-group-number)
-
           (define-key map (kbd "h") 'hide-mode-line-mode)
 
           (comment
@@ -221,6 +218,10 @@
 
         (defun exwm-get-workspace-group-index (workspace-idx)
           (/ workspace-idx exwm-workspace-group-max-size))
+
+        (defun exwm-get-last-workspace-group-index ()
+          (exwm-get-workspace-group-index (1- (length (frame-list)))))
+
         (defun exwm-get-workspace-group-member-idx (workspace-idx)
           (- workspace-idx (* (exwm-get-workspace-group-index workspace-idx)
                               exwm-workspace-group-max-size)))
@@ -239,11 +240,6 @@
               (exwm-workspace-switch next-workspace-idx)))
 
           (defun exwm-other-workspace-in-group-backwards () (interactive) (exwm-other-workspace-in-group -1)))
-
-        (define-key exwm-my-workspace-prefix-map "o"
-          (make-repeatable-command 'exwm-other-workspace-in-group))
-        (define-key exwm-my-workspace-prefix-map "O"
-          (make-repeatable-command 'exwm-other-workspace-in-group-backwards))
         
         (comment
          (global-set-key (kbd "C-c o") (make-repeatable-command 'exwm-other-workspace-in-group))
@@ -264,6 +260,29 @@
             (let ((new-workspace-idx (% (+ prev-workspace-idx (exwm-workspace--count))
                                         (exwm-workspace--count))))
              (exwm-workspace-switch new-workspace-idx))))
+
+        (defun exwm-workspace-group-switch-next-group (count)
+          (interactive "p")
+          
+          (let* ((current-group-idx (exwm-get-workspace-group-index exwm-workspace-current-index))
+                 (num-groups (1+ (exwm-get-last-workspace-group-index)))
+                 (next-group-idx (% (+ current-group-idx count num-groups) num-groups)))
+            (exwm-workspace-group-switch-create next-group-idx)))
+
+        (defun exwm-workspace-group-switch-previous-group ()
+          (interactive)
+          (exwm-workspace-group-switch-next-group -1))
+
+        (defun exwm-workspace-group-add-group ()
+          (interactive)
+          (let* ((current-group-idx (exwm-get-workspace-group-index exwm-workspace-current-index))
+                 (next-group-idx (1+ current-group-idx))
+                 (current-member-idx (exwm-get-workspace-group-member-idx exwm-workspace-current-index))
+                 (new-workspace-idx (+ (* next-group-idx exwm-workspace-group-max-size)
+                                       current-member-idx)))
+            (dotimes (i exwm-workspace-group-max-size)
+              (exwm-workspace-add (+ (* next-group-idx exwm-workspace-group-max-size) i)))
+            (exwm-workspace-switch new-workspace-idx)))
 
         (defun exwm-workspace-group-delete-current-group ()
           (interactive)
@@ -292,7 +311,18 @@
                     (current-group-idx (exwm-get-workspace-group-index exwm-workspace-current-index)))
                 (if (= group-idx current-group-idx)
                     (user-error "Cannot swap with the same workspace group")
-                    (exwm-workspace-group-swap current-group-idx group-idx))))))
+                    (exwm-workspace-group-swap current-group-idx group-idx)))))
+
+        (let ((map exwm-my-workspace-prefix-map))
+          ;; update `exwm-my-workspace-prefix-map'
+          (define-key map (kbd "o") (make-repeatable-command 'exwm-other-workspace-in-group))
+          (define-key map (kbd "O") (make-repeatable-command 'exwm-other-workspace-in-group-backwards))
+
+          (define-key map (kbd "s") 'exwm-workspace-group-switch-create)
+          (define-key map (kbd "w") 'exwm-workspace-group-swap-current-group-number)
+
+          (define-key map (kbd "8") 'exwm-workspace-group-add-group)
+          (define-key map (kbd "0") 'exwm-workspace-group-delete-current-group)))
 
       (progn
         ;; xrandr config
@@ -479,15 +509,19 @@ in the current window."
 
                    ([?\s-f] . find-file)
                    ([?\s-b] . switch-to-buffer)
-                   ([?\s-u] . counsel-switch-buffer-within-app)
+                   ([?\C-\s-b] . counsel-switch-buffer-within-app)
+                   ([?\s-B] . ivy-switch-buffer)
                    ([?\s-!] . shell-command)
 
-                   ([?\s-o] . other-window)
-                   ([?\s-i] . other-window-backwards)
-                   ([?\C-\s-o] . exwm-other-workspace-in-group)
-                   ([?\C-\s-i] . exwm-other-workspace-in-group-backwards)
-                   ([?\s-n] . tab-next)
-                   ([?\s-p] . tab-previous)
+                   ([?\s-j] . other-window-backwards)
+                   ([?\s-k] . other-window)
+                   ([?\s-h] . exwm-other-workspace-in-group-backwards)
+                   ([?\s-l] . exwm-other-workspace-in-group)
+                   ([?\s-u] . tab-previous)
+                   ([?\s-i] . tab-next)
+                   ([?\s-y] . exwm-workspace-group-switch-previous-group)
+                   ([?\s-o] . exwm-workspace-group-switch-next-group)
+
                    ([?\s-9] . previous-buffer)
                    ([?\s-0] . next-buffer))
                  `(;; 's-N': Switch to certain workspace.
