@@ -29,10 +29,15 @@
     (progn
       ;; cursor and mouse config
       ;; https://github.com/daviwil/emacs-from-scratch/blob/5ebd390119a48cac6258843c7d5e570f4591fdd4/show-notes/Emacs-Desktop-04.org
-      (setq exwm-workspace-warp-cursor t)
       (let ((focus-and-select nil))
-        (setq mouse-autoselect-window focus-and-select)
-        (setq focus-follows-mouse focus-and-select))))
+        (setq exwm-workspace-warp-cursor (not focus-and-select))
+        (progn
+          (setq mouse-autoselect-window focus-and-select)
+          (setq focus-follows-mouse focus-and-select)))
+
+
+      (start-process-shell-command "unclutter" nil "unclutter -idle 3 -root")
+      (comment (start-process-shell-command "unclutter" nil "nohup unclutter -idle 2 &"))))
 
   (defun exwm-config-my-base ()
     "This is modifed from `exwm-config-example' or `exwm-config-default'"
