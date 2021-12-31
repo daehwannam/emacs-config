@@ -513,14 +513,16 @@ in the current window."
                    ([?\s-B] . ivy-switch-buffer)
                    ([?\s-!] . shell-command)
 
-                   ([?\s-j] . other-window-backwards)
-                   ([?\s-k] . other-window)
-                   ([?\s-h] . exwm-other-workspace-in-group-backwards)
-                   ([?\s-l] . exwm-other-workspace-in-group)
-                   ([?\s-u] . tab-previous)
-                   ([?\s-i] . tab-next)
-                   ([?\s-y] . exwm-workspace-group-switch-previous-group)
-                   ([?\s-o] . exwm-workspace-group-switch-next-group)
+                   ;; binding similar to boon-mode's
+                   ;; https://github.com/jyp/boon/blob/master/qwerty.pdf
+                   ([?\s-k] . other-window-backwards)
+                   ([?\s-l] . other-window)
+                   ([?\s-j] . exwm-other-workspace-in-group-backwards)
+                   ([?\s-\;] . exwm-other-workspace-in-group)
+                   ([?\s-i] . tab-previous)
+                   ([?\s-o] . tab-next)
+                   ([?\s-,] . exwm-workspace-group-switch-previous-group)
+                   ([?\s-.] . exwm-workspace-group-switch-next-group)
 
                    ([?\s-9] . previous-buffer)
                    ([?\s-0] . next-buffer))
