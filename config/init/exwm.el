@@ -500,6 +500,7 @@ in the current window."
           (setq exwm-input-global-keys
                 (append
                  '(([?\s-r] . exwm-reset)
+                   ([?\s-t] . exwm-floating-toggle-floating)
                    ([?\s-&] . exwm-my-command-execute-shell)
                    ([?\s-m] . exwm-my-command-prefix-map)
                    ([?\s-d] . exwm-my-workspace-prefix-map)
