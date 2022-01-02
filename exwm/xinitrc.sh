@@ -40,6 +40,10 @@ fcitx &  # run fcitx daemon
 # Set keyboard repeat rate
 xset r rate 250 50
 
+# dbus setting
+eval $(dbus-launch)
+export DBUS_SESSION_BUS_ADDRESS
+
 # run custom script
 if [ -f "~/.exwm-config"]; then
     bash ~/.exwm-config
