@@ -91,6 +91,11 @@
         (defun exwm-other-workspace-backwards () (interactive) (exwm-other-workspace -1))
 
         (let ((map (make-sparse-keymap)))
+          (define-key map (kbd "r") 'exwm-reset)
+          (define-key map (kbd "t") 'exwm-floating-toggle-floating)
+          (define-key map (kbd "f") 'exwm-layout-set-fullscreen)
+          (define-key map (kbd "k") 'exwm-input-release-keyboard)
+
 	  (define-key map (kbd "o") (make-repeatable-command 'exwm-other-workspace))
 	  (define-key map (kbd "O") (make-repeatable-command 'exwm-other-workspace-backwards))
           (define-key map (kbd "ㅐ") (make-repeatable-command 'exwm-other-workspace))
@@ -432,7 +437,7 @@ in the current window."
       ;; disable line-mode for specific applications
       ;; https://www.reddit.com/r/emacs/comments/o6vzxz/comment/h2v5rn0/?utm_source=share&utm_medium=web2x&context=3
       (setq exwm-manage-configurations 
-            '(((member exwm-class-name '("Emacs" "Gnome-terminal" "kitty" "qutebrowser"))
+            '(((member exwm-class-name '("Emacs" "Gnome-terminal" "kitty" "qutebrowser" "Remote-viewer"))
 	       char-mode t))))
 
     ;; (progn
@@ -448,8 +453,6 @@ in the current window."
 
       (progn
         ;; normal emacs global commands
-        ;; (global-set-key (kbd "s-e") 'some-command)
-
         (comment (global-set-key (kbd "M-&") 'async-shell-command))
         (global-set-key (kbd "C-x b") 'switch-to-buffer)
         (global-set-key (kbd "C-x B") 'ivy-switch-buffer)
@@ -496,17 +499,21 @@ in the current window."
 
         (progn
           (assert (not (get 'exwm-input-global-keys 'saved-value)))
+          (fset 'help-map help-map)
 
           (setq exwm-input-global-keys
                 (append
-                 '(([?\s-r] . exwm-reset)
-                   ([?\s-t] . exwm-floating-toggle-floating)
+                 '(;; ([?\s-r] . exwm-reset)
+                   ;; ([?\s-t] . exwm-floating-toggle-floating)
+
                    ([?\s-&] . exwm-my-command-execute-shell)
                    ([?\s-m] . exwm-my-command-prefix-map)
                    ([?\s-d] . exwm-my-workspace-prefix-map)
 
                    ([?\s-q] . ctl-x-map)
                    ([?\s-w] . tab-prefix-map)
+                   ([?\s-e] . my-ctl-c-map)
+                   ([?\s-h] . help-map)
 
                    ([?\s-f] . find-file)
                    ([?\s-b] . switch-to-buffer)
@@ -599,34 +606,36 @@ in the current window."
 
         (progn
           ;; local bindings
-          (add-hook 'exwm-manage-finish-hook
-                    (lambda ()
-                      (when (and exwm-class-name
-                                 (string= exwm-class-name "Firefox"))
-                        (exwm-input-set-local-simulation-keys
-                         (append
-                          exwm-base-input-simulation-keys
-                          '(([?\C-s] . [?\C-f])
-                            ([?\C-g] . [escape])
-                            ([?\M-p] . [S-f3])
-                            ([?\M-n] . [f3])
-                            ;; ([?\M-p] . [C-prior])
-                            ;; ([?\M-n] . [C-next])
-                            ([?\M-\[] . [M-left])
-                            ([?\M-\]] . [M-right])
-                            )
-                          )))))
-          (add-hook 'exwm-manage-finish-hook
-                    (lambda ()
-                      (when (and exwm-class-name
-                                 (string= exwm-class-name "Google-chrome"))
-                        (exwm-input-set-local-simulation-keys
-                         (append
-                          exwm-base-input-simulation-keys
-                          '(([?\M-p] . [C-prior])
-                            ([?\M-n] . [C-next])
-                            ([?\M-\[] . [M-left])
-                            ([?\M-\]] . [M-right])))))))
+          (comment
+           (add-hook 'exwm-manage-finish-hook
+                     (lambda ()
+                       (when (and exwm-class-name
+                                  (string= exwm-class-name "Firefox"))
+                         (exwm-input-set-local-simulation-keys
+                          (append
+                           exwm-base-input-simulation-keys
+                           '(([?\C-s] . [?\C-f])
+                             ([?\C-g] . [escape])
+                             ([?\M-p] . [S-f3])
+                             ([?\M-n] . [f3])
+                             ;; ([?\M-p] . [C-prior])
+                             ;; ([?\M-n] . [C-next])
+                             ([?\M-\[] . [M-left])
+                             ([?\M-\]] . [M-right])
+                             )
+                           ))))))
+          (comment
+           (add-hook 'exwm-manage-finish-hook
+                     (lambda ()
+                       (when (and exwm-class-name
+                                  (string= exwm-class-name "Google-chrome"))
+                         (exwm-input-set-local-simulation-keys
+                          (append
+                           exwm-base-input-simulation-keys
+                           '(([?\M-p] . [C-prior])
+                             ([?\M-n] . [C-next])
+                             ([?\M-\[] . [M-left])
+                             ([?\M-\]] . [M-right]))))))))
           (comment
            (add-hook 'exwm-manage-finish-hook
                      (lambda ()

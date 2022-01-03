@@ -45,3 +45,4 @@
 ;; https://www.emacswiki.org/emacs/LoadingLispFiles
 ;; (require 'load-directory)
 (load-directory "~/.emacs.d/config/init")
+(load-directory "~/.emacs.d/config/init/last")

@@ -45,9 +45,3 @@
     (key-chord-define-global "qr" 'null)
     (define-key key-translation-map (kbd "<key-chord> qr")  (kbd "C-c"))))
 
-(comment
-  (defvar my-ctl-c-map nil
-    "Default keymap for C-c commands.
-The normal global definition of the character C-x indirects to this keymap.")
-
-  (fset 'my-ctl-c-map my-ctl-c-map))
