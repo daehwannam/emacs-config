@@ -434,11 +434,17 @@ in the current window."
                                         (concat (downcase (or exwm-class-name "")) ": "))))))
 
     (progn
-      ;; disable line-mode for specific applications
-      ;; https://www.reddit.com/r/emacs/comments/o6vzxz/comment/h2v5rn0/?utm_source=share&utm_medium=web2x&context=3
-      (setq exwm-manage-configurations 
-            '(((member exwm-class-name '("Emacs" "Gnome-terminal" "kitty" "qutebrowser" "Remote-viewer"))
-	       char-mode t))))
+      (comment
+       ;; disable line-mode for specific applications
+       ;; https://www.reddit.com/r/emacs/comments/o6vzxz/comment/h2v5rn0/?utm_source=share&utm_medium=web2x&context=3
+       (setq exwm-manage-configurations 
+             '(((member exwm-class-name '("Emacs" "Gnome-terminal" "kitty" "qutebrowser" "Remote-viewer"))
+	        char-mode t))))
+
+      (progn
+        ;; start applications in char-mode by default
+        ;; https://github.com/ch11ng/exwm/issues/411#issuecomment-379561414
+        (setq exwm-manage-configurations '((t char-mode t)))))
 
     ;; (progn
     ;;   ;; run machine-specific config
