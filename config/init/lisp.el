@@ -105,3 +105,20 @@ ARG has the same meaning as for `kill-sexp'."
 (progn
   ;; hissp & lissp
   (add-to-list 'auto-mode-alist '("\\.lissp\\'" . lisp-mode)))
+
+(progn
+  ;; emacs lisp indentation fix
+  ;; https://stackoverflow.com/a/22167050
+  (setq lisp-indent-function 'common-lisp-indent-function)
+
+  (eval-after-load 'cl-indent
+    ;; https://emacs.stackexchange.com/a/13202
+    `(progn
+       (put 'comment 'common-lisp-indent-function
+            (get 'progn 'common-lisp-indent-function))
+       (comment
+         (put 'cl-flet 'common-lisp-indent-function
+              (get 'flet 'common-lisp-indent-function))
+         (put 'cl-labels 'common-lisp-indent-function
+              (get 'labels 'common-lisp-indent-function))
+         (put 'if 'common-lisp-indent-function 2)))))
