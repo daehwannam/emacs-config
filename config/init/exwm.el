@@ -421,9 +421,9 @@ Display a preview of the selected ivy completion candidate buffer
 in the current window."
         (interactive)
         (let ((ivy-update-fns-alist
-               '((ivy-switch-buffer . counsel--switch-buffer-update-fn)))
+                '((ivy-switch-buffer . counsel--switch-buffer-update-fn)))
               (ivy-unwind-fns-alist
-               '((ivy-switch-buffer . counsel--switch-buffer-unwind))))
+                '((ivy-switch-buffer . counsel--switch-buffer-unwind))))
           (ivy-read "Switch to buffer: " #'internal-complete-buffer
                     :keymap ivy-switch-buffer-map
                     :preselect (buffer-name (other-buffer (current-buffer)))
@@ -431,7 +431,19 @@ in the current window."
                     :matcher #'ivy--switch-buffer-matcher
                     :caller 'ivy-switch-buffer
                     :initial-input (and exwm-class-name
-                                        (concat (downcase (or exwm-class-name "")) ": "))))))
+                                        (concat (downcase (or exwm-class-name "")) ": ")))))
+
+      (defun ivy-switch-buffer-within-app ()
+        "Switch to another buffer within application.."
+        (interactive)
+        (ivy-read "Switch to buffer: " #'internal-complete-buffer
+                  :keymap ivy-switch-buffer-map
+                  :preselect (buffer-name (other-buffer (current-buffer)))
+                  :action #'ivy--switch-buffer-action
+                  :matcher #'ivy--switch-buffer-matcher
+                  :caller 'ivy-switch-buffer
+                  :initial-input (and exwm-class-name
+                                      (concat (downcase (or exwm-class-name "")) ": ")))))
 
     (progn
       (comment
@@ -517,6 +529,7 @@ in the current window."
                    ([?\s-d] . exwm-my-workspace-prefix-map)
 
                    ([?\s-q] . ctl-x-map)
+                   ([?\s-x] . (lambda () (interactive) (funcall (key-binding (kbd "M-x")))))
                    ([?\s-w] . tab-prefix-map)
                    ([?\s-e] . my-ctl-c-map)
                    ([?\s-h] . help-map)
@@ -524,6 +537,7 @@ in the current window."
                    ([?\s-f] . find-file)
                    ([?\s-b] . switch-to-buffer)
                    ([?\C-\s-b] . counsel-switch-buffer-within-app)
+                   ([?\C-\s-b] . ivy-switch-buffer-within-app)
                    ([?\s-B] . ivy-switch-buffer)
                    ([?\s-!] . shell-command)
 
@@ -540,10 +554,10 @@ in the current window."
                        ([?\C-\s-o] . exwm-other-workspace-in-group)
                        ([?\C-\s-p] . exwm-workspace-group-switch-previous-group)
                        ([?\C-\s-n] . exwm-workspace-group-switch-next-group))
-                   '(([?\C-\s-i] . exwm-other-workspace-backwards)
-                     ([?\C-\s-o] . exwm-other-workspace)
-                     ([?\C-\s-p] . exwm-other-workspace-backwards)
-                     ([?\C-\s-n] . exwm-other-workspace)))
+                     '(([?\C-\s-i] . exwm-other-workspace-backwards)
+                       ([?\C-\s-o] . exwm-other-workspace)
+                       ([?\C-\s-p] . exwm-other-workspace-backwards)
+                       ([?\C-\s-n] . exwm-other-workspace)))
 
                  `(;; 's-N': Switch to certain workspace.
                    ,@(mapcar (lambda (i)
@@ -555,14 +569,14 @@ in the current window."
                              (number-sequence 1 7)))
 
                  (comment
-                  `(;; 's-N': Switch to certain workspace.
-                    ,@(mapcar (lambda (i)
-                                `(,(kbd (format "s-%d" i)) .
-                                  (lambda ()
-                                    (interactive)
-                                    (,exwm-environment-switch-create
-                                     ,(% (+ i 10 (- exwm-my-workspace-start-number)) 10)))))
-                              (number-sequence 0 9))))))))
+                   `(;; 's-N': Switch to certain workspace.
+                     ,@(mapcar (lambda (i)
+                                 `(,(kbd (format "s-%d" i)) .
+                                   (lambda ()
+                                     (interactive)
+                                     (,exwm-environment-switch-create
+                                      ,(% (+ i 10 (- exwm-my-workspace-start-number)) 10)))))
+                               (number-sequence 0 9))))))))
 
       ;; line-editing shortcuts
       (unless (get 'exwm-input-simulation-keys 'saved-value)
