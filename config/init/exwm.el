@@ -473,8 +473,8 @@ in the current window."
         ;; normal emacs global commands
         (comment (global-set-key (kbd "M-&") 'async-shell-command))
         (global-set-key (kbd "C-x b") 'switch-to-buffer)
-        (global-set-key (kbd "C-x B") 'ivy-switch-buffer)
-        (global-set-key (kbd "C-x M-b") 'counsel-switch-buffer)
+        (global-set-key (kbd "C-x M-b") 'ivy-switch-buffer)
+        (global-set-key (kbd "C-x B") 'counsel-switch-buffer)
         (key-chord-define-global "qb" 'ivy-switch-buffer)
         (key-chord-define-global "qd" 'exwm-my-workspace-prefix-map))
 
@@ -536,9 +536,8 @@ in the current window."
 
                    ([?\s-f] . find-file)
                    ([?\s-b] . switch-to-buffer)
-                   ([?\C-\s-b] . counsel-switch-buffer-within-app)
                    ([?\C-\s-b] . ivy-switch-buffer-within-app)
-                   ([?\s-B] . ivy-switch-buffer)
+                   ([?\s-B] . counsel-switch-buffer-within-app)
                    ([?\s-!] . shell-command)
 
                    ([?\s-9] . previous-buffer)
