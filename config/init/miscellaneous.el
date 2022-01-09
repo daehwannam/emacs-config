@@ -41,3 +41,7 @@
     (interactive "P")
     (let ((proced-filter 'all))
       (proced arg))))
+
+(progn
+  ;; add new keybindings for kitty terminal
+  (key-chord-define global-map "q\\" 'indent-region))
