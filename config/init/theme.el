@@ -54,14 +54,21 @@
                           :background (face-background 'default)))
 
 
-    (custom-set-faces
-     ;; highlighting color
-     ;;
-     ;; e.g. highlight-symbol-at-point highlight-regexp
-     '(hi-yellow ((t (:background "yellow1" :foreground "dodger blue"))))
-     '(hi-pink ((t (:background "pink" :foreground "forest green"))))
-     '(hi-green ((t (:background "green" :foreground "magenta"))))
-     '(hi-blue ((t (:background "light blue" :foreground "red"))))
+    (progn
+      (custom-set-faces
+       ;; highlighting color
+       ;;
+       ;; e.g. highlight-symbol-at-point highlight-regexp
+       '(hi-yellow ((t (:background "yellow1" :foreground "dodger blue"))))
+       '(hi-pink ((t (:background "pink" :foreground "forest green"))))
+       '(hi-green ((t (:background "green" :foreground "magenta"))))
+       '(hi-blue ((t (:background "light blue" :foreground "red"))))
+       '(hi-black ((t (:background "light purple" :foreground "green"))))
+       '(hi-salmon ((t (:background "salmon" :foreground "blue"))))
+       '(hi-aquamarine ((t (:background "aquamarine" :foreground "red")))))
+      (setq hi-lock-face-defaults '("hi-yellow" "hi-pink" "hi-green" "hi-blue" "hi-salmon" "hi-aquamarine")))
+
+    (custom-setqh-faces
      '(mlinum-highlight-face ((t (:inherit default :foreground "brightwhite" :background "black")))))
 
     (progn
