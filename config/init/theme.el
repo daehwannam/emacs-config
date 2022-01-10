@@ -29,8 +29,7 @@
      ;; mode-line config
      '(mode-line ((t (:stipple nil :background "gray30" :foreground "gray100" :box nil :height 0.9))))
      '(mode-line-buffer-id ((t (:background "gray65" :foreground "firebrick" :weight bold :height 0.9))))
-     '(mode-line-inactive ((t (:background "gray15" :foreground "gray80" :box nil :weight light :height 0.9))))
-     (set-face-foreground 'hl-line nil))
+     '(mode-line-inactive ((t (:background "gray15" :foreground "gray80" :box nil :weight light :height 0.9)))))
 
     (custom-set-faces
      ;; hl-line config (highlighting line without losing character color)
