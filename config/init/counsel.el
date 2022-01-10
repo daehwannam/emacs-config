@@ -54,6 +54,17 @@ in the current window."
                                            (funcall original-swiper--candidates))))))
             (swiper)))))
 
+    (defun swiper-within-region (&optional initial-input)
+      "`isearch-forward' with an overview.
+When non-nil, INITIAL-INPUT is the initial search pattern."
+      (interactive)
+      (if (use-region-p)
+          (save-restriction
+            (deactivate-mark t)
+            (narrow-to-region (region-beginning) (region-end))
+            (swiper initial-input))
+        (swiper initial-input)))
+
     (progn
       ;; ivy mode
 
@@ -68,7 +79,8 @@ in the current window."
 	;; Ivy-based interface to standard commands
 	;; (global-set-key (kbd "C-s") 'isearch-forward)
 	;; (global-set-key (kbd "C-c s") 'swiper)
-	(key-chord-define-global "js" 'swiper)
+	(comment (key-chord-define-global "js" 'swiper))
+	(key-chord-define-global "js" 'swiper-within-region)
 	(comment (space-chord-define-global "s" 'swiper))
 	;; (global-set-key (kbd "C-c C-s") 'swiper) ; conflict with 'elpy-rgrep-symbol
 	;; (global-set-key (kbd "C-r") 'swiper)
