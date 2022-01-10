@@ -213,8 +213,8 @@
      (key-chord-define comint-mode-map "fn" 'hydra-comint-previous-next-matching-input-from-input/comint-next-matching-input-from-input)))
 
   (progn
-    (define-key comint-mode-map (kbd "M-P") 'comint-previous-matching-input-from-input)
-    (define-key comint-mode-map (kbd "M-N") 'comint-next-matching-input-from-input))
+    (define-key comint-mode-map (kbd "M-P") 'comint-previous-matching-input-from-input-or-backward-list)
+    (define-key comint-mode-map (kbd "M-N") 'comint-next-matching-input-from-input-or-forward-list))
 
   (if (and nil (package-installed-p 'hydra))
       (progn
@@ -293,6 +293,23 @@ point to the next error in the compilation buffer"
 
  (add-hook 'compilation-shell-minor-mode-hook
 	   (lambda () (local-set-key (kbd "M-n") 'comint-next-matching-input-from-input-or-compilation-next-error))))
+
+(progn
+  (defun comint-previous-matching-input-from-input-or-backward-list (arg)
+    "Search backwards through input history for match for current input, or move
+backward across one balanced group of parentheses."
+    (interactive "^p")
+    (if (comint-after-pmark-p)
+        (comint-previous-matching-input-from-input arg)
+      (backward-list arg)))
+
+  (defun comint-next-matching-input-from-input-or-forward-list (arg)
+    "Search forwards through input history for match for current input, or move
+forward across one balanced group of parentheses."
+    (interactive "^p")
+    (if (comint-after-pmark-p)
+        (comint-next-matching-input-from-input arg)
+      (forward-list arg))))
 
 (defun py3-shell (&optional buffer)
   (interactive
