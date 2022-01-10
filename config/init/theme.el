@@ -71,7 +71,7 @@
         ;; restrict colors
         (setq hi-lock-face-defaults '("hi-yellow" "hi-pink" "hi-green" "hi-blue" "hi-salmon" "hi-aquamarine"))))
 
-    (custom-setqh-faces
+    (custom-set-faces
      '(mlinum-highlight-face ((t (:inherit default :foreground "brightwhite" :background "black")))))
 
     (progn

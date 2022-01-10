@@ -41,6 +41,20 @@ in the current window."
       (key-chord-define-global "qu" 'counsel-switch-buffer-within-same-major-mode))
 
     (progn
+      ;; swiper within highlited strings
+      (require 'cl-lib)
+
+      (defun swiper-over-highlights ()
+        (interactive)
+        (let ((original-swiper--candidates (symbol-function 'swiper--candidates)))
+          (cl-letf (((symbol-function 'swiper--candidates)
+                     (lambda ()
+                       (let ((pattern (mapconcat #'car hi-lock-interactive-patterns "\\|")))
+                         (cl-remove-if-not (lambda (x) (string-match-p pattern x))
+                                           (funcall original-swiper--candidates))))))
+            (swiper)))))
+
+    (progn
       ;; ivy mode
 
       ;; http://oremacs.com/swiper/

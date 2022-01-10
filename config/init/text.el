@@ -111,3 +111,6 @@
     (if (and arg (not (= 1 arg))) (message "%d lines copied" arg)))
 
   (key-chord-define (current-global-map) "kk" (make-repeatable-command #'copy-and-next-line)))
+
+(progn
+  (key-chord-define-global "q\\" 'indent-region))
