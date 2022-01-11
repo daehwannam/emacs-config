@@ -113,4 +113,5 @@
   (key-chord-define (current-global-map) "kk" (make-repeatable-command #'copy-and-next-line)))
 
 (progn
+  ;; add new keybindings for kitty terminal
   (key-chord-define-global "q\\" 'indent-region))
