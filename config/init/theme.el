@@ -29,8 +29,7 @@
      ;; mode-line config
      '(mode-line ((t (:stipple nil :background "gray30" :foreground "gray100" :box nil :height 0.9))))
      '(mode-line-buffer-id ((t (:background "gray65" :foreground "firebrick" :weight bold :height 0.9))))
-     '(mode-line-inactive ((t (:background "gray15" :foreground "gray80" :box nil :weight light :height 0.9))))
-     (set-face-foreground 'hl-line nil))
+     '(mode-line-inactive ((t (:background "gray15" :foreground "gray80" :box nil :weight light :height 0.9)))))
 
     (custom-set-faces
      ;; hl-line config (highlighting line without losing character color)
@@ -66,9 +65,12 @@
        '(hi-black ((t (:background "light purple" :foreground "green"))))
        '(hi-salmon ((t (:background "salmon" :foreground "blue"))))
        '(hi-aquamarine ((t (:background "aquamarine" :foreground "red")))))
-      (setq hi-lock-face-defaults '("hi-yellow" "hi-pink" "hi-green" "hi-blue" "hi-salmon" "hi-aquamarine")))
 
-    (custom-setqh-faces
+      (progn
+        ;; restrict colors
+        (setq hi-lock-face-defaults '("hi-yellow" "hi-pink" "hi-green" "hi-blue" "hi-salmon" "hi-aquamarine"))))
+
+    (custom-set-faces
      '(mlinum-highlight-face ((t (:inherit default :foreground "brightwhite" :background "black")))))
 
     (progn

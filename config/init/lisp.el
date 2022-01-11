@@ -22,6 +22,11 @@
 	      (lambda () (local-set-key (kbd "C-c C-d H") #'slime-documentation))))
   )
 
+(progn
+  ;; global keys
+  (global-set-key (kbd "M-P") 'backward-list)
+  (global-set-key (kbd "M-N") 'forward-list))
+
 (when (functionp 'paredit-mode)
   ;; ParEdit
   ;; http://wikemacs.org/wiki/Paredit-mode
@@ -84,9 +89,9 @@ ARG has the same meaning as for `kill-sexp'."
       (define-key paredit-mode-map (kbd "C-M-n") 'forward-list)))
 
   (comment
-   (when (fboundp 'highlight-map)
-     ;; paredit overwrites M-s and M-S bindings
-     (define-key paredit-mode-map (kbd "C-c h") 'highlight-map))))
+    (when (fboundp 'highlight-map)
+      ;; paredit overwrites M-s and M-S bindings
+      (define-key paredit-mode-map (kbd "C-c h") 'highlight-map))))
 
 (comment
  (when (package-installed-p 'highlight-parentheses)
@@ -116,9 +121,8 @@ ARG has the same meaning as for `kill-sexp'."
     `(progn
        (put 'comment 'common-lisp-indent-function
             (get 'progn 'common-lisp-indent-function))
-       (comment
-         (put 'cl-flet 'common-lisp-indent-function
-              (get 'flet 'common-lisp-indent-function))
-         (put 'cl-labels 'common-lisp-indent-function
-              (get 'labels 'common-lisp-indent-function))
-         (put 'if 'common-lisp-indent-function 2)))))
+       (put 'cl-flet 'common-lisp-indent-function
+            (get 'flet 'common-lisp-indent-function))
+       (put 'cl-labels 'common-lisp-indent-function
+            (get 'labels 'common-lisp-indent-function))
+       (put 'if 'common-lisp-indent-function 2))))
