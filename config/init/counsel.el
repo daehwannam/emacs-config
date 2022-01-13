@@ -2,6 +2,10 @@
 (use-existing-pkg counsel
   :init
   (progn
+    (custom-set-faces
+     ;; swiper use underline instead of highlight
+     '(swiper-line-face ((t (:inherit nil :overline nil :underline t)))))
+
     (defun swiper-with-text-in-region (start end)
       (interactive "r")
       (deactivate-mark)
@@ -44,15 +48,66 @@ in the current window."
       ;; swiper within highlited strings
       (require 'cl-lib)
 
-      (defun swiper-over-highlights ()
+      (comment
+        (defun swiper-over-highlights-simple ()
+          (interactive)
+          (let ((original-swiper--candidates (symbol-function 'swiper--candidates)))
+            (cl-letf (((symbol-function 'swiper--candidates)
+                       (lambda ()
+                         (let ((pattern (mapconcat #'car hi-lock-interactive-patterns "\\|")))
+                           (cl-remove-if-not (lambda (x) (string-match-p pattern x))
+                                             (funcall original-swiper--candidates))))))
+              (swiper)))))
+
+
+      (defun swiper-over-highlights (&optional initial-input)
         (interactive)
-        (let ((original-swiper--candidates (symbol-function 'swiper--candidates)))
+        (let ((original-swiper--candidates (symbol-function 'swiper--candidates))
+              (pattern (mapconcat #'car hi-lock-interactive-patterns "\\|")))
           (cl-letf (((symbol-function 'swiper--candidates)
                      (lambda ()
-                       (let ((pattern (mapconcat #'car hi-lock-interactive-patterns "\\|")))
-                         (cl-remove-if-not (lambda (x) (string-match-p pattern x))
-                                           (funcall original-swiper--candidates))))))
-            (swiper)))))
+                       (cl-remove-if-not (lambda (x) (string-match-p pattern x))
+                                         (funcall original-swiper--candidates)))))
+            (let ((candidates (swiper--candidates)))
+              (swiper--init)
+              (setq swiper-invocation-face
+                    (plist-get (text-properties-at (point)) 'face))
+              (let ((preselect
+                     (save-excursion
+                       (search-forward-regexp pattern nil t)
+                       (let* ((current-line-value (current-line))
+                              (candidate-line-numbers (mapcar (lambda (x) (cadr (text-properties-at 0 x)))
+                                                              candidates))
+                              (preselect-line-num (cl-find-if (lambda (x) (<= current-line-value x))
+                                                              candidate-line-numbers)))
+                         (- (length candidate-line-numbers)
+                            (length (member preselect-line-num candidate-line-numbers))))))
+                    (minibuffer-allow-text-properties t)
+                    res)
+                (unwind-protect
+                     (and
+                      (setq res
+                            (ivy-read
+                             "Swiper: "
+                             candidates
+                             :initial-input initial-input
+                             :keymap swiper-map
+                             :preselect preselect
+                             :require-match t
+                             :action #'swiper--action
+                             :re-builder #'swiper--re-builder
+                             :history 'swiper-history
+                             :extra-props (list :fname (buffer-file-name))
+                             :caller 'swiper))
+                      (point))
+                  (unless (or res swiper-stay-on-quit)
+                    (goto-char swiper--opoint))
+                  (isearch-clean-overlays)
+                  (unless (or res (string= ivy-text ""))
+                    (cl-pushnew ivy-text swiper-history))
+                  (setq swiper--current-window-start nil)
+                  (when swiper--reveal-mode
+                    (reveal-mode 1)))))))))
 
     (defun swiper-within-region (&optional initial-input)
       "`isearch-forward' with an overview.
