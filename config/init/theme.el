@@ -85,8 +85,13 @@
 
     (custom-set-faces
      ;; swiper use underline instead of highlight
-     (comment '(swiper-line-face ((t (:inherit nil :background "gray25" :overline nil :underline nil)))))
-     (comment '(swiper-line-face ((t (:inherit nil :background "color-236" :overline nil :underline nil))))))
+     '(swiper-line-face ((t (:inherit nil :overline nil :underline t))))
+     (comment
+       ;; grayxx overlays highlighted colors
+       '(swiper-line-face ((t (:inherit nil :background "gray25" :overline nil :underline nil)))))
+     (comment
+       ;; color-xxx is only working terminal
+       '(swiper-line-face ((t (:inherit nil :background "color-236" :overline nil :underline nil))))))
 
     (progn
       (custom-set-faces
