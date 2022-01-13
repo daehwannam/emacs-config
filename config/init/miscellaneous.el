@@ -37,7 +37,17 @@
     ;; https://emacs.stackexchange.com/a/44846
     (add-to-list 'display-buffer-alist '("proced" . (display-buffer-same-window))))
 
-  (defun proced-all (&optional arg)
-    (interactive "P")
-    (let ((proced-filter 'all))
-      (proced arg))))
+  (comment
+   (defun proced-all (&optional arg)
+     (interactive "P")
+     (let ((proced-filter 'all))
+       (proced arg))))
+
+  (progn
+    (defun proced-filter-interactive-all () (interactive) (proced-filter-interactive 'all))
+    (defun proced-filter-interactive-user () (interactive) (proced-filter-interactive 'user))
+
+    (add-hook 'proced-mode-hook (lambda () (key-chord-define-local "fl" 'proced-filter-interactive-all)))
+    (add-hook 'proced-mode-hook (lambda () (key-chord-define-local "fu" 'proced-filter-interactive-user)))
+    (comment (key-chord-define proced-mode-map "fl" 'proced-filter-interactive-all))
+    (comment (key-chord-define proced-mode-map "fu" 'proced-filter-interactive-user))))

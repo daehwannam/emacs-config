@@ -160,20 +160,49 @@
 	))
 
     (comment
-     ;; To keep python indentation in org-babel
-     ;; https://stackoverflow.com/a/20903001
-     ;;
-     ;; This helps to keep indentation 4
-     ;; However, it doesn't allow python code to be indented with
-     ;; org-mode's headline.
-     ;; e.g. It's not working with org-metaleft and org-metaright
-     (setq org-src-preserve-indentation t))
+      ;; To keep python indentation in org-babel
+      ;; https://stackoverflow.com/a/20903001
+      ;;
+      ;; This helps to keep indentation 4
+      ;; However, it doesn't allow python code to be indented with
+      ;; org-mode's headline.
+      ;; e.g. It's not working with org-metaleft and org-metaright
+      (setq org-src-preserve-indentation t))
 
     (progn
       ;; Disable automatic tab insertion
       ;;
       ;; https://www.emacswiki.org/emacs/NoTabs
-      (setq-default indent-tabs-mode nil)))
+      (setq-default indent-tabs-mode nil))
+
+
+    (progn
+      ;; fix the problem of unbalanced parentheses by "<" and ">"
+      ;; https://emacs.stackexchange.com/a/52209
+
+      (defun org-mode-<>-syntax-fix (start end)
+        "Change syntax of characters ?< and ?> to symbol within source code blocks."
+        (let ((case-fold-search t))
+          (when (eq major-mode 'org-mode)
+            (save-excursion
+              (goto-char start)
+              (while (re-search-forward "<\\|>" end t)
+                (when (save-excursion
+                        (and
+                         (re-search-backward "[[:space:]]*#\\+\\(begin\\|end\\)_src\\_>" nil t)
+                         (string-equal (downcase (match-string 1)) "begin")))
+                  ;; This is a < or > in an org-src block
+                  (put-text-property (point) (1- (point))
+                                     'syntax-table (string-to-syntax "_"))))))))
+
+      (defun org-setup-<>-syntax-fix ()
+        "Setup for characters ?< and ?> in source code blocks.
+Add this function to `org-mode-hook'."
+        (make-local-variable 'syntax-propertize-function)
+        (setq syntax-propertize-function 'org-mode-<>-syntax-fix)
+        (syntax-propertize (point-max)))
+
+      (add-hook 'org-mode-hook #'org-setup-<>-syntax-fix)))
 
   ;;; table
   (add-hook 'org-mode-hook (lambda () (local-set-key (kbd "C-c C-x M-c") 'org-table-insert-column)))

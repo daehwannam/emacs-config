@@ -1,15 +1,31 @@
 
-;; Emacs lisp 
-(electric-indent-mode -1)
-(add-hook 'emacs-lisp-mode-hook
-	  (lambda () (local-set-key (kbd "C-c C-j") #'eval-print-last-sexp)))
-(add-to-list 'auto-mode-alist '("\\.el\\.gz\\'" . emacs-lisp-mode))
-;; (add-to-list 'auto-mode-alist '(".el\\.gz\\'" . emacs-lisp-mode))
+(progn
+  ;; Emacs lisp 
+  (electric-indent-mode -1)
+  (add-hook 'emacs-lisp-mode-hook
+	    (lambda () (local-set-key (kbd "C-c C-j") #'eval-print-last-sexp)))
+  (add-to-list 'auto-mode-alist '("\\.el\\.gz\\'" . emacs-lisp-mode))
+  (comment (add-to-list 'auto-mode-alist '(".el\\.gz\\'" . emacs-lisp-mode)))
 
+  (progn
+    ;; emacs lisp indentation fix
+    ;; https://stackoverflow.com/a/22167050
+    (setq lisp-indent-function 'common-lisp-indent-function)
 
-;; Common lisp
+    (eval-after-load 'cl-indent
+      ;; https://emacs.stackexchange.com/a/13202
+      `(progn
+         (put 'comment 'common-lisp-indent-function
+              (get 'progn 'common-lisp-indent-function))
+         (put 'cl-flet 'common-lisp-indent-function
+              (get 'flet 'common-lisp-indent-function))
+         (put 'cl-labels 'common-lisp-indent-function
+              (get 'labels 'common-lisp-indent-function))
+         (put 'if 'common-lisp-indent-function 2)))))
+
 (let ((path-to-slime-helper (machine-config-get-first 'path-to-slime-helper))
       (path-to-inferior-lisp-program (machine-config-get-first 'path-to-inferior-lisp-program)))
+  ;; Common lisp
   (when path-to-slime-helper
     (load (expand-file-name path-to-slime-helper)))
   ;; Replace "sbcl" with the path to your implementation
@@ -19,8 +35,11 @@
     ;; (add-hook 'slime-mode-hook
     ;; 	      (lambda () (local-set-key (kbd "C-j") #'slime-eval-print-last-expression)))
     (add-hook 'slime-mode-hook
-	      (lambda () (local-set-key (kbd "C-c C-d H") #'slime-documentation))))
-  )
+	      (lambda () (local-set-key (kbd "C-c C-d H") #'slime-documentation)))))
+
+(progn
+  ;; hissp & lissp
+  (add-to-list 'auto-mode-alist '("\\.lissp\\'" . lisp-mode)))
 
 (progn
   ;; global keys
@@ -106,23 +125,3 @@ ARG has the same meaning as for `kill-sexp'."
  (when (fboundp 'show-paren-mode)
    (setq show-paren-delay 0)
    (add-hook 'paredit-mode-hook 'show-paren-mode)))
-
-(progn
-  ;; hissp & lissp
-  (add-to-list 'auto-mode-alist '("\\.lissp\\'" . lisp-mode)))
-
-(progn
-  ;; emacs lisp indentation fix
-  ;; https://stackoverflow.com/a/22167050
-  (setq lisp-indent-function 'common-lisp-indent-function)
-
-  (eval-after-load 'cl-indent
-    ;; https://emacs.stackexchange.com/a/13202
-    `(progn
-       (put 'comment 'common-lisp-indent-function
-            (get 'progn 'common-lisp-indent-function))
-       (put 'cl-flet 'common-lisp-indent-function
-            (get 'flet 'common-lisp-indent-function))
-       (put 'cl-labels 'common-lisp-indent-function
-            (get 'labels 'common-lisp-indent-function))
-       (put 'if 'common-lisp-indent-function 2))))
