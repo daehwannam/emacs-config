@@ -83,6 +83,11 @@
 	 '(flymake-errline ((((class color)) (:foreground "red"))))
 	 '(flymake-warnline ((((class color)) (:foreground "yellow")))))))
 
+    (custom-set-faces
+     ;; swiper use underline instead of highlight
+     (comment '(swiper-line-face ((t (:inherit nil :background "gray25" :overline nil :underline nil)))))
+     (comment '(swiper-line-face ((t (:inherit nil :background "color-236" :overline nil :underline nil))))))
+
     (progn
       (custom-set-faces
        '(highlight-indentation-face ((t (:background "gray30"))))))

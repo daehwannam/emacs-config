@@ -2,10 +2,6 @@
 (use-existing-pkg counsel
   :init
   (progn
-    (custom-set-faces
-     ;; swiper use underline instead of highlight
-     '(swiper-line-face ((t (:inherit nil :overline nil :underline t)))))
-
     (defun swiper-with-text-in-region (start end)
       (interactive "r")
       (deactivate-mark)
