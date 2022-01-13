@@ -5,7 +5,7 @@
       (define-key map (kbd "r") 'highlight-regexp)
       (define-key map (kbd ".") 'highlight-symbol-at-point)
       (define-key map (kbd "u") 'unhighlight-regexp)
-      (define-key map (kbd "s") 'swiper-over-highlights)
+      (define-key map (kbd "w") 'swiper-over-highlights)
       map)
     "Keymap for rectangle commands.")
 
