@@ -96,6 +96,10 @@
          (eww (format lookup-word-search-query word))
          (switch-to-buffer "*eww*"))))
 
+    (defun lookup-word-from-web-other-window-directly ()
+      (interactive)
+      (lookup-word-from-web-other-window (get-lookup-word-candidate t)))
+
     (comment (add-hook 'eww-mode-hook (lambda () (local-set-key (kbd "q") #'quit-window)))))
 
   (defun lookup-word-from-web-other-window-for-exwm (word)
@@ -143,6 +147,19 @@ In a non-interactive call SERVICE can be passed."
       (lookup-word-from-web word)))
 
   (comment (global-set-key (kbd "C-c d") 'lookup-word-from-web-other-window))
-  (global-set-key (kbd "M-#") 'lookup-word-from-web-other-window)
+  (comment (global-set-key (kbd "M-#") 'lookup-word-from-web-other-window))
   (comment (global-set-key (kbd "C-c d") 'lookup-word-from-web))
-  (comment (global-set-key (kbd "C-c D") 'lookup-word-from-web-at-point)))
+  (comment (global-set-key (kbd "C-c D") 'lookup-word-from-web-at-point))
+
+  (progn
+    (let ((map (make-sparse-keymap)))
+      (define-key map (kbd "w") 'lookup-word-from-web-other-window)
+      (define-key map (kbd "d") 'lookup-word-from-web-other-window-directly)
+      (define-key map (kbd "s") 'lookup-word-switch-dictionary)
+
+      (defvar lookup-word-prefix-map map
+        "Keymap for workspace related commands."))
+
+    (fset 'lookup-word-prefix-map lookup-word-prefix-map)
+
+    (key-chord-define-global "d;" 'lookup-word-prefix-map)))
