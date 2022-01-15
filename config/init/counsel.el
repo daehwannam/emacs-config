@@ -2,6 +2,11 @@
 (use-existing-pkg counsel
   :init
   (progn
+    (defun swiper--recenter-p ()
+      ;; fix for not applying scroll on exit in terminal emacs
+      ;; https://github.com/abo-abo/swiper/issues/2159#issuecomment-514967202
+      t)
+
     (defun swiper-with-text-in-region (start end)
       (interactive "r")
       (deactivate-mark)

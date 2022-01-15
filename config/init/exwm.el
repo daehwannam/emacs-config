@@ -535,7 +535,8 @@ in the current window."
                    ([?\s-h] . help-map)
 
                    ([?\s-f] . find-file)
-                   ([?\s-b] . switch-to-buffer)
+                   ;; ([?\s-b] . switch-to-buffer)
+                   ([?\s-b] . ivy-switch-buffer)
                    ([?\C-\s-b] . ivy-switch-buffer-within-app)
                    ([?\s-B] . counsel-switch-buffer-within-app)
                    ([?\s-!] . shell-command)
@@ -716,4 +717,20 @@ in the current window."
 
    ;; React to display connectivity changes, do initial display update
    (add-hook 'exwm-randr-screen-change-hook #'efs/update-displays)
-   (efs/update-displays)))
+   (efs/update-displays))
+
+  (progn
+    ;; https://github.com/tumashu/ivy-posframe
+    (require 'ivy-posframe)
+
+    ;; display at `ivy-posframe-style'
+    (setq ivy-posframe-display-functions-alist
+      '((ivy-switch-buffer                . ivy-posframe-display-at-frame-center)
+        (ivy-switch-buffer-within-app     . ivy-posframe-display-at-frame-center)
+        (counsel-switch-buffer            . ivy-posframe-display-at-frame-center)
+        (counsel-switch-buffer-within-app . ivy-posframe-display-at-frame-center)
+        (counsel-M-x                      . ivy-posframe-display-at-frame-bottom-left)
+        ;; (counsel-M-x                      . ivy-posframe-display-at-window-bottom-left)
+        (t                                . ivy-display-function-fallback)))
+
+    (ivy-posframe-mode 1)))

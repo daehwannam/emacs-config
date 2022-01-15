@@ -75,7 +75,7 @@
      (ms-desktop (vlf magit key-chord modalka evil dash))
      (semparse (jsonnet-mode))
      (web-edit (atomic-chrome))
-     (exwm-setup (exwm volume hide-mode-line))
+     (exwm-setup (exwm volume hide-mode-line ivy-posframe))
      )))
 
 ;;; emacs configuration association list
