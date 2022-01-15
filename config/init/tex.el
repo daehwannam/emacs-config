@@ -37,7 +37,7 @@
    '(pdf-view-incompatible-modes
      '(linum-relative-mode helm-linum-relative-mode nlinum-mode nlinum-hl-mode nlinum-relative-mode yalinum-mode)))
 
-  (progn
+  (comment
     ;; Using pdf-tools as the default view for AUCTeX
     ;;
     ;; https://emacs.stackexchange.com/a/19475
@@ -62,6 +62,11 @@
               :fetcher github
               :repo "dalanicolai/pdf-continuous-scroll-mode.el"))
    (add-hook 'pdf-view-mode-hook 'pdf-continuous-scroll-mode)))
+
+(progn
+  ;; Okular as the default pdf viewer
+  ;; https://www.emacswiki.org/emacs/AUCTeX#h5o-27
+  (setq TeX-view-program-selection '((output-pdf "Okular"))))
 
 (progn
   ;; enable forward search
