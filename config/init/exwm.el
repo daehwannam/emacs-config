@@ -677,7 +677,7 @@ in the current window."
         (define-key exwm-mode-map (kbd "C-;") 'exwm-input-send-next-key)
         (comment (define-key exwm-mode-map (kbd "C-q") 'ctl-x-map))
         (define-key exwm-mode-map (kbd "M-!") 'shell-command)
-        (define-key exwm-mode-map (kbd "M-#") 'lookup-word-from-web-other-window-for-exwm)
+        (comment (define-key exwm-mode-map (kbd "M-#") 'lookup-word-from-web-other-window-for-exwm))
         (comment (define-key exwm-mode-map (kbd "C-x b") 'switch-to-buffer))
         (comment (define-key exwm-mode-map (kbd "M-&") 'exwm-my-execute-shell-command))
         (lambda (command)
@@ -733,4 +733,10 @@ in the current window."
         ;; (counsel-M-x                      . ivy-posframe-display-at-window-bottom-left)
         (t                                . ivy-display-function-fallback)))
 
-    (ivy-posframe-mode 1)))
+    (ivy-posframe-mode 1))
+
+  (progn
+    ;; https://github.com/yanghaoxie/which-key-posframe
+    (require 'which-key-posframe)
+    (which-key-posframe-mode)
+    (setq which-key-posframe-poshandler 'posframe-poshandler-frame-center)))
