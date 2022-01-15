@@ -22,6 +22,11 @@
   (comment (setq LaTeX-command-style '(("" "%(PDF)%(latex) -shell-escape %S%(PDFout)"))))
   (setq LaTeX-command-style '(("" "%(PDF)%(latex) -shell-escape %S%(PDFout) --synctex=1"))))
 
+(progn
+  ;; to update `TeX-view-program-selection' with setcar,
+  ;; `TeX-view-program-selection' should be loaded by (require 'tex)
+  (require 'tex))
+
 (when (package-installed-p 'pdf-tools)
   (progn
     ;; install pdf-tools if didin't yet
@@ -37,17 +42,19 @@
    '(pdf-view-incompatible-modes
      '(linum-relative-mode helm-linum-relative-mode nlinum-mode nlinum-hl-mode nlinum-relative-mode yalinum-mode)))
 
-  (comment
+  (progn
     ;; Using pdf-tools as the default view for AUCTeX
     ;;
     ;; https://emacs.stackexchange.com/a/19475
     ;; https://emacs.stackexchange.com/a/19475
 
     ;; to use pdfview with auctex
-    (setq TeX-view-program-selection '((output-pdf "PDF Tools"))
-          ;; TeX-view-program-list '(("PDF Tools" TeX-pdf-tools-sync-view))
-          ;; TeX-source-correlate-start-server t ; not sure if last line is neccessary
-          )
+    (comment
+      (setq TeX-view-program-selection '((output-pdf "PDF Tools"))
+            ;; TeX-view-program-list '(("PDF Tools" TeX-pdf-tools-sync-view))
+            ;; TeX-source-correlate-start-server t ; not sure if last line is neccessary
+            ))
+    (setcar (cdr (assoc 'output-pdf TeX-view-program-selection)) "PDF Tools")
 
     ;; to have the buffer refresh after compilation
     (add-hook 'TeX-after-compilation-finished-functions
@@ -56,20 +63,27 @@
   (comment
     ;; continuous scrolling
     ;; https://github.com/politza/pdf-tools/issues/27#issuecomment-927129868
-   (assert (package-installed-p 'quelpa))
-   (setq quelpa-update-melpa-p nil)  ; disabling auto-updating
+    (assert (package-installed-p 'quelpa))
+    (setq quelpa-update-melpa-p nil)    ; disabling auto-updating
     (quelpa '(pdf-continuous-scroll-mode
               :fetcher github
               :repo "dalanicolai/pdf-continuous-scroll-mode.el"))
-   (add-hook 'pdf-view-mode-hook 'pdf-continuous-scroll-mode)))
+    (add-hook 'pdf-view-mode-hook 'pdf-continuous-scroll-mode)))
 
-(progn
+(comment
   ;; Okular as the default pdf viewer
   ;; https://www.emacswiki.org/emacs/AUCTeX#h5o-27
-  (setq TeX-view-program-selection '((output-pdf "Okular"))))
+  (comment (setq TeX-view-program-selection '((output-pdf "Okular"))))
+  (setcar (cdr (assoc 'output-pdf TeX-view-program-selection)) "Okular"))
 
 (progn
   ;; enable forward search
   ;; https://lists.gnu.org/archive/html/auctex/2021-07/msg00018.html
   (setq TeX-source-correlate-mode t
-        TeX-source-correlate-start-server t))
+        TeX-source-correlate-start-server t)
+
+  ;; [key bindings for forward/inverse search]
+  ;; https://www.gnu.org/software/auctex/manual/auctex/I_002fO-Correlation.html
+  ;; forward search -> TeX-view (C-c C-v)
+  ;; inverse search -> C-down-mouse-1 for pdf-tools (or "shift + left-mouse" for Okular)
+  )
