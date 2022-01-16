@@ -173,7 +173,16 @@ When non-nil, INITIAL-INPUT is the initial search pattern."
     ;; (global-set-key (kbd "C-c C-s") 'swiper-with-text-in-region)
     )
 
-  :after (key-chord))
+  :after (key-chord)
+
+  :config
+  (progn
+    (progn
+      ;; replace `ivy-partial-or-done'
+      (define-key ivy-minibuffer-map (kbd "TAB") 'ivy-partial)
+
+      ;; disable magic-tilde
+      (setq ivy-magic-tilde nil))))
 
 (use-existing-pkg counsel-projectile-mode
   :init
