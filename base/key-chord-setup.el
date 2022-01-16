@@ -12,7 +12,7 @@
       (setq key-chord-one-key-delay 0.2))
 
     (progn
-      (key-chord-define-global ";f" (lookup-key (current-global-map) (kbd "C-x C-f")))
+      (key-chord-define-global ";f" (lookup-key (current-global-map) (kbd "C-x C-f"))) ; find-file
       (key-chord-define-global "xs" 'save-buffer)
       (key-chord-define-global "xc" 'save-buffers-kill-emacs)
       (comment

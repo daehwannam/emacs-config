@@ -155,6 +155,7 @@ When non-nil, INITIAL-INPUT is the initial search pattern."
     (progn
       ;; counsel-mode
       (global-set-key (kbd "M-x") 'counsel-M-x)
+      ;; (key-chord-define-global ";f" 'counsel-find-file)
       ;; (global-set-key (kbd "C-x C-f") 'counsel-find-file)
       (global-set-key (kbd "<f1> f") 'counsel-describe-function)
       (global-set-key (kbd "<f1> v") 'counsel-describe-variable)
