@@ -7,9 +7,16 @@
 
 (when (and exwm-cmd-arg-passed
            (machine-config-get-first 'exwm-multiple-monitor-layout-type))
-    ;; this prevent wrong window deployment when
-    ;; `exwm-base-input-simulation-keys' has many commands
-    (exwm-init))
+  (progn
+   ;; this prevent wrong frame deployment when
+   ;; `exwm-base-input-simulation-keys' has many commands
+   (exwm-init))
+
+  (progn
+    ;; unblind some keys
+    (mapcar #'global-unset-key (where-is-internal 'make-frame-command))
+    (mapcar #'global-unset-key (where-is-internal 'delete-frame))
+    (mapcar #'global-unset-key (where-is-internal 'delete-other-frames))))
 
 (progn
   (defun define-key-from-C-c (map key)

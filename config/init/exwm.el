@@ -225,7 +225,7 @@
           (/ workspace-idx exwm-workspace-group-max-size))
 
         (defun exwm-get-last-workspace-group-index ()
-          (exwm-get-workspace-group-index (1- (length (frame-list)))))
+          (exwm-get-workspace-group-index (1- (exwm-workspace--count))))
 
         (defun exwm-get-workspace-group-member-idx (workspace-idx)
           (- workspace-idx (* (exwm-get-workspace-group-index workspace-idx)
@@ -268,11 +268,12 @@
 
         (defun exwm-workspace-group-switch-next-group (count)
           (interactive "p")
-          
-          (let* ((current-group-idx (exwm-get-workspace-group-index exwm-workspace-current-index))
-                 (num-groups (1+ (exwm-get-last-workspace-group-index)))
-                 (next-group-idx (% (+ current-group-idx count num-groups) num-groups)))
-            (exwm-workspace-group-switch-create next-group-idx)))
+          (if (<= (exwm-workspace--count) exwm-workspace-group-max-size)
+              (user-error "There's no other workspace group")
+            (let* ((current-group-idx (exwm-get-workspace-group-index exwm-workspace-current-index))
+                   (num-groups (1+ (exwm-get-last-workspace-group-index)))
+                   (next-group-idx (% (+ current-group-idx count num-groups) num-groups)))
+              (exwm-workspace-group-switch-create next-group-idx))))
 
         (defun exwm-workspace-group-switch-previous-group ()
           (interactive)
@@ -296,7 +297,25 @@
             (if (y-or-n-p (format "Are you sure you want to close this workspace group? "))
 	        (exwm-workspace-group-delete
                  (exwm-get-workspace-group-index exwm-workspace-current-index))
-              (message "Canceled workspace group close"))))
+              (message "Canceled closing the current workspace group"))))
+
+        (defun exwm-workspace-group-delete-other-groups ()
+          (interactive)
+          (if (<= (exwm-workspace--count) exwm-workspace-group-max-size)
+              (user-error "There's no other workspace group")
+            (if (y-or-n-p (format "Are you sure you want to close other workspace groups? "))
+                (let ((prev-workspace-idx exwm-workspace-current-index))
+                  (let* ((group-idx (exwm-get-workspace-group-index exwm-workspace-current-index))
+                         (first-workspace-idx-in-group (* group-idx exwm-workspace-group-max-size))
+                         (workspace-indices-in-group
+                          (number-sequence first-workspace-idx-in-group
+                                           (+ first-workspace-idx-in-group
+                                              (1- exwm-workspace-group-max-size)))))
+                    (dolist (i (reverse (number-sequence 0 (1- (exwm-workspace--count)))))
+                      (unless (member i workspace-indices-in-group)
+                        (exwm-workspace-delete i))))
+                  (exwm-workspace-switch (% prev-workspace-idx (exwm-workspace--count))))
+              (message "Canceled closing other workspace groups"))))
 
         (defun exwm-workspace-swap-by-workspace-indices (index1 index2)
           (exwm-workspace-swap (exwm-workspace--workspace-from-frame-or-index index1)
@@ -323,10 +342,10 @@
           (define-key map (kbd "o") (make-repeatable-command 'exwm-other-workspace-in-group))
           (define-key map (kbd "O") (make-repeatable-command 'exwm-other-workspace-in-group-backwards))
 
-          (define-key map (kbd "s") 'exwm-workspace-group-switch-create)
           (define-key map (kbd "w") 'exwm-workspace-group-swap-current-group-number)
 
           (define-key map (kbd "8") 'exwm-workspace-group-add-group)
+          (define-key map (kbd "9") 'exwm-workspace-group-delete-other-groups)
           (define-key map (kbd "0") 'exwm-workspace-group-delete-current-group)))
 
       (progn
