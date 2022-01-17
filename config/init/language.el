@@ -43,8 +43,11 @@
 
     ;; 두벌식 키보드 설정
     (setq default-korean-keyboard 'korean-hangul2)
+
+    ;; set the default input method
     (unless (assoc (symbol-name 'korean-hangul2) input-method-alist)
       (setq default-input-method 'korean-hangul))
+
     ;; 아래 설정은 한영 전환을 shift-tab으로 설정하는 설정입니다.
     (global-set-key (kbd "S-<SPC>") 'toggle-input-method))
   )

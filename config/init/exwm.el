@@ -553,13 +553,14 @@ in the current window."
                    ([?\s-w] . tab-prefix-map)
                    ([?\s-e] . my-ctl-c-map)
                    ([?\s-h] . help-map)
+                   ([?\s-u] . universal-argument)
 
                    ;; ([?\s-f] . counsel-find-file)
                    ([?\s-l] . counsel-find-file)
                    ;; ([?\s-b] . switch-to-buffer)
                    ([?\s-j] . ivy-switch-buffer)
                    ([?\s-k] . kill-buffer)
-                   ([?\C-\s-b] . ivy-switch-buffer-within-app)
+                   ([?\C-\s-j] . ivy-switch-buffer-within-app)
                    ([?\s-B] . counsel-switch-buffer-within-app)
                    ([?\s-!] . shell-command)
 
@@ -755,6 +756,9 @@ in the current window."
         ;; (t                                . ivy-display-function-fallback)
         ))
 
+    (comment
+     ;; display emacs's minibuffer
+     (setq ivy-posframe-hide-minibuffer nil))
     (ivy-posframe-mode 1))
 
   (progn
