@@ -742,27 +742,27 @@ in the current window."
    (add-hook 'exwm-randr-screen-change-hook #'efs/update-displays)
    (efs/update-displays))
 
-  (progn
+  (when (fboundp 'ivy-posframe-mode)
     ;; https://github.com/tumashu/ivy-posframe
     (require 'ivy-posframe)
 
     ;; display at `ivy-posframe-style'
     (setq ivy-posframe-display-functions-alist
-      '((ivy-switch-buffer                . ivy-posframe-display-at-frame-center)
-        (counsel-find-file                . ivy-posframe-display-at-frame-center)
-        (counsel-M-x                      . ivy-posframe-display-at-frame-bottom-left)
-        (swiper                           . ivy-posframe-display-at-frame-bottom-left)
-        (t                                . ivy-posframe-display-at-frame-bottom-left)
-        ;; (t                                . ivy-display-function-fallback)
-        ))
+          '((ivy-switch-buffer                . ivy-posframe-display-at-frame-center)
+            (counsel-find-file                . ivy-posframe-display-at-frame-center)
+            (counsel-M-x                      . ivy-posframe-display-at-frame-bottom-left)
+            (swiper                           . ivy-posframe-display-at-frame-bottom-left)
+            (t                                . ivy-posframe-display-at-frame-bottom-left)
+            ;; (t                                . ivy-display-function-fallback)
+            ))
 
     (comment
      ;; display emacs's minibuffer
      (setq ivy-posframe-hide-minibuffer nil))
-    (ivy-posframe-mode 1))
+    (ivy-posframe-mode 1)
 
-  (progn
-    ;; https://github.com/yanghaoxie/which-key-posframe
-    (require 'which-key-posframe)
-    (which-key-posframe-mode)
-    (setq which-key-posframe-poshandler 'posframe-poshandler-frame-center)))
+    (when (fboundp 'which-key-posframe-mode)
+      ;; https://github.com/yanghaoxie/which-key-posframe
+      (require 'which-key-posframe)
+      (which-key-posframe-mode)
+      (setq which-key-posframe-poshandler 'posframe-poshandler-frame-center))))

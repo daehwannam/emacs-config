@@ -22,3 +22,8 @@
 ;; (add-to-list 'default-frame-alist '(fullscreen . maximized))
 
 ;; (fringe-mode 1)
+
+(progn
+  ;; left mouse click to open a file or a directory in the current buffer
+  ;; https://emacs.stackexchange.com/a/20893
+  (define-key dired-mode-map [mouse-2] 'dired-find-file))
