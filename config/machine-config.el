@@ -76,6 +76,7 @@
      (semparse (jsonnet-mode))
      (web-edit (atomic-chrome))
      (exwm-setup (exwm volume hide-mode-line ivy-posframe which-key-posframe))
+     (vertico-setup (vertico orderless savehist vertico-posframe mini-frame marginalia embark-consult))
      )))
 
 ;;; emacs configuration association list

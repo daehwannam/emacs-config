@@ -102,7 +102,16 @@
        '(ein:cell-input-area ((t (:background "black"))))))
 
     (comment(custom-set-faces
-             '(org-scheduled ((t (:foreground "PaleGreen")))))))
+             '(org-scheduled ((t (:foreground "PaleGreen"))))))
+
+    (progn
+      ;; vertico & consult config
+      (custom-set-faces
+       ;; '(vertico-current ((t (:inherit highlight :background "royal blue"))))
+       ;; '(consult-preview-line ((t (:inherit highlight :background "royal blue"))))
+       '(vertico-current ((t (:inherit nil :underline t))))
+       '(consult-preview-line ((t (:inherit nil :underline t))))))
+    )
 
    (when (package-installed-p 'highlight-parentheses)
      (custom-set-faces
