@@ -495,7 +495,7 @@ in the current window."
         (global-set-key (kbd "C-x b") 'switch-to-buffer)
         (global-set-key (kbd "C-x M-b") 'ivy-switch-buffer)
         (global-set-key (kbd "C-x B") 'counsel-switch-buffer)
-        (key-chord-define-global "qb" 'ivy-switch-buffer)
+        (key-chord-define-global "qj" 'ivy-switch-buffer)
         (key-chord-define-global "qd" 'exwm-my-workspace-prefix-map))
 
       (comment

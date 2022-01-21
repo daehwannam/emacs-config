@@ -127,7 +127,8 @@ When non-nil, INITIAL-INPUT is the initial search pattern."
       ;; http://oremacs.com/swiper/
       ;; Initialization
       ;; (ivy-mode 1)
-      (setq ivy-use-virtual-buffers t)
+      (comment (setq ivy-use-virtual-buffers t))
+      (setq ivy-use-virtual-buffers nil)
       (setq ivy-count-format "(%d/%d) ")
 
       (progn
@@ -146,7 +147,7 @@ When non-nil, INITIAL-INPUT is the initial search pattern."
       ;; ivy-resume resumes the last Ivy-based completion.
       (global-set-key (kbd "C-c C-r") 'ivy-resume))
 
-    (key-chord-define-global "qb" 'counsel-switch-buffer)
+    (key-chord-define-global "qj" 'counsel-switch-buffer)
     (comment
      (unless (and (boundp 'exwm-cmd-arg-passed) exwm-cmd-arg-passed)
        (global-set-key (kbd "C-x b") 'counsel-switch-buffer)

@@ -41,7 +41,8 @@
     (define-key vertico-map (kbd "C-j") #'vertico-exit-input))
 
   (comment
-    ;; `orderless' for `completion-styles' doesn't work with `shell-command'
+    ;; `orderless' is necessary for `consult-lin'
+
     (use-existing-pkg orderless
       ;; Optionally use the `orderless' completion style. See
       ;; `+orderless-dispatch' in the Consult wiki for an advanced Orderless style
@@ -53,9 +54,13 @@
       ;; Configure a custom style dispatcher (see the Consult wiki)
       ;; (setq orderless-style-dispatchers '(+orderless-dispatch)
       ;;       orderless-component-separator #'orderless-escapable-split-on-space)
-      (setq completion-styles '(orderless)
-            completion-category-defaults nil
-            completion-category-overrides '((file (styles partial-completion))))))
+
+      (setq completion-styles '(orderless))
+      (comment
+        ;; the beolow code doesn't work with `shell-command'
+        (setq completion-styles '(orderless)
+              completion-category-defaults nil
+              completion-category-overrides '((file (styles partial-completion)))))))
 
   (use-existing-pkg savehist
     ;; Persist history over Emacs restarts. Vertico sorts by history position.
@@ -64,6 +69,7 @@
 
   (use-existing-pkg vertico-posframe
     :init
+    (setq vertico-posframe-poshandler #'posframe-poshandler-frame-bottom-left-corner)
     (vertico-posframe-mode 1))
 
   (comment
