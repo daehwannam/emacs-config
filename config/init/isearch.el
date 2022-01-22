@@ -28,4 +28,6 @@
 
   (progn
     (define-key ctrlf-mode-map (kbd "C-n") 'ctrlf-forward-default)
-    (define-key ctrlf-mode-map (kbd "C-p") 'ctrlf-backward-default)))
+    (define-key ctrlf-mode-map (kbd "C-p") 'ctrlf-backward-default)
+    (define-key ctrlf-mode-map (kbd "C-v") #'ctrlf-next-page)
+    (define-key ctrlf-mode-map (kbd "M-v")  #'ctrlf-previous-page)))

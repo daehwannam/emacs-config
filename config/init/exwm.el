@@ -767,4 +767,9 @@ in the current window."
       ;; https://github.com/yanghaoxie/which-key-posframe
       (require 'which-key-posframe)
       (which-key-posframe-mode)
-      (setq which-key-posframe-poshandler 'posframe-poshandler-frame-center))))
+      (setq which-key-posframe-poshandler 'posframe-poshandler-frame-center))
+
+    (use-existing-pkg vertico-posframe
+      :init
+      (setq vertico-posframe-poshandler #'posframe-poshandler-frame-bottom-left-corner)
+      (vertico-posframe-mode 1))))
