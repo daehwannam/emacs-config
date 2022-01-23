@@ -348,6 +348,16 @@
           (define-key map (kbd "9") 'exwm-workspace-group-delete-other-groups)
           (define-key map (kbd "0") 'exwm-workspace-group-delete-current-group)))
 
+      (when (package-installed-p 'volume)
+        (defhydra hydra-volume ()
+          "volume"
+          ("q" nil "quit")
+          ("+" volume-raise-10)
+          ("-" volume-lower-10)
+          ("s" volume-set)
+          ("0" volume-set-to-0%))
+        (define-key exwm-my-workspace-prefix-map (kbd "v") 'hydra-volume/body))
+
       (progn
         ;; xrandr config
         ;; https://github.com/daviwil/emacs-from-scratch/blob/5ebd390119a48cac6258843c7d5e570f4591fdd4/show-notes/Emacs-Desktop-04.org
