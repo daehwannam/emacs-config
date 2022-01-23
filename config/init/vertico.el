@@ -71,10 +71,6 @@
            (height . 1)))))))
 
 (progn
-  (defun my-completion-style-advice (orig-func &rest args)
-    ;; doesn't do additional things
-    (apply orig-func args))
-
   ;; `orderless' is necessary for `consult-line'
   (use-existing-pkg orderless
     ;; Optionally use the `orderless' completion style. See
@@ -102,16 +98,28 @@
         (let ((completion-styles '(orderless))
               (completion-category-defaults nil)
               (completion-category-overrides '((file (styles partial-completion)))))
-          (apply orig-func args)))))
+          (apply orig-func args))))))
+
+
+
+(when (and (fboundp 'vertico--advice) (fboundp 'my-completion-style-advice))
+  (defun add-advice-for-vertico (&rest functions)
+    (mapcar (lambda (x) (progn (advice-add x :around #'vertico--advice)
+                               (advice-add x :around #'my-completion-style-advice)))
+            functions))
+
+  (progn
+    ;; for find-file
+    (add-advice-for-vertico 'read-file-name)
+    (key-chord-define-global "f;" 'find-file))
 
   (use-existing-pkg consult
     :init
     (progn
-      (let ((func-list '(consult--line consult--line-multi-candidates consult--grep consult--read)))
-        (mapcar (lambda (x) (progn (advice-add x :around #'vertico--advice)
-                                   (advice-add x :around #'my-completion-style-advice)))
-                func-list))
-
+      (progn
+        ;; for consult-line, consult-grep, ...
+        (apply #'add-advice-for-vertico (append '(consult--line consult--line-multi-candidates)
+                                                '(consult--grep consult--read))))
       (progn
         (comment (key-chord-define-global "js" 'consult-line))
         (key-chord-define-global "jt" 'consult-line-multi)

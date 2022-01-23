@@ -348,16 +348,6 @@
           (define-key map (kbd "9") 'exwm-workspace-group-delete-other-groups)
           (define-key map (kbd "0") 'exwm-workspace-group-delete-current-group)))
 
-      (when (package-installed-p 'volume)
-        (defhydra hydra-volume ()
-          "volume"
-          ("q" nil "quit")
-          ("+" volume-raise-10)
-          ("-" volume-lower-10)
-          ("s" volume-set)
-          ("0" volume-set-to-0%))
-        (define-key exwm-my-workspace-prefix-map (kbd "v") 'hydra-volume/body))
-
       (progn
         ;; xrandr config
         ;; https://github.com/daviwil/emacs-from-scratch/blob/5ebd390119a48cac6258843c7d5e570f4591fdd4/show-notes/Emacs-Desktop-04.org
@@ -402,6 +392,19 @@
           (t (error "Unknown monitor physical layout configuration")))
 
         (exwm-randr-enable)))
+
+    (when (package-installed-p 'volume)
+      (comment
+        (defhydra hydra-volume ()
+          "volume"
+          ("q" nil "quit")
+          ("+" volume-raise-10)
+          ("=" volume-raise-10)
+          ("-" volume-lower-10)
+          ("s" volume-set)
+          ("0" volume-set-to-0%))
+        (define-key exwm-my-workspace-prefix-map (kbd "v") 'hydra-volume/body))
+      (define-key exwm-my-workspace-prefix-map (kbd "v") 'volume-set))
 
     (progn
       ;; application commands
@@ -501,7 +504,7 @@ in the current window."
       (progn
         ;; normal emacs global commands
         (comment (global-set-key (kbd "M-&") 'async-shell-command))
-        (key-chord-define-global ";f" 'counsel-find-file)
+        (comment (key-chord-define-global ";f" 'counsel-find-file))
         (global-set-key (kbd "C-x b") 'switch-to-buffer)
         (global-set-key (kbd "C-x M-b") 'ivy-switch-buffer)
         (global-set-key (kbd "C-x B") 'counsel-switch-buffer)
@@ -565,9 +568,8 @@ in the current window."
                    ([?\s-h] . help-map)
                    ([?\s-u] . universal-argument)
 
-                   ;; ([?\s-f] . counsel-find-file)
-                   ([?\s-l] . counsel-find-file)
-                   ;; ([?\s-b] . switch-to-buffer)
+                   ;; ([?\s-l] . counsel-find-file)
+                   ([?\s-l] . find-file)
                    ([?\s-j] . ivy-switch-buffer)
                    ([?\s-k] . kill-buffer)
                    ([?\C-\s-j] . ivy-switch-buffer-within-app)
@@ -582,15 +584,18 @@ in the current window."
                    ([?\s-p] . tab-previous)
                    ([?\s-n] . tab-next))
 
+                 '(([S-s-up] . volume-raise-10)
+                   ([S-s-down] . volume-lower-10))
+                 
                  (if (machine-config-get-first 'exwm-multiple-monitor-layout-type)
                      '(([?\C-\s-i] . exwm-other-workspace-in-group-backwards)
                        ([?\C-\s-o] . exwm-other-workspace-in-group)
                        ([?\C-\s-p] . exwm-workspace-group-switch-previous-group)
                        ([?\C-\s-n] . exwm-workspace-group-switch-next-group))
-                     '(([?\C-\s-i] . exwm-other-workspace-backwards)
-                       ([?\C-\s-o] . exwm-other-workspace)
-                       ([?\C-\s-p] . exwm-other-workspace-backwards)
-                       ([?\C-\s-n] . exwm-other-workspace)))
+                   '(([?\C-\s-i] . exwm-other-workspace-backwards)
+                     ([?\C-\s-o] . exwm-other-workspace)
+                     ([?\C-\s-p] . exwm-other-workspace-backwards)
+                     ([?\C-\s-n] . exwm-other-workspace)))
 
                  `(;; 's-N': Switch to certain workspace.
                    ,@(mapcar (lambda (i)
@@ -762,10 +767,11 @@ in the current window."
       (setq ivy-posframe-display-functions-alist
             '((ivy-switch-buffer                . ivy-posframe-display-at-frame-center)
               (counsel-find-file                . ivy-posframe-display-at-frame-center)
-              (counsel-M-x                      . ivy-posframe-display-at-frame-bottom-left)
-              (swiper                           . ivy-posframe-display-at-frame-bottom-left)
-              (t                                . ivy-posframe-display-at-frame-bottom-left)
+              (counsel-M-x                      . ivy-posframe-display-at-frame-bottom-center)
+              (swiper                           . ivy-posframe-display-at-frame-bottom-center)
+              (t                                . ivy-posframe-display-at-frame-bottom-center)
               ;; (t                                . ivy-display-function-fallback)
+              ;; (t                                . ivy-posframe-display-at-frame-bottom-left)
               ))
 
       (comment
@@ -781,5 +787,14 @@ in the current window."
 
     (use-existing-pkg vertico-posframe
       :init
-      (setq vertico-posframe-poshandler #'posframe-poshandler-frame-bottom-left-corner)
-      (vertico-posframe-mode 1))))
+      (progn
+        (progn
+          ;; set the default poshandler
+          (setq vertico-posframe-poshandler #'posframe-poshandler-frame-bottom-center))
+        (defun my-vertico-posframe-poshandler-advice-to-display-at-frame-center (orig-func &rest args)
+          (let ((vertico-posframe-poshandler #'posframe-poshandler-frame-center))
+            (apply orig-func args)))
+        (progn
+          ;; for find-file
+          (advice-add 'read-file-name :around #'my-vertico-posframe-poshandler-advice-to-display-at-frame-center))
+        (vertico-posframe-mode 1)))))
