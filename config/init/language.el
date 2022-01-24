@@ -68,7 +68,11 @@
         (let ((font-height (machine-config-get-first 'exwm-font-height)))
           (when font-height
             ;; font size
-            (set-face-attribute 'default nil :height font-height)))))
+            (set-face-attribute 'default nil :height font-height)
+            (progn
+              ;; some themes, such as manoj-dark, changes font-height to a fixed value
+              (comment (set-face-attribute 'completions-common-part nil :height (round (* font-height 1.0))))
+              (set-face-attribute 'completions-common-part nil :height 'unspecified))))))
     (comment
      ;; this make non full-sized frames for exwm
      (defun make-frame-command-font-advice (&rest args)
