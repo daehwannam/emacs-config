@@ -432,6 +432,16 @@
         (comment (start-process-shell-command "web-browser" nil "google-chrome --new-window --incognito"))
         (comment (start-process-shell-command "web-browser" nil "xdg-open https://")))
 
+      (defun exwm-my-command-open-google-chrome ()
+        (interactive)
+        (start-process-shell-command "web-browser" nil "google-chrome")
+        (comment (start-process-shell-command "web-browser" nil "google-chrome --app=https://www.google.com/")))
+
+      (defun exwm-my-command-open-google-chrome-incognito ()
+        (interactive)
+        (start-process-shell-command "web-browser" nil "google-chrome --incognito")
+        (comment (start-process-shell-command "web-browser" nil "google-chrome --new-window google.com --incognito")))
+
       (defun exwm-my-command-open-terminal-emulator ()
         (interactive)
         (start-process-shell-command "terminal" nil "kitty"))
@@ -439,6 +449,8 @@
       (let ((map (make-sparse-keymap)))
         (define-key map (kbd "w") 'exwm-my-command-open-web-browser)
         (define-key map (kbd "W") 'exwm-my-command-open-web-browser-incognito)
+        (define-key map (kbd "c") 'exwm-my-command-open-google-chrome)
+        (define-key map (kbd "C") 'exwm-my-command-open-google-chrome-incognito)
         (define-key map (kbd "e") 'exwm-my-command-open-terminal-emulator)
 
 	(defvar exwm-my-command-prefix-map map
