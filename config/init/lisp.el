@@ -34,12 +34,13 @@
       ;; fix emacs-lisp's indentation as common-lisp's
       ;; https://emacs.stackexchange.com/a/13202
       (require 'cl-indent)
-      (put 'comment 'lisp-indent-function
-           (get 'progn 'common-lisp-indent-function))
-      (put 'cl-flet 'lisp-indent-function
-           (get 'flet 'common-lisp-indent-function))
-      (put 'cl-labels 'lisp-indent-function
-           (get 'labels 'common-lisp-indent-function)))))
+        (put 'comment 'lisp-indent-function
+             (get 'progn 'common-lisp-indent-function))
+        (comment
+          (put 'cl-flet 'lisp-indent-function
+               (get 'flet 'common-lisp-indent-function))
+          (put 'cl-labels 'lisp-indent-function
+               (get 'labels 'common-lisp-indent-function))))))
 
 (let ((path-to-slime-helper (machine-config-get-first 'path-to-slime-helper))
       (path-to-inferior-lisp-program (machine-config-get-first 'path-to-inferior-lisp-program)))

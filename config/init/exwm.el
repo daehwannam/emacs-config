@@ -73,8 +73,8 @@
           (message
            (if id
                (slot-value (xcb:+request-unchecked+reply
-                               exwm--connection
-                               (make-instance 'xcb:ewmh:get-_NET_WM_PID :window id))
+                            exwm--connection
+                            (make-instance 'xcb:ewmh:get-_NET_WM_PID :window id))
                            'value)
              (user-error "Target buffer %S is not an X window managed by EXWM!"
                          buf))))))
