@@ -15,8 +15,8 @@
     (ctrlf-mode 1))
 
   (let ((keymap (current-global-map)))
-    (define-key keymap [remap isearch-forward] #'ctrlf-forward-default)
-    (define-key keymap [remap isearch-backward] #'ctrlf-backward-default)
+    (comment (define-key keymap [remap isearch-forward] #'ctrlf-forward-default))
+    (comment (define-key keymap [remap isearch-backward] #'ctrlf-backward-default))
     (define-key keymap [remap isearch-forward-regexp] #'ctrlf-forward-alternate)
     (define-key keymap [remap isearch-backward-regexp] #'ctrlf-backward-alternate)
     (define-key keymap [remap isearch-forward-symbol] #'ctrlf-forward-symbol)
@@ -24,7 +24,8 @@
 
   (progn
     ;; (key-chord-define-global "" #'ctrlf-forward-symbol)
-    (key-chord-define-global "f." #'ctrlf-forward-symbol-at-point))
+    (key-chord-define-global "f." #'ctrlf-forward-symbol-at-point)
+    (key-chord-define-global "fj" #'ctrlf-forward-default))
 
   (progn
     (define-key ctrlf-mode-map (kbd "C-n") 'ctrlf-forward-default)
