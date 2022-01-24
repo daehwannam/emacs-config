@@ -30,7 +30,7 @@
       ;; replace emacs-lisp's indentation with common-lisp's
       ;; https://stackoverflow.com/a/22167050
       (setq lisp-indent-function 'common-lisp-indent-function))
-    (comment
+    (progn
       ;; fix emacs-lisp's indentation as common-lisp's
       ;; https://emacs.stackexchange.com/a/13202
       (require 'cl-indent)
