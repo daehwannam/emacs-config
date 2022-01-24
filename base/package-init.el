@@ -55,5 +55,7 @@
 
     (font-lock-add-keywords 'emacs-lisp-mode use-existing-pkg-font-lock-keywords))
 
-  ;; change indentation
-  (function-put 'use-existing-pkg 'lisp-indent-function '1))
+  (progn
+    ;; change indentation
+    (function-put 'use-package 'lisp-indent-function '1)
+    (function-put 'use-existing-pkg 'lisp-indent-function '1)))

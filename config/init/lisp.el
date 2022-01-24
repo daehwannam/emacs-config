@@ -13,31 +13,33 @@
     (setq lisp-indent-function 'common-lisp-indent-function)
 
     (require 'cl-indent)
-    (eval-after-load 'cl-indent
+    (progn
       ;; https://emacs.stackexchange.com/a/13202
-      `(progn
-         (put 'comment 'common-lisp-indent-function
-              (get 'progn 'common-lisp-indent-function))
-         (put 'cl-flet 'common-lisp-indent-function
-              (get 'flet 'common-lisp-indent-function))
-         (put 'cl-labels 'common-lisp-indent-function
-              (get 'labels 'common-lisp-indent-function))
-         (progn
-           ;; use emacs's default `if' indentation
-           (put 'if 'common-lisp-indent-function 2)))))
+      (put 'comment 'common-lisp-indent-function
+           (get 'progn 'common-lisp-indent-function))
+      (put 'cl-flet 'common-lisp-indent-function
+           (get 'flet 'common-lisp-indent-function))
+      (put 'cl-labels 'common-lisp-indent-function
+           (get 'labels 'common-lisp-indent-function))
+      (progn
+        ;; use emacs's default `if' indentation
+        (put 'if 'common-lisp-indent-function 2))))
 
   (progn
-    ;; fix emacs-lisp's indentation as common-lisp's
-    (require 'cl-indent)
-    (eval-after-load 'cl-indent
+    (progn
+      ;; replace emacs-lisp's indentation with common-lisp's
+      ;; https://stackoverflow.com/a/22167050
+      (setq lisp-indent-function 'common-lisp-indent-function))
+    (comment
+      ;; fix emacs-lisp's indentation as common-lisp's
       ;; https://emacs.stackexchange.com/a/13202
-      `(progn
-         (put 'comment 'lisp-indent-function
-              (get 'progn 'common-lisp-indent-function))
-         (put 'cl-flet 'lisp-indent-function
-              (get 'flet 'common-lisp-indent-function))
-         (put 'cl-labels 'lisp-indent-function
-              (get 'labels 'common-lisp-indent-function))))))
+      (require 'cl-indent)
+      (put 'comment 'lisp-indent-function
+           (get 'progn 'common-lisp-indent-function))
+      (put 'cl-flet 'lisp-indent-function
+           (get 'flet 'common-lisp-indent-function))
+      (put 'cl-labels 'lisp-indent-function
+           (get 'labels 'common-lisp-indent-function)))))
 
 (let ((path-to-slime-helper (machine-config-get-first 'path-to-slime-helper))
       (path-to-inferior-lisp-program (machine-config-get-first 'path-to-inferior-lisp-program)))
