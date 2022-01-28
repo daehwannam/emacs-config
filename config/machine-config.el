@@ -13,9 +13,11 @@
   '((theme-style (white-theme-machine white))
     (ai-edu-key-binding (vbox t))
     (path-to-slime-helper
+     (descartes "~/quicklisp/slime-helper.el")
      (vbox "~/quicklisp/slime-helper.el")
      (ubuntu-laptop "~/quicklisp/slime-helper.el"))
     (path-to-inferior-lisp-program
+     (descartes "/usr/bin/sbcl")
      (vbox "/usr/bin/sbcl")
      (ubuntu-laptop "/home/dhnam/program/miniconda3/envs/default/bin/sbcl"))
     (etags-list (vbox ("/usr/share/emacs/25.3/lisp" "~/.emacs.d")))

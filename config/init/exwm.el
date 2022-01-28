@@ -413,7 +413,8 @@
 
       (defun exwm-my-command-open-web-browser ()
         (interactive)
-        (start-process-shell-command "web-browser" nil "qutebrowser")
+        (start-process-shell-command "web-browser" nil "nyxt")
+        (comment (start-process-shell-command "web-browser" nil "qutebrowser"))
         (comment (start-process-shell-command "web-browser" nil "firefox -new-window"))
         (comment (start-process-shell-command "web-browser" nil "google-chrome --app=https://www.google.com/"))
         (comment (start-process-shell-command "web-browser" nil "firefox -new-window https://www.google.com/"))
@@ -515,7 +516,7 @@ in the current window."
       (progn
         ;; normal emacs global commands
         (comment (global-set-key (kbd "M-&") 'async-shell-command))
-        (comment (key-chord-define-global ";f" 'counsel-find-file))
+        (key-chord-define-global ";f" 'counsel-find-file)
         (global-set-key (kbd "C-x b") 'switch-to-buffer)
         (global-set-key (kbd "C-x M-b") 'ivy-switch-buffer)
         (global-set-key (kbd "C-x B") 'counsel-switch-buffer)
@@ -579,8 +580,8 @@ in the current window."
                    ([?\s-h] . help-map)
                    ([?\s-u] . universal-argument)
 
-                   ;; ([?\s-l] . counsel-find-file)
-                   ([?\s-l] . find-file)
+                   ([?\s-l] . counsel-find-file)
+                   ;; ([?\s-l] . find-file)
                    ([?\s-j] . ivy-switch-buffer)
                    ([?\s-k] . kill-buffer)
                    ([?\C-\s-j] . ivy-switch-buffer-within-app)
