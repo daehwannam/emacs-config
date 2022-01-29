@@ -108,7 +108,7 @@
                                (advice-add x :around #'my-completion-style-advice)))
             functions))
 
-  (comment
+  (progn
     ;; for find-file
     (add-advice-for-vertico 'read-file-name)
     (key-chord-define-global "f;" 'find-file))
