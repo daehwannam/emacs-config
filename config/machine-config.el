@@ -13,10 +13,12 @@
   '((theme-style (white-theme-machine white))
     (ai-edu-key-binding (vbox t))
     (path-to-slime-helper
+     (slime-setup "~/quicklisp/slime-helper.el")
      (descartes "~/quicklisp/slime-helper.el")
      (vbox "~/quicklisp/slime-helper.el")
      (ubuntu-laptop "~/quicklisp/slime-helper.el"))
     (path-to-inferior-lisp-program
+     (slime-setup "/usr/bin/sbcl")
      (descartes "/usr/bin/sbcl")
      (vbox "/usr/bin/sbcl")
      (ubuntu-laptop "/home/dhnam/program/miniconda3/envs/default/bin/sbcl"))
