@@ -1,6 +1,6 @@
 
 ;;; https://stackoverflow.com/a/12843877
-(add-to-list 'custom-theme-load-path "~/.emacs.d/config/init/theme")
+(add-to-list 'custom-theme-load-path "~/.emacs.d/config/init/theme-collection")
 
 ;;; highlight current line with keeping syntax coloring
 (global-hl-line-mode 1)
@@ -16,20 +16,44 @@
 
 ;;; color theme change
 (let ((theme-style (machine-config-get-first 'theme-style)))
+  (progn
+    (defvar my-current-theme nil)
+    (defun load-and-set-current-theme (theme &optional no-confirm no-enable)
+      (interactive
+       (list
+        (intern (completing-read "Load custom theme: "
+                                 (mapcar #'symbol-name
+				         (custom-available-themes))))
+        nil nil))
+      (setq my-current-theme theme)
+      (load-theme theme my-current-theme)))
+
   (cond
    ((eq theme-style 'white)
-    (load-theme 'leuven)
+    (load-and-set-current-theme 'leuven t)
     (custom-set-faces
      '(mlinum-highlight-face ((t (:inherit default :foreground "purple" :background "white"))))
      ))
    (t ;; (eq theme-style 'dark)
-    (load-theme 'manoj-dark)
+    (comment (load-and-set-current-theme 'my-doom-material-dark t))
+    (load-and-set-current-theme 'my-manoj-dark t)
+    (comment (load-and-set-current-theme 'my-doom-material-dark t))
+    (comment (load-and-set-current-theme 'doom-material-dark t))
+    (comment (load-and-set-current-theme 'manoj-dark))
 
-    (custom-set-faces
-     ;; mode-line config
-     '(mode-line ((t (:stipple nil :background "gray30" :foreground "gray100" :box nil :height 0.9))))
-     '(mode-line-buffer-id ((t (:background "gray65" :foreground "firebrick" :weight bold :height 0.9))))
-     '(mode-line-inactive ((t (:background "gray15" :foreground "gray80" :box nil :weight light :height 0.9)))))
+    (cond
+     ((eq my-current-theme 'my-doom-material-dark)
+      (custom-set-faces
+       '(mode-line ((t (:background "gray25" :foreground "white" :box nil))))
+       '(mode-line-inactive ((t (:background "#202020" :foreground "dark gray" :box nil)))))
+      )
+     ((eq my-current-theme 'manoj-dark)
+      (custom-set-faces
+       ;; mode-line config
+       '(mode-line ((t (:background "gray30" :foreground "gray100" :box nil :height 0.9))))
+       ;; '(mode-line ((t (:background "dark slate gray" :foreground "gray100" :box nil :height 0.9))))
+       '(mode-line-buffer-id ((t (:background "gray65" :foreground "firebrick" :weight bold :height 0.9))))
+       '(mode-line-inactive ((t (:background "gray15" :foreground "gray80" :box nil :weight light :height 0.9)))))))
 
     (custom-set-faces
      ;; hl-line config (highlighting line without losing character color)

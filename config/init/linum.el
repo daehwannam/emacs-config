@@ -3,7 +3,14 @@
  ((fboundp 'display-line-numbers-mode)
   ;; built in line mode
   ;; https://www.reddit.com/r/orgmode/comments/e7pq7k/linummode_very_slow_for_large_org_files/
-  (add-hook 'find-file-hook 'display-line-numbers-mode))
+
+  (defvar display-line-numbers-disabled-modes-list '(pdf-view-mode))
+  (defun turn-on-display-line-numbers-mode ()
+    ;; https://www.emacswiki.org/emacs/LineNumbers#h5o-10
+    (unless (or (minibufferp) (member major-mode display-line-numbers-disabled-modes-list))
+      (display-line-numbers-mode 1)))
+  (comment (add-hook 'find-file-hook 'display-line-numbers-mode))
+  (add-hook 'find-file-hook 'turn-on-display-line-numbers-mode))
  ((fboundp 'linum-mode)
   ;; linum-mode setting
   ;; https://emacs.stackexchange.com/questions/21504/enable-linum-mode-for-all-files-with-extension-but-not-other-buffers
@@ -15,12 +22,12 @@
   (progn
     (setq linum-format "%4d \u2502 ")
     (comment
-     ;; https://emacs.stackexchange.com/a/5343
-     ;; disable fringe color
-     (fringe-mode 1)
-     (set-face-attribute 'fringe nil
-                         :foreground (face-foreground 'default)
-                         :background (face-background 'default))))))
+      ;; https://emacs.stackexchange.com/a/5343
+      ;; disable fringe color
+      (fringe-mode 1)
+      (set-face-attribute 'fringe nil
+                          :foreground (face-foreground 'default)
+                          :background (face-background 'default))))))
 
 (defun copy-linum ()
   ;; copy line number
