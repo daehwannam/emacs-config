@@ -85,3 +85,7 @@
      (progn
        ;; for thee fist frame
        (make-frame-command-font-advice)))))
+
+(defun toggle-caps-lock-key ()
+  (interactive)
+  (start-process-shell-command "xte" nil "xte 'key Caps_Lock'"))
