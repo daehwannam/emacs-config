@@ -29,16 +29,12 @@
   )
 
 (comment
-  (require 'define-word nil t)
-
-  ;; Define word
-  (use-package define-word
-    :ensure t
-    :defer t
-    :bind (("C-c d" . define-word-at-point)
-           ("C-c D" . define-word))
-    :config
-    (setq define-word-default-service 'webster)))
+  (when (require 'define-word nil t)
+    (global-set-key (kbd "C-c d") 'define-word-at-point)
+    (global-set-key (kbd "C-c D") 'define-word)
+    (setq define-word-default-service 'offline-wikitionary)
+    (setq define-word-offline-dict-directory
+          (machine-config-get-first 'define-word-offline-dict-directory-path))))
 
 (progn
   (defvar lookup-word-search-query-table

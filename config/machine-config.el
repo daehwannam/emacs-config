@@ -60,11 +60,13 @@
      (ubuntu-laptop nil))
     (exwm-font-height
      (descartes 145))
+    (define-word-offline-dict-directory-path
+      (ubuntu-laptop "~/data/language/dictionaries_enwiktionary/"))
 
     (installable-packages
      ;; (base (vlf magit key-chord modalka evil avy hydra dash counsel multi-term))
      (basic (vlf magit dash multi-term counsel async wgrep which-key paredit poporg ctrlf))
-     (documentation (org-fragtog auctex latex-preview-pane pdf-tools))
+     (documentation (org-fragtog auctex latex-preview-pane pdf-tools define-word))
      (vbox (vlf magit key-chord modalka evil dash  multi-term auctex latex-preview-pane material-theme elpy flycheck py-autopep8 blacken sphinx-doc workgroups2 perspective counsel iedit wgrep which-key counsel-projectile persp-projectile paredit markdown-mode tuareg ein hy-mode)) ; removed: highlight
      ;; (engels (vlf magit key-chord modalka evil dash elpy flycheck py-autopep8 blacken wgrep which-key projectile flx-ido))
      (engels (vlf magit key-chord modalka evil dash  multi-term elpy flycheck py-autopep8 blacken sphinx-doc wgrep which-key counsel counsel-projectile markdown-mode hy-mode))
