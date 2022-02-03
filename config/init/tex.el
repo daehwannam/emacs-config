@@ -11,6 +11,19 @@
 ;; https://tex.stackexchange.com/a/967
 (add-hook 'LaTeX-mode-hook #'turn-on-flyspell)
 
+(comment
+  ;; Ignore crossref
+  ;;
+  ;; man bibtex : to avoid these automatic inclusions altogether, give this option a sufficiently large number
+  ;; https://tex.stackexchange.com/a/123746
+  ;;
+  ;; how to configure bibtex command
+  ;; https://tex.stackexchange.com/a/397667
+  (eval-after-load "tex"
+    '(setcdr (assoc "BibTeX" TeX-command-list)
+             '("bibtex --min-crossrefs=10000 %s"
+               TeX-run-BibTeX nil t :help "Run BibTeX with ..."))))
+
 (progn
   ;; - Adding options -> https://tex.stackexchange.com/a/161303
   ;;
