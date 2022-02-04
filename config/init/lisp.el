@@ -40,7 +40,12 @@
         (put 'cl-flet 'lisp-indent-function
              (get 'flet 'common-lisp-indent-function))
         (put 'cl-labels 'lisp-indent-function
-             (get 'labels 'common-lisp-indent-function))))))
+             (get 'labels 'common-lisp-indent-function))))
+    (progn
+      ;; common-lisp's indentation
+      (require 'cl-indent)
+      (put 'comment 'common-lisp-indent-function
+           (get 'progn 'common-lisp-indent-function)))))
 
 (let ((path-to-slime-helper (machine-config-get-first 'path-to-slime-helper))
       (path-to-inferior-lisp-program (machine-config-get-first 'path-to-inferior-lisp-program)))
