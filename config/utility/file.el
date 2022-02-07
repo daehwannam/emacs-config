@@ -25,3 +25,14 @@
     (apply 'joindirs
            (expand-file-name (car dirs) root)
            (cdr dirs))))
+
+(defun my-buffer-local-set-key (key command)
+  "Set a key binding for a specific buffer only"
+  ;; https://stackoverflow.com/a/21493693
+  (interactive "KSet key buffer-locally: \nCSet key %s buffer-locally to command: ")
+  (let ((oldmap (current-local-map))
+        (newmap (make-sparse-keymap)))
+    (when oldmap
+      (set-keymap-parent newmap oldmap))
+    (define-key newmap key command)
+    (use-local-map newmap)))
