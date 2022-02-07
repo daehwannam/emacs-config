@@ -63,13 +63,12 @@
       (narrow-to-region beg end)
       (goto-char (point-min))
       (while (re-search-forward "\n+" nil t)
-	(replace-match " ")))
+	    (replace-match " ")))
     (save-restriction
       (narrow-to-region beg end)
       (goto-char (point-min))
       (while (re-search-forward "\\s-+" nil t)  ; \\s-+
-	(replace-match " ")))
-    ))
+	    (replace-match " ")))))
 
 (defun just-one-space-conditionally (&optional n)
   (interactive "*p")

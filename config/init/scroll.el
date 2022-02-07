@@ -1,3 +1,5 @@
+(require 'make-repeatable-command)
+
 ;;; scrolling setting
 ;; http://stackoverflow.com/questions/13274439/how-to-configure-emacs-to-enable-c-v-to-move-cursor-half-window-height
 

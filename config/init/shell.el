@@ -1,4 +1,6 @@
 
+(require 'make-repeatable-command)
+
 (defun shell-new-instance ()
   (interactive)
   (shell (get-buffer-create (generate-new-buffer-name "*shell*"))))
@@ -203,6 +205,7 @@
 (key-chord-define-global "o4" 'conda-shell-with-default-name-other-window)
 
 (progn
+  (require 'comint)
   (comment
    (defhydra hydra-comint-previous-next-matching-input-from-input ()
      "comint previous/next matching input"

@@ -20,7 +20,7 @@
     ;; (setq vertico-resize t)
 
     ;; Optionally enable cycling for `vertico-next' and `vertico-previous'.
-    (setq vertico-cycle t)
+    (comment (setq vertico-cycle t))
 
     (progn
       ;; A few more useful configurations...
@@ -47,6 +47,23 @@
     (define-key vertico-map (kbd "C-j") #'vertico-exit-input)
     (define-key vertico-map (kbd "M-v") #'vertico-scroll-down)
     (define-key vertico-map (kbd "C-v") #'vertico-scroll-up)))
+
+(use-existing-pkg vertico-posframe
+  ;; Note: `awesome-tray-mode' is not compatible with the default
+  ;; mini-buffer by `vertico' in the newly created frame for GUI
+  ;; emacs.  Therfore, `vertico-posframe' should be enabled.
+  :init
+  (progn
+    (progn
+      ;; set the default poshandler
+      (setq vertico-posframe-poshandler #'posframe-poshandler-frame-bottom-center))
+    (defun my-vertico-posframe-poshandler-advice-to-display-at-frame-center (orig-func &rest args)
+      (let ((vertico-posframe-poshandler #'posframe-poshandler-frame-center))
+        (apply orig-func args)))
+    (progn
+      ;; for find-file
+      (advice-add 'read-file-name :around #'my-vertico-posframe-poshandler-advice-to-display-at-frame-center))
+    (vertico-posframe-mode 1)))
 
 (use-existing-pkg savehist
   ;; Persist history over Emacs restarts. Vertico sorts by history position.

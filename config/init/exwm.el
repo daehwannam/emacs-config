@@ -796,18 +796,4 @@ in the current window."
       ;; https://github.com/yanghaoxie/which-key-posframe
       (require 'which-key-posframe)
       (which-key-posframe-mode)
-      (setq which-key-posframe-poshandler 'posframe-poshandler-frame-center))
-
-    (use-existing-pkg vertico-posframe
-      :init
-      (progn
-        (progn
-          ;; set the default poshandler
-          (setq vertico-posframe-poshandler #'posframe-poshandler-frame-bottom-center))
-        (defun my-vertico-posframe-poshandler-advice-to-display-at-frame-center (orig-func &rest args)
-          (let ((vertico-posframe-poshandler #'posframe-poshandler-frame-center))
-            (apply orig-func args)))
-        (progn
-          ;; for find-file
-          (advice-add 'read-file-name :around #'my-vertico-posframe-poshandler-advice-to-display-at-frame-center))
-        (vertico-posframe-mode 1)))))
+      (setq which-key-posframe-poshandler 'posframe-poshandler-frame-center))))

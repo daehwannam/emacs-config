@@ -1,4 +1,6 @@
 
+(require 'make-repeatable-command)
+
 (progn
   ;; Emacs lisp 
   (electric-indent-mode -1)
