@@ -102,3 +102,37 @@
     ;; inverse search -> C-down-mouse-1 for pdf-tools (or "shift + left-mouse" for Okular)
     )
   )
+
+(progn
+  (make-local-variable 'bibliography-file-name-as-source-of-reference)
+  (setq-default bibliography-file-name-as-source-of-reference "some-bibliography.bib")
+
+  (defun find-reference-in-bibliography-file ()
+    (interactive)
+    (let (start-pos end-pos)
+      (save-excursion
+        ;; find identifiers separated by curly bracket, comma, white-space
+        (when (re-search-backward "\[{,[:blank:]\]" nil t)
+          (setq start-pos (1+ (point))))
+        (when (re-search-forward "\[},[:blank:]\]" nil t)
+          (setq end-pos (1- (point)))))
+      (let ((ref-id-str nil)
+            (ref-id-str-valid-p nil))
+        (when (and start-pos end-pos)
+          (setq ref-id-str (trim-string (buffer-substring-no-properties start-pos end-pos)))
+          (setq ref-id-str-valid-p (not (or (string-match-p "[[:blank:]]" ref-id-str)
+                                            (string-empty-p ref-id-str))))
+          (when ref-id-str-valid-p
+            (let ((ref-pos nil))
+              (find-file-other-window bibliography-file-name-as-source-of-reference)
+              (save-excursion
+                (beginning-of-buffer)
+                (re-search-forward ref-id-str)
+                (setq ref-pos (point)))
+              (when ref-pos
+                (goto-char ref-pos)
+                (recenter-top-bottom)))))
+
+        (unless ref-id-str-valid-p
+          (comment (xref-find-definitions (xref-backend-identifier-at-point (xref-find-backend))))
+          (call-interactively 'xref-find-definitions))))))
