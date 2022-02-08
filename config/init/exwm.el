@@ -407,41 +407,74 @@
 
     (progn
       ;; application commands
-      (defun exwm-my-command-execute-shell (command)
-        (interactive (list (read-shell-command "$ ")))
-        (start-process-shell-command command nil command))
+      (progn
+        ;; web browser commands
+        (defun exwm-my-command-execute-shell (command)
+          (interactive (list (read-shell-command "$ ")))
+          (start-process-shell-command command nil command))
 
-      (defun exwm-my-command-open-web-browser ()
-        (interactive)
-        (start-process-shell-command "web-browser" nil "nyxt")
-        (comment (start-process-shell-command "web-browser" nil "qutebrowser"))
-        (comment (start-process-shell-command "web-browser" nil "firefox -new-window"))
-        (comment (start-process-shell-command "web-browser" nil "google-chrome --app=https://www.google.com/"))
-        (comment (start-process-shell-command "web-browser" nil "firefox -new-window https://www.google.com/"))
-        (comment (start-process-shell-command "web-browser" nil "google-chrome --app=https://www.google.com/ --start-fullscreen"))
-        (comment (start-process-shell-command "web-browser" nil "google-chrome --new-window"))
-        (comment (start-process-shell-command "web-browser" nil "xdg-open https://")))
+        (defun get-web-search-query-url-string (query-string)
+          (if (string-empty-p query-string)
+              "https://www.google.com/"
+            (format "\"https://www.google.com/search?q=%s\"" query-string)))
 
-      (comment
-        (defun exwm-my-command-open-web-browser-incognito ()
+        (defun my-open-web-browser (browser-command &optional url)
+          (let ((web-search-query-url-string
+                 (cond
+                  (url url)
+                  ((use-region-p)
+                   (deactivate-mark)
+                   (get-web-search-query-url-string
+                    (buffer-substring-no-properties (region-beginning) (region-end))))
+                  (t ""))))
+            (start-process-shell-command "web-browser" nil
+                                         (concat browser-command " " web-search-query-url-string))))
+
+        (defun old-exwm-my-command-open-web-browser ()
           (interactive)
-          (start-process-shell-command "web-browser" nil "qutebrowser ':open -p'")
-          (comment (start-process-shell-command "web-browser" nil "firefox -private-window"))
-          (comment (start-process-shell-command "web-browser" nil "firefox -private-window https://www.google.com/"))
-          (comment (start-process-shell-command "web-browser" nil "google-chrome --new-window google.com --incognito"))
-          (comment (start-process-shell-command "web-browser" nil "google-chrome --new-window google.com --incognito --start-fullscreen"))
-          (comment (start-process-shell-command "web-browser" nil "google-chrome --new-window --incognito"))
-          (comment (start-process-shell-command "web-browser" nil "xdg-open https://"))))
+          (start-process-shell-command "web-browser" nil "nyxt")
+          (comment (start-process-shell-command "web-browser" nil "qutebrowser"))
+          (comment (start-process-shell-command "web-browser" nil "firefox -new-window"))
+          (comment (start-process-shell-command "web-browser" nil "google-chrome --app=https://www.google.com/"))
+          (comment (start-process-shell-command "web-browser" nil "firefox -new-window https://www.google.com/"))
+          (comment (start-process-shell-command "web-browser" nil "google-chrome --app=https://www.google.com/ --start-fullscreen"))
+          (comment (start-process-shell-command "web-browser" nil "google-chrome --new-window"))
+          (comment (start-process-shell-command "web-browser" nil "xdg-open https://")))
 
-      (defun exwm-my-command-open-google-chrome ()
-        (interactive)
-        (start-process-shell-command "web-browser" nil "google-chrome")
-        (comment (start-process-shell-command "web-browser" nil "google-chrome --app=https://www.google.com/")))
+        (comment
+          (defun old-exwm-my-command-open-web-browser-incognito ()
+            (interactive)
+            (start-process-shell-command "web-browser" nil "qutebrowser ':open -p'")
+            (comment (start-process-shell-command "web-browser" nil "firefox -private-window"))
+            (comment (start-process-shell-command "web-browser" nil "firefox -private-window https://www.google.com/"))
+            (comment (start-process-shell-command "web-browser" nil "google-chrome --new-window google.com --incognito"))
+            (comment (start-process-shell-command "web-browser" nil "google-chrome --new-window google.com --incognito --start-fullscreen"))
+            (comment (start-process-shell-command "web-browser" nil "google-chrome --new-window --incognito"))
+            (comment (start-process-shell-command "web-browser" nil "xdg-open https://"))))
 
-      (defun exwm-my-command-open-google-chrome-incognito ()
-        (interactive)
-        (start-process-shell-command "web-browser" nil "google-chrome --incognito")
-        (comment (start-process-shell-command "web-browser" nil "google-chrome --new-window google.com --incognito")))
+        (fset 'exwm-my-command-open-web-browser 'exwm-my-command-open-nyxt)
+
+        (defun exwm-my-command-open-nyxt ()
+          (interactive)
+          (my-open-web-browser "nyxt"))
+
+        (defun exwm-my-command-open-google-chrome ()
+          (interactive)
+          (my-open-web-browser "google-chrome")
+          (comment (my-open-web-browser "google-chrome --app=https://www.google.com/")))
+
+        (defun exwm-my-command-open-google-chrome-incognito ()
+          (interactive)
+          (my-open-web-browser "" "google-chrome --incognito")
+          (comment (my-open-web-browser "google-chrome --new-window google.com --incognito")))
+
+        (defun exwm-my-command-open-firefox ()
+          (interactive)
+          (my-open-web-browser "firefox"))
+
+        (defun exwm-my-command-open-firefox-private ()
+          (interactive)
+          (my-open-web-browser "firefox -private-window")))
 
       (defun exwm-my-command-open-terminal-emulator ()
         (interactive)
@@ -452,10 +485,12 @@
         ;; (define-key map (kbd "W") 'exwm-my-command-open-web-browser-incognito)
         (define-key map (kbd "c") 'exwm-my-command-open-google-chrome)
         (define-key map (kbd "C") 'exwm-my-command-open-google-chrome-incognito)
+        (define-key map (kbd "f") 'exwm-my-command-open-firefox)
+        (define-key map (kbd "F") 'exwm-my-command-open-firefox-private)
         (define-key map (kbd "e") 'exwm-my-command-open-terminal-emulator)
 
-	(defvar exwm-my-command-prefix-map map
-	  "Keymap for workspace related commands."))
+	    (defvar exwm-my-command-prefix-map map
+	      "Keymap for workspace related commands."))
       (fset 'exwm-my-command-prefix-map exwm-my-command-prefix-map))
 
     (progn
