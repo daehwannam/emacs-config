@@ -414,9 +414,14 @@
           (start-process-shell-command command nil command))
 
         (defun get-web-search-query-url-string (query-string)
-          (if (string-empty-p query-string)
-              "https://www.google.com/"
-            (format "\"https://www.google.com/search?q=%s\"" query-string)))
+          (cond
+           ((string-empty-p query-string)
+            "https://www.google.com/")
+           ((string-match "[^[:blank:][:space:]]*://[^[:blank:][:space:]]*"
+                          query-string) ; when query is an URL
+            query-string)
+           (t
+            (format "\"https://www.google.com/search?q=%s\"" query-string))))
 
         (defun my-open-web-browser (browser-command &optional url)
           (let ((web-search-query-url-string
@@ -526,17 +531,24 @@ in the current window."
                                       (concat (downcase (or exwm-class-name "")) ": ")))))
 
     (progn
-      (comment
-        ;; disable line-mode for specific applications
-        ;; https://www.reddit.com/r/emacs/comments/o6vzxz/comment/h2v5rn0/?utm_source=share&utm_medium=web2x&context=3
-        (setq exwm-manage-configurations 
-              '(((member exwm-class-name '("Emacs" "Gnome-terminal" "kitty" "qutebrowser" "Remote-viewer"))
-	         char-mode t))))
-
-      (progn
-        ;; start applications in char-mode by default
-        ;; https://github.com/ch11ng/exwm/issues/411#issuecomment-379561414
-        (setq exwm-manage-configurations '((t char-mode t)))))
+      (setq exwm-manage-configurations nil)
+      (setq exwm-manage-configurations
+            ;; former configurations have higher priorities
+            (append
+             (progn
+               ;; disable line-mode for specific applications
+               ;; https://www.reddit.com/r/emacs/comments/o6vzxz/comment/h2v5rn0/?utm_source=share&utm_medium=web2x&context=3
+               '(((member exwm-class-name '("Emacs" "Gnome-terminal" "kitty" "qutebrowser" "Remote-viewer"))
+	              char-mode t)))
+             (progn
+               ;; enable line-mode for specific applications
+               ;; https://www.reddit.com/r/emacs/comments/o6vzxz/comment/h2v5rn0/?utm_source=share&utm_medium=web2x&context=3
+               '(((member exwm-class-name '("Firefox"))
+	              line-mode t)))
+             (progn
+               ;; start applications in char-mode by default
+               ;; https://github.com/ch11ng/exwm/issues/411#issuecomment-379561414
+               '((t char-mode t))))))
 
     ;; (progn
     ;;   ;; run machine-specific config
@@ -592,7 +604,7 @@ in the current window."
         (comment
           (dotimes (workspace-num 9)
             (lexical-let ((idx (% (+ workspace-num 10 (- exwm-my-workspace-start-number)) 10)))
-                         (define-key exwm-my-workspace-prefix-map (kbd (format "%d" workspace-num))
+                         (define-key exwm-my-workspapce-prefix-map (kbd (format "%d" workspace-num))
                            #'(lambda () (interactive)
                                (funcall exwm-environment-switch-create idx))))))
 
@@ -712,24 +724,23 @@ in the current window."
 
         (progn
           ;; local bindings
-          (comment
-            (add-hook 'exwm-manage-finish-hook
-                      (lambda ()
-                        (when (and exwm-class-name
-                                   (string= exwm-class-name "Firefox"))
-                          (exwm-input-set-local-simulation-keys
-                           (append
-                            exwm-base-input-simulation-keys
-                            '(([?\C-s] . [?\C-f])
-                              ([?\C-g] . [escape])
-                              ([?\M-p] . [S-f3])
-                              ([?\M-n] . [f3])
-                              ;; ([?\M-p] . [C-prior])
-                              ;; ([?\M-n] . [C-next])
-                              ([?\M-\[] . [M-left])
-                              ([?\M-\]] . [M-right])
-                              )
-                            ))))))
+          (add-hook 'exwm-manage-finish-hook
+                    (lambda ()
+                      (when (and exwm-class-name
+                                 (string= exwm-class-name "Firefox"))
+                        (exwm-input-set-local-simulation-keys
+                         (append
+                          exwm-base-input-simulation-keys
+                          '(([?\C-s] . [?\C-f])
+                            ([?\C-g] . [escape])
+                            ([?\M-p] . [S-f3])
+                            ([?\M-n] . [f3])
+                            ;; ([?\M-p] . [C-prior])
+                            ;; ([?\M-n] . [C-next])
+                            ([?\M-\[] . [M-left])
+                            ([?\M-\]] . [M-right])
+                            )
+                          )))))
           (comment
             (add-hook 'exwm-manage-finish-hook
                       (lambda ()
