@@ -739,6 +739,11 @@ in the current window."
                             ;; ([?\M-n] . [C-next])
                             ([?\M-\[] . [M-left])
                             ([?\M-\]] . [M-right])
+
+                            ([?\C-9] . [M-left])
+                            ([?\C-0] . [M-right])
+                            ([?\M-9] . [C-prior])
+                            ([?\M-0] . [C-next])
                             )
                           )))))
           (comment
