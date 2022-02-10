@@ -633,7 +633,8 @@ in the current window."
                    ([?\s-j] . ivy-switch-buffer)
                    ([?\s-k] . kill-buffer)
                    ([?\C-\s-j] . ivy-switch-buffer-within-app)
-                   ([?\s-B] . counsel-switch-buffer-within-app)
+                   ;; ([?\s-B] . counsel-switch-buffer-within-app)
+                   ([?\C-\s-b] . counsel-switch-buffer-within-app)
                    ([?\s-!] . shell-command)
 
                    ([?\s-9] . previous-buffer)
