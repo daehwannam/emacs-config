@@ -104,11 +104,11 @@
   )
 
 (progn
-  (make-local-variable 'bibliography-file-name-as-source-of-reference)
-  (setq-default bibliography-file-name-as-source-of-reference "some-bibliography.bib")
+  (comment
+    (make-local-variable 'bibliography-file-name-as-source-of-reference)
+    (setq-default bibliography-file-name-as-source-of-reference "some-bibliography.bib"))
 
-  (defun find-reference-in-bibliography-file ()
-    (interactive)
+  (defun get-start-end-content-positions-of-curly-brackets ()
     (let (start-pos end-pos)
       (save-excursion
         ;; find identifiers separated by curly bracket, comma, white-space
@@ -118,6 +118,23 @@
         (save-excursion
           (when (re-search-forward "\[},[:blank:]\]" nil t)
             (setq end-pos (1- (point))))))
+      (list start-pos end-pos)))
+
+  (defun kill-current-content-of-curly-brackets-to-clipboard ()
+    (interactive)
+    (let (start-pos end-pos)
+      (let ((start-end-pos-pair (get-start-end-content-positions-of-curly-brackets)))
+        (setq start-pos (car start-end-pos-pair)
+              end-pos (cadr start-end-pos-pair))
+        (when (and start-pos end-pos)
+          (copy-region-as-kill start-pos end-pos)))))
+
+  (defun find-reference-in-bibliography-file (&optional opening-in-other-window)
+    (interactive)
+    (let (start-pos end-pos)
+      (let ((start-end-pos-pair (get-start-end-content-positions-of-curly-brackets)))
+        (setq start-pos (car start-end-pos-pair)
+              end-pos (cadr start-end-pos-pair)))
       (let ((ref-id-str nil)
             (ref-id-str-valid nil))
         (when (and start-pos end-pos)
@@ -127,7 +144,8 @@
                                           (string-empty-p ref-id-str))))
           (when ref-id-str-valid
             (let ((ref-pos nil))
-              (find-file-other-window bibliography-file-name-as-source-of-reference)
+              (funcall (if opening-in-other-window #'find-file-other-window #'find-file)
+                       bibliography-file-name-as-source-of-reference)
               (save-excursion
                 (beginning-of-buffer)
                 (re-search-forward ref-id-str)
@@ -139,4 +157,16 @@
         (comment
           (unless ref-id-str-valid
             (comment (xref-find-definitions (xref-backend-identifier-at-point (xref-find-backend))))
-            (call-interactively 'xref-find-definitions)))))))
+            (call-interactively 'xref-find-definitions))))))
+
+  (defun open-pdfurl-of-reference-in-bibliography-file ()
+    (interactive)
+    (find-reference-in-bibliography-file)
+    (re-search-forward "\\(pdfurl\\|@\\)")
+    (re-search-forward "{")
+    (re-search-forward "[^ ]")
+    (let ((original-kill-ring kill-ring))
+      (my-org-kill-link-to-clipboard)
+      (unless (eq original-kill-ring kill-ring)
+          (let ((url (pop kill-ring)))
+            (exwm-my-command-open-firefox url))))))

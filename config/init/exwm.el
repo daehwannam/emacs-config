@@ -450,8 +450,8 @@
           (defun old-exwm-my-command-open-web-browser-incognito ()
             (interactive)
             (start-process-shell-command "web-browser" nil "qutebrowser ':open -p'")
-            (comment (start-process-shell-command "web-browser" nil "firefox -private-window"))
-            (comment (start-process-shell-command "web-browser" nil "firefox -private-window https://www.google.com/"))
+            (comment (start-process-shell-command "web-browser" nil "firefox --private-window"))
+            (comment (start-process-shell-command "web-browser" nil "firefox --private-window https://www.google.com/"))
             (comment (start-process-shell-command "web-browser" nil "google-chrome --new-window google.com --incognito"))
             (comment (start-process-shell-command "web-browser" nil "google-chrome --new-window google.com --incognito --start-fullscreen"))
             (comment (start-process-shell-command "web-browser" nil "google-chrome --new-window --incognito"))
@@ -459,27 +459,27 @@
 
         (fset 'exwm-my-command-open-web-browser 'exwm-my-command-open-nyxt)
 
-        (defun exwm-my-command-open-nyxt ()
+        (defun exwm-my-command-open-nyxt (&optional url)
           (interactive)
-          (my-open-web-browser "nyxt"))
+          (my-open-web-browser "nyxt" url))
 
-        (defun exwm-my-command-open-google-chrome ()
+        (defun exwm-my-command-open-google-chrome (&optional url)
           (interactive)
-          (my-open-web-browser "google-chrome")
+          (my-open-web-browser "google-chrome" url)
           (comment (my-open-web-browser "google-chrome --app=https://www.google.com/")))
 
-        (defun exwm-my-command-open-google-chrome-incognito ()
+        (defun exwm-my-command-open-google-chrome-incognito (&optional url)
           (interactive)
-          (my-open-web-browser "" "google-chrome --incognito")
+          (my-open-web-browser "" "google-chrome --incognito" url)
           (comment (my-open-web-browser "google-chrome --new-window google.com --incognito")))
 
-        (defun exwm-my-command-open-firefox ()
+        (defun exwm-my-command-open-firefox (&optional url)
           (interactive)
-          (my-open-web-browser "firefox"))
+          (my-open-web-browser "firefox --new-window" url))
 
-        (defun exwm-my-command-open-firefox-private ()
+        (defun exwm-my-command-open-firefox-private (&optional url)
           (interactive)
-          (my-open-web-browser "firefox -private-window")))
+          (my-open-web-browser "firefox --private-window" url)))
 
       (defun exwm-my-command-open-terminal-emulator ()
         (interactive)

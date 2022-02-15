@@ -33,7 +33,12 @@
     (define-key-from-C-c map "<left>")
     (define-key-from-C-c map "<right>")
 
+    ;; er/expand-region
+    (define-key-from-C-c map ".")
+
     (defvar my-ctl-c-map map
       "Keymap simulating C-c bindings")
 
-    (fset 'my-ctl-c-map my-ctl-c-map)))
+    (fset 'my-ctl-c-map my-ctl-c-map)
+
+    (key-chord-define-global "qd" 'my-ctl-c-map)))

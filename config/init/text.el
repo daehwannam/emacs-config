@@ -114,3 +114,8 @@
 (progn
   ;; add new keybindings for kitty terminal
   (key-chord-define-global "q\\" 'indent-region))
+
+(when (package-installed-p 'expand-region)
+  (require 'expand-region)
+  (comment (global-set-key (kbd "C-=") 'er/expand-region))
+  (global-set-key (kbd "C-c .") (make-repeatable-command #'er/expand-region)))
