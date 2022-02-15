@@ -470,7 +470,7 @@
 
         (defun exwm-my-command-open-google-chrome-incognito (&optional url)
           (interactive)
-          (my-open-web-browser "" "google-chrome --incognito" url)
+          (my-open-web-browser "google-chrome --incognito" url)
           (comment (my-open-web-browser "google-chrome --new-window google.com --incognito")))
 
         (defun exwm-my-command-open-firefox (&optional url)
