@@ -168,5 +168,37 @@
     (let ((original-kill-ring kill-ring))
       (my-org-kill-link-to-clipboard)
       (unless (eq original-kill-ring kill-ring)
-          (let ((url (pop kill-ring)))
-            (exwm-my-command-open-firefox url))))))
+        (let ((url (pop kill-ring)))
+          (exwm-my-command-open-firefox url)))))
+
+
+  (comment
+    (setq-default pdf-file-dir-path-as-source-of-reference "some-pdf-directory-path"))
+
+  (defun open-pdf-file-of-reference ()
+    (interactive)
+    (let (start-pos end-pos)
+      (let ((start-end-pos-pair (get-start-end-content-positions-of-curly-brackets)))
+        (setq start-pos (car start-end-pos-pair)
+              end-pos (cadr start-end-pos-pair)))
+      (let ((ref-id-str nil)
+            (ref-id-str-valid nil))
+        (when (and start-pos end-pos)
+          (setq ref-id-str (trim-string (buffer-substring-no-properties start-pos end-pos)))
+          (message ref-id-str)
+          (setq ref-id-str-valid (not (or (string-match-p "[{}]" ref-id-str)
+                                          (string-empty-p ref-id-str))))
+          (when ref-id-str-valid
+            (let* ((file-name (concat
+                               (replace-regexp-in-string
+                                "/" "+" (replace-regexp-in-string
+                                         ":" "=" ref-id-str))
+                               ".pdf"))
+                   (file-path (joindirs pdf-file-dir-path-as-source-of-reference file-name)))
+
+              (if (file-exists-p file-path)
+                  (find-file file-path)
+                (message (format "The file %s doesn't exist" file-path))))))
+
+        (unless ref-id-str-valid
+          (message "Invalid cursor position"))))))
