@@ -9,6 +9,8 @@
     (define-key isearch-mode-map (kbd "M-b") 'isearch-repeat-backward))
   (define-key isearch-mode-map (kbd "M-g") 'isearch-abort))
 
+(define-key isearch-mode-map (kbd "C-i") 'isearch-repeat-backward)
+
 (when (fboundp 'ctrlf-mode)
   (comment
     ;; disable explit `ctrlf-mode'
