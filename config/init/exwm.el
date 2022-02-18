@@ -588,7 +588,21 @@ in the current window."
         (split-window-right size)
         (buf-move-right)
         (redisplay)
-        (windmove-left)))
+        (windmove-left))
+
+      (defun exwm-split-move-window-below (&optional size)
+        ;; https://github.com/ch11ng/exwm/issues/685#issuecomment-879903947
+        (interactive "P")
+        (split-window-below size)
+        (redisplay)
+        (windmove-down))
+
+      (defun exwm-split-move-window-right (&optional size)
+        ;; https://github.com/ch11ng/exwm/issues/685#issuecomment-879903947
+        (interactive "P")
+        (split-window-right size)
+        (redisplay)
+        (windmove-right)))
 
     ;; (progn
     ;;   ;; run machine-specific config
@@ -611,11 +625,11 @@ in the current window."
         (key-chord-define-global "qj" 'ivy-switch-buffer)
         (key-chord-define-global "qd" 'exwm-my-workspace-prefix-map)
 
-        (global-set-key (kbd "C-x 2") 'exwm-split-window-below)
-        (global-set-key (kbd "C-x 3") 'exwm-split-window-right)
+        (global-set-key (kbd "C-x 2") 'exwm-split-move-window-below)
+        (global-set-key (kbd "C-x 3") 'exwm-split-move-window-right)
 
-        (global-set-key (kbd "C-x 8") 'exwm-split-window-below)
-        (global-set-key (kbd "C-x 7") 'exwm-split-window-right))
+        (global-set-key (kbd "C-x 8") 'exwm-split-move-window-below)
+        (global-set-key (kbd "C-x 7") 'exwm-split-move-window-right))
 
       (comment
         ;; enable key-chord and hydra

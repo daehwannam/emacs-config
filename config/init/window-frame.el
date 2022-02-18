@@ -16,10 +16,24 @@
   (defun other-window-backwards () (interactive) (other-window -1))
   (defun other-frame-backwards () (interactive) (other-frame -1))
 
+  (progn
+    (defun split-move-window-below (&optional size)
+      (interactive "P")
+      (split-window-below size)
+      (windmove-down))
+
+    (defun split-move-window-right (&optional size)
+      (interactive "P")
+      (split-window-right size)
+      (windmove-right)))
+
 					;(load "make-repeatable-command") ;(load "~/.emacs.d/package/make-repeatable-command.el")
   (require 'make-repeatable-command)
   (progn
     (progn
+      (global-set-key (kbd "C-x 2") 'split-move-window-below)
+      (global-set-key (kbd "C-x 3") 'split-move-window-right)
+
       (global-set-key (kbd "C-x o") (make-repeatable-command 'other-window))
       (global-set-key (kbd "C-x O") (make-repeatable-command 'other-window-backwards))
       (global-set-key (kbd "C-x 5 o") (make-repeatable-command 'other-frame))
@@ -28,8 +42,8 @@
       (global-set-key (kbd "C-x ㅐ") (make-repeatable-command 'other-window))
 
       (global-set-key (kbd "C-x 9") 'delete-other-windows)
-      (global-set-key (kbd "C-x 8") 'split-window-below)
-      (global-set-key (kbd "C-x 7") 'split-window-right))
+      (global-set-key (kbd "C-x 8") 'split-move-window-below)
+      (global-set-key (kbd "C-x 7") 'split-move-window-right))
 
     (progn
       ;; other-frame key setting
