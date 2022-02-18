@@ -14,17 +14,28 @@
 ;; (print-to-file '(a f c (q e g)) "test.el")
 ;; (read-from-file "test.el")
 
-(defun joindirs (root &rest dirs)
+(defun dhnam/join-dirs (root &rest dirs)
   "Joins a series of directories together, like Python's os.path.join,
-  (dotemacs-joindirs \"/tmp\" \"a\" \"b\" \"c\") => /tmp/a/b/c"
+  (dhnam/join-dirs \"/tmp\" \"a\" \"b\" \"c\") => /tmp/a/b/c"
 
   ;; https://stackoverflow.com/a/13473856
 
   (if (not dirs)
       root
-    (apply 'joindirs
+    (apply 'dhnam/join-dirs
            (expand-file-name (car dirs) root)
            (cdr dirs))))
+
+(defun dhnam/join-paths (&rest paths)
+  "Joins a series of paths together, like Python's os.path.join,
+  (joinpaths \"a/\" \"b/\" \"c\") => a/b/c"
+
+  ;; https://stackoverflow.com/a/13473856
+  (assert paths)
+  (s-join "/" (mapcar (lambda (path) (if (string= (substring path -1) "/")
+                                         (substring path 0 -1)
+                                       path))
+                      paths)))
 
 (defun dhnam/buffer-local-set-key (key command)
   "Set a key binding for a specific buffer only"

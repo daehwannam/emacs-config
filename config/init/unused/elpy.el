@@ -109,7 +109,7 @@
 	       (comment (assert (eq default-elpy-rpc-virtualenv-path 'default)))
 	       (setq elpy-rpc-virtualenv-path
 		     (or (machine-config-get-first 'elpy-rpc-virtualenv-path)
-			 (joindirs pyvenv-workon-home-path elpy-rpc-virtualenv-name))))))
+			 (dhnam/join-dirs pyvenv-workon-home-path elpy-rpc-virtualenv-name))))))
 	  (comment
 	   ;; use the current virtual environment as RPC server
 	   ;; https://github.com/jorgenschaefer/elpy/issues/1878#issuecomment-761518001

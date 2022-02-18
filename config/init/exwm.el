@@ -463,6 +463,28 @@
           (interactive)
           (my-open-web-browser "nyxt" url))
 
+        (progn
+          (defvar nyxt-search-engines
+            (car (read-from-string (get-string-from-file "~/.config/nyxt/search-engines.lisp"))))
+
+          (defun exwm-my-command-query-to-browser (&optional query)
+            (interactive "sSearch query: ")
+            (let* ((splits (s-split " " query))
+                   (search-engine-entry
+                    (assoc (car splits) nyxt-search-engines))
+                   (query-string nil)
+                   (url nil))
+              (if search-engine-entry
+                  (setq query-string (s-join " " (cdr splits)))
+                (progn
+                  (setq search-engine-entry (assoc "gg" nyxt-search-engines))
+                  (setq query-string query)))
+
+              (setq url (if (string-empty-p query-string)
+                            (caddr search-engine-entry)
+                          (concat "\"" (s-replace "~a" query-string (cadr search-engine-entry)) "\"")))
+              (exwm-my-command-open-web-browser url))))
+
         (defun exwm-my-command-open-google-chrome (&optional url)
           (interactive)
           (my-open-web-browser "google-chrome" url)
@@ -487,6 +509,7 @@
 
       (let ((map (make-sparse-keymap)))
         (define-key map (kbd "w") 'exwm-my-command-open-web-browser)
+        (define-key map (kbd "q") 'exwm-my-command-query-to-browser)
         ;; (define-key map (kbd "W") 'exwm-my-command-open-web-browser-incognito)
         (define-key map (kbd "c") 'exwm-my-command-open-google-chrome)
         (define-key map (kbd "C") 'exwm-my-command-open-google-chrome-incognito)
