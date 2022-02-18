@@ -73,8 +73,8 @@
           (message
            (if id
                (slot-value (xcb:+request-unchecked+reply
-                            exwm--connection
-                            (make-instance 'xcb:ewmh:get-_NET_WM_PID :window id))
+                               exwm--connection
+                               (make-instance 'xcb:ewmh:get-_NET_WM_PID :window id))
                            'value)
              (user-error "Target buffer %S is not an X window managed by EXWM!"
                          buf))))))
@@ -95,8 +95,8 @@
           (define-key map (kbd "f") 'exwm-layout-set-fullscreen)
           (define-key map (kbd "k") 'exwm-input-release-keyboard)
 
-	  (define-key map (kbd "o") (make-repeatable-command 'exwm-other-workspace))
-	  (define-key map (kbd "O") (make-repeatable-command 'exwm-other-workspace-backwards))
+	      (define-key map (kbd "o") (make-repeatable-command 'exwm-other-workspace))
+	      (define-key map (kbd "O") (make-repeatable-command 'exwm-other-workspace-backwards))
           (define-key map (kbd "ㅐ") (make-repeatable-command 'exwm-other-workspace))
           (define-key map (kbd "ㅒ") (make-repeatable-command 'exwm-other-workspace-backwards))
           (define-key map (kbd "s") 'exwm-workspace-switch)
@@ -113,8 +113,8 @@
              :after
              #'(lambda (&rest args) (exwm-layout--refresh-workspace (selected-frame)))
              '((name . "exwm-workspace-add-fullscreen-advice"))))
-	  (defvar exwm-my-workspace-prefix-map map
-	    "Keymap for workspace related commands."))
+	      (defvar exwm-my-workspace-prefix-map map
+	        "Keymap for workspace related commands."))
         (fset 'exwm-my-workspace-prefix-map exwm-my-workspace-prefix-map)
         (comment (exwm-input-set-key (kbd "s-w") 'exwm-my-workspace-prefix-map)))
 
@@ -247,7 +247,7 @@
         
         (comment
           (global-set-key (kbd "C-c o") (make-repeatable-command 'exwm-other-workspace-in-group))
-	  (global-set-key (kbd "C-c O") (make-repeatable-command 'exwm-other-workspace-in-group-backwards)))
+	      (global-set-key (kbd "C-c O") (make-repeatable-command 'exwm-other-workspace-in-group-backwards)))
 
         (defun exwm-workspace-group-switch-create (group-idx)
           (let* ((current-member-idx (exwm-get-workspace-group-member-idx exwm-workspace-current-index))
@@ -294,7 +294,7 @@
           (if (<= (exwm-workspace--count) exwm-workspace-group-max-size)
               (user-error "Attempt to delete the sole workspace group")
             (if (y-or-n-p (format "Are you sure you want to close this workspace group? "))
-	        (exwm-workspace-group-delete
+	            (exwm-workspace-group-delete
                  (exwm-get-workspace-group-index exwm-workspace-current-index))
               (message "Canceled closing the current workspace group"))))
 
@@ -361,10 +361,10 @@
             (let ((max-num-workspaces (* max-num-groups exwm-workspace-group-max-size)))
               (cl-labels
                   ((get-plist (num)
-                     (when (< num max-num-workspaces)
-                       (cons num (cons (nth (% num exwm-workspace-group-max-size)
-                                            exwm-my-monitor-names)
-                                       (get-plist (1+ num)))))))
+                              (when (< num max-num-workspaces)
+                                (cons num (cons (nth (% num exwm-workspace-group-max-size)
+                                                     exwm-my-monitor-names)
+                                                (get-plist (1+ num)))))))
                 (get-plist 0)))))
 
         (pcase (machine-config-get-first 'exwm-multiple-physical-monitor-layout)
@@ -375,7 +375,7 @@
              (comment
                (setq exwm-randr-workspace-monitor-plist
                      '(0 "HDMI-1-1" 1 "DVI-I-1" 2 "HDMI-0"
-                       3 "HDMI-1-1" 4 "DVI-I-1" 5 "HDMI-0" ...)))
+                         3 "HDMI-1-1" 4 "DVI-I-1" 5 "HDMI-0" ...)))
 
              ;; run xrandr
              (add-hook 'exwm-randr-screen-change-hook
@@ -573,6 +573,23 @@ in the current window."
                ;; https://github.com/ch11ng/exwm/issues/411#issuecomment-379561414
                '((t char-mode t))))))
 
+    (progn
+      (defun exwm-split-window-below (&optional size)
+        ;; https://github.com/ch11ng/exwm/issues/685#issuecomment-879903947
+        (interactive "P")
+        (split-window-below size)
+        (buf-move-down)
+        (redisplay)
+        (windmove-up))
+
+      (defun exwm-split-window-right (&optional size)
+        ;; https://github.com/ch11ng/exwm/issues/685#issuecomment-879903947
+        (interactive "P")
+        (split-window-right size)
+        (buf-move-right)
+        (redisplay)
+        (windmove-left)))
+
     ;; (progn
     ;;   ;; run machine-specific config
     ;;   (start-process-shell-command
@@ -592,7 +609,13 @@ in the current window."
         (global-set-key (kbd "C-x M-b") 'ivy-switch-buffer)
         (global-set-key (kbd "C-x B") 'counsel-switch-buffer)
         (key-chord-define-global "qj" 'ivy-switch-buffer)
-        (key-chord-define-global "qd" 'exwm-my-workspace-prefix-map))
+        (key-chord-define-global "qd" 'exwm-my-workspace-prefix-map)
+
+        (global-set-key (kbd "C-x 2") 'exwm-split-window-below)
+        (global-set-key (kbd "C-x 3") 'exwm-split-window-right)
+
+        (global-set-key (kbd "C-x 8") 'exwm-split-window-below)
+        (global-set-key (kbd "C-x 7") 'exwm-split-window-right))
 
       (comment
         ;; enable key-chord and hydra
@@ -627,9 +650,9 @@ in the current window."
         (comment
           (dotimes (workspace-num 9)
             (lexical-let ((idx (% (+ workspace-num 10 (- exwm-my-workspace-start-number)) 10)))
-                         (define-key exwm-my-workspapce-prefix-map (kbd (format "%d" workspace-num))
-                           #'(lambda () (interactive)
-                               (funcall exwm-environment-switch-create idx))))))
+              (define-key exwm-my-workspapce-prefix-map (kbd (format "%d" workspace-num))
+                #'(lambda () (interactive)
+                    (funcall exwm-environment-switch-create idx))))))
 
         (progn
           (assert (not (get 'exwm-input-global-keys 'saved-value)))
@@ -684,20 +707,20 @@ in the current window."
                  `(;; 's-N': Switch to certain workspace.
                    ,@(mapcar (lambda (i)
                                `(,(kbd (format "s-%d" i)) .
-                                  (lambda ()
-                                    (interactive)
-                                    (,exwm-environment-switch-create
-                                     ,(% (+ i 10 (- exwm-my-workspace-start-number)) 10)))))
+                                 (lambda ()
+                                   (interactive)
+                                   (,exwm-environment-switch-create
+                                    ,(% (+ i 10 (- exwm-my-workspace-start-number)) 10)))))
                              (number-sequence 1 7)))
 
                  (comment
                    `(;; 's-N': Switch to certain workspace.
                      ,@(mapcar (lambda (i)
                                  `(,(kbd (format "s-%d" i)) .
-                                    (lambda ()
-                                      (interactive)
-                                      (,exwm-environment-switch-create
-                                       ,(% (+ i 10 (- exwm-my-workspace-start-number)) 10)))))
+                                   (lambda ()
+                                     (interactive)
+                                     (,exwm-environment-switch-create
+                                      ,(% (+ i 10 (- exwm-my-workspace-start-number)) 10)))))
                                (number-sequence 0 9))))))))
 
       ;; line-editing shortcuts
