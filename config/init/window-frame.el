@@ -31,9 +31,6 @@
   (require 'make-repeatable-command)
   (progn
     (progn
-      (global-set-key (kbd "C-x 2") 'split-move-window-below)
-      (global-set-key (kbd "C-x 3") 'split-move-window-right)
-
       (global-set-key (kbd "C-x o") (make-repeatable-command 'other-window))
       (global-set-key (kbd "C-x O") (make-repeatable-command 'other-window-backwards))
       (global-set-key (kbd "C-x 5 o") (make-repeatable-command 'other-frame))
@@ -41,7 +38,12 @@
 
       (global-set-key (kbd "C-x ㅐ") (make-repeatable-command 'other-window))
 
-      (global-set-key (kbd "C-x 9") 'delete-other-windows)
+      (global-set-key (kbd "C-x 9") 'delete-other-windows))
+
+    (progn
+      (global-set-key (kbd "C-x 2") 'split-move-window-below)
+      (global-set-key (kbd "C-x 3") 'split-move-window-right)
+
       (global-set-key (kbd "C-x 8") 'split-move-window-below)
       (global-set-key (kbd "C-x 7") 'split-move-window-right))
 
