@@ -793,6 +793,17 @@ in the current window."
 
         (progn
           ;; local bindings
+
+          (comment
+            (add-hook 'exwm-manage-finish-hook
+                      (lambda ()
+                        (when (and exwm-class-name
+                                   (string= exwm-class-name "Nyxt"))
+                          (exwm-input-set-local-simulation-keys
+
+                           '(([?\C-p] . [up])
+                            ([?\C-n] . [down])))))))
+
           (add-hook 'exwm-manage-finish-hook
                     (lambda ()
                       (when (and exwm-class-name
@@ -839,8 +850,9 @@ in the current window."
         ;; https://github.com/ch11ng/exwm/wiki#global-key-bindings
 
         ;; disable some prefix keys
-        (cl-remove-if (lambda (x) (member x '(?\C-x ?\C-q ?\C-c ?\C-h)))
-                      exwm-input-prefix-keys))
+        (setq exwm-input-prefix-keys
+              (cl-remove-if (lambda (x) (member x '(?\C-x ?\C-q ?\C-c ?\C-h)))
+                            exwm-input-prefix-keys)))
 
       (progn
         ;; local key bindings
@@ -855,7 +867,7 @@ in the current window."
           (interactive (list (read-shell-command "$ ")))
           (start-process-shell-command command nil command))
 
-        (progn
+        (comment
           (define-key exwm-mode-map (kbd "M-9") 'previous-buffer)
           (define-key exwm-mode-map (kbd "M-0") 'next-buffer))
 
