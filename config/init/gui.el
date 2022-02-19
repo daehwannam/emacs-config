@@ -27,3 +27,8 @@
   ;; left mouse click to open a file or a directory in the current buffer
   ;; https://emacs.stackexchange.com/a/20893
   (define-key dired-mode-map [mouse-2] 'dired-find-file))
+
+(progn
+  ;; disable blink-cursor-mode
+  ;; https://www.gnu.org/software/emacs/manual/html_node/emacs/Cursor-Display.html
+  (blink-cursor-mode 0))
