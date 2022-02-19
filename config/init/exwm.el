@@ -413,12 +413,15 @@
           (interactive (list (read-shell-command "$ ")))
           (start-process-shell-command command nil command))
 
+        (defun dhnam/url-string-p (s)
+          (string-match "[^[:blank:][:space:]]*://[^[:blank:][:space:]]*"
+                        s))
+
         (defun get-web-search-query-url-string (query-string)
           (cond
            ((string-empty-p query-string)
             "https://www.google.com/")
-           ((string-match "[^[:blank:][:space:]]*://[^[:blank:][:space:]]*"
-                          query-string) ; when query is an URL
+           ((dhnam/url-string-p query-string) ; when query is an URL
             query-string)
            (t
             (format "\"https://www.google.com/search?q=%s\"" query-string))))
@@ -474,15 +477,20 @@
                     (assoc (car splits) nyxt-search-engines))
                    (query-string nil)
                    (url nil))
-              (if search-engine-entry
-                  (setq query-string (s-join " " (cdr splits)))
+              (cond
+               (search-engine-entry
+                (setq query-string (s-join " " (cdr splits))))
+               ((and (= (length splits) 1) (dhnam/url-string-p query))
+                (setq url query))
+               (t
                 (progn
                   (setq search-engine-entry (assoc "gg" nyxt-search-engines))
-                  (setq query-string query)))
+                  (setq query-string query))))
 
-              (setq url (if (string-empty-p query-string)
-                            (caddr search-engine-entry)
-                          (concat "\"" (s-replace "~a" query-string (cadr search-engine-entry)) "\"")))
+              (unless url
+                (setq url (if (string-empty-p query-string)
+                              (caddr search-engine-entry)
+                            (concat "\"" (s-replace "~a" query-string (cadr search-engine-entry)) "\""))))
               (exwm-my-command-open-web-browser url))))
 
         (defun exwm-my-command-open-google-chrome (&optional url)
