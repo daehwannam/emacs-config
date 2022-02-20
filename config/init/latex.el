@@ -59,7 +59,9 @@
     (quelpa '(pdf-continuous-scroll-mode
               :fetcher github
               :repo "dalanicolai/pdf-continuous-scroll-mode.el"))
-    (add-hook 'pdf-view-mode-hook 'pdf-continuous-scroll-mode)))
+    (add-hook 'pdf-view-mode-hook 'pdf-continuous-scroll-mode))
+
+  (define-key pdf-view-mode-map "D" 'doc-view-fit-window-to-page))
 
 (when (progn
         ;; to update `TeX-view-program-selection' with setcar,
