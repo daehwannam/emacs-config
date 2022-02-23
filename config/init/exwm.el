@@ -792,7 +792,7 @@ in the current window."
             (setq exwm-input-simulation-keys '(([?\C-c] . [?\C-c])))))
 
         (progn
-          ;; local bindings
+          ;; local bindings and customizations
 
           (comment
             (add-hook 'exwm-manage-finish-hook
@@ -800,9 +800,8 @@ in the current window."
                         (when (and exwm-class-name
                                    (string= exwm-class-name "Nyxt"))
                           (exwm-input-set-local-simulation-keys
-
                            '(([?\C-p] . [up])
-                            ([?\C-n] . [down])))))))
+                             ([?\C-n] . [down])))))))
 
           (add-hook 'exwm-manage-finish-hook
                     (lambda ()
