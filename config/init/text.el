@@ -119,3 +119,7 @@
   (require 'expand-region)
   (comment (global-set-key (kbd "C-=") 'er/expand-region))
   (global-set-key (kbd "C-c .") (make-repeatable-command #'er/expand-region)))
+
+(progn
+  ;; enable `narrow-to-region'
+  (put 'narrow-to-region 'disabled nil))
