@@ -582,6 +582,8 @@ in the current window."
                '((t char-mode t))))))
 
     (progn
+      (defvar exwm-split-defined t)
+
       (defun exwm-split-window-below (&optional size)
         ;; https://github.com/ch11ng/exwm/issues/685#issuecomment-879903947
         (interactive "P")
