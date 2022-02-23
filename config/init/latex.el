@@ -61,6 +61,8 @@
               :repo "dalanicolai/pdf-continuous-scroll-mode.el"))
     (add-hook 'pdf-view-mode-hook 'pdf-continuous-scroll-mode))
 
+  (setq pdf-view-resize-factor 1.1)
+
   (define-key pdf-view-mode-map "D" 'doc-view-fit-window-to-page))
 
 (when (progn
