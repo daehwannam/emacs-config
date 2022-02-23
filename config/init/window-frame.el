@@ -40,7 +40,7 @@
 
       (global-set-key (kbd "C-x 9") 'delete-other-windows))
 
-    (progn
+    (unless (and (boundp 'exwm-split-defined) exwm-split-defined)
       (global-set-key (kbd "C-x 2") 'split-move-window-below)
       (global-set-key (kbd "C-x 3") 'split-move-window-right)
 
