@@ -40,12 +40,17 @@
 
       (global-set-key (kbd "C-x 9") 'delete-other-windows))
 
-    (unless (and (boundp 'exwm-split-defined) exwm-split-defined)
-      (global-set-key (kbd "C-x 2") 'split-move-window-below)
-      (global-set-key (kbd "C-x 3") 'split-move-window-right)
+    (comment
+      (unless (and (boundp 'exwm-split-defined) exwm-split-defined)
+        (global-set-key (kbd "C-x 2") 'split-move-window-below)
+        (global-set-key (kbd "C-x 3") 'split-move-window-right)
 
-      (global-set-key (kbd "C-x 8") 'split-move-window-below)
-      (global-set-key (kbd "C-x 7") 'split-move-window-right))
+        (global-set-key (kbd "C-x 8") 'split-move-window-below)
+        (global-set-key (kbd "C-x 7") 'split-move-window-right)))
+
+    (progn
+      (global-set-key (kbd "C-x 8") 'split-window-below)
+      (global-set-key (kbd "C-x 7") 'split-window-right))
 
     (progn
       ;; other-frame key setting
