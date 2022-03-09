@@ -387,7 +387,12 @@
                                 --output %s --auto --right-of %s"
                                   (nth 1 exwm-my-monitor-names)
                                   (nth 0 exwm-my-monitor-names) (nth 1 exwm-my-monitor-names)
-                                  (nth 2 exwm-my-monitor-names) (nth 1 exwm-my-monitor-names)))))))
+                                  (nth 2 exwm-my-monitor-names) (nth 1 exwm-my-monitor-names)))
+                         (progn
+                           ;; this prevent wrong frame deployment when
+                           ;; `exwm-base-input-simulation-keys' has many commands
+                           (exwm-randr-refresh))
+                         ))))
           (t (error "Unknown monitor physical layout configuration")))
 
         (exwm-randr-enable)))
@@ -526,11 +531,11 @@
         (define-key map (kbd "e") 'exwm-my-command-open-terminal-emulator)
 
 	    (defvar exwm-my-command-prefix-map map
-	      "Keymap for workspace related commands."))
+	      "Keymap for application related commands."))
       (fset 'exwm-my-command-prefix-map exwm-my-command-prefix-map))
 
     (progn
-      ;; functions for line-mode
+      ;; additional functions for convenience
       (defun counsel-switch-buffer-within-app ()
         "Switch to another buffer within application.
 Display a preview of the selected ivy completion candidate buffer
@@ -560,6 +565,25 @@ in the current window."
                   :caller 'ivy-switch-buffer
                   :initial-input (and exwm-class-name
                                       (concat (downcase (or exwm-class-name "")) ": ")))))
+
+    (progn
+      ;; extended emacs commands for exwm
+
+      (defun counsel-find-file-in-downloads (&optional initial-input initial-directory)
+        "Forward to `find-file'.
+When INITIAL-INPUT is non-nil, use it in the minibuffer during completion."
+        (interactive)
+        (let ((default-directory "~/Downloads"))
+          (counsel-find-file initial-input initial-directory)))
+
+      (progn
+        (let ((map (make-sparse-keymap)))
+          (define-key map (kbd "d") 'counsel-find-file-in-downloads)
+
+          (defvar exwm-my-extended-emacs-command-prefix-map map
+	        "Keymap for emacs related commands."))
+        
+        (fset 'exwm-my-extended-emacs-command-prefix-map exwm-my-extended-emacs-command-prefix-map)))
 
     (progn
       (setq exwm-manage-configurations nil)
@@ -693,6 +717,7 @@ in the current window."
                    ([?\s-&] . exwm-my-command-execute-shell)
                    ([?\s-m] . exwm-my-command-prefix-map)
                    ([?\s-d] . exwm-my-workspace-prefix-map)
+                   ([?\s-\;] . exwm-my-extended-emacs-command-prefix-map)
 
                    ([?\s-q] . ctl-x-map)
                    ([?\s-x] . (lambda () (interactive) (funcall (key-binding (kbd "M-x")))))
@@ -828,6 +853,20 @@ in the current window."
                             ([?\C-0] . [M-right])
                             ([?\M-9] . [C-prior])
                             ([?\M-0] . [C-next])
+
+                            ([?\C-l] . [f6])
+                            ([?\C-x?\C-c] . [?\C-q])
+                            ([?\C-q] . [?\C-x])
+
+                            ;; simulation keys for vimium bindings
+                            ([?\C-j] . [?\C-x?\M-j])
+                            ([?\M-j] . [?\C-x?\M-l])
+                            ([?\C-o] . [?\C-x?\M-o])
+                            ([?\M-o] . [?\C-x?\M-O])
+
+                            ;; for fuzzy search
+                            ;; https://github.com/Fannon/search-bookmarks-history-and-tabs#readme
+                            ([?\C-m] . [\C-S-.])
                             )
                           )))))
           (comment

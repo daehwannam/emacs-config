@@ -215,9 +215,10 @@ You can use \\[next-error], or RET in the `pdfgrep-buffer-name'
 buffer, to go to the lines where PDFGrep found matches.  To kill
 the PDFGrep job before it finishes, type \\[kill-compilation]."
     (interactive (list (read-shell-command "Run pdfgrep (like this): "
-                                           (let ((appended-arg-str
-                                                  (concat " " (dhnam/join-paths pdf-file-dir-path-as-source-of-reference "*")))
-                                                 (default-command (pdfgrep-default-command)))
+                                           (let ((default-command
+                                                   (concat (pdfgrep-default-command) "'"))
+                                                 (appended-arg-str
+                                                  (concat "' " (dhnam/join-paths pdf-file-dir-path-as-source-of-reference "*"))))
 					                         (cons (concat default-command appended-arg-str)
                                                    (1+ (length default-command))))
 					                       'pdfgrep-history)))

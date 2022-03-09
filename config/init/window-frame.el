@@ -372,3 +372,11 @@ Return the buffer switched to."
    (global-set-key (kbd "C-x C-%") (make-repeatable-command 'shrink-window))
    (global-set-key (kbd "C-x C-}") (make-repeatable-command 'enlarge-window-horizontally))
    (global-set-key (kbd "C-x C-{") (make-repeatable-command 'shrink-window-horizontally))))
+
+(progn
+  ;; Disable `pop-to-buffe' to resize widnows
+  ;; For example, `pop-to-buffe' is used by `find-file-other-window'
+  ;;
+  ;; Https://stackoverflow.com/a/11458625
+
+  (setq even-window-heights nil))

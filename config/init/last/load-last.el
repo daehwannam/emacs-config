@@ -10,6 +10,7 @@
   (progn
     ;; this prevent wrong frame deployment when
     ;; `exwm-base-input-simulation-keys' has many commands
+    (comment (exwm-randr-refresh))
     (comment (exwm-init)))
 
   (progn
