@@ -812,7 +812,9 @@ When INITIAL-INPUT is non-nil, use it in the minibuffer during completion."
                   ;; ([M-B] . [C-S-left])
 
                   ([?\C-/] . [?\C-z])
-                  ([?\C-?] . [?\C-y]))))
+                  ([?\C-?] . [?\C-y])
+                  ([?\M-/] . [?\C-y])
+                  )))
 
         (progn
           ;; global bindings
