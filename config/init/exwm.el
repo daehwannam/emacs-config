@@ -598,7 +598,7 @@ When INITIAL-INPUT is non-nil, use it in the minibuffer during completion."
              (progn
                ;; enable line-mode for specific applications
                ;; https://www.reddit.com/r/emacs/comments/o6vzxz/comment/h2v5rn0/?utm_source=share&utm_medium=web2x&context=3
-               '(((member exwm-class-name '("Firefox"))
+               '(((member exwm-class-name '("Firefox" "firefox"))
 	              line-mode t)))
              (progn
                ;; start applications in char-mode by default
@@ -713,11 +713,12 @@ When INITIAL-INPUT is non-nil, use it in the minibuffer during completion."
                 (append
                  '(;; ([?\s-r] . exwm-reset)
                    ;; ([?\s-t] . exwm-floating-toggle-floating)
+                   ([?\s-\;] . exwm-input-send-next-key)
 
                    ([?\s-&] . exwm-my-command-execute-shell)
                    ([?\s-m] . exwm-my-command-prefix-map)
                    ([?\s-d] . exwm-my-workspace-prefix-map)
-                   ([?\s-\;] . exwm-my-extended-emacs-command-prefix-map)
+                   ([?\s-c] . exwm-my-extended-emacs-command-prefix-map)
 
                    ([?\s-q] . ctl-x-map)
                    ([?\s-x] . (lambda () (interactive) (funcall (key-binding (kbd "M-x")))))
@@ -838,7 +839,7 @@ When INITIAL-INPUT is non-nil, use it in the minibuffer during completion."
           (add-hook 'exwm-manage-finish-hook
                     (lambda ()
                       (when (and exwm-class-name
-                                 (string= exwm-class-name "Firefox"))
+                                 (string= (downcase exwm-class-name) (downcase "Firefox")))
                         (exwm-input-set-local-simulation-keys
                          (append
                           exwm-base-input-simulation-keys
