@@ -718,7 +718,7 @@ When INITIAL-INPUT is non-nil, use it in the minibuffer during completion."
                    ([?\s-&] . exwm-my-command-execute-shell)
                    ([?\s-m] . exwm-my-command-prefix-map)
                    ([?\s-d] . exwm-my-workspace-prefix-map)
-                   ([?\s-c] . exwm-my-extended-emacs-command-prefix-map)
+                   ([?\s-'] . exwm-my-extended-emacs-command-prefix-map)
 
                    ([?\s-q] . ctl-x-map)
                    ([?\s-x] . (lambda () (interactive) (funcall (key-binding (kbd "M-x")))))
@@ -858,8 +858,10 @@ When INITIAL-INPUT is non-nil, use it in the minibuffer during completion."
                             ([?\M-0] . [C-next])
 
                             ([?\C-l] . [f6])
+                            ([?\M-l] . [?\C-t])
+
                             ([?\C-x?\C-c] . [?\C-q])
-                            ([?\C-q] . [?\C-x])
+                            ([?\C-q?\C-k] . [?\C-w])
 
                             ;; simulation keys for vimium bindings
                             ([?\C-j] . [?\C-x?\M-j])
