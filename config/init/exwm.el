@@ -834,7 +834,9 @@ When INITIAL-INPUT is non-nil, use it in the minibuffer during completion."
                                    (string= exwm-class-name "Nyxt"))
                           (exwm-input-set-local-simulation-keys
                            '(([?\C-p] . [up])
-                             ([?\C-n] . [down])))))))
+                             ([?\C-n] . [down])
+                             ([?\C-g] . [escape])
+                             ))))))
 
           (add-hook 'exwm-manage-finish-hook
                     (lambda ()
