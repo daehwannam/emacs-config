@@ -812,8 +812,8 @@ When INITIAL-INPUT is non-nil, use it in the minibuffer during completion."
                   ;; ([M-S-b] . [C-S-left])
                   ;; ([M-F] . [C-S-right])
                   ;; ([M-B] . [C-S-left])
-                  ([134217855] . [C-backspace])  ; (key-description [134217855]) => "M-DEL"
-                  ([134217828] . [C-delete])  ; (key-description [134217828]) =>"M-d"
+                  ([M-backspace] . [C-backspace])
+                  ([?\M-d] . [C-delete])
 
                   ([?\C-/] . [?\C-z])
                   ([?\C-?] . [?\C-y])
