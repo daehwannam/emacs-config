@@ -58,10 +58,27 @@
   (when path-to-inferior-lisp-program
     (setq inferior-lisp-program path-to-inferior-lisp-program))
   (when (fboundp 'slime)
+    (progn
+      ;; enable slime features
+      ;; https://lispcookbook.github.io/cl-cookbook/editor-support.html#installing-slime
+      (slime-setup '(slime-fancy slime-quicklisp slime-asdf)))
     ;; (add-hook 'slime-mode-hook
     ;; 	      (lambda () (local-set-key (kbd "C-j") #'slime-eval-print-last-expression)))
     (add-hook 'slime-mode-hook
-	      (lambda () (local-set-key (kbd "C-c C-d H") #'slime-documentation)))))
+	          (lambda () (local-set-key (kbd "C-c C-d H") #'slime-documentation)))))
+
+(progn
+  ;; Common lisp hyperspec
+  (progn
+    ;; Opening hyperspec document in eww
+    ;; https://www.reddit.com/r/lisp/comments/oo37mr/comment/h5vosl2/?utm_source=share&utm_medium=web2x&context=3
+    ;;
+    ;; related commands
+    ;; - common-lisp-hyperspec
+    ;; - slime-documentation-lookup (C-c C-d h)
+    (setq browse-url-browser-function
+	      '(("hyperspec" . eww-browse-url)
+	        ("." . browse-url-default-browser)))))
 
 (progn
   ;; hissp & lissp

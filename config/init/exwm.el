@@ -722,6 +722,7 @@ When INITIAL-INPUT is non-nil, use it in the minibuffer during completion."
 
                    ([?\s-q] . ctl-x-map)
                    ([?\s-x] . (lambda () (interactive) (funcall (key-binding (kbd "M-x")))))
+                   ([?\s-X] . (lambda () (interactive) (funcall (key-binding (kbd "M-x")))))
                    ([?\s-w] . tab-prefix-map)
                    ([?\s-e] . my-ctl-c-map)
                    ([?\s-h] . help-map)
@@ -811,6 +812,8 @@ When INITIAL-INPUT is non-nil, use it in the minibuffer during completion."
                   ;; ([M-S-b] . [C-S-left])
                   ;; ([M-F] . [C-S-right])
                   ;; ([M-B] . [C-S-left])
+                  ([134217855] . [C-backspace])  ; (key-description [134217855]) => "M-DEL"
+                  ([134217828] . [C-delete])  ; (key-description [134217828]) =>"M-d"
 
                   ([?\C-/] . [?\C-z])
                   ([?\C-?] . [?\C-y])
