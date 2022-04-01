@@ -3,16 +3,17 @@
 (add-to-list 'custom-theme-load-path "~/.emacs.d/config/init/theme-collection")
 
 ;;; highlight current line with keeping syntax coloring
-(global-hl-line-mode 1)
+(comment (global-hl-line-mode 1))
+(add-hook 'find-file-hook 'hl-line-mode)
 ;; (global-hl-line-mode 0)  ;; it disables hl-line-mode
 
 (comment
- ;; highlight the middle line number
- (require 'hmlinum)
- (hmlinum-activate)
+  ;; highlight the middle line number
+  (require 'hmlinum)
+  (hmlinum-activate)
 
- ;; This make emacs very slow!!!!!!
- )
+  ;; This make emacs very slow!!!!!!
+  )
 
 ;;; color theme change
 (let ((theme-style (machine-config-get-first 'theme-style)))
@@ -60,9 +61,11 @@
        '(mode-line-buffer-id ((t (:background "gray65" :foreground "firebrick" :weight bold :height 0.9))))
        '(mode-line-inactive ((t (:background "gray15" :foreground "gray80" :box nil :weight light :height 0.9)))))))
 
-    (custom-set-faces
-     ;; hl-line config (highlighting line without losing character color)
-     (set-face-foreground 'hl-line nil))
+    (progn
+      (require 'hl-line)
+      (custom-set-faces
+       ;; hl-line config (highlighting line without losing character color)
+       (set-face-foreground 'hl-line nil)))
 
     (progn
       ;; tab-bar color
