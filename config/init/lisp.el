@@ -52,33 +52,74 @@
 (let ((path-to-slime-helper (machine-config-get-first 'path-to-slime-helper))
       (path-to-inferior-lisp-program (machine-config-get-first 'path-to-inferior-lisp-program)))
   ;; Common lisp
+
   (when path-to-slime-helper
     (load (expand-file-name path-to-slime-helper)))
-  ;; Replace "sbcl" with the path to your implementation
+
   (when path-to-inferior-lisp-program
+    ;; replace "sbcl" with the path to your implementation
     (setq inferior-lisp-program path-to-inferior-lisp-program))
+
   (when (fboundp 'slime)
     (progn
       ;; enable slime features
       ;; https://lispcookbook.github.io/cl-cookbook/editor-support.html#installing-slime
       (slime-setup '(slime-fancy slime-quicklisp slime-asdf)))
-    ;; (add-hook 'slime-mode-hook
-    ;; 	      (lambda () (local-set-key (kbd "C-j") #'slime-eval-print-last-expression)))
-    (add-hook 'slime-mode-hook
-	          (lambda () (local-set-key (kbd "C-c C-d H") #'slime-documentation)))))
 
-(progn
-  ;; Common lisp hyperspec
-  (progn
-    ;; Opening hyperspec document in eww
-    ;; https://www.reddit.com/r/lisp/comments/oo37mr/comment/h5vosl2/?utm_source=share&utm_medium=web2x&context=3
-    ;;
-    ;; related commands
-    ;; - common-lisp-hyperspec
-    ;; - slime-documentation-lookup (C-c C-d h)
-    (setq browse-url-browser-function
-	      '(("hyperspec" . eww-browse-url)
-	        ("." . browse-url-default-browser)))))
+    (progn
+      ;; ivy-mode for slime
+      ;; https://www.reddit.com/r/emacs/comments/dkz7tm/comment/f4nf696/?utm_source=share&utm_medium=web2x&context=3
+      (defun ora-slime-completion-in-region (_fn completions start end)
+        (funcall completion-in-region-function start end completions))
+
+      (advice-add 'slime-display-or-scroll-completions
+                  :around #'ora-slime-completion-in-region)
+
+      (defun initialize-common-lisp-buffer ()
+        (lisp-mode)
+        (setq-local completion-in-region-function
+                    #'ivy-completion-in-region))
+
+      (add-to-list 'auto-mode-alist
+                   '("\\.lisp\\'" . initialize-common-lisp-buffer))
+
+      )
+
+    (progn
+      ;; Common lisp hyperspec
+      (progn
+        ;; Opening hyperspec document in eww
+        ;; https://www.reddit.com/r/lisp/comments/oo37mr/comment/h5vosl2/?utm_source=share&utm_medium=web2x&context=3
+        ;;
+        ;; related commands
+        ;; - common-lisp-hyperspec
+        ;; - slime-documentation-lookup (C-c C-d h)
+        (setq browse-url-browser-function
+	          '(("hyperspec" . eww-browse-url)
+	            ("." . browse-url-default-browser))))
+
+      (progn
+        ;; CLHS offline
+        ;; https://lispcookbook.github.io/cl-cookbook/emacs-ide.html#consult-the-clhs-offline
+        ;;
+        ;; Run the following code in slime REPL to install CLHS
+        ;; > (ql:quickload "clhs")
+        ;; > (clhs:print-emacs-setup-form)
+        ;; > (clhs:install-clhs-use-local)
+        ;;
+        ;; Run the below command again to find the path of CLHS
+        ;; > (clhs:print-emacs-setup-form)
+        (let ((clhs-use-local-path "~/quicklisp/clhs-use-local.el"))
+          (when (file-exists-p clhs-use-local-path)
+            (load clhs-use-local-path)))))
+
+    (progn
+      ;; Bindings
+
+      ;; (add-hook 'slime-mode-hook
+      ;; 	      (lambda () (local-set-key (kbd "C-j") #'slime-eval-print-last-expression)))
+      (add-hook 'slime-mode-hook
+	            (lambda () (local-set-key (kbd "C-c C-d H") #'slime-documentation))))))
 
 (progn
   ;; hissp & lissp
@@ -87,7 +128,9 @@
 (progn
   ;; global keys
   (global-set-key (kbd "M-P") 'backward-list)
-  (global-set-key (kbd "M-N") 'forward-list))
+  (global-set-key (kbd "M-N") 'forward-list)
+
+  (global-set-key (kbd "<C-M-backspace>") 'backward-kill-sexp))
 
 (when (functionp 'paredit-mode)
   ;; ParEdit
