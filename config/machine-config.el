@@ -50,11 +50,10 @@
     (elpy-autopep8-activate
      (engels nil)
      )
-    (eaf-path
-     (eaf-setup "~/.emacs.d/package/emacs-application-framework/"))
+    ;; (eaf-path (eaf-setup "~/.emacs.d/package/emacs-application-framework/"))
+    (eaf-enabled (eaf-setup t))
     (exwm-multiple-physical-monitor-layout
-     (descartes descartes-triple)
-     )
+     (descartes descartes-triple))
     (exwm-multiple-monitor-layout-type
      (descartes triple)
      (ubuntu-laptop nil))
@@ -62,6 +61,8 @@
      (descartes 145))
     (define-word-offline-dict-directory-path
       (ubuntu-laptop "~/data/language/dictionaries_enwiktionary/"))
+    (languagetool-dir-path
+     (descartes "~/program/LanguageTool/"))
 
     (installable-packages
      ;; (base (vlf magit key-chord modalka evil avy hydra dash counsel multi-term))

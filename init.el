@@ -15,6 +15,7 @@
 (add-to-load-path-recursively "~/.emacs.d/config/bin/")
 (add-to-load-path-recursively "~/.emacs.d/config/package/")
 (add-to-load-path-recursively "~/.emacs.d/config/script/")
+(add-to-load-path-recursively "~/.emacs.d/package/") ; non-archived packages
 
 ;;; base utility
 (require 'load-directory)

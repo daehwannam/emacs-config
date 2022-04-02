@@ -108,6 +108,8 @@
   )
 
 (progn
+  ;; bibliography utilities
+
   (comment
     (make-local-variable 'bibliography-file-name-as-source-of-reference)
     (setq-default bibliography-file-name-as-source-of-reference "some-bibliography.bib"))
@@ -228,3 +230,36 @@ the PDFGrep job before it finishes, type \\[kill-compilation]."
       (error "The 'pdfgrep' command not available on your system."))
     (compilation-start command-args 'grep-mode
 		               (lambda (_x) pdfgrep-buffer-name))))
+
+(progn
+  ;; langtool
+  ;; https://github.com/mhayashi1120/Emacs-langtool
+
+  (let ((languagetool-dir-path (machine-config-get-first 'languagetool-dir-path)))
+    (when languagetool-dir-path
+      ;; command-line
+      (setq langtool-language-tool-jar
+            (concat languagetool-dir-path "languagetool-commandline.jar"))
+
+      (comment
+        ;; language config
+        (comment (setq langtool-mother-tongue "en-US"))
+        (setq langtool-default-language "en-US"))
+
+      (comment
+        ;; server setting
+
+        ;; HTTP server & client
+        (setq langtool-language-tool-server-jar
+              (concat languagetool-dir-path "languagetool-server.jar"))
+        (setq langtool-server-user-arguments '("-p" "8082"))
+
+        ;; HTTP client
+        (setq langtool-http-server-host "localhost"
+              langtool-http-server-port 8082)
+
+        ;; ssl/tls config
+        (setq langtool-http-server-stream-type 'tls))
+
+      ;; langtool package load
+      (require 'langtool))))
