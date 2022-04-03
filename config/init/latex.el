@@ -262,4 +262,19 @@ the PDFGrep job before it finishes, type \\[kill-compilation]."
         (setq langtool-http-server-stream-type 'tls))
 
       ;; langtool package load
-      (require 'langtool))))
+      (require 'langtool)))
+
+  (progn
+    (let ((map (make-sparse-keymap)))
+      (define-key map (kbd "c") 'langtool-check)
+      (define-key map (kbd "C") 'langtool-check-done)
+      (define-key map (kbd "s") 'langtool-switch-default-language)
+      (define-key map (kbd "m") 'langtool-show-message-at-point)
+      (define-key map (kbd "r") 'langtool-correct-buffer)
+
+      (defvar langtool-prefix-map map
+        "Keymap for workspace related commands."))
+
+    (fset 'langtool-prefix-map langtool-prefix-map)
+
+    (key-chord-define-global "t;" 'langtool-prefix-map)))

@@ -62,7 +62,8 @@
     (define-word-offline-dict-directory-path
       (ubuntu-laptop "~/data/language/dictionaries_enwiktionary/"))
     (languagetool-dir-path
-     (descartes "~/program/LanguageTool/"))
+     (descartes "~/program/LanguageTool/")
+     (ubuntu-laptop "~/program/LanguageTool/"))
 
     (installable-packages
      ;; (base (vlf magit key-chord modalka evil avy hydra dash counsel multi-term))
