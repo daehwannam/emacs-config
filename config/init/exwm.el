@@ -573,7 +573,7 @@ in the current window."
         "Forward to `find-file'.
 When INITIAL-INPUT is non-nil, use it in the minibuffer during completion."
         (interactive)
-        (let ((default-directory "~/Downloads"))
+        (let ((default-directory "~/Downloads/"))
           (counsel-find-file initial-input initial-directory)))
 
       (progn
