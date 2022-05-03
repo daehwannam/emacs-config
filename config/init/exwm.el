@@ -865,10 +865,16 @@ When INITIAL-INPUT is non-nil, use it in the minibuffer during completion."
                             ([?\C-l] . [f6])
                             ([?\M-l] . [?\C-t])
 
-                            ([?\C-x?\C-c] . [?\C-q])
                             ([?\C-q?\C-k] . [?\C-w])
+                            ([?\C-x?\C-c] . [?\C-q])
 
                             ;; simulation keys for vimium bindings
+                            ;; ([?\C-q] . [?\M-q])
+                            ;; ([?\C-c?\C-l] . [?\C-g?\C-u])
+                            ;; ([?\C-c?l] . [?\C-g?\C-l])
+                            ;; ([?\C-x?\C-k] . [?\C-w])
+                            ;; ([?\C-x?k] . [?\C-w])
+
                             ([?\C-j] . [?\C-x?\M-j])
                             ([?\M-j] . [?\C-x?\M-l])
                             ([?\C-o] . [?\C-x?\M-o])
