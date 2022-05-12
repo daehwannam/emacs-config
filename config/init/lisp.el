@@ -111,12 +111,11 @@
       (progn
         ;; Bindings
 
-        (add-hook 'slime-mode-hook
-	              (lambda () (local-set-key (kbd "C-q C-e") #'slime-eval-last-expression)))
-        ;; (add-hook 'slime-mode-hook
-        ;; 	      (lambda () (local-set-key (kbd "C-j") #'slime-eval-print-last-expression)))
-        (add-hook 'slime-mode-hook
-	              (lambda () (local-set-key (kbd "C-c C-d H") #'slime-documentation)))))))
+        (add-hook 'slime-mode-hook (lambda () (local-set-key (kbd "C-q C-e") #'slime-eval-last-expression)))
+        (add-hook 'slime-repl-mode-hook (lambda () (local-set-key (kbd "C-q C-e") #'slime-eval-last-expression)))
+        ;; (add-hook 'slime-mode-hook (lambda () (local-set-key (kbd "C-j") #'slime-eval-print-last-expression)))
+        (add-hook 'slime-mode-hook (lambda () (local-set-key (kbd "C-c C-d H") #'slime-documentation)))
+        (add-hook 'slime-repl-mode-hook (lambda () (local-set-key (kbd "C-c C-d H") #'slime-documentation)))))))
 
 (progn
   ;; hissp & lissp
@@ -144,7 +143,8 @@
     (add-hook 'lisp-mode-hook             'enable-paredit-mode)
     (add-hook 'lisp-interaction-mode-hook 'enable-paredit-mode)
     (add-hook 'scheme-mode-hook           'enable-paredit-mode)
-    (add-hook 'hy-mode-hook               'enable-paredit-mode))
+    (add-hook 'hy-mode-hook               'enable-paredit-mode)
+    (add-hook 'slime-repl-mode-hook       'enable-paredit-mode))
   
   (progn
     (define-key paredit-mode-map (kbd "C-M-p") 'backward-list)
