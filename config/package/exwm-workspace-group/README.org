@@ -1,0 +1,16 @@
+
+* EXWM Workspace Group
+** Example
+*** Configuration
+    #+begin_src lisp
+    (require 'exwm-workspace-group)
+    (ewg/init (list "HDMI-1-1" "DVI-I-1" "HDMI-0"))
+    #+end_src
+
+*** Interactive functions
+    - ewg/other-workspace-in-group
+    - ewg/other-workspace-in-group-backwards
+    - ewg/swap-current-group-number
+    - ewg/add-group
+    - ewg/delete-other-groups
+    - ewg/delete-current-group
