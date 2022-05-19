@@ -527,3 +527,9 @@ Similarly for Soar, Scheme, etc."
   (require 'make-repeatable-command)
   (define-key python-mode-map (kbd "C-c >") (make-repeatable-command 'python-indent-shift-right))
   (define-key python-mode-map (kbd "C-c <") (make-repeatable-command 'python-indent-shift-left)))
+
+(progn
+  ;; https://github.com/yoshiki/yaml-mode
+  (require 'yaml-mode)
+  (add-to-list 'auto-mode-alist '("\\.yaml\\'" . yaml-mode))
+  (add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode)))
