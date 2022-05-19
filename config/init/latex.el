@@ -55,7 +55,6 @@
     ;; continuous scrolling
     ;; https://github.com/politza/pdf-tools/issues/27#issuecomment-927129868
     (assert (package-installed-p 'quelpa))
-    (setq quelpa-update-melpa-p nil)    ; disabling auto-updating
     (quelpa '(pdf-continuous-scroll-mode
               :fetcher github
               :repo "dalanicolai/pdf-continuous-scroll-mode.el"))

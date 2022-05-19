@@ -528,7 +528,7 @@ Similarly for Soar, Scheme, etc."
   (define-key python-mode-map (kbd "C-c >") (make-repeatable-command 'python-indent-shift-right))
   (define-key python-mode-map (kbd "C-c <") (make-repeatable-command 'python-indent-shift-left)))
 
-(progn
+(when (package-installed-p 'yaml-mode)
   ;; https://github.com/yoshiki/yaml-mode
   (require 'yaml-mode)
   (add-to-list 'auto-mode-alist '("\\.yaml\\'" . yaml-mode))

@@ -5,5 +5,9 @@
   (defvar installable-domain-specific-packages) ; (defvar machine-domain-specific-packages some-value)
   (setq installable-domain-specific-packages (apply 'cl-concatenate (cons 'list (machine-config-get-all 'installable-packages))))
 
-  (mapc #'install-package-unless-installed
-	installable-domain-specific-packages))
+  (mapc (lambda (package)
+          (if (consp package)
+              (unless (package-installed-p (car package))
+                (quelpa package))
+            (install-package-unless-installed package)))
+	    installable-domain-specific-packages))

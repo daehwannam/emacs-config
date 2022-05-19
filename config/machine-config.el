@@ -74,7 +74,7 @@
      (engels (vlf magit key-chord modalka evil dash  multi-term elpy flycheck py-autopep8 blacken sphinx-doc wgrep which-key counsel counsel-projectile markdown-mode hy-mode))
      ;; (engels (vlf magit key-chord modalka evil dash elpy py-autopep8 blacken))
      (programming (markdown-mode sphinx-doc ein hy-mode jsonnet-mode))
-     (python-setup (pyvenv highlight-indentation))
+     (python-setup (pyvenv highlight-indentation (yaml-mode :fetcher github :repo "yoshiki/yaml-mode")))
      (elpy-setup (elpy flycheck py-autopep8 blacken))
      (min-elpy-setup (elpy))
      (lsp-setup (dash lsp-mode lsp-ui flycheck company lsp-treemacs lsp-ivy dap-mode))
@@ -105,7 +105,3 @@
   (mapcar (lambda (x) (car (cdr x)))
 	  (cl-remove-if-not (lambda (x) (member (car x) machine-options))
 			    (cdr (assoc key machine-config-list)))))
-
-(print (machine-config-get-all 'installable-packages))
-
-(assoc 'installable-packages machine-config-list)

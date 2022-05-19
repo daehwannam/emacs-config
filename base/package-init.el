@@ -32,9 +32,9 @@
   (defun install-package-unless-installed (package)
     (unless (package-installed-p package)
       (unless package-content-refreshed
-	;; https://magit.vc/manual/magit/Installing-from-Melpa.html
-	(package-refresh-contents)
-	(setq package-content-refreshed t))
+	    ;; https://magit.vc/manual/magit/Installing-from-Melpa.html
+	    (package-refresh-contents)
+	    (setq package-content-refreshed t))
       (package-install package))))
 
 (progn
@@ -59,3 +59,8 @@
     ;; change indentation
     (function-put 'use-package 'lisp-indent-function '1)
     (function-put 'use-existing-pkg 'lisp-indent-function '1)))
+
+(progn
+  (install-package-unless-installed 'quelpa)
+  (setq quelpa-update-melpa-p nil)  ; disabling auto-updating
+  )
