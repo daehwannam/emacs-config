@@ -16,6 +16,8 @@
     #+end_src
 
 *** Interactive functions
+    - ~ewg/switch-next-group~
+    - ~ewg/switch-previous-group~
     - ~ewg/other-workspace-in-group~
     - ~ewg/other-workspace-in-group-backwards~
     - ~ewg/swap-current-group-number~
