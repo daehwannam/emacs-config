@@ -1,11 +1,12 @@
 
 * EXWM Workspace Group
-  Rough solution for managing workspace groups
+  Rough solution for managing workspace groups for EXWM
 
 ** Note
    - Each workspace in the current group corresponds to each monitor.
+   - You can create, delete or switch groups.
    - Currently, it supports only dual and triple monitor configuration.
-     - or you can modify ~ewg/init~ and define your own ~ewg/xrandr-*-monitor~.
+     - However, you can define your own ~ewg/xrandr-*-monitor~ and modify ~ewg/init~.
 
 ** Example
 *** Configuration
@@ -15,9 +16,9 @@
     #+end_src
 
 *** Interactive functions
-    - ewg/other-workspace-in-group
-    - ewg/other-workspace-in-group-backwards
-    - ewg/swap-current-group-number
-    - ewg/add-group
-    - ewg/delete-other-groups
-    - ewg/delete-current-group
+    - ~ewg/other-workspace-in-group~
+    - ~ewg/other-workspace-in-group-backwards~
+    - ~ewg/swap-current-group-number~
+    - ~ewg/add-group~
+    - ~ewg/delete-other-groups~
+    - ~ewg/delete-current-group~
