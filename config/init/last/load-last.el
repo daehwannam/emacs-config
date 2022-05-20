@@ -6,7 +6,8 @@
     (load "~/.emacs.d/config/init/eyebrowse.el")))
 
 (when (and exwm-cmd-arg-passed
-           (machine-config-get-first 'exwm-multiple-monitor-layout-type))
+           (let ((physical-monitor-names (machine-config-get-first 'exwm-physical-monitor-names)))
+             (and physical-monitor-names (> (length physical-monitor-names) 1))))
   (progn
     ;; this prevent wrong frame deployment when
     ;; `exwm-base-input-simulation-keys' has many commands

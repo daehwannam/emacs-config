@@ -52,11 +52,13 @@
      )
     ;; (eaf-path (eaf-setup "~/.emacs.d/package/emacs-application-framework/"))
     (eaf-enabled (eaf-setup t))
-    (exwm-multiple-physical-monitor-layout
-     (descartes descartes-triple))
-    (exwm-multiple-monitor-layout-type
-     (descartes triple)
-     (ubuntu-laptop nil))
+    (exwm-physical-monitor-names
+     (descartes ("HDMI-1-1" "DVI-I-1" "HDMI-0")))
+    ;; (exwm-multiple-physical-monitor-layout
+    ;;  (descartes descartes-triple))
+    ;; (exwm-multiple-monitor-layout-type
+    ;;  (descartes triple)
+    ;;  (ubuntu-laptop nil))
     (exwm-font-height
      (descartes 145))
     (define-word-offline-dict-directory-path

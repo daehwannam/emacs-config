@@ -209,193 +209,25 @@
       (setq exwm-workspace-show-all-buffers t)
       (setq exwm-layout-show-all-buffers t))
 
-    (when (machine-config-get-first 'exwm-multiple-monitor-layout-type)
+    (when (machine-config-get-first 'exwm-physical-monitor-names)
       ;; multiple monitor setting
 
       (progn
         ;; workspace-group functions
-        (setq exwm-workspace-group-max-size
-              (pcase (machine-config-get-first 'exwm-multiple-monitor-layout-type)
-                (triple 3)
-                (t (error "Unknown monitor layout configuration"))))
-        (setq exwm-workspace-number exwm-workspace-group-max-size) ; initial num of workspaces
+        (require 'exwm-workspace-group)
 
-        (defun exwm-get-workspace-group-index (workspace-idx)
-          (/ workspace-idx exwm-workspace-group-max-size))
-
-        (defun exwm-get-last-workspace-group-index ()
-          (exwm-get-workspace-group-index (1- (exwm-workspace--count))))
-
-        (defun exwm-get-workspace-group-member-idx (workspace-idx)
-          (- workspace-idx (* (exwm-get-workspace-group-index workspace-idx)
-                              exwm-workspace-group-max-size)))
-        (progn
-          (defun exwm-other-workspace-in-group (count)
-            (interactive "p")
-            (let* ((group-idx (exwm-get-workspace-group-index exwm-workspace-current-index))
-                   (group-size (min (- (exwm-workspace--count)
-                                       (* group-idx exwm-workspace-group-max-size))
-                                    exwm-workspace-group-max-size))
-                   (member-idx (- exwm-workspace-current-index
-                                  (* group-idx exwm-workspace-group-max-size)))
-                   (next-member-idx (% (+ count member-idx group-size) group-size))
-                   (next-workspace-idx (+ (* group-idx exwm-workspace-group-max-size)
-                                          next-member-idx)))
-              (exwm-workspace-switch next-workspace-idx)))
-
-          (defun exwm-other-workspace-in-group-backwards () (interactive) (exwm-other-workspace-in-group -1)))
+        (ewg/init (machine-config-get-first 'exwm-physical-monitor-names))
         
-        (comment
-          (global-set-key (kbd "C-c o") (make-repeatable-command 'exwm-other-workspace-in-group))
-	      (global-set-key (kbd "C-c O") (make-repeatable-command 'exwm-other-workspace-in-group-backwards)))
-
-        (defun exwm-workspace-group-switch-create (group-idx)
-          (let* ((current-member-idx (exwm-get-workspace-group-member-idx exwm-workspace-current-index))
-                 (new-workspace-idx (+ (* group-idx exwm-workspace-group-max-size)
-                                       current-member-idx)))
-            (dotimes (i exwm-workspace-group-max-size)
-              (exwm-workspace-switch-create (+ (* group-idx exwm-workspace-group-max-size) i)))
-            (exwm-workspace-switch new-workspace-idx)))
-
-        (defun exwm-workspace-group-delete (group-idx)
-          (let ((prev-workspace-idx exwm-workspace-current-index))
-            (dolist (i (reverse (number-sequence 0 (1- exwm-workspace-group-max-size))))
-              (exwm-workspace-delete (+ (* group-idx exwm-workspace-group-max-size) i)))
-            (let ((new-workspace-idx (% (+ prev-workspace-idx (exwm-workspace--count))
-                                        (exwm-workspace--count))))
-              (exwm-workspace-switch new-workspace-idx))))
-
-        (defun exwm-workspace-group-switch-next-group (count)
-          (interactive "p")
-          (if (<= (exwm-workspace--count) exwm-workspace-group-max-size)
-              (user-error "There's no other workspace group")
-            (let* ((current-group-idx (exwm-get-workspace-group-index exwm-workspace-current-index))
-                   (num-groups (1+ (exwm-get-last-workspace-group-index)))
-                   (next-group-idx (% (+ current-group-idx count num-groups) num-groups)))
-              (exwm-workspace-group-switch-create next-group-idx))))
-
-        (defun exwm-workspace-group-switch-previous-group ()
-          (interactive)
-          (exwm-workspace-group-switch-next-group -1))
-
-        (defun exwm-workspace-group-add-group ()
-          (interactive)
-          (let* ((current-group-idx (exwm-get-workspace-group-index exwm-workspace-current-index))
-                 (next-group-idx (1+ current-group-idx))
-                 (current-member-idx (exwm-get-workspace-group-member-idx exwm-workspace-current-index))
-                 (new-workspace-idx (+ (* next-group-idx exwm-workspace-group-max-size)
-                                       current-member-idx)))
-            (dotimes (i exwm-workspace-group-max-size)
-              (exwm-workspace-add (+ (* next-group-idx exwm-workspace-group-max-size) i)))
-            (exwm-workspace-switch new-workspace-idx)))
-
-        (defun exwm-workspace-group-delete-current-group ()
-          (interactive)
-          (if (<= (exwm-workspace--count) exwm-workspace-group-max-size)
-              (user-error "Attempt to delete the sole workspace group")
-            (if (y-or-n-p (format "Are you sure you want to close this workspace group? "))
-	            (exwm-workspace-group-delete
-                 (exwm-get-workspace-group-index exwm-workspace-current-index))
-              (message "Canceled closing the current workspace group"))))
-
-        (defun exwm-workspace-group-delete-other-groups ()
-          (interactive)
-          (if (<= (exwm-workspace--count) exwm-workspace-group-max-size)
-              (user-error "There's no other workspace group")
-            (if (y-or-n-p (format "Are you sure you want to close other workspace groups? "))
-                (let ((prev-workspace-idx exwm-workspace-current-index))
-                  (let* ((group-idx (exwm-get-workspace-group-index exwm-workspace-current-index))
-                         (first-workspace-idx-in-group (* group-idx exwm-workspace-group-max-size))
-                         (workspace-indices-in-group
-                          (number-sequence first-workspace-idx-in-group
-                                           (+ first-workspace-idx-in-group
-                                              (1- exwm-workspace-group-max-size)))))
-                    (dolist (i (reverse (number-sequence 0 (1- (exwm-workspace--count)))))
-                      (unless (member i workspace-indices-in-group)
-                        (exwm-workspace-delete i))))
-                  (exwm-workspace-switch (% prev-workspace-idx (exwm-workspace--count))))
-              (message "Canceled closing other workspace groups"))))
-
-        (defun exwm-workspace-swap-by-workspace-indices (index1 index2)
-          (exwm-workspace-swap (exwm-workspace--workspace-from-frame-or-index index1)
-                               (exwm-workspace--workspace-from-frame-or-index index2)))
-
-        (defun exwm-workspace-group-swap (group-idx1 group-idx2)
-          (dotimes (i exwm-workspace-group-max-size)
-            (exwm-workspace-swap-by-workspace-indices
-             (+ (* group-idx1 exwm-workspace-group-max-size) i)
-             (+ (* group-idx2 exwm-workspace-group-max-size) i))))
-
-        (defun exwm-workspace-group-swap-current-group-number (group-number)
-          (interactive "nEnter workspace group number: ")
-          (if (> group-number (exwm-workspace--count))
-              (user-error "Workspace group number is out of range")
-            (let ((group-idx (- group-number exwm-my-workspace-start-number))
-                  (current-group-idx (exwm-get-workspace-group-index exwm-workspace-current-index)))
-              (if (= group-idx current-group-idx)
-                  (user-error "Cannot swap with the same workspace group")
-                (exwm-workspace-group-swap current-group-idx group-idx)))))
-
         (let ((map exwm-my-workspace-prefix-map))
           ;; update `exwm-my-workspace-prefix-map'
-          (define-key map (kbd "o") (make-repeatable-command 'exwm-other-workspace-in-group))
-          (define-key map (kbd "O") (make-repeatable-command 'exwm-other-workspace-in-group-backwards))
+          (define-key map (kbd "o") (make-repeatable-command 'ewg/other-workspace-in-group))
+          (define-key map (kbd "O") (make-repeatable-command 'ewg/other-workspace-in-group-backwards))
 
-          (define-key map (kbd "w") 'exwm-workspace-group-swap-current-group-number)
+          (define-key map (kbd "w") 'ewg/swap-current-group-number)
 
-          (define-key map (kbd "8") 'exwm-workspace-group-add-group)
-          (define-key map (kbd "9") 'exwm-workspace-group-delete-other-groups)
-          (define-key map (kbd "0") 'exwm-workspace-group-delete-current-group)))
-
-      (progn
-        ;; xrandr config
-        ;; https://github.com/daviwil/emacs-from-scratch/blob/5ebd390119a48cac6258843c7d5e570f4591fdd4/show-notes/Emacs-Desktop-04.org
-
-        (require 'exwm-randr)
-        (defvar exwm-my-monitor-names (comment (list "HDMI-1-1" "DVI-I-1" "HDMI-0")))
-
-        (progn
-          (require 'cl-lib)
-          (defun get-exwm-randr-workspace-monitor-plist (max-num-groups)
-            "mapping workspace indices with monitors"
-            (let ((max-num-workspaces (* max-num-groups exwm-workspace-group-max-size)))
-              (cl-labels
-                  ((get-plist (num)
-                              (when (< num max-num-workspaces)
-                                (cons num (cons (nth (% num exwm-workspace-group-max-size)
-                                                     exwm-my-monitor-names)
-                                                (get-plist (1+ num)))))))
-                (get-plist 0)))))
-
-        (pcase (machine-config-get-first 'exwm-multiple-physical-monitor-layout)
-          (descartes-triple
-           (setq exwm-my-monitor-names (list "HDMI-1-1" "DVI-I-1" "HDMI-0"))
-           (progn
-             (setq exwm-randr-workspace-monitor-plist (get-exwm-randr-workspace-monitor-plist 10))
-             (comment
-               (setq exwm-randr-workspace-monitor-plist
-                     '(0 "HDMI-1-1" 1 "DVI-I-1" 2 "HDMI-0"
-                         3 "HDMI-1-1" 4 "DVI-I-1" 5 "HDMI-0" ...)))
-
-             ;; run xrandr
-             (add-hook 'exwm-randr-screen-change-hook
-                       (lambda ()
-                         (start-process-shell-command
-                          "xrandr" nil
-                          (format "xrandr --output %s --auto \
-                                --output %s --auto --left-of %s \
-                                --output %s --auto --right-of %s"
-                                  (nth 1 exwm-my-monitor-names)
-                                  (nth 0 exwm-my-monitor-names) (nth 1 exwm-my-monitor-names)
-                                  (nth 2 exwm-my-monitor-names) (nth 1 exwm-my-monitor-names)))
-                         (progn
-                           ;; this prevent wrong frame deployment when
-                           ;; `exwm-base-input-simulation-keys' has many commands
-                           (exwm-randr-refresh))
-                         ))))
-          (t (error "Unknown monitor physical layout configuration")))
-
-        (exwm-randr-enable)))
+          (define-key map (kbd "8") 'ewg/add-group)
+          (define-key map (kbd "9") 'ewg/delete-other-groups)
+          (define-key map (kbd "0") 'ewg/delete-current-group))))
 
     (when (package-installed-p 'volume)
       (comment
@@ -693,10 +525,12 @@ When INITIAL-INPUT is non-nil, use it in the minibuffer during completion."
           (setq exwm-workspace-index-map
                 (lambda (index) (number-to-string (+ exwm-my-workspace-start-number index)))))
 
-        (setq exwm-environment-switch-create
-              (if (machine-config-get-first 'exwm-multiple-monitor-layout-type)
-                  'exwm-workspace-group-switch-create
-                'exwm-workspace-switch-create))
+        (let ((physical-monitor-names
+               (machine-config-get-first 'exwm-physical-monitor-names)))
+          (setq exwm-environment-switch-create
+                (if (and physical-monitor-names (> (length physical-monitor-names) 1))
+                    'ewg/switch-create
+                  'exwm-workspace-switch-create)))
 
         (comment
           (dotimes (workspace-num 9)
@@ -747,16 +581,18 @@ When INITIAL-INPUT is non-nil, use it in the minibuffer during completion."
 
                  '(([S-s-up] . volume-raise-10)
                    ([S-s-down] . volume-lower-10))
-                 
-                 (if (machine-config-get-first 'exwm-multiple-monitor-layout-type)
-                     '(([?\C-\s-i] . exwm-other-workspace-in-group-backwards)
-                       ([?\C-\s-o] . exwm-other-workspace-in-group)
-                       ([?\C-\s-p] . exwm-workspace-group-switch-previous-group)
-                       ([?\C-\s-n] . exwm-workspace-group-switch-next-group))
-                   '(([?\C-\s-i] . exwm-other-workspace-backwards)
-                     ([?\C-\s-o] . exwm-other-workspace)
-                     ([?\C-\s-p] . exwm-other-workspace-backwards)
-                     ([?\C-\s-n] . exwm-other-workspace)))
+
+                 (let ((physical-monitor-names
+                        (machine-config-get-first 'exwm-physical-monitor-names)))
+                   (if (and physical-monitor-names (> (length physical-monitor-names) 1))
+                       '(([?\C-\s-i] . ewg/other-workspace-in-group-backwards)
+                         ([?\C-\s-o] . ewg/other-workspace-in-group)
+                         ([?\C-\s-p] . ewg/switch-previous-group)
+                         ([?\C-\s-n] . ewg/switch-next-group))
+                     '(([?\C-\s-i] . exwm-other-workspace-backwards)
+                       ([?\C-\s-o] . exwm-other-workspace)
+                       ([?\C-\s-p] . exwm-other-workspace-backwards)
+                       ([?\C-\s-n] . exwm-other-workspace))))
 
                  `(;; 's-N': Switch to certain workspace.
                    ,@(mapcar (lambda (i)
@@ -765,6 +601,7 @@ When INITIAL-INPUT is non-nil, use it in the minibuffer during completion."
                                    (interactive)
                                    (,exwm-environment-switch-create
                                     ,(% (+ i 10 (- exwm-my-workspace-start-number)) 10)))))
+                             ; using number key 1 to 7
                              (number-sequence 1 7)))
 
                  (comment
@@ -775,6 +612,7 @@ When INITIAL-INPUT is non-nil, use it in the minibuffer during completion."
                                      (interactive)
                                      (,exwm-environment-switch-create
                                       ,(% (+ i 10 (- exwm-my-workspace-start-number)) 10)))))
+                               ; using number key 0 to 9
                                (number-sequence 0 9))))))))
 
       ;; line-editing shortcuts

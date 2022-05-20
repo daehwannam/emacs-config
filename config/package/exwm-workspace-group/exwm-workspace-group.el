@@ -6,13 +6,22 @@
 (defvar ewg/max-group-size nil "the number of monitors")
 
 (defun ewg/init (monitor-names)
-  (setq ewg/monitor-names ewg/monitor-names)
-  (setq ewg/max-group-size (length monitor-names))
-  (setq exwm-workspace-number ewg/max-group-size) ; initial num of workspaces
-  (pcase ewg/max-group-size
-      (2 (ewg/xrandr-dual-monitor))
-      (3 (ewg/xrandr-triple-monitor))
-      (t (error "Not implemented layout"))))
+  (setq ewg/monitor-names monitor-names)
+  (if ewg/monitor-names
+      (setq ewg/max-group-size (length monitor-names))
+    (setq ewg/max-group-size 1))
+  ;; initial num of workspaces
+  (setq exwm-workspace-number ewg/max-group-size)
+  (setq exwm-randr-workspace-monitor-plist (ewg/get-exwm-randr-workspace-monitor-plist 10))
+  (let ((xrandr-update
+         (pcase ewg/max-group-size
+           (1 (comment "do nothing"))
+           (2 'ewg/xrandr-dual-monitor)
+           (3 'ewg/xrandr-triple-monitor)
+           (t (error "The layout is not implemented")))))
+    (when xrandr-update
+      (add-hook 'exwm-randr-screen-change-hook xrandr-update)))
+  (exwm-randr-enable))
 
 (progn
   ;; utilities
