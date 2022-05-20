@@ -4,7 +4,7 @@
 
 ** Note
    - Each workspace in the current group corresponds to each monitor.
-   - You can create, delete or switch groups.
+   - You can create, delete or switch between groups.
    - Currently, it supports only dual and triple monitor configuration.
      - However, you can define your own ~ewg/xrandr-*-monitor~ and modify ~ewg/init~.
 
