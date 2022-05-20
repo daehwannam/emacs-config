@@ -1,5 +1,12 @@
 
 * EXWM Workspace Group
+  Rough solution for managing workspace groups
+
+** Note
+   - Each workspace in the current group corresponds to each monitor.
+   - Currently, it supports only dual and triple monitor configuration.
+     - or you can modify ~ewg/init~ and define your own ~ewg/xrandr-*-monitor~.
+
 ** Example
 *** Configuration
     #+begin_src elisp

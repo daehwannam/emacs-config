@@ -4,6 +4,7 @@
     `nil))
 
 (defvar ewg/max-group-size nil "the number of monitors")
+(defvar ewg/max-num-groups 10 "the maximum number of groups")
 
 (defun ewg/init (monitor-names)
   (setq ewg/monitor-names monitor-names)
@@ -12,7 +13,7 @@
     (setq ewg/max-group-size 1))
   ;; initial num of workspaces
   (setq exwm-workspace-number ewg/max-group-size)
-  (setq exwm-randr-workspace-monitor-plist (ewg/get-exwm-randr-workspace-monitor-plist 10))
+  (setq exwm-randr-workspace-monitor-plist (ewg/get-exwm-randr-workspace-monitor-plist ewg/max-num-groups))
   (let ((xrandr-update
          (pcase ewg/max-group-size
            (1 (comment "do nothing"))
