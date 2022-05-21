@@ -5,7 +5,7 @@
 ** Configuration
    #+begin_src elisp
    (require 'exwm-workspace-group)
-   (ewg/init (list "HDMI-1-1" "DVI-I-1" "HDMI-0"))
+   (ewg/init (list "HDMI-1-1" "DVI-I-1" "HDMI-0"))  ; pass a list of connected monitor names found by xrandr
    #+end_src
 
 ** Note
