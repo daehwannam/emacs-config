@@ -18,14 +18,14 @@
      - ~exwm-randr-workspace-monitor-plist~
      So, be careful of conflicts with your existing EXWM configuration.
    - Interactive functions
+     - ~ewg/add-group~
+     - ~ewg/delete-current-group~
+     - ~ewg/delete-other-groups~
      - ~ewg/switch-next-group~
      - ~ewg/switch-previous-group~
      - ~ewg/other-workspace-in-group~
      - ~ewg/other-workspace-in-group-backwards~
      - ~ewg/swap-current-group-number~
-     - ~ewg/add-group~
-     - ~ewg/delete-other-groups~
-     - ~ewg/delete-current-group~
    - You can also switch to a specific group by using ~ewg/switch-create~ instead of ~exwm-workspace-switch-create~
      #+begin_src elisp
      ;; This exampmle is modified from https://github.com/ch11ng/exwm/wiki#global-key-bindings
