@@ -10,6 +10,8 @@
 !README.md
 !exwm/
 !package/.gitkeep
+!setup.sh
+!LICENSE
 
 # ignore some patterns or files
 *~

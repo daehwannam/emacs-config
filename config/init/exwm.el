@@ -540,7 +540,7 @@ When INITIAL-INPUT is non-nil, use it in the minibuffer during completion."
                (machine-config-get-first 'exwm-physical-monitor-names)))
           (setq exwm-environment-switch-create
                 (if (and physical-monitor-names (> (length physical-monitor-names) 1))
-                    'ewg/switch-create
+                    'ewg/switch-create-group
                   'exwm-workspace-switch-create)))
 
         (comment

@@ -1,0 +1,3 @@
+[submodule "config/package/exwm-workspace-group"]
+	path = config/package/exwm-workspace-group
+	url = https://github.com/daehwannam/exwm-workspace-group.git
