@@ -135,6 +135,17 @@
       ;; volume
       (require 'volume nil t))
 
+    (progn
+      ;; brightness
+      (defun xrandr-set-brightness (brightness)
+        (interactive "NEnter brightness percentage: ")
+        (if (<= 0 brightness 100)
+            (start-process-shell-command
+             "xrandr-set-brightness" nil
+             "~/.emacs.d/config/init/dependent/xrandr-set-brightness.sh"
+             (number-to-string (/ brightness 100.0)))
+          (user-error "Out of range"))))
+
     (comment
       ;; system tray
       ;; https://github.com/ch11ng/exwm/wiki#system-tray
