@@ -35,4 +35,4 @@
 
 (comment
   ;; window-divider config
-  (setq window-divider-default-right-width 2))
+  (setq window-divider-default-right-width 1))

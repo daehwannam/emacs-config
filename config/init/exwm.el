@@ -22,7 +22,7 @@
       (fringe-mode 1)
       (progn
         ;; window-divider config
-        (setq window-divider-default-right-width 2)
+        (setq window-divider-default-right-width 1)
         (window-divider-mode 1)))
 
     (progn
