@@ -19,7 +19,11 @@
       (toggle-scroll-bar -1)
       (menu-bar-mode -1)
       (tool-bar-mode -1)
-      (fringe-mode 1))
+      (fringe-mode 1)
+      (progn
+        ;; window-divider config
+        (setq window-divider-default-right-width 2)
+        (window-divider-mode 1)))
 
     (progn
       ;; auto fullscreen for frames

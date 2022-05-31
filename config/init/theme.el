@@ -59,7 +59,8 @@
        '(mode-line ((t (:background "gray30" :foreground "gray100" :box nil :height 0.9))))
        ;; '(mode-line ((t (:background "dark slate gray" :foreground "gray100" :box nil :height 0.9))))
        '(mode-line-buffer-id ((t (:background "gray65" :foreground "firebrick" :weight bold :height 0.9))))
-       '(mode-line-inactive ((t (:background "gray15" :foreground "gray80" :box nil :weight light :height 0.9)))))))
+       '(mode-line-inactive ((t (:background "gray15" :foreground "gray80" :box nil :weight light :height 0.9))))
+       '(window-divider ((t (:foreground "gray50")))))))
 
     (progn
       (require 'hl-line)

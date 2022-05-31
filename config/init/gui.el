@@ -32,3 +32,7 @@
   ;; disable blink-cursor-mode
   ;; https://www.gnu.org/software/emacs/manual/html_node/emacs/Cursor-Display.html
   (blink-cursor-mode 0))
+
+(comment
+  ;; window-divider config
+  (setq window-divider-default-right-width 2))
