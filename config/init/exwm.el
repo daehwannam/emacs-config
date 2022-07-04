@@ -367,6 +367,10 @@
         (interactive)
         (start-process-shell-command "terminal" nil "kitty"))
 
+      (defun exwm-my-command-open-flameshot-gui ()
+        (interactive)
+        (start-process-shell-command "screenshot" nil "flameshot gui"))
+
       (let ((map (make-sparse-keymap)))
         (define-key map (kbd "w") 'exwm-my-command-open-web-browser)
         (define-key map (kbd "q") 'exwm-my-command-query-to-browser)
@@ -376,6 +380,7 @@
         (define-key map (kbd "f") 'exwm-my-command-open-firefox)
         (define-key map (kbd "F") 'exwm-my-command-open-firefox-private)
         (define-key map (kbd "e") 'exwm-my-command-open-terminal-emulator)
+        (define-key map (kbd "<print>") 'exwm-my-command-open-flameshot-gui)
 
 	    (defvar exwm-my-command-prefix-map map
 	      "Keymap for application related commands."))
