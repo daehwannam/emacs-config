@@ -70,12 +70,12 @@
     (installable-packages
      ;; (base (vlf magit key-chord modalka evil avy hydra dash counsel multi-term))
      (basic (vlf magit dash multi-term counsel async wgrep which-key paredit poporg ctrlf expand-region))
-     (documentation (org-fragtog auctex latex-preview-pane pdf-tools define-word pdfgrep lice))
+     (documentation (org-fragtog auctex latex-preview-pane pdf-tools define-word pdfgrep))
      (vbox (vlf magit key-chord modalka evil dash  multi-term auctex latex-preview-pane material-theme elpy flycheck py-autopep8 blacken sphinx-doc workgroups2 perspective counsel iedit wgrep which-key counsel-projectile persp-projectile paredit markdown-mode tuareg ein hy-mode)) ; removed: highlight
      ;; (engels (vlf magit key-chord modalka evil dash elpy flycheck py-autopep8 blacken wgrep which-key projectile flx-ido))
      (engels (vlf magit key-chord modalka evil dash  multi-term elpy flycheck py-autopep8 blacken sphinx-doc wgrep which-key counsel counsel-projectile markdown-mode hy-mode))
      ;; (engels (vlf magit key-chord modalka evil dash elpy py-autopep8 blacken))
-     (programming (markdown-mode sphinx-doc ein hy-mode jsonnet-mode))
+     (programming (markdown-mode sphinx-doc ein hy-mode jsonnet-mode csv-mode lice))
      (python-setup (pyvenv highlight-indentation (yaml-mode :fetcher github :repo "yoshiki/yaml-mode")))
      (elpy-setup (elpy flycheck py-autopep8 blacken))
      (min-elpy-setup (elpy))

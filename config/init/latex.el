@@ -62,7 +62,31 @@
 
   (setq pdf-view-resize-factor 1.1)
 
-  (define-key pdf-view-mode-map "D" 'doc-view-fit-window-to-page))
+  (define-key pdf-view-mode-map "D" 'doc-view-fit-window-to-page)
+
+  (progn
+    (defun pdffgrep-with-current-file (command-args)
+      "This function is modified from `pdfgrep'. 
+Run pdfgrep with user-specified COMMAND-ARGS, collect output in a buffer.
+You can use \\[next-error], or RET in the `pdfgrep-buffer-name'
+buffer, to go to the lines where PDFGrep found matches.  To kill
+the PDFGrep job before it finishes, type \\[kill-compilation]."
+      (interactive (list (read-shell-command "Run pdfgrep (like this): "
+                                             (let ((default-command
+                                                     (concat (pdfgrep-default-command) "'"))
+                                                   (appended-arg-str
+                                                    (concat "' " (dhnam/get-current-file-path))))
+					                           (cons (concat default-command appended-arg-str)
+                                                     (1+ (length default-command))))
+					                         'pdfgrep-history)))
+      (unless pdfgrep-mode
+        (error "PDFGrep is not enabled, run `pdfgrep-mode' first."))
+      (unless (executable-find "pdfgrep")
+        (error "The 'pdfgrep' command not available on your system."))
+      (compilation-start command-args 'grep-mode
+		                 (lambda (_x) pdfgrep-buffer-name)))
+
+    (key-chord-define pdf-view-mode-map "sj" 'pdffgrep-with-current-file)))
 
 (when (progn
         ;; to update `TeX-view-program-selection' with setcar,

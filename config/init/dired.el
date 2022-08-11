@@ -53,50 +53,52 @@
 	  (lambda () (local-set-key (kbd "M-p") #'dired-open-prev)))
 
 (progn
- ;; File path copy
- ;; https://stackoverflow.com/a/9414763
- (defun kill-path-to-clipboard ()
-   "Copy the current buffer file name to the clipboard."
-   (interactive)
-   (let ((path (if (equal major-mode 'dired-mode)
-                   default-directory
-                 (or (buffer-file-name) default-directory))))
-     (when path
-       (kill-new path)
-       (message "'%s'" path))))
+  ;; File path copy
+  ;; https://stackoverflow.com/a/9414763
 
- (defun kill-file-name-to-clipboard ()
-   "Copy the current buffer file name to the clipboard."
-   (interactive)
-   (let ((path (if (equal major-mode 'dired-mode)
-                   default-directory
-                 (or (buffer-file-name) default-directory))))
-     (when path
-       (let ((file-name (file-name-nondirectory path)))
-	 (kill-new file-name)
-	 (message "'%s'" file-name)))))
+  (defun dhnam/get-current-file-path ()
+    (if (equal major-mode 'dired-mode)
+        default-directory
+      (or (buffer-file-name) default-directory)))
 
-(defun kill-buffer-name-to-clipboard ()
-   "Copy the current buffer file name to the clipboard."
-   (interactive)
-   (let ((name (buffer-name)))
-     (kill-new name)
-     (message "'%s'" name)))
+  (defun kill-path-to-clipboard ()
+    "Copy the current buffer file name to the clipboard."
+    (interactive)
+    (let ((path (dhnam/get-current-file-path)))
+      (when path
+        (kill-new path)
+        (message "'%s'" path))))
 
- (key-chord-define-global "wp" 'kill-path-to-clipboard)
- (key-chord-define-global "wn" 'kill-file-name-to-clipboard)
- (key-chord-define-global "wb" 'kill-buffer-name-to-clipboard)
+  (defun kill-file-name-to-clipboard ()
+    "Copy the current buffer file name to the clipboard."
+    (interactive)
+    (let ((path (dhnam/get-current-file-path)))
+      (when path
+        (let ((file-name (file-name-nondirectory path)))
+	      (kill-new file-name)
+	      (message "'%s'" file-name)))))
 
- (defun kill-other-window-path-to-clipboard (count)
-   "Copy the other window's path."
-   (interactive "p")
-   (let ((path (progn (other-window count)
-		      (let ((path default-directory))
-			(other-window (- count))
-			path))))
-     (when path
-       (kill-new path)
-       (message "'%s'" path)))))
+  (defun kill-buffer-name-to-clipboard ()
+    "Copy the current buffer file name to the clipboard."
+    (interactive)
+    (let ((name (buffer-name)))
+      (kill-new name)
+      (message "'%s'" name)))
+
+  (key-chord-define-global "wp" 'kill-path-to-clipboard)
+  (key-chord-define-global "wn" 'kill-file-name-to-clipboard)
+  (key-chord-define-global "wb" 'kill-buffer-name-to-clipboard)
+
+  (defun kill-other-window-path-to-clipboard (count)
+    "Copy the other window's path."
+    (interactive "p")
+    (let ((path (progn (other-window count)
+		               (let ((path default-directory))
+			             (other-window (- count))
+			             path))))
+      (when path
+        (kill-new path)
+        (message "'%s'" path)))))
 
 (fset 'dired-do-copy-into-other-window
    "\C-[xkill-other-window-path-to-clipboard\C-mC\C-y")
