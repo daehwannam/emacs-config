@@ -36,6 +36,35 @@
   (setq LaTeX-command-style '(("" "%(PDF)%(latex) -shell-escape %S%(PDFout) --synctex=1"))))
 
 
+(progn
+  (defun pdf-view-previous-page-command-in-other-window (&optional n)
+    (interactive)
+    (pdf-view-next-page-command-in-other-window (- (or n 1))))
+
+  (defun pdf-view-next-page-command-in-other-window (&optional n)
+    (interactive)
+    (with-current-buffer (window-buffer (next-window (selected-window)))
+      (pdf-view-next-page-command n)))
+
+  ;; ===========================================================
+  ;; latex-mode-map vs. LaTeX-mode-map
+  ;; -----------------------------------------------------------
+  ;; latex-mode-map is used for the default latex-mode.
+  ;; LaTeX-mode-map is used for AUCTeX.
+  ;; ===========================================================
+
+  (comment
+    (eval-after-load "latex"
+      (define-key LaTeX-mode-map (kbd "M-p") 'pdf-view-previous-page-command-in-other-window)
+      (define-key LaTeX-mode-map (kbd "M-n") 'pdf-view-next-page-command-in-other-window)))
+
+  (add-hook
+   'LaTeX-mode-hook
+   (lambda ()
+     (local-set-key (kbd "M-p") 'pdf-view-previous-page-command-in-other-window)
+     (local-set-key (kbd "M-n") 'pdf-view-next-page-command-in-other-window))))
+
+
 (when (package-installed-p 'pdf-tools)
   (progn
     ;; install pdf-tools if didin't yet
