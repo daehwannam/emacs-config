@@ -387,6 +387,37 @@
       (fset 'exwm-my-command-prefix-map exwm-my-command-prefix-map))
 
     (progn
+      ;; Prevent to destroy EXWM window positions when `counsel-switch-buffer' preview buffers
+      ;; https://www.reddit.com/r/emacs/comments/ixxga9/comment/grmw2mr/?utm_source=share&utm_medium=web2x&context=3
+
+      (defvar fw/ivy-last-buffer nil)
+      (defvar fw/ivy-last-window nil)
+      
+      (defun fw/unwind-exwm-buffer-p (current-buffer)
+        "Need to unwind iff `fw/ivy-last-buffer' was displayed,\
+    `CURRENT-BUFFER' is different, and `fw/ivy-last-buffer' is in `exwm-mode'."
+        (and
+         fw/ivy-last-buffer
+         fw/ivy-last-window
+         (not (equal fw/ivy-last-buffer current-buffer))
+         (eq (with-current-buffer fw/ivy-last-buffer major-mode) 'exwm-mode)))
+      
+      (defun fw/unwind-exwm-buffer (&optional buffer window)
+        "Switch back to EXWM buffer in the window it was taken from and update `fw/ivy-last-...' to BUFFER and WINDOW."
+        (when (fw/unwind-exwm-buffer-p buffer)
+          (set-window-buffer fw/ivy-last-window fw/ivy-last-buffer))
+        (unless (equal fw/ivy-last-buffer buffer)
+          (setq fw/ivy-last-window window))
+        (setq fw/ivy-last-buffer buffer))
+      
+      (defun fw/counsel--switch-buffer-update-fn (original &rest args)
+        "Wrap `(ORIGINAL &rest ARGS)' with `fw/ivy-unwind-last-buffer-if-exwm'."
+        (let* ((buffer (get-buffer (ivy-state-current ivy-last)))
+               (window (get-buffer-window buffer t)))
+          (apply original args)
+          (fw/unwind-exwm-buffer buffer window))))
+
+    (progn
       ;; additional functions for convenience
       (defun counsel-switch-buffer-within-app ()
         "Switch to another buffer within application.
@@ -513,6 +544,14 @@ When INITIAL-INPUT is non-nil, use it in the minibuffer during completion."
         (key-chord-define-global "qj" 'ivy-switch-buffer)
         (key-chord-define-global "qd" 'exwm-my-workspace-prefix-map)
 
+        (defhydra hydra-buffer-shift (global-map "C-c s")
+          "buffer-shift"
+          ("q" nil "quit")
+          ("j" buf-shift-left)
+          ("l" buf-shift-right)
+          ("i" buf-shift-up)
+          ("k" buf-shift-down))
+
         (comment
           (global-set-key (kbd "C-x 2") 'exwm-split-window-below)
           (global-set-key (kbd "C-x 3") 'exwm-split-window-right)
@@ -586,9 +625,10 @@ When INITIAL-INPUT is non-nil, use it in the minibuffer during completion."
                    ;; ([?\s-l] . find-file)
                    ([?\s-j] . ivy-switch-buffer)
                    ([?\s-k] . kill-buffer)
-                   ([?\C-\s-j] . ivy-switch-buffer-within-app)
+                   ;; ([?\C-\s-j] . ivy-switch-buffer-within-app)
                    ;; ([?\s-B] . counsel-switch-buffer-within-app)
-                   ([?\C-\s-b] . counsel-switch-buffer-within-app)
+                   ;; ([?\C-\s-b] . counsel-switch-buffer-within-app)
+                   ([?\C-\s-j] . counsel-switch-buffer-within-app)
                    ([?\s-!] . shell-command)
 
                    ([?\s-9] . previous-buffer)
@@ -706,7 +746,14 @@ When INITIAL-INPUT is non-nil, use it in the minibuffer during completion."
                         (exwm-input-set-local-simulation-keys
                          (append
                           exwm-base-input-simulation-keys
-                          '(([?\C-s] . [?\C-f])
+                          '(([?\s-p] . [S-up])
+                            ([?\s-n] . [S-down])
+                            ([?\s-b] . [S-left])
+                            ([?\s-f] . [S-right])
+                            ([?\C-\s-b] . [C-S-left])
+                            ([?\C-\s-f] . [C-S-right])
+
+                            ([?\C-s] . [?\C-f])
                             ([?\C-g] . [escape])
                             ([?\M-p] . [S-f3])
                             ([?\M-n] . [f3])
@@ -719,6 +766,8 @@ When INITIAL-INPUT is non-nil, use it in the minibuffer during completion."
                             ([?\C-0] . [M-right])
                             ([?\M-9] . [C-prior])
                             ([?\M-0] . [C-next])
+
+                            ([?\C-i] . [f6 C-c f6])
 
                             ([?\C-l] . [f6])
                             ([?\M-l] . [?\C-t])

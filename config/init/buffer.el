@@ -93,6 +93,64 @@
     ("k" buf-move-down)))
 
 (progn
+  ;; buf-shift-* functions are defined for application buffers of EXWM
+
+  (comment (require 'buffer-move))
+
+  (defun buf-shift-up ()
+    "It's modified from `buf-move-up'"
+    (interactive)
+    (let* ((other-win (windmove-find-other-window 'up))
+	       (buf-this-buf (window-buffer (selected-window))))
+      (if (null other-win)
+          (error "No window above this one")
+        ;; swap top with this one
+        (comment (set-window-buffer (selected-window) (window-buffer other-win)))
+        ;; move this one to top
+        (set-window-buffer other-win buf-this-buf)
+        (select-window other-win))))
+
+  (defun buf-shift-down ()
+    "It's modified from `buf-move-down'"
+    (interactive)
+    (let* ((other-win (windmove-find-other-window 'down))
+	       (buf-this-buf (window-buffer (selected-window))))
+      (if (or (null other-win) 
+              (string-match "^ \\*Minibuf" (buffer-name (window-buffer other-win))))
+          (error "No window under this one")
+        ;; swap top with this one
+        (comment (set-window-buffer (selected-window) (window-buffer other-win)))
+        ;; move this one to top
+        (set-window-buffer other-win buf-this-buf)
+        (select-window other-win))))
+
+  (defun buf-shift-left ()
+    "It's modified from `buf-move-left'"
+    (interactive)
+    (let* ((other-win (windmove-find-other-window 'left))
+	       (buf-this-buf (window-buffer (selected-window))))
+      (if (null other-win)
+          (error "No left split")
+        ;; swap top with this one
+        (comment (set-window-buffer (selected-window) (window-buffer other-win)))
+        ;; move this one to top
+        (set-window-buffer other-win buf-this-buf)
+        (select-window other-win))))
+
+  (defun buf-shift-right ()
+    "It's modified from `buf-move-right'"
+    (interactive)
+    (let* ((other-win (windmove-find-other-window 'right))
+	       (buf-this-buf (window-buffer (selected-window))))
+      (if (null other-win)
+          (error "No right split")
+        ;; swap top with this one
+        (comment (set-window-buffer (selected-window) (window-buffer other-win)))
+        ;; move this one to top
+        (set-window-buffer other-win buf-this-buf)
+        (select-window other-win)))))
+
+(progn
   ;; https://stackoverflow.com/a/384346
 
   (defun rename-file-and-buffer (new-name)

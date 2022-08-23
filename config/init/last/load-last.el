@@ -31,6 +31,12 @@
     (define-key-from-C-c map "m j")
     (define-key-from-C-c map "m l")
 
+    ;; hydra-buffer-shift
+    (define-key-from-C-c map "s i")
+    (define-key-from-C-c map "s k")
+    (define-key-from-C-c map "s j")
+    (define-key-from-C-c map "s l")
+
     ;; winner mode
     (define-key-from-C-c map "<left>")
     (define-key-from-C-c map "<right>")
