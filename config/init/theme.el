@@ -37,6 +37,7 @@
      ))
    (t ;; (eq theme-style 'dark)
     (comment (load-and-set-current-theme 'my-doom-material-dark t))
+    (comment (load-and-set-current-theme 'tsdh-dark t))
     (load-and-set-current-theme 'my-manoj-dark t)
     (comment (load-and-set-current-theme 'my-doom-material-dark t))
     (comment (load-and-set-current-theme 'doom-material-dark t))

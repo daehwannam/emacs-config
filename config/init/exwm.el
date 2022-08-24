@@ -97,6 +97,8 @@
           (define-key map (kbd "r") 'exwm-reset)
           (define-key map (kbd "t") 'exwm-floating-toggle-floating)
           (define-key map (kbd "f") 'exwm-layout-set-fullscreen)
+
+          (define-key map (kbd "j") 'exwm-input-grab-keyboard)
           (define-key map (kbd "k") 'exwm-input-release-keyboard)
 
 	      (define-key map (kbd "o") (make-repeatable-command 'exwm-other-workspace))
@@ -635,10 +637,10 @@ When INITIAL-INPUT is non-nil, use it in the minibuffer during completion."
                    ;; ([?\s-l] . find-file)
                    ([?\s-j] . ivy-switch-buffer)
                    ([?\s-k] . kill-buffer)
-                   ;; ([?\C-\s-j] . ivy-switch-buffer-within-app)
+                   ([?\C-\s-j] . ivy-switch-buffer-within-app)
                    ;; ([?\s-B] . counsel-switch-buffer-within-app)
-                   ;; ([?\C-\s-b] . counsel-switch-buffer-within-app)
-                   ([?\C-\s-j] . counsel-switch-buffer-within-app)
+                   ([?\C-\s-b] . counsel-switch-buffer-within-app)
+                   ;; ([?\C-\s-j] . counsel-switch-buffer-within-app)
                    ([?\s-!] . shell-command)
 
                    ([?\s-9] . previous-buffer)
@@ -777,7 +779,8 @@ When INITIAL-INPUT is non-nil, use it in the minibuffer during completion."
                             ([?\M-9] . [C-prior])
                             ([?\M-0] . [C-next])
 
-                            ([?\C-i] . [f6 C-c f6])
+                            ([?\C-i] . [\q \u])
+                            ([?\M-i] . [\q \U])
 
                             ([?\C-l] . [f6])
                             ([?\M-l] . [?\C-t])
@@ -785,17 +788,20 @@ When INITIAL-INPUT is non-nil, use it in the minibuffer during completion."
                             ([?\C-q?\C-k] . [?\C-w])
                             ([?\C-x?\C-c] . [?\C-q])
 
-                            ;; simulation keys for vimium bindings
-                            ;; ([?\C-q] . [?\M-q])
-                            ;; ([?\C-c?\C-l] . [?\C-g?\C-u])
-                            ;; ([?\C-c?l] . [?\C-g?\C-l])
-                            ;; ([?\C-x?\C-k] . [?\C-w])
-                            ;; ([?\C-x?k] . [?\C-w])
+                            ;; [Simulation keys for vimium bindings]
+                            ([?\C-j] . [?\M-q?\M-j])
+                            ([?\M-j] . [?\M-q?\M-l])
+                            ([?\C-o] . [?\M-q?\M-o])
+                            ([?\M-o] . [?\M-q?\M-O])
 
-                            ([?\C-j] . [?\C-x?\M-j])
-                            ([?\M-j] . [?\C-x?\M-l])
-                            ([?\C-o] . [?\C-x?\M-o])
-                            ([?\M-o] . [?\C-x?\M-O])
+                            ([?\C-\M-9] . [?\M-q?\M-b])
+                            ([?\C-\M-0] . [?\M-q?\M-f])
+
+                            ;; Tab deletion commands
+                            ([?\C-\M-k?/] . [?\M-q?\M-k?/])
+                            ([?\C-\M-k?9] . [?\M-q?\M-k?*])
+                            ([?\C-\M-k?\(] . [?\M-q?\M-k?\(])
+                            ([?\C-\M-k?\)] . [?\M-q?\M-k?\)])
 
                             ;; for fuzzy search
                             ;; https://github.com/Fannon/search-bookmarks-history-and-tabs#readme
