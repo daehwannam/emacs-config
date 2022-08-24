@@ -40,12 +40,20 @@
  ;; (global-set-key (kbd "C-x <right>") (make-repeatable-command 'next-buffer)) ; M-<f8>
  )
 
+(progn
+  (defun dhnam/copy-whole-buffer ()
+    (interactive)
+    (kill-ring-save (point-min) (point-max)))
+
+  (global-set-key (kbd "C-x H") 'dhnam/copy-whole-buffer))
+
+
 (if (and nil (package-installed-p 'hydra))
     (progn
       (defhydra hydra-prev-next-buffer ()
-	"prev-next-buffer"
-	("<left>" previous-buffer)
-	("<right>" next-buffer))
+	    "prev-next-buffer"
+	    ("<left>" previous-buffer)
+	    ("<right>" next-buffer))
       (global-set-key (kbd "C-x <left>") #'hydra-prev-next-buffer/previous-buffer)
       (global-set-key (kbd "C-x <right>") #'hydra-prev-next-buffer/next-buffer))
   (progn
@@ -53,22 +61,22 @@
     (global-set-key (kbd "C-x <right>") (make-repeatable-command 'next-buffer))
 
     (progn
-     (define-key (current-global-map) (kbd "C-x M-p") (make-repeatable-command 'previous-buffer))
-     (define-key (current-global-map) (kbd "C-x M-n") (make-repeatable-command 'next-buffer)))
+      (define-key (current-global-map) (kbd "C-x M-p") (make-repeatable-command 'previous-buffer))
+      (define-key (current-global-map) (kbd "C-x M-n") (make-repeatable-command 'next-buffer)))
 
     (progn
       (define-key (current-global-map) (kbd "M-9") 'previous-buffer)
       (define-key (current-global-map) (kbd "M-0") 'next-buffer))
 
     (comment
-     (key-chord-define (current-global-map) "pp" (make-repeatable-command 'previous-buffer))
-     (key-chord-define (current-global-map) "nn" (make-repeatable-command 'next-buffer)))
+      (key-chord-define (current-global-map) "pp" (make-repeatable-command 'previous-buffer))
+      (key-chord-define (current-global-map) "nn" (make-repeatable-command 'next-buffer)))
 
     (comment
       (defhydra hydra-prev-next-buffer ()
-	"prev-next-buffer"
-	("M-p" previous-buffer)
-	("M-n" next-buffer))
+	    "prev-next-buffer"
+	    ("M-p" previous-buffer)
+	    ("M-n" next-buffer))
       (global-set-key (kbd "C-x M-p") #'hydra-prev-next-buffer/previous-buffer)
       (global-set-key (kbd "C-x M-n") #'hydra-prev-next-buffer/next-buffer))))
 
@@ -82,7 +90,7 @@
      ("k" buf-move-up)
      ("j" buf-move-down)
      ("q" nil "quit"))
-   (global-set-key (kbd "C-c m") 'hydra-buffer-move/body))
+   )
 
   (defhydra hydra-buffer-move (global-map "C-c m")
     "buffer-move"
