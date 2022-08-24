@@ -48,7 +48,7 @@
     (progn
       (require 'exwm)
       (require 'exwm-config))
-    
+
     ;; set the initial workspace number.
     (unless (get 'exwm-workspace-number 'saved-value)
       (setq exwm-workspace-number 1))
@@ -56,7 +56,7 @@
     ;; make class name the buffer name
     (add-hook 'exwm-update-class-hook
               (lambda () (exwm-workspace-rename-buffer exwm-class-name)))
-    
+
     (comment
       ;; Configure Ido
       (exwm-config-ido))
@@ -232,7 +232,7 @@
         (require 'exwm-workspace-group)
 
         (ewg/init (machine-config-get-first 'exwm-physical-monitor-names))
-        
+
         (let ((map exwm-my-workspace-prefix-map))
           ;; update `exwm-my-workspace-prefix-map'
           (define-key map (kbd "o") (make-repeatable-command 'ewg/other-workspace-in-group))
@@ -392,7 +392,7 @@
 
       (defvar fw/ivy-last-buffer nil)
       (defvar fw/ivy-last-window nil)
-      
+
       (defun fw/unwind-exwm-buffer-p (current-buffer)
         "Need to unwind iff `fw/ivy-last-buffer' was displayed,\
     `CURRENT-BUFFER' is different, and `fw/ivy-last-buffer' is in `exwm-mode'."
@@ -401,7 +401,7 @@
          fw/ivy-last-window
          (not (equal fw/ivy-last-buffer current-buffer))
          (eq (with-current-buffer fw/ivy-last-buffer major-mode) 'exwm-mode)))
-      
+
       (defun fw/unwind-exwm-buffer (&optional buffer window)
         "Switch back to EXWM buffer in the window it was taken from and update `fw/ivy-last-...' to BUFFER and WINDOW."
         (when (fw/unwind-exwm-buffer-p buffer)
@@ -409,13 +409,23 @@
         (unless (equal fw/ivy-last-buffer buffer)
           (setq fw/ivy-last-window window))
         (setq fw/ivy-last-buffer buffer))
-      
+
       (defun fw/counsel--switch-buffer-update-fn (original &rest args)
         "Wrap `(ORIGINAL &rest ARGS)' with `fw/ivy-unwind-last-buffer-if-exwm'."
         (let* ((buffer (get-buffer (ivy-state-current ivy-last)))
                (window (get-buffer-window buffer t)))
           (apply original args)
-          (fw/unwind-exwm-buffer buffer window))))
+          (fw/unwind-exwm-buffer buffer window)))
+
+
+      (advice-add 'counsel--switch-buffer-update-fn :around #'fw/counsel--switch-buffer-update-fn)
+      (advice-add 'counsel--switch-buffer-unwind :after #'fw/unwind-exwm-buffer)
+
+      (defadvice ivy-done (before fw/inhibit-unwind-exwm-buffer activate)
+        "Inhibit unwinding of EXWM buffer iff it's selected."
+        (when (fw/unwind-exwm-buffer-p nil)
+          (setq fw/ivy-last-buffer nil
+                fw/ivy-last-window nil))))
 
     (progn
       ;; additional functions for convenience
@@ -465,7 +475,7 @@ When INITIAL-INPUT is non-nil, use it in the minibuffer during completion."
 
           (defvar exwm-my-extended-emacs-command-prefix-map map
 	        "Keymap for emacs related commands."))
-        
+
         (fset 'exwm-my-extended-emacs-command-prefix-map exwm-my-extended-emacs-command-prefix-map)))
 
     (progn
@@ -682,7 +692,7 @@ When INITIAL-INPUT is non-nil, use it in the minibuffer during completion."
 
         (progn
           ;; base bindings
-          ;; 
+          ;;
           ;; many bindings would cause wrong deployment for multiple monitor setting
           (setq exwm-base-input-simulation-keys
                 '(([?\C-b] . [left])
@@ -889,7 +899,7 @@ When INITIAL-INPUT is non-nil, use it in the minibuffer during completion."
         ;; display emacs's minibuffer
         (setq ivy-posframe-hide-minibuffer nil))
       (ivy-posframe-mode 1))
-    
+
     (when (fboundp 'which-key-posframe-mode)
       ;; https://github.com/yanghaoxie/which-key-posframe
       (require 'which-key-posframe)
