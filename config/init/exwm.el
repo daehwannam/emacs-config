@@ -42,7 +42,7 @@
       (start-process-shell-command "unclutter" nil "unclutter -idle 3 -root")
       (comment (start-process-shell-command "unclutter" nil "nohup unclutter -idle 2 &"))))
 
-  (defun exwm-config-my-base ()
+  (defun dhnam/exwm-config-base ()
     "This is modifed from `exwm-config-example' or `exwm-config-default'"
 
     (progn
@@ -65,7 +65,7 @@
 
   (defun exwm-config-mine ()
     (exwm-simple-frame-init)
-    (exwm-config-my-base)
+    (dhnam/exwm-config-base)
 
     (progn
       ;; interactive functions
@@ -119,10 +119,10 @@
              :after
              #'(lambda (&rest args) (exwm-layout--refresh-workspace (selected-frame)))
              '((name . "exwm-workspace-add-fullscreen-advice"))))
-	      (defvar exwm-my-workspace-prefix-map map
+	      (defvar dhnam/exwm-workspace-prefix-map map
 	        "Keymap for workspace related commands."))
-        (fset 'exwm-my-workspace-prefix-map exwm-my-workspace-prefix-map)
-        (comment (exwm-input-set-key (kbd "s-w") 'exwm-my-workspace-prefix-map)))
+        (fset 'dhnam/exwm-workspace-prefix-map dhnam/exwm-workspace-prefix-map)
+        (comment (exwm-input-set-key (kbd "s-w") 'dhnam/exwm-workspace-prefix-map)))
 
       (comment (exwm-input-set-key (kbd "s-q") 'ctl-x-map))
       (comment (exwm-input-set-key (kbd "s-e") 'tab-prefix-map))
@@ -235,8 +235,8 @@
 
         (ewg/init (machine-config-get-first 'exwm-physical-monitor-names))
 
-        (let ((map exwm-my-workspace-prefix-map))
-          ;; update `exwm-my-workspace-prefix-map'
+        (let ((map dhnam/exwm-workspace-prefix-map))
+          ;; update `dhnam/exwm-workspace-prefix-map'
           (define-key map (kbd "o") (make-repeatable-command 'ewg/other-workspace-in-group))
           (define-key map (kbd "O") (make-repeatable-command 'ewg/other-workspace-in-group-backwards))
 
@@ -256,14 +256,14 @@
           ("-" volume-lower-10)
           ("s" volume-set)
           ("0" volume-set-to-0%))
-        (define-key exwm-my-workspace-prefix-map (kbd "v") 'hydra-volume/body))
-      (define-key exwm-my-workspace-prefix-map (kbd "v") 'volume-set))
+        (define-key dhnam/exwm-workspace-prefix-map (kbd "v") 'hydra-volume/body))
+      (define-key dhnam/exwm-workspace-prefix-map (kbd "v") 'volume-set))
 
     (progn
       ;; application commands
       (progn
         ;; web browser commands
-        (defun exwm-my-command-execute-shell (command)
+        (defun dhnam/exwm-command-execute-shell (command)
           (interactive (list (read-shell-command "$ ")))
           (start-process-shell-command command nil command))
 
@@ -280,7 +280,7 @@
            (t
             (format "\"https://www.google.com/search?q=%s\"" query-string))))
 
-        (defun my-open-web-browser (browser-command &optional url)
+        (defun dhnan/open-web-browser (browser-command &optional url)
           (let ((web-search-query-url-string
                  (cond
                   (url url)
@@ -292,7 +292,7 @@
             (start-process-shell-command "web-browser" nil
                                          (concat browser-command " " web-search-query-url-string))))
 
-        (defun old-exwm-my-command-open-web-browser ()
+        (defun old-dhnam/exwm-command-open-web-browser ()
           (interactive)
           (start-process-shell-command "web-browser" nil "nyxt")
           (comment (start-process-shell-command "web-browser" nil "qutebrowser"))
@@ -304,7 +304,7 @@
           (comment (start-process-shell-command "web-browser" nil "xdg-open https://")))
 
         (comment
-          (defun old-exwm-my-command-open-web-browser-incognito ()
+          (defun old-dhnam/exwm-command-open-web-browser-incognito ()
             (interactive)
             (start-process-shell-command "web-browser" nil "qutebrowser ':open -p'")
             (comment (start-process-shell-command "web-browser" nil "firefox --private-window"))
@@ -314,17 +314,18 @@
             (comment (start-process-shell-command "web-browser" nil "google-chrome --new-window --incognito"))
             (comment (start-process-shell-command "web-browser" nil "xdg-open https://"))))
 
-        (fset 'exwm-my-command-open-web-browser 'exwm-my-command-open-nyxt)
+        (comment (fset 'dhnam/exwm-command-open-web-browser 'dhnam/exwm-command-open-nyxt))
+        (fset 'dhnam/exwm-command-open-web-browser 'dhnam/exwm-command-open-firefox-private)
 
-        (defun exwm-my-command-open-nyxt (&optional url)
+        (defun dhnam/exwm-command-open-nyxt (&optional url)
           (interactive)
-          (my-open-web-browser "nyxt" url))
+          (dhnan/open-web-browser "nyxt" url))
 
         (progn
           (defvar nyxt-search-engines
             (car (read-from-string (get-string-from-file "~/.config/nyxt/search-engines.lisp"))))
 
-          (defun exwm-my-command-query-to-browser (&optional query)
+          (defun dhnam/exwm-query-to-browser (&optional query open-web-browser)
             (interactive "sSearch query: ")
             (let* ((splits (s-split " " query))
                    (search-engine-entry
@@ -345,48 +346,52 @@
                 (setq url (if (string-empty-p query-string)
                               (caddr search-engine-entry)
                             (concat "\"" (s-replace "~a" query-string (cadr search-engine-entry)) "\""))))
-              (exwm-my-command-open-web-browser url))))
+              (funcall open-web-browser url)))
 
-        (defun exwm-my-command-open-google-chrome (&optional url)
+          (defun dhnam/exwm-command-query-to-browser (&optional query)
+            (interactive "sSearch query: ")
+            (dhnam/exwm-query-to-browser query #'dhnam/exwm-command-open-web-browser)))
+
+        (defun dhnam/exwm-command-open-google-chrome (&optional url)
           (interactive)
-          (my-open-web-browser "google-chrome" url)
-          (comment (my-open-web-browser "google-chrome --app=https://www.google.com/")))
+          (dhnan/open-web-browser "google-chrome" url)
+          (comment (dhnan/open-web-browser "google-chrome --app=https://www.google.com/")))
 
-        (defun exwm-my-command-open-google-chrome-incognito (&optional url)
+        (defun dhnam/exwm-command-open-google-chrome-incognito (&optional url)
           (interactive)
-          (my-open-web-browser "google-chrome --incognito" url)
-          (comment (my-open-web-browser "google-chrome --new-window google.com --incognito")))
+          (dhnan/open-web-browser "google-chrome --incognito" url)
+          (comment (dhnan/open-web-browser "google-chrome --new-window google.com --incognito")))
 
-        (defun exwm-my-command-open-firefox (&optional url)
+        (defun dhnam/exwm-command-open-firefox (&optional url)
           (interactive)
-          (my-open-web-browser "firefox --new-window" url))
+          (dhnan/open-web-browser "firefox --new-window" url))
 
-        (defun exwm-my-command-open-firefox-private (&optional url)
+        (defun dhnam/exwm-command-open-firefox-private (&optional url)
           (interactive)
-          (my-open-web-browser "firefox --private-window" url)))
+          (dhnan/open-web-browser "firefox --private-window" url)))
 
-      (defun exwm-my-command-open-terminal-emulator ()
+      (defun dhnam/exwm-command-open-terminal-emulator ()
         (interactive)
         (start-process-shell-command "terminal" nil "kitty"))
 
-      (defun exwm-my-command-open-flameshot-gui ()
+      (defun dhnam/exwm-command-open-flameshot-gui ()
         (interactive)
         (start-process-shell-command "screenshot" nil "flameshot gui"))
 
       (let ((map (make-sparse-keymap)))
-        (define-key map (kbd "w") 'exwm-my-command-open-web-browser)
-        (define-key map (kbd "q") 'exwm-my-command-query-to-browser)
-        ;; (define-key map (kbd "W") 'exwm-my-command-open-web-browser-incognito)
-        (define-key map (kbd "c") 'exwm-my-command-open-google-chrome)
-        (define-key map (kbd "C") 'exwm-my-command-open-google-chrome-incognito)
-        (define-key map (kbd "f") 'exwm-my-command-open-firefox)
-        (define-key map (kbd "F") 'exwm-my-command-open-firefox-private)
-        (define-key map (kbd "e") 'exwm-my-command-open-terminal-emulator)
-        (define-key map (kbd "<print>") 'exwm-my-command-open-flameshot-gui)
+        (define-key map (kbd "w") 'dhnam/exwm-command-open-web-browser)
+        (define-key map (kbd "q") 'dhnam/exwm-command-query-to-browser)
+        ;; (define-key map (kbd "W") 'dhnam/exwm-command-open-web-browser-incognito)
+        (define-key map (kbd "c") 'dhnam/exwm-command-open-google-chrome)
+        (define-key map (kbd "C") 'dhnam/exwm-command-open-google-chrome-incognito)
+        (define-key map (kbd "f") 'dhnam/exwm-command-open-firefox)
+        (define-key map (kbd "F") 'dhnam/exwm-command-open-firefox-private)
+        (define-key map (kbd "e") 'dhnam/exwm-command-open-terminal-emulator)
+        (define-key map (kbd "<print>") 'dhnam/exwm-command-open-flameshot-gui)
 
-	    (defvar exwm-my-command-prefix-map map
+	    (defvar dhnam/exwm-command-prefix-map map
 	      "Keymap for application related commands."))
-      (fset 'exwm-my-command-prefix-map exwm-my-command-prefix-map))
+      (fset 'dhnam/exwm-command-prefix-map dhnam/exwm-command-prefix-map))
 
     (progn
       ;; Prevent to destroy EXWM window positions when `counsel-switch-buffer' preview buffers
@@ -475,10 +480,10 @@ When INITIAL-INPUT is non-nil, use it in the minibuffer during completion."
         (let ((map (make-sparse-keymap)))
           (define-key map (kbd "d") 'counsel-find-file-in-downloads)
 
-          (defvar exwm-my-extended-emacs-command-prefix-map map
+          (defvar dhnam/exwm-extended-emacs-command-prefix-map map
 	        "Keymap for emacs related commands."))
 
-        (fset 'exwm-my-extended-emacs-command-prefix-map exwm-my-extended-emacs-command-prefix-map)))
+        (fset 'dhnam/exwm-extended-emacs-command-prefix-map dhnam/exwm-extended-emacs-command-prefix-map)))
 
     (progn
       (setq exwm-manage-configurations nil)
@@ -554,7 +559,7 @@ When INITIAL-INPUT is non-nil, use it in the minibuffer during completion."
         (global-set-key (kbd "C-x M-b") 'ivy-switch-buffer)
         (global-set-key (kbd "C-x B") 'counsel-switch-buffer)
         (key-chord-define-global "qj" 'ivy-switch-buffer)
-        (key-chord-define-global "qd" 'exwm-my-workspace-prefix-map)
+        (key-chord-define-global "qd" 'dhnam/exwm-workspace-prefix-map)
 
         (defhydra hydra-buffer-shift (global-map "C-c s")
           "buffer-shift"
@@ -591,10 +596,10 @@ When INITIAL-INPUT is non-nil, use it in the minibuffer during completion."
           ;; workspace start number
           ;; https://www.reddit.com/r/emacs/comments/arqg6z/comment/egp2e1u/?utm_source=share&utm_medium=web2x&context=3
 
-          (defvar exwm-my-workspace-start-number 1)
-          (assert (member exwm-my-workspace-start-number '(0 1))) ; should be 0 or 1
+          (defvar dhnam/exwm-workspace-start-number 1)
+          (assert (member dhnam/exwm-workspace-start-number '(0 1))) ; should be 0 or 1
           (setq exwm-workspace-index-map
-                (lambda (index) (number-to-string (+ exwm-my-workspace-start-number index)))))
+                (lambda (index) (number-to-string (+ dhnam/exwm-workspace-start-number index)))))
 
         (let ((physical-monitor-names
                (machine-config-get-first 'exwm-physical-monitor-names)))
@@ -605,8 +610,8 @@ When INITIAL-INPUT is non-nil, use it in the minibuffer during completion."
 
         (comment
           (dotimes (workspace-num 9)
-            (lexical-let ((idx (% (+ workspace-num 10 (- exwm-my-workspace-start-number)) 10)))
-              (define-key exwm-my-workspapce-prefix-map (kbd (format "%d" workspace-num))
+            (lexical-let ((idx (% (+ workspace-num 10 (- dhnam/exwm-workspace-start-number)) 10)))
+              (define-key dhnam/exwm-workspapce-prefix-map (kbd (format "%d" workspace-num))
                 #'(lambda () (interactive)
                     (funcall exwm-environment-switch-create idx))))))
 
@@ -620,10 +625,10 @@ When INITIAL-INPUT is non-nil, use it in the minibuffer during completion."
                    ;; ([?\s-t] . exwm-floating-toggle-floating)
                    ([?\s-\;] . exwm-input-send-next-key)
 
-                   ([?\s-&] . exwm-my-command-execute-shell)
-                   ([?\s-m] . exwm-my-command-prefix-map)
-                   ([?\s-d] . exwm-my-workspace-prefix-map)
-                   ([?\s-'] . exwm-my-extended-emacs-command-prefix-map)
+                   ([?\s-&] . dhnam/exwm-command-execute-shell)
+                   ([?\s-m] . dhnam/exwm-command-prefix-map)
+                   ([?\s-d] . dhnam/exwm-workspace-prefix-map)
+                   ([?\s-'] . dhnam/exwm-extended-emacs-command-prefix-map)
 
                    ([?\s-q] . ctl-x-map)
                    ([?\s-x] . (lambda () (interactive) (funcall (key-binding (kbd "M-x")))))
@@ -672,7 +677,7 @@ When INITIAL-INPUT is non-nil, use it in the minibuffer during completion."
                                  (lambda ()
                                    (interactive)
                                    (,exwm-environment-switch-create
-                                    ,(% (+ i 10 (- exwm-my-workspace-start-number)) 10)))))
+                                    ,(% (+ i 10 (- dhnam/exwm-workspace-start-number)) 10)))))
                              ; using number key 1 to 7
                              (number-sequence 1 7)))
 
@@ -683,7 +688,7 @@ When INITIAL-INPUT is non-nil, use it in the minibuffer during completion."
                                    (lambda ()
                                      (interactive)
                                      (,exwm-environment-switch-create
-                                      ,(% (+ i 10 (- exwm-my-workspace-start-number)) 10)))))
+                                      ,(% (+ i 10 (- dhnam/exwm-workspace-start-number)) 10)))))
                                ; using number key 0 to 9
                                (number-sequence 0 9))))))))
 
@@ -727,8 +732,59 @@ When INITIAL-INPUT is non-nil, use it in the minibuffer during completion."
 
                   ([?\C-/] . [?\C-z])
                   ([?\C-?] . [?\C-y])
-                  ([?\M-/] . [?\C-y])
-                  )))
+                  ([?\M-/] . [?\C-y])))
+
+          (setq exwm-browser-input-simulation-keys
+                '(([?\s-p] . [S-up])
+                  ([?\s-n] . [S-down])
+                  ([?\s-b] . [S-left])
+                  ([?\s-f] . [S-right])
+                  ([?\C-\s-b] . [C-S-left])
+                  ([?\C-\s-f] . [C-S-right])
+
+                  ([?\C-s] . [?\C-f])
+                  ([?\C-g] . [escape])
+                  ([?\M-p] . [S-f3])
+                  ([?\M-n] . [f3])
+                  ;; ([?\M-p] . [C-prior])
+                  ;; ([?\M-n] . [C-next])
+                  ([?\M-\[] . [M-left])
+                  ([?\M-\]] . [M-right])
+
+                  ([?\C-9] . [M-left])
+                  ([?\C-0] . [M-right])
+                  ([?\M-9] . [C-prior])
+                  ([?\M-0] . [C-next])
+
+                  ([?\C-i] . [\q \u])
+                  ([?\M-i] . [\q \U])
+
+                  ([?\C-l] . [f6])
+                  ([?\M-l] . [?\C-t])
+
+                  ([?\C-q?\C-k] . [?\C-w])
+                  ([?\C-x?\C-c] . [?\C-q])))
+
+          (setq exwm-vimium-input-simulation-keys
+                '(([?\C-j] . [?\M-q?\M-j])
+                  ([?\M-j] . [?\M-q?\M-l])
+                  ([?\C-o] . [?\M-q?\M-o])
+                  ([?\M-o] . [?\M-q?\M-O])
+
+                  ([?\C-\M-9] . [?\M-q?\M-b])
+                  ([?\C-\M-0] . [?\M-q?\M-f])
+
+                  ;; Tab deletion commands
+                  ([?\C-\M-k?/] . [?\M-q?\M-k?/])
+                  ([?\C-\M-k?9] . [?\M-q?\M-k?*])
+                  ([?\C-\M-k?\(] . [?\M-q?\M-k?\(])
+                  ([?\C-\M-k?\)] . [?\M-q?\M-k?\)])))
+
+          (setq exwm-browser-app-input-simulation-keys
+                '(;; for fuzzy search
+                  ;; https://github.com/Fannon/search-bookmarks-history-and-tabs#readme
+                  ([?\C-m] . [\C-S-.])))
+          )
 
         (progn
           ;; global bindings
@@ -758,68 +814,20 @@ When INITIAL-INPUT is non-nil, use it in the minibuffer during completion."
                         (exwm-input-set-local-simulation-keys
                          (append
                           exwm-base-input-simulation-keys
-                          '(([?\s-p] . [S-up])
-                            ([?\s-n] . [S-down])
-                            ([?\s-b] . [S-left])
-                            ([?\s-f] . [S-right])
-                            ([?\C-\s-b] . [C-S-left])
-                            ([?\C-\s-f] . [C-S-right])
-
-                            ([?\C-s] . [?\C-f])
-                            ([?\C-g] . [escape])
-                            ([?\M-p] . [S-f3])
-                            ([?\M-n] . [f3])
-                            ;; ([?\M-p] . [C-prior])
-                            ;; ([?\M-n] . [C-next])
-                            ([?\M-\[] . [M-left])
-                            ([?\M-\]] . [M-right])
-
-                            ([?\C-9] . [M-left])
-                            ([?\C-0] . [M-right])
-                            ([?\M-9] . [C-prior])
-                            ([?\M-0] . [C-next])
-
-                            ([?\C-i] . [\q \u])
-                            ([?\M-i] . [\q \U])
-
-                            ([?\C-l] . [f6])
-                            ([?\M-l] . [?\C-t])
-
-                            ([?\C-q?\C-k] . [?\C-w])
-                            ([?\C-x?\C-c] . [?\C-q])
-
-                            ;; [Simulation keys for vimium bindings]
-                            ([?\C-j] . [?\M-q?\M-j])
-                            ([?\M-j] . [?\M-q?\M-l])
-                            ([?\C-o] . [?\M-q?\M-o])
-                            ([?\M-o] . [?\M-q?\M-O])
-
-                            ([?\C-\M-9] . [?\M-q?\M-b])
-                            ([?\C-\M-0] . [?\M-q?\M-f])
-
-                            ;; Tab deletion commands
-                            ([?\C-\M-k?/] . [?\M-q?\M-k?/])
-                            ([?\C-\M-k?9] . [?\M-q?\M-k?*])
-                            ([?\C-\M-k?\(] . [?\M-q?\M-k?\(])
-                            ([?\C-\M-k?\)] . [?\M-q?\M-k?\)])
-
-                            ;; for fuzzy search
-                            ;; https://github.com/Fannon/search-bookmarks-history-and-tabs#readme
-                            ([?\C-m] . [\C-S-.])
-                            )
+                          exwm-browser-input-simulation-keys
+                          exwm-vimium-input-simulation-keys
+                          exwm-browser-app-input-simulation-keys
                           )))))
-          (comment
-            (add-hook 'exwm-manage-finish-hook
-                      (lambda ()
-                        (when (and exwm-class-name
-                                   (string= exwm-class-name "Google-chrome"))
-                          (exwm-input-set-local-simulation-keys
-                           (append
-                            exwm-base-input-simulation-keys
-                            '(([?\M-p] . [C-prior])
-                              ([?\M-n] . [C-next])
-                              ([?\M-\[] . [M-left])
-                              ([?\M-\]] . [M-right]))))))))
+
+          (add-hook 'exwm-manage-finish-hook
+                    (lambda ()
+                      (when (and exwm-class-name
+                                 (string= exwm-class-name "Google-chrome"))
+                        (exwm-input-set-local-simulation-keys
+                         (append
+                          exwm-base-input-simulation-keys
+                          exwm-browser-input-simulation-keys
+                          exwm-vimium-input-simulation-keys)))))
           (comment
             (add-hook 'exwm-manage-finish-hook
                       (lambda ()
@@ -844,7 +852,7 @@ When INITIAL-INPUT is non-nil, use it in the minibuffer during completion."
         (define-key exwm-mode-map (kbd "M-!") 'shell-command)
         (comment (define-key exwm-mode-map (kbd "M-#") 'lookup-word-from-web-other-window-for-exwm))
         (comment (define-key exwm-mode-map (kbd "C-x b") 'switch-to-buffer))
-        (comment (define-key exwm-mode-map (kbd "M-&") 'exwm-my-execute-shell-command))
+        (comment (define-key exwm-mode-map (kbd "M-&") 'dhnam/exwm-execute-shell-command))
         (lambda (command)
           (interactive (list (read-shell-command "$ ")))
           (start-process-shell-command command nil command))
