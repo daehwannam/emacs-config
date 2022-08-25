@@ -315,7 +315,8 @@
             (comment (start-process-shell-command "web-browser" nil "xdg-open https://"))))
 
         (comment (fset 'dhnam/exwm-command-open-web-browser 'dhnam/exwm-command-open-nyxt))
-        (fset 'dhnam/exwm-command-open-web-browser 'dhnam/exwm-command-open-firefox-private)
+        (commetn (fset 'dhnam/exwm-command-open-web-browser 'dhnam/exwm-command-open-firefox-private))
+        (fset 'dhnam/exwm-command-open-web-browser 'dhnam/exwm-command-open-firefox)
 
         (defun dhnam/exwm-command-open-nyxt (&optional url)
           (interactive)
@@ -771,8 +772,9 @@ When INITIAL-INPUT is non-nil, use it in the minibuffer during completion."
                   ([?\C-o] . [?\M-q?\M-o])
                   ([?\M-o] . [?\M-q?\M-O])
 
-                  ([?\C-\M-9] . [?\M-q?\M-b])
-                  ([?\C-\M-0] . [?\M-q?\M-f])
+                  ;; open back/forward history in a new tab
+                  ([?\C-\M-9] . [?\M-q?\C-\M-b])
+                  ([?\C-\M-0] . [?\M-q?\C-\M-f])
 
                   ;; Tab deletion commands
                   ([?\C-\M-k?/] . [?\M-q?\M-k?/])
