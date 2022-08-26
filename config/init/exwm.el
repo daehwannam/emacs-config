@@ -387,8 +387,8 @@
         ;; (define-key map (kbd "W") 'dhnam/exwm-command-open-web-browser-incognito)
         (define-key map (kbd "c") 'dhnam/exwm-command-open-google-chrome)
         (define-key map (kbd "C") 'dhnam/exwm-command-open-google-chrome-incognito)
-        (define-key map (kbd "f") 'dhnam/exwm-command-open-firefox)
-        (define-key map (kbd "F") 'dhnam/exwm-command-open-firefox-private)
+        (comment (define-key map (kbd "f") 'dhnam/exwm-command-open-firefox))
+        (comment (define-key map (kbd "F") 'dhnam/exwm-command-open-firefox-private))
         (define-key map (kbd "e") 'dhnam/exwm-command-open-terminal-emulator)
         (define-key map (kbd "<print>") 'dhnam/exwm-command-open-flameshot-gui)
 
