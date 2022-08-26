@@ -315,8 +315,9 @@
             (comment (start-process-shell-command "web-browser" nil "xdg-open https://"))))
 
         (comment (fset 'dhnam/exwm-command-open-web-browser 'dhnam/exwm-command-open-nyxt))
-        (commetn (fset 'dhnam/exwm-command-open-web-browser 'dhnam/exwm-command-open-firefox-private))
+        (comment (fset 'dhnam/exwm-command-open-web-browser 'dhnam/exwm-command-open-firefox-private))
         (fset 'dhnam/exwm-command-open-web-browser 'dhnam/exwm-command-open-firefox)
+        (fset 'dhnam/exwm-command-open-web-browser-private 'dhnam/exwm-command-open-firefox-private)
 
         (defun dhnam/exwm-command-open-nyxt (&optional url)
           (interactive)
@@ -324,7 +325,7 @@
 
         (progn
           (defvar nyxt-search-engines
-            (car (read-from-string (get-string-from-file "~/.config/nyxt/search-engines.lisp"))))
+            (car (read-from-string (get-string-from-file "~/.emacs.d/config/init/dependent/search-engines.lisp"))))
 
           (defun dhnam/exwm-query-to-browser (&optional query open-web-browser)
             (interactive "sSearch query: ")
@@ -381,6 +382,7 @@
 
       (let ((map (make-sparse-keymap)))
         (define-key map (kbd "w") 'dhnam/exwm-command-open-web-browser)
+        (define-key map (kbd "W") 'dhnam/exwm-command-open-web-browser-private)
         (define-key map (kbd "q") 'dhnam/exwm-command-query-to-browser)
         ;; (define-key map (kbd "W") 'dhnam/exwm-command-open-web-browser-incognito)
         (define-key map (kbd "c") 'dhnam/exwm-command-open-google-chrome)
@@ -764,7 +766,11 @@ When INITIAL-INPUT is non-nil, use it in the minibuffer during completion."
                   ([?\M-l] . [?\C-t])
 
                   ([?\C-q?\C-k] . [?\C-w])
-                  ([?\C-x?\C-c] . [?\C-q])))
+                  ([?\C-x?\C-c] . [?\C-q])
+
+                  ;; caret browsing
+                  ([?\C-\ ] . [f7])
+                  ))
 
           (setq exwm-vimium-input-simulation-keys
                 '(([?\C-j] . [?\M-q?\M-j])
