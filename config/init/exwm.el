@@ -738,12 +738,12 @@ When INITIAL-INPUT is non-nil, use it in the minibuffer during completion."
                   ([?\M-/] . [?\C-y])))
 
           (setq exwm-browser-input-simulation-keys
-                '(([?\s-p] . [S-up])
-                  ([?\s-n] . [S-down])
-                  ([?\s-b] . [S-left])
-                  ([?\s-f] . [S-right])
-                  ([?\C-\s-b] . [C-S-left])
-                  ([?\C-\s-f] . [C-S-right])
+                '(([?\C-\M-p] . [S-up])
+                  ([?\C-\M-n] . [S-down])
+                  ([?\C-\M-b] . [S-left])
+                  ([?\C-\M-f] . [S-right])
+                  ([?\C-\M-i] . [C-S-left])
+                  ([?\C-\M-o] . [C-S-right])
 
                   ([?\C-s] . [?\C-f])
                   ([?\C-g] . [escape])
@@ -783,10 +783,10 @@ When INITIAL-INPUT is non-nil, use it in the minibuffer during completion."
                   ([?\C-\M-0] . [?\M-q?\C-\M-f])
 
                   ;; Tab deletion commands
-                  ([?\C-\M-k?/] . [?\M-q?\M-k?/])
-                  ([?\C-\M-k?9] . [?\M-q?\M-k?*])
-                  ([?\C-\M-k?\(] . [?\M-q?\M-k?\(])
-                  ([?\C-\M-k?\)] . [?\M-q?\M-k?\)])))
+                  ([?\C-q?\C-/] . [?\M-q?\M-k?\/])
+                  ([?\C-q?\C-o] . [?\M-q?\M-k?*])
+                  ([?\C-q?\C-9] . [?\M-q?\M-k?\(])
+                  ([?\C-q?\C-0] . [?\M-q?\M-k?\)])))
 
           (setq exwm-browser-app-input-simulation-keys
                 '(;; for fuzzy search
