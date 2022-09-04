@@ -501,7 +501,7 @@ When INITIAL-INPUT is non-nil, use it in the minibuffer during completion."
              (progn
                ;; enable line-mode for specific applications
                ;; https://www.reddit.com/r/emacs/comments/o6vzxz/comment/h2v5rn0/?utm_source=share&utm_medium=web2x&context=3
-               '(((member exwm-class-name '("Firefox" "firefox"))
+               '(((member exwm-class-name '("Firefox" "firefox" "Google-chrome" "google-chrome"))
 	              line-mode t)))
              (progn
                ;; start applications in char-mode by default
@@ -830,12 +830,13 @@ When INITIAL-INPUT is non-nil, use it in the minibuffer during completion."
           (add-hook 'exwm-manage-finish-hook
                     (lambda ()
                       (when (and exwm-class-name
-                                 (string= exwm-class-name "Google-chrome"))
+                                 (string= (downcase exwm-class-name) (downcase "Google-chrome")))
                         (exwm-input-set-local-simulation-keys
                          (append
                           exwm-base-input-simulation-keys
                           exwm-browser-input-simulation-keys
-                          exwm-vimium-input-simulation-keys)))))
+                          exwm-vimium-input-simulation-keys
+                          exwm-browser-app-input-simulation-keys)))))
           (comment
             (add-hook 'exwm-manage-finish-hook
                       (lambda ()
