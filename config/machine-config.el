@@ -60,7 +60,8 @@
     ;;  (descartes triple)
     ;;  (ubuntu-laptop nil))
     (exwm-font-height
-     (descartes 145))
+     ;; (descartes 145)
+     )
     (define-word-offline-dict-directory-path
       (ubuntu-laptop "~/data/language/dictionaries_enwiktionary/"))
     (languagetool-dir-path

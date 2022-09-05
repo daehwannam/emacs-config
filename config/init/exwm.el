@@ -769,7 +769,8 @@ When INITIAL-INPUT is non-nil, use it in the minibuffer during completion."
                   ([?\C-x?\C-c] . [?\C-q])
 
                   ;; caret browsing
-                  ([?\C-\ ] . [f7])
+                  ;; ([?\C-\M-\ ] . [f7])
+                  ([?\C-\] . [escape f7]) ; <C-return>
                   ))
 
           (setq exwm-vimium-input-simulation-keys

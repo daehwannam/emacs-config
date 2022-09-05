@@ -49,6 +49,11 @@ if [ -f "~/.exwm-config"]; then
     bash ~/.exwm-config
 fi
 
+# dpi setting
+# https://unix.stackexchange.com/a/461525
+# https://unix.stackexchange.com/a/461525
+xrdb -merge ~/.Xresources
+
 ### run emacs ###
 # export BASH_ENV=~/.bashrc  # not working
 
