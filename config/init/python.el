@@ -475,6 +475,9 @@ Similarly for Soar, Scheme, etc."
 (progn
   ;; pdbtrace
   ;; https://stackoverflow.com/questions/26285046/how-do-i-enable-pdbtrack-python-debugging-in-emacs-24-x-shell
+  ;;
+  ;; This trick doesn't work when the path to the source code includes parenthesis ("(" and ")"):
+  ;; e.g. "(env) user@computer:~/path/to/some(source)dir$"
   (require 'python)
   
   (defun pdbtrace-shell-mode-hook ()
