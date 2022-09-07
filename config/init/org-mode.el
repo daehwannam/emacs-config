@@ -34,8 +34,18 @@
      (setq org-startup-indented t)))
 
   (comment
-   (define-key global-map "\C-cl" 'org-store-link)
-   (define-key global-map "\C-ca" 'org-agenda))
+    ;; Change applications used in org-mode
+    ;; https://emacs.stackexchange.com/a/26881
+    (setq org-file-apps
+          '((auto-mode . emacs)
+            (directory . emacs)
+            ("\\.mm\\'" . default)
+            ("\\.x?html?\\'" . "xdg-open %s")
+            ("\\.pdf\\'" . default))))
+
+  (comment
+    (define-key global-map "\C-cl" 'org-store-link)
+    (define-key global-map "\C-ca" 'org-agenda))
   (progn
     (define-key global-map (kbd "C-c l") 'org-store-link)
     (define-key global-map (kbd "C-c a") 'org-agenda))
