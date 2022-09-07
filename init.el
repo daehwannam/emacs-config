@@ -33,7 +33,7 @@
   (load "~/.emacs.d/base/hydra-setup.el"))
 (load "~/.emacs.d/base/key-config.el")
 (comment (load "~/.emacs.d/base/modalka-setup.el"))
-(load "~/.emacs.d/base/modalka-simple-setup.el")
+(comment (load "~/.emacs.d/base/modalka-simple-setup.el"))
 (comment (load "~/.emacs.d/base/native-comp.el"))
 
 ;;; common utility
