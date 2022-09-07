@@ -33,7 +33,7 @@
      ;; https://www.reddit.com/r/emacs/comments/97naje/what_is_everyones_org_mode_indentation_preferences/
      (setq org-startup-indented t)))
 
-  (comment
+  (progn
     ;; Change applications used in org-mode
     ;; https://emacs.stackexchange.com/a/26881
     (setq org-file-apps
