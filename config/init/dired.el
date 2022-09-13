@@ -22,6 +22,15 @@
   "Sort dired listings with directories first before adding marks."
   (mydired-sort))
 
+(comment
+  ;; (This doesn't work)
+  ;;
+  ;; Change file name orders similarly to MS-Windows
+  ;; https://emacs.stackexchange.com/a/50785
+  (comment
+    (custom-set-variables '(ls-lisp-UCA-like-collation nil)))
+  (setq ls-lisp-UCA-like-collation nil))
+
 
 ;; https://superuser.com/questions/397806/emacs-modify-quit-window-to-delete-buffer-not-just-bury-it
 (defadvice quit-window (before quit-window-always-kill)
