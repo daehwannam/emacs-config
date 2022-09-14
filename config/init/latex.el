@@ -37,11 +37,11 @@
 
 
 (progn
-  (defun pdf-view-previous-page-command-in-other-window (&optional n)
+  (defun dhnam/pdf-view-previous-page-command-in-other-window (&optional n)
     (interactive)
-    (pdf-view-next-page-command-in-other-window (- (or n 1))))
+    (dhnam/pdf-view-next-page-command-in-other-window (- (or n 1))))
 
-  (defun pdf-view-next-page-command-in-other-window (&optional n)
+  (defun dhnam/pdf-view-next-page-command-in-other-window (&optional n)
     (interactive)
     (with-current-buffer (window-buffer (next-window (selected-window)))
       (pdf-view-next-page-command n)))
@@ -55,14 +55,71 @@
 
   (comment
     (eval-after-load "latex"
-      (define-key LaTeX-mode-map (kbd "M-p") 'pdf-view-previous-page-command-in-other-window)
-      (define-key LaTeX-mode-map (kbd "M-n") 'pdf-view-next-page-command-in-other-window)))
+      (define-key LaTeX-mode-map (kbd "M-p") 'dhnam/pdf-view-previous-page-command-in-other-window)
+      (define-key LaTeX-mode-map (kbd "M-n") 'dhnam/pdf-view-next-page-command-in-other-window)))
 
   (add-hook
    'LaTeX-mode-hook
    (lambda ()
-     (local-set-key (kbd "M-p") 'pdf-view-previous-page-command-in-other-window)
-     (local-set-key (kbd "M-n") 'pdf-view-next-page-command-in-other-window))))
+     (local-set-key (kbd "M-p") 'dhnam/pdf-view-previous-page-command-in-other-window)
+     (local-set-key (kbd "M-n") 'dhnam/pdf-view-next-page-command-in-other-window))))
+
+(when (require 'buffer-move nil t)
+
+  (defun dhnam/pdf-view-previous-page-in-multiple-columns-command (n)
+    (interactive "p")
+
+    (dhnam/pdf-view-next-page-in-multiple-columns-command (- n)))
+
+  (comment
+    (defun dhnam/pdf-view-next-page-in-multiple-columns-command (n)
+      (interactive "p")
+
+      (let ((window (selected-window))
+            (sorted-same-buffer-windows nil))
+        (dotimes (n (length (window-list)))
+          (when (eq (current-buffer) (window-buffer window))
+            (push window sorted-same-buffer-windows))
+          (setq window (next-window window)))
+
+        (let ((current-page (pdf-view-current-page (selected-window))))
+          (mapcar (lambda (window)
+                    (let ((offset (- (length (member window sorted-same-buffer-windows))
+                                     (length (member (selected-window) sorted-same-buffer-windows))
+                                     )))
+                      (pdf-view-goto-page (+ offset current-page n) window)))
+                  sorted-same-buffer-windows)))))
+
+  (defun dhnam/pdf-view-next-page-in-multiple-columns-command (n)
+    (interactive "p")
+
+    (let ((found nil)
+          (leftmost-window (selected-window)))
+      (while (not found)
+        (let ((new-window (windmove-find-other-window 'left 1 leftmost-window)))
+          (if new-window
+              (setq leftmost-window new-window)
+            (setq found t))))
+
+      (let ((window leftmost-window)
+            (sorted-same-buffer-windows nil))
+        (dotimes (n (length (window-list)))  ; right (newly created) windows are first in window-list.
+          (when (eq (current-buffer) (window-buffer window))
+            (push window sorted-same-buffer-windows))
+          (setq window (next-window window)))
+
+        (let ((current-page (pdf-view-current-page (selected-window))))
+          (mapcar (lambda (window)
+                    (let ((offset (- (length (member window sorted-same-buffer-windows))
+                                     (length (member (selected-window) sorted-same-buffer-windows))
+                                     )))
+                      (pdf-view-goto-page (+ offset current-page n) window)))
+                  sorted-same-buffer-windows)))))
+
+
+  (progn
+    (define-key pdf-view-mode-map (kbd "<prior>") 'dhnam/pdf-view-previous-page-in-multiple-columns-command)
+    (define-key pdf-view-mode-map (kbd "<next>") 'dhnam/pdf-view-next-page-in-multiple-columns-command)))
 
 
 (when (package-installed-p 'pdf-tools)
