@@ -740,15 +740,21 @@ When INITIAL-INPUT is non-nil, use it in the minibuffer during completion."
           (setq exwm-browser-input-simulation-keys
                 '(([?\C-\M-p] . [S-up])
                   ([?\C-\M-n] . [S-down])
-                  ([?\C-\M-b] . [S-left])
-                  ([?\C-\M-f] . [S-right])
-                  ([?\C-\M-i] . [C-S-left])
-                  ([?\C-\M-o] . [C-S-right])
+                  ;; ([?\C-\M-b] . [S-left])
+                  ;; ([?\C-\M-f] . [S-right])
+                  ;; ([?\C-\M-i] . [C-S-left])
+                  ;; ([?\C-\M-o] . [C-S-right])
+                  ([?\C-\M-b] . [C-S-left])
+                  ([?\C-\M-f] . [C-S-right])
 
                   ([?\C-s] . [?\C-f])
                   ([?\C-g] . [escape])
                   ([?\M-p] . [S-f3])
                   ([?\M-n] . [f3])
+                  ([\M-return] . [escape]) ;; <M-return> or M-RET
+                  ;; ([\C-return] . [escape]) ;; <C-return>
+                  ;; ([\C-\M-return] . [escape]) ;; <C-M-return>
+
                   ;; ([?\M-p] . [C-prior])
                   ;; ([?\M-n] . [C-next])
                   ([?\M-\[] . [M-left])
@@ -770,7 +776,7 @@ When INITIAL-INPUT is non-nil, use it in the minibuffer during completion."
 
                   ;; caret browsing
                   ;; ([?\C-\M-\ ] . [f7])
-                  ;; ([?\C-\] . [escape f7]) ; <C-return>
+                  ;; ([?\C-\] . [escape f7]) ;; <C-return>
                   ))
 
           (setq exwm-vimium-input-simulation-keys
