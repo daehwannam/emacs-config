@@ -149,8 +149,10 @@
     (progn
       ;; (define-key pdf-view-mode-map (kbd "<prior>") 'dhnam/pdf-view-previous-page-in-multiple-columns-command)
       ;; (define-key pdf-view-mode-map (kbd "<next>") 'dhnam/pdf-view-next-page-in-multiple-columns-command)
-      (define-key pdf-view-mode-map (kbd "<left>") 'dhnam/pdf-view-previous-page-in-multiple-columns-command)
-      (define-key pdf-view-mode-map (kbd "<right>") 'dhnam/pdf-view-next-page-in-multiple-columns-command)))
+      ;; (define-key pdf-view-mode-map (kbd "<left>") 'dhnam/pdf-view-previous-page-in-multiple-columns-command)
+      ;; (define-key pdf-view-mode-map (kbd "<right>") 'dhnam/pdf-view-next-page-in-multiple-columns-command)
+      (define-key pdf-view-mode-map (kbd "M-b") 'dhnam/pdf-view-previous-page-in-multiple-columns-command)
+      (define-key pdf-view-mode-map (kbd "M-f") 'dhnam/pdf-view-next-page-in-multiple-columns-command)))
 
   (progn
     (defun pdffgrep-with-current-file (command-args)
