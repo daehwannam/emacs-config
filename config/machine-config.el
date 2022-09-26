@@ -26,7 +26,8 @@
     (org-agenda-directory-pattern
      (ms-desktop ("e:/data/Dropbox/org/schedule/" ".*\\.org\\(\\.txt\\)?$"))
      (vbox ("~/data/Dropbox/org/schedule/" ".*\\.org\\(\\.txt\\)?$"))
-     (descartes ("~/data/Dropbox/org/schedule/" ".*\\.org\\(\\.txt\\)?$")))
+     (descartes ("~/data/Dropbox/org/schedule/" ".*\\.org\\(\\.txt\\)?$"))
+     (ubuntu-laptop ("~/data/Dropbox/org/schedule/" ".*\\.org\\(\\.txt\\)?$")))
     (pyvenv-workon-home-path
      (hegel "~/bin/anaconda2/envs/")
      (engels "~/program/miniconda3/envs/")
