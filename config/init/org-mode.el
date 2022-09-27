@@ -14,24 +14,56 @@
   (require 'directory-files-recursive)
 
   (progn
-    ;; enable indenting content of headings by
-    ;; org-metaleft and org-metaright
-    ;;
-    ;; It's working with (setq org-startup-indented nil)
-    (setq org-adapt-indentation t))
+    (defun dhnam/org-add-hard-indentation (arg)
+      (interactive "p")
+      (save-excursion
+        (beginning-of-buffer)
+        (while
+            (let ((indent-size
+                   (progn
+                     (when (re-search-forward "^\\*+ " nil t)
+                       (length (match-string 0))))))
+              (when indent-size
+                (let ((start
+                       (progn
+                         (next-line)
+                         (move-beginning-of-line 1)
+                         (point)))
+                      (end
+                       (progn
+                         (if (re-search-forward "^\\*+ " nil t)
+                             (progn (previous-line) (move-end-of-line 1))
+                           (end-of-buffer))
+                         (point))))
 
-  (comment
-   (progn
-     ;; hard indentation setup
-     ;; https://orgmode.org/manual/Hard-indentation.html
-     (setq org-adapt-indentation t)
-     (setq org-hide-leading-stars t)
-     (setq org-odd-levels-only nil)))
+                  (indent-rigidly start end (* indent-size arg))))
+              indent-size))))
 
-  (comment
-   (progn
-     ;; https://www.reddit.com/r/emacs/comments/97naje/what_is_everyones_org_mode_indentation_preferences/
-     (setq org-startup-indented t)))
+    (defun dhnam/org-delete-hard-indentation (arg)
+      (interactive "p")
+      (dhnam/org-add-hard-indentation (- arg))))
+
+  (defvar dhnam/org-hard-indentation-enabled nil)
+
+  (if dhnam/org-hard-indentation-enabled
+      (progn
+        (progn
+          ;; enable indenting content of headings by
+          ;; org-metaleft and org-metaright
+          ;;
+          ;; It's working with (setq org-startup-indented nil)
+          (setq org-adapt-indentation t))
+
+        (comment
+          (progn
+            ;; hard indentation setup
+            ;; https://orgmode.org/manual/Hard-indentation.html
+            (setq org-adapt-indentation t)
+            (setq org-hide-leading-stars t)
+            (setq org-odd-levels-only nil))))
+    (progn
+      ;; https://www.reddit.com/r/emacs/comments/97naje/what_is_everyones_org_mode_indentation_preferences/
+      (setq org-startup-indented t)))
 
   (progn
     ;; Change applications used in org-mode
@@ -94,8 +126,8 @@
   ;; http://stackoverflow.com/questions/32423127/how-to-view-the-next-days-in-org-modes-agenda
 
   (setq org-agenda-span 70
-	org-agenda-start-on-weekday nil
-	org-agenda-start-day "-7d")
+	    org-agenda-start-on-weekday nil
+	    org-agenda-start-day "-7d")
 
 
   ;;; line wrap
@@ -116,60 +148,60 @@
     ;; https://www.reddit.com/r/orgmode/comments/64tiq9/syntax_highlighting_in_code_blocks/dg548nx/
     ;; Code black highlighting and indentation
     (setq org-src-fontify-natively t
-	  org-src-tab-acts-natively t
-	  org-confirm-babel-evaluate nil
-	  org-edit-src-content-indentation 0)
+	      org-src-tab-acts-natively t
+	      org-confirm-babel-evaluate nil
+	      org-edit-src-content-indentation 0)
 
     (if (version< emacs-version "27.1")
-	;; comparing org-mode version would be better
-	;; "easy template" does not work in org-mode 9.2
-	(progn
-	  ;; <python code black>
-	  ;; - https://emacs.stackexchange.com/a/12847
-	  ;;
-	  ;; <easy template>
-	  ;; - usage: <s + TAB
-	  ;; - Caution: easy template would not work in the recent org-mode
-	  ;;
-	  ;; <easy template for latest org-mode: org-tempo>
-	  ;; - https://emacs.stackexchange.com/a/46992
-	  ;; - easy teamplte can be used for latest org-mode versions
-	  ;; - however, it cannot use customized templates, such as 'pyo
+	    ;; comparing org-mode version would be better
+	    ;; "easy template" does not work in org-mode 9.2
+	    (progn
+	      ;; <python code black>
+	      ;; - https://emacs.stackexchange.com/a/12847
+	      ;;
+	      ;; <easy template>
+	      ;; - usage: <s + TAB
+	      ;; - Caution: easy template would not work in the recent org-mode
+	      ;;
+	      ;; <easy template for latest org-mode: org-tempo>
+	      ;; - https://emacs.stackexchange.com/a/46992
+	      ;; - easy teamplte can be used for latest org-mode versions
+	      ;; - however, it cannot use customized templates, such as 'pyo
 
-	  (add-to-list 'org-structure-template-alist
-		       '("py" "#+BEGIN_SRC python :results value\n?\n#+END_SRC"))
+	      (add-to-list 'org-structure-template-alist
+		               '("py" "#+BEGIN_SRC python :results value\n?\n#+END_SRC"))
 
-	  ;; change code results to "output" (default is "value" for return)
-	  ;; https://emacs.stackexchange.com/questions/17926/python-org-mode-source-block-output-is-always-none
-	  (add-to-list 'org-structure-template-alist
-		       '("pyo" "#+BEGIN_SRC python :results output\n?\n#+END_SRC"))
+	      ;; change code results to "output" (default is "value" for return)
+	      ;; https://emacs.stackexchange.com/questions/17926/python-org-mode-source-block-output-is-always-none
+	      (add-to-list 'org-structure-template-alist
+		               '("pyo" "#+BEGIN_SRC python :results output\n?\n#+END_SRC"))
 
-	  ;; shell code black
-	  (add-to-list 'org-structure-template-alist
-		       '("sh" "#+BEGIN_SRC sh :results value\n?\n#+END_SRC"))
+	      ;; shell code black
+	      (add-to-list 'org-structure-template-alist
+		               '("sh" "#+BEGIN_SRC sh :results value\n?\n#+END_SRC"))
 
-	  (add-to-list 'org-structure-template-alist
-		       '("sho" "#+BEGIN_SRC sh :results output\n?\n#+END_SRC"))
+	      (add-to-list 'org-structure-template-alist
+		               '("sho" "#+BEGIN_SRC sh :results output\n?\n#+END_SRC"))
 
-	  ;; virtualenv
-	  ;; https://emacs.stackexchange.com/a/38047
-	  (add-to-list 'org-structure-template-alist
-		       '("pyto" "#+BEGIN_SRC elisp :session s-py3\n(pyvenv-workon \"py3\")\n#+END_SRC\n#+BEGIN_SRC python :results output :session spy3\n?\n#+END_SRC"))
+	      ;; virtualenv
+	      ;; https://emacs.stackexchange.com/a/38047
+	      (add-to-list 'org-structure-template-alist
+		               '("pyto" "#+BEGIN_SRC elisp :session s-py3\n(pyvenv-workon \"py3\")\n#+END_SRC\n#+BEGIN_SRC python :results output :session spy3\n?\n#+END_SRC"))
 
-	  ;; org code black insert image
-	  ;; https://emacs.stackexchange.com/questions/44516/orgmode-ipython-output-image-not-show-in-results
-	  ;; 
-	  ;; [not added yet]
-	  )
+	      ;; org code black insert image
+	      ;; https://emacs.stackexchange.com/questions/44516/orgmode-ipython-output-image-not-show-in-results
+	      ;; 
+	      ;; [not added yet]
+	      )
       (progn
-	;; <structured template>
-	;; https://emacs.stackexchange.com/questions/46988/why-do-easy-templates-e-g-s-tab-in-org-9-2-not-work
-	(require 'org-tempo)
-	;; org-tempo
-	;; "<s + TAB" --> code block
-	))
+	    ;; <structured template>
+	    ;; https://emacs.stackexchange.com/questions/46988/why-do-easy-templates-e-g-s-tab-in-org-9-2-not-work
+	    (require 'org-tempo)
+	    ;; org-tempo
+	    ;; "<s + TAB" --> code block
+	    ))
 
-    (comment
+    (unless dhnam/org-hard-indentation-enabled
       ;; To keep python indentation in org-babel
       ;; https://stackoverflow.com/a/20903001
       ;;
@@ -177,6 +209,8 @@
       ;; However, it doesn't allow python code to be indented with
       ;; org-mode's headline.
       ;; e.g. It's not working with org-metaleft and org-metaright
+      ;;
+      ;; If you doesn't use hard indentation, this setting has no problem.
       (setq org-src-preserve-indentation t))
 
     (progn
@@ -223,20 +257,20 @@ Add this function to `org-mode-hook'."
 
   (if (and nil (package-installed-p 'hydra))
       (progn
-	;; https://orgmode.org/worg/orgcard.html
-	(defhydra hydra-org-motion ()
-	  "buffer-move"
-	  ("q" nil "quit")
-	  ("n" org-next-visible-heading)
-	  ("p" org-previous-visible-heading)
-	  ("f" org-forward-heading-same-level)
-	  ("b" org-backward-heading-same-level))
+	    ;; https://orgmode.org/worg/orgcard.html
+	    (defhydra hydra-org-motion ()
+	      "buffer-move"
+	      ("q" nil "quit")
+	      ("n" org-next-visible-heading)
+	      ("p" org-previous-visible-heading)
+	      ("f" org-forward-heading-same-level)
+	      ("b" org-backward-heading-same-level))
 
-	(progn
-	  (define-key org-mode-map (kbd "C-C C-n") 'hydra-org-motion/org-next-visible-heading)
-	  (define-key org-mode-map (kbd "C-c C-p") 'hydra-org-motion/org-previous-visible-heading)
-	  (define-key org-mode-map (kbd "C-c C-f") 'hydra-org-motion/org-forward-heading-same-level)
-	  (define-key org-mode-map (kbd "C-c C-b") 'hydra-org-motion/org-backward-heading-same-level)))
+	    (progn
+	      (define-key org-mode-map (kbd "C-C C-n") 'hydra-org-motion/org-next-visible-heading)
+	      (define-key org-mode-map (kbd "C-c C-p") 'hydra-org-motion/org-previous-visible-heading)
+	      (define-key org-mode-map (kbd "C-c C-f") 'hydra-org-motion/org-forward-heading-same-level)
+	      (define-key org-mode-map (kbd "C-c C-b") 'hydra-org-motion/org-backward-heading-same-level)))
     (progn
       (define-key org-mode-map (kbd "C-C C-n") (make-repeatable-command 'org-next-visible-heading))
       (define-key org-mode-map (kbd "C-c C-p") (make-repeatable-command 'org-previous-visible-heading))
