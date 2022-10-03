@@ -123,3 +123,13 @@
 (progn
   ;; enable `narrow-to-region'
   (put 'narrow-to-region 'disabled nil))
+
+(defun dhnam/insert-local-variable-eval ()
+  (interactive)
+  (end-of-buffer)
+  (insert "\n")
+  (insert "# Local") (insert " Variables:\n")
+  (insert "# eval: \n")
+  (insert "# End:\n")
+  (re-search-backward "eval: ")
+  (end-of-line))

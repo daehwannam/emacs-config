@@ -201,17 +201,18 @@
 	    ;; "<s + TAB" --> code block
 	    ))
 
-    (unless dhnam/org-hard-indentation-enabled
-      ;; To keep python indentation in org-babel
-      ;; https://stackoverflow.com/a/20903001
-      ;;
-      ;; This helps to keep indentation 4
-      ;; However, it doesn't allow python code to be indented with
-      ;; org-mode's headline.
-      ;; e.g. It's not working with org-metaleft and org-metaright
-      ;;
-      ;; If you doesn't use hard indentation, this setting has no problem.
-      (setq org-src-preserve-indentation t))
+    (comment
+      (unless dhnam/org-hard-indentation-enabled
+        ;; To keep python indentation in org-babel
+        ;; https://stackoverflow.com/a/20903001
+        ;;
+        ;; This helps to keep indentation 4
+        ;; However, it doesn't allow python code to be indented with
+        ;; org-mode's headline.
+        ;; e.g. It's not working with org-metaleft and org-metaright
+        ;;
+        ;; If you doesn't use hard indentation, this setting has no problem.
+        (setq org-src-preserve-indentation t)))
 
     (progn
       ;; Disable automatic tab insertion
@@ -278,11 +279,15 @@ Add this function to `org-mode-hook'."
       (define-key org-mode-map (kbd "C-c C-b") (make-repeatable-command 'org-backward-heading-same-level))))
 
   (when (fboundp 'org-fragtog-mode)
-    (comment(add-hook 'org-mode-hook 'org-fragtog-mode)))
+    (add-hook 'org-mode-hook (lambda () (org-latex-preview '(16)))) ; preview all formulas in the buffer
+    (add-hook 'org-mode-hook 'org-fragtog-mode))
 
   (defun org-format-latex-change-scale (scale)
     (interactive "nScale: " )
     (plist-put org-format-latex-options :scale scale))
+
+  (progn
+    (org-format-latex-change-scale 1.5))
 
   (progn
     ;; Bibliography with BibTeX
@@ -338,4 +343,17 @@ When nil, use the default face background."
       (when (eq type 'link)
         (copy-region-as-kill beg end))))
 
-  (key-chord-define-global "wl" 'my-org-kill-link-to-clipboard))
+  (key-chord-define-global "wl" 'my-org-kill-link-to-clipboard)
+
+  (progn
+    (defun dhnam/insert-inline-math ()
+      (interactive)
+      (insert "\\\(\\\)")
+      (backward-char 2))
+
+    (key-chord-define org-mode-map "()" 'dhnam/insert-inline-math)
+    (add-hook
+     'LaTeX-mode-hook
+     (lambda ()
+       (local-set-key (kbd "()") 'dhnam/insert-inline-math))))
+  )

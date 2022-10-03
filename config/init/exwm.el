@@ -233,6 +233,20 @@
         ;; workspace-group functions
         (require 'exwm-workspace-group)
 
+        (comment
+          ;; xrandr-update functions
+          (defun ewg/xrandr-dual-monitor-mirror-update ()
+            (assert (= (length ewg/monitor-names) 2))
+            (start-process-shell-command
+             "xrandr" nil
+             (format "$ xrandr --output %s --mode 2560x1440 --scale 1x1 
+                               --output %s --same-as %s --mode 1920x1080 --scale 1.333x1.333"
+                     (nth 0 ewg/monitor-names)))
+            (progn
+              ;; this prevent wrong frame deployment when
+              ;; `exwm-base-input-simulation-keys' has many commands
+              (exwm-randr-refresh))))
+
         (ewg/init (machine-config-get-first 'exwm-physical-monitor-names))
 
         (let ((map dhnam/exwm-workspace-prefix-map))

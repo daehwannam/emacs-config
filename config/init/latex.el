@@ -97,7 +97,6 @@
 
     (defun dhnam/pdf-view-previous-page-in-multiple-columns-command (n)
       (interactive "p")
-
       (dhnam/pdf-view-next-page-in-multiple-columns-command (- n)))
 
     (comment
@@ -119,7 +118,7 @@
                         (pdf-view-goto-page (+ offset current-page n) window)))
                     sorted-same-buffer-windows)))))
 
-    (defun dhnam/pdf-view-next-page-in-multiple-columns-command (n)
+    (defun dhnam/pdf-view-next-page-in-multiple-columns-command (n &optional non-overlapping)
       (interactive "p")
 
       (let ((found nil)
@@ -132,7 +131,7 @@
 
         (let ((window leftmost-window)
               (sorted-same-buffer-windows nil))
-          (dotimes (n (length (window-list)))  ; right (newly created) windows are first in window-list.
+          (dotimes (i (length (window-list)))  ; right (newly created) windows are first in window-list.
             (when (eq (current-buffer) (window-buffer window))
               (push window sorted-same-buffer-windows))
             (setq window (next-window window)))
@@ -142,15 +141,32 @@
                       (let ((offset (- (length (member window sorted-same-buffer-windows))
                                        (length (member (selected-window) sorted-same-buffer-windows))
                                        )))
-                        (pdf-view-goto-page (+ offset current-page n) window)))
+                        (pdf-view-goto-page (+ offset current-page
+                                               (if non-overlapping
+                                                   (* n (length sorted-same-buffer-windows))
+                                                 n))
+                                            window)))
                     sorted-same-buffer-windows)))))
+
+    (defun dhnam/pdf-view-previous-non-overlapping-page-in-multiple-columns-command (n)
+      (interactive "p")
+      (dhnam/pdf-view-next-non-overlapping-page-in-multiple-columns-command (- n)))
+
+    (defun dhnam/pdf-view-next-non-overlapping-page-in-multiple-columns-command (n)
+      (interactive "p")
+      (dhnam/pdf-view-next-page-in-multiple-columns-command n t))
 
 
     (progn
       ;; (define-key pdf-view-mode-map (kbd "<prior>") 'dhnam/pdf-view-previous-page-in-multiple-columns-command)
       ;; (define-key pdf-view-mode-map (kbd "<next>") 'dhnam/pdf-view-next-page-in-multiple-columns-command)
-      ;; (define-key pdf-view-mode-map (kbd "<left>") 'dhnam/pdf-view-previous-page-in-multiple-columns-command)
-      ;; (define-key pdf-view-mode-map (kbd "<right>") 'dhnam/pdf-view-next-page-in-multiple-columns-command)
+      (define-key pdf-view-mode-map (kbd "<up>") 'dhnam/pdf-view-previous-non-overlapping-page-in-multiple-columns-command)
+      (define-key pdf-view-mode-map (kbd "<down>") 'dhnam/pdf-view-next-non-overlapping-page-in-multiple-columns-command)
+      (define-key pdf-view-mode-map (kbd "<left>") 'dhnam/pdf-view-previous-page-in-multiple-columns-command)
+      (define-key pdf-view-mode-map (kbd "<right>") 'dhnam/pdf-view-next-page-in-multiple-columns-command)
+
+      (define-key pdf-view-mode-map (kbd "M-p") 'dhnam/pdf-view-previous-non-overlapping-page-in-multiple-columns-command)
+      (define-key pdf-view-mode-map (kbd "M-n") 'dhnam/pdf-view-next-non-overlapping-page-in-multiple-columns-command)
       (define-key pdf-view-mode-map (kbd "M-b") 'dhnam/pdf-view-previous-page-in-multiple-columns-command)
       (define-key pdf-view-mode-map (kbd "M-f") 'dhnam/pdf-view-next-page-in-multiple-columns-command)))
 

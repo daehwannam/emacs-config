@@ -5,7 +5,7 @@
   ;; Emacs lisp 
   (electric-indent-mode -1)
   (add-hook 'emacs-lisp-mode-hook
-	    (lambda () (local-set-key (kbd "C-c C-j") #'eval-print-last-sexp)))
+	        (lambda () (local-set-key (kbd "C-c C-j") #'eval-print-last-sexp)))
   (add-to-list 'auto-mode-alist '("\\.el\\.gz\\'" . emacs-lisp-mode))
   (comment (add-to-list 'auto-mode-alist '(".el\\.gz\\'" . emacs-lisp-mode)))
 
@@ -152,34 +152,35 @@
 
     (progn
       (defhydra paredit-slurp-barf-sexp ()
-	"paredit slurp/barf"
-	(")" paredit-forward-slurp-sexp)
-	("(" paredit-backward-slurp-sexp)
-	("}" paredit-forward-barf-sexp)
-	("{" paredit-backward-barf-sexp)
-	("0" paredit-forward-barf-sexp)
-	("9" paredit-backward-barf-sexp))
+	    "paredit slurp/barf"
+	    (")" paredit-forward-slurp-sexp)
+	    ("(" paredit-backward-slurp-sexp)
+	    ("}" paredit-forward-barf-sexp)
+	    ("{" paredit-backward-barf-sexp)
+	    ("0" paredit-forward-barf-sexp)
+	    ("9" paredit-backward-barf-sexp))
 
       (key-chord-define paredit-mode-map "()" #'paredit-slurp-barf-sexp/body)
       (key-chord-define paredit-mode-map "{}" #'paredit-slurp-barf-sexp/body))
 
     (progn
       (defun copy-and-forward-sexp (&optional arg)
-	"Save the sexp following point to the kill ring.
+	    "Save the sexp following point to the kill ring.
 ARG has the same meaning as for `kill-sexp'."
-	(interactive "p")
-	(save-excursion
-	  (let ((orig-point (point)))
-	    (forward-sexp (or arg 1))
-	    (if (eq last-command 'copy-and-forward-sexp)
-		(kill-append (buffer-substring orig-point (point)) nil)
-	      (kill-ring-save orig-point (point)))))
-	(forward-sexp arg)
-	(setq last-command 'copy-and-forward-sexp))
+	    (interactive "p")
+	    (save-excursion
+	      (let ((orig-point (point)))
+	        (forward-sexp (or arg 1))
+	        (if (eq last-command 'copy-and-forward-sexp)
+		        (kill-append (buffer-substring orig-point (point)) nil)
+	          (kill-ring-save orig-point (point)))))
+	    (forward-sexp arg)
+	    (setq last-command 'copy-and-forward-sexp))
 
       (key-chord-define paredit-mode-map "kk" (make-repeatable-command #'copy-and-forward-sexp)))
 
     (progn
+      (define-key paredit-mode-map (kbd "C-w") #'paredit-kill-region)
       (define-key paredit-mode-map (kbd "C-M-w") #'paredit-kill-region))
 
     (progn
@@ -196,15 +197,15 @@ ARG has the same meaning as for `kill-sexp'."
       (define-key paredit-mode-map (kbd "C-c h") 'highlight-map))))
 
 (comment
- (when (package-installed-p 'highlight-parentheses)
-   (require 'highlight-parentheses)
+  (when (package-installed-p 'highlight-parentheses)
+    (require 'highlight-parentheses)
 
-   (define-globalized-minor-mode global-highlight-parentheses-mode highlight-parentheses-mode
-     (lambda nil (highlight-parentheses-mode t)))
+    (define-globalized-minor-mode global-highlight-parentheses-mode highlight-parentheses-mode
+      (lambda nil (highlight-parentheses-mode t)))
 
-   (global-highlight-parentheses-mode t)))
+    (global-highlight-parentheses-mode t)))
 
 (comment
- (when (fboundp 'show-paren-mode)
-   (setq show-paren-delay 0)
-   (add-hook 'paredit-mode-hook 'show-paren-mode)))
+  (when (fboundp 'show-paren-mode)
+    (setq show-paren-delay 0)
+    (add-hook 'paredit-mode-hook 'show-paren-mode)))
