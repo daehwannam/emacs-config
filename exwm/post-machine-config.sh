@@ -14,6 +14,8 @@ if [ -f $OPTION_PATH ]; then
     elif [ $OPTION_VALUE = "descartes" ]; then
         # xmodmap $DIR_PATH/dependent/ctrl-caps-swap.xmodmap
 
+        # # Adjust screen off time
+        xset dpms 0 0 1800  # 1800 secs = 30 mins
         :  # pass
     elif [ $OPTION_VALUE = "something-other" ]; then
         :  # pass

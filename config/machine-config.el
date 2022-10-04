@@ -54,6 +54,7 @@
     ;; (eaf-path (eaf-setup "~/.emacs.d/package/emacs-application-framework/"))
     (eaf-enabled (eaf-setup t))
     (exwm-physical-monitor-names
+     (descartes-dual ("HDMI-1-1" "DVI-I-1"))
      (descartes ("HDMI-1-1" "DVI-I-1" "HDMI-0"))
      (ubuntu-laptop ("HDMI-1" "eDP-1")))
     ;; (exwm-multiple-physical-monitor-layout
