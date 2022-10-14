@@ -237,7 +237,7 @@ the PDFGrep job before it finishes, type \\[kill-compilation]."
   )
 
 (progn
-  ;; bibliography utilities
+  ;; my bibliography utilities
 
   (comment
     (make-local-variable 'bibliography-file-name-as-source-of-reference)
@@ -359,6 +359,64 @@ the PDFGrep job before it finishes, type \\[kill-compilation]."
       (error "The 'pdfgrep' command not available on your system."))
     (compilation-start command-args 'grep-mode
 		               (lambda (_x) pdfgrep-buffer-name))))
+
+(use-existing-pkg biblio
+  ;; original key map: biblio-selection-mode-map
+  :bind (:map biblio-selection-mode-map
+         ("u" . dhnam/biblio--copy-url)
+         ("U" . dhnam/biblio--copy-url-quit))
+
+  :config
+  (progn
+    (progn
+      (defun biblio--selection-copy-callback (bibtex entry)
+        "Add BIBTEX (from ENTRY) to kill ring."
+        (kill-new (replace-regexp-in-string
+                   "@[a-zA-Z]*"
+                   #'downcase  ; (lambda (matched) (downcase matched))
+                   bibtex))
+        (message "Killed bibtex entry for %S."
+                 (biblio--prepare-title (biblio-alist-get 'title entry))))
+
+      (defun biblio--selection-insert-callback (bibtex entry)
+        "Add BIBTEX (from ENTRY) to kill ring."
+        (let ((target-buffer biblio--target-buffer))
+          (with-selected-window (or (biblio--target-window) (selected-window))
+            (with-current-buffer target-buffer
+              (insert (replace-regexp-in-string
+                       "@[a-zA-Z]*"
+                       #'downcase  ; (lambda (matched) (downcase matched))
+                       bibtex)
+                      "\n\n"))))
+        (message "Inserted bibtex entry for %S."
+                 (biblio--prepare-title (biblio-alist-get 'title entry)))))
+
+    (comment
+      ;; not working
+      (defun dhnam/normalize-biblio-bibtex (bibtex &rest args)
+        (replace-regexp-in-string "@[a-zA-Z]*" #'downcase bibtex))
+
+      (advice-add 'biblio-format-bibtex :after #'dhnam/normalize-biblio-bibtex)
+      (comment (advice-remove 'biblio-format-bibtex #'dhnam/normalize-biblio-bibtex))))
+
+  (progn
+    (defun dhnam/biblio--copy-url-callback (bibtex entry)
+      (let* ((metadata (biblio--selection-metadata-at-point)))
+        (let-alist metadata
+          (if .direct-url
+              (let ((url-str (replace-regexp-in-string "v..?$" "" .direct-url)))
+                (kill-new url-str)
+                (message (concat "Copied: " url-str))
+                )
+            (user-error "This record does not contain a direct URL (try arXiv or HAL)")))))
+
+    (defun dhnam/biblio--copy-url ()
+      (interactive)
+      (biblio--selection-forward-bibtex #'dhnam/biblio--copy-url-callback))
+
+    (defun dhnam/biblio--copy-url-quit ()
+      (interactive)
+      (biblio--selection-forward-bibtex #'dhnam/biblio--copy-url-callback t))))
 
 (progn
   ;; langtool
