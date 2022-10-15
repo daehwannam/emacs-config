@@ -360,13 +360,11 @@ the PDFGrep job before it finishes, type \\[kill-compilation]."
     (compilation-start command-args 'grep-mode
 		               (lambda (_x) pdfgrep-buffer-name))))
 
-(use-existing-pkg biblio
-  ;; original key map: biblio-selection-mode-map
-  :bind (:map biblio-selection-mode-map
-         ("u" . dhnam/biblio--copy-url)
-         ("U" . dhnam/biblio--copy-url-quit))
+(when (require 'biblio nil t)
+  (progn
+    (define-key biblio-selection-mode-map (kbd "u") #'dhnam/biblio--copy-url)
+    (define-key biblio-selection-mode-map (kbd "U") #'dhnam/biblio--copy-url-quit))
 
-  :init
   (progn
     (defun dhnam/post-process-biblio-bibtex (bibtex)
       (let* ((normalized (replace-regexp-in-string
@@ -410,7 +408,6 @@ the PDFGrep job before it finishes, type \\[kill-compilation]."
       (advice-add 'biblio-format-bibtex :around #'dhnam/biblio-format-bibtex-advice)
       (comment (advice-remove 'biblio-format-bibtex #'dhnam/biblio-format-bibtex-advice))))
 
-  :config
   (progn
     (defun dhnam/biblio--copy-url-callback (bibtex entry)
       (let* ((metadata (biblio--selection-metadata-at-point)))
