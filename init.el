@@ -47,3 +47,8 @@
 ;; (require 'load-directory)
 (load-directory "~/.emacs.d/config/init")
 (load-directory "~/.emacs.d/config/init/last")
+
+;;; starting page
+(progn
+  (setq inhibit-splash-screen t)
+  (switch-to-buffer "*scratch*"))
