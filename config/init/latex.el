@@ -366,15 +366,24 @@ the PDFGrep job before it finishes, type \\[kill-compilation]."
          ("u" . dhnam/biblio--copy-url)
          ("U" . dhnam/biblio--copy-url-quit))
 
-  :config
+  :init
   (progn
-    (progn
+    (defun dhnam/post-process-biblio-bibtex (bibtex)
+      (let* ((normalized (replace-regexp-in-string
+                          "@[a-zA-Z]*"
+                          #'downcase ; (lambda (matched) (downcase matched))
+                          bibtex))
+             (entries (split-string normalized "\n\n")))
+        (if (= (length entries) 2)
+            (if (string-match "@inproceedings" bibtex)
+                (car entries)
+              normalized)
+          normalized)))
+
+    (comment
       (defun biblio--selection-copy-callback (bibtex entry)
         "Add BIBTEX (from ENTRY) to kill ring."
-        (kill-new (replace-regexp-in-string
-                   "@[a-zA-Z]*"
-                   #'downcase  ; (lambda (matched) (downcase matched))
-                   bibtex))
+        (kill-new (dhnam/post-process-biblio-bibtex bibtex))
         (message "Killed bibtex entry for %S."
                  (biblio--prepare-title (biblio-alist-get 'title entry))))
 
@@ -383,22 +392,25 @@ the PDFGrep job before it finishes, type \\[kill-compilation]."
         (let ((target-buffer biblio--target-buffer))
           (with-selected-window (or (biblio--target-window) (selected-window))
             (with-current-buffer target-buffer
-              (insert (replace-regexp-in-string
-                       "@[a-zA-Z]*"
-                       #'downcase  ; (lambda (matched) (downcase matched))
-                       bibtex)
+              (insert (dhnam/post-process-biblio-bibtex bibtex)
                       "\n\n"))))
         (message "Inserted bibtex entry for %S."
                  (biblio--prepare-title (biblio-alist-get 'title entry)))))
 
     (comment
-      ;; not working
-      (defun dhnam/normalize-biblio-bibtex (bibtex &rest args)
-        (replace-regexp-in-string "@[a-zA-Z]*" #'downcase bibtex))
+      (defun dhnam/biblio--selection-copy-callback-advice (orig-func bibtex &rest args)
+        (funcall orig-func (cons (dhnam/post-process-biblio-bibtex bibtex) args)))
 
-      (advice-add 'biblio-format-bibtex :after #'dhnam/normalize-biblio-bibtex)
-      (comment (advice-remove 'biblio-format-bibtex #'dhnam/normalize-biblio-bibtex))))
+      (defun dhnam/biblio--selection-insert-callback-advice (orig-func bibtex &rest args)
+        (funcall orig-func (cons (dhnam/post-process-biblio-bibtex bibtex) args))))
 
+    (progn
+      (defun dhnam/biblio-format-bibtex-advice (orig-func &rest args)
+        (dhnam/post-process-biblio-bibtex (apply orig-func args)))
+      (advice-add 'biblio-format-bibtex :around #'dhnam/biblio-format-bibtex-advice)
+      (comment (advice-remove 'biblio-format-bibtex #'dhnam/biblio-format-bibtex-advice))))
+
+  :config
   (progn
     (defun dhnam/biblio--copy-url-callback (bibtex entry)
       (let* ((metadata (biblio--selection-metadata-at-point)))
