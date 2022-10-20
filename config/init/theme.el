@@ -48,7 +48,12 @@
       (custom-set-faces
        ;; mode-line config
        '(mode-line ((t (:background "gray20" :foreground "gray80" :box nil))))
-       '(mode-line-inactive ((t (:background "gray10" :foreground "gray50" :box nil :weight light))))))
+       '(mode-line-inactive ((t (:background "gray10" :foreground "gray50" :box nil :weight light)))))
+
+      (comment
+        (when (and exwm-cmd-arg-passed (display-graphic-p))
+          (custom-set-faces
+           '(default ((t (:background "gray12"))))))))
      ((eq my-current-theme 'my-doom-material-dark)
       (custom-set-faces
        '(mode-line ((t (:background "gray25" :foreground "white" :box nil))))
