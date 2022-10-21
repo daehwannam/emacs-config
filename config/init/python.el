@@ -536,3 +536,29 @@ Similarly for Soar, Scheme, etc."
   (require 'yaml-mode)
   (add-to-list 'auto-mode-alist '("\\.yaml\\'" . yaml-mode))
   (add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode)))
+
+
+(when (fboundp 'ein:run)
+	;; EIN: Emacs IPython Notebook
+	;; https://github.com/millejoh/emacs-ipython-notebook
+
+	(comment
+	 ;; run IPython notebook server with specific port number
+	 ;; https://github.com/tkf/emacs-ipython-notebook/issues/109#issuecomment-16874676
+	 ;;
+	 ;; $ ipython notebook --port 9999
+	 ;;
+	 ;; then login EIN --> M-x ein:login RET 9999 RET
+	 )
+
+	(progn
+	  (custom-set-variables
+	   '(ein:polymode t)		; enable other modes such as Elpy
+	   ;; '(ein:cell-input-area ((t (:background "black"))))
+	   '(ein:cell-input-area ((t (:background "gray10"))))
+	   )
+      (custom-set-variables
+       '(ein:jupyter-default-kernel 'python3))
+
+	  (add-hook 'ein:notebook-mode-hook 'display-line-numbers-mode)
+	  (setq ein:worksheet-enable-undo t)))
