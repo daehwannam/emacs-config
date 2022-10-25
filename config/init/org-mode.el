@@ -15,6 +15,7 @@
 
   (progn
     (defun dhnam/org-add-hard-indentation (arg)
+      ;; This function can be replaced with `org-indent-region' when `org-indent-mode' is `nil'
       (interactive "p")
       (save-excursion
         (beginning-of-buffer)
@@ -40,6 +41,8 @@
               indent-size))))
 
     (defun dhnam/org-delete-hard-indentation (arg)
+      ;; This function can be replaced with `org-unindent-buffer'
+      ;; https://www.reddit.com/r/orgmode/comments/qt2mmd/remove_hard_indentation_from_org_file_made_with/
       (interactive "p")
       (dhnam/org-add-hard-indentation (- arg))))
 
