@@ -11,6 +11,8 @@
  ("ge" "https://translate.google.co.kr/?hl=ko&sl=auto&tl=en&text=~a&op=translate" "https://translate.google.co.kr/?hl=ko&sl=auto&tl=en&text=&op=translate")
  ("er" "https://www.reddit.com/r/emacs/search/?q=~a&restrict_sr=1&sr_nsfw=" "https://www.reddit.com/r/emacs/")
  ("dblp" "https://dblp.org/search?q=~a" "https://dblp.uni-trier.de/")
+ ("arxiv" "https://arxiv.org/search/?query=~a&searchtype=all&abstracts=show&order=-announced_date_first" "https://arxiv.org/")
  ("scholar" "https://scholar.google.com/scholar?hl=ko&as_sdt=0%2C5&q=~a&btnG=" "https://scholar.google.com/")
+ ;; ("gs" "https://scholar.google.com/scholar?hl=ko&as_sdt=0%2C5&q=~a&btnG=" "https://scholar.google.com/")
  ("gm" "https://mail.google.com/mail/u/0/#search/~a" "https://mail.google.com/mail/u/0/#inbox")
  )
