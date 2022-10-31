@@ -3,6 +3,8 @@
     (progn
       ;; Enable copy/paste between terminal emacs and gui applications
       ;; https://stackoverflow.com/a/46219455
+      ;;
+      ;; When interacting with remote terminal emacs, ssh with X11 forwarding is required
       (xclip-mode t))
     (progn
       ;; Enable mouse in terminal mode
