@@ -861,6 +861,15 @@ When INITIAL-INPUT is non-nil, use it in the minibuffer during completion."
                           exwm-browser-input-simulation-keys
                           exwm-vimium-input-simulation-keys
                           exwm-browser-app-input-simulation-keys)))))
+
+          (add-hook 'exwm-manage-finish-hook
+                    (lambda ()
+                      (when (and exwm-class-name
+                                 (or (string= (downcase exwm-class-name) (downcase "kitty"))
+                                     (string= (downcase exwm-class-name) (downcase "emacs"))))
+                        (exwm-input-set-local-simulation-keys
+                         '(([?\s-k] . [?\C-x?\C-c]))))))
+
           (comment
             (add-hook 'exwm-manage-finish-hook
                       (lambda ()
