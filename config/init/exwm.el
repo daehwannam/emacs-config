@@ -727,6 +727,9 @@ When INITIAL-INPUT is non-nil, use it in the minibuffer during completion."
                   ([?\C-e] . [end])
                   ([?\M-v] . [prior])
                   ([?\C-v] . [next])
+                  ([?\M->] . [C-end])
+                  ([?\M-<] . [C-home])
+                  ([?\M-v] . [prior])
                   ([?\C-d] . [delete])
                   ([?\C-k] . [S-end C-c delete]) ; updated
 
