@@ -17,6 +17,7 @@ if [ -f $OPTION_PATH ]; then
         # # Adjust screen off time
         # xset dpms 0 0 1800  # 1800 secs = 30 mins
         xset s 1800 1800
+        xset dpms 2100 2400 2700
         # :  # pass
     elif [ $OPTION_VALUE = "something-other" ]; then
         :  # pass
