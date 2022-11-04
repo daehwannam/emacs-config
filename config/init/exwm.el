@@ -338,14 +338,21 @@
           (dhnan/open-web-browser "nyxt" url))
 
         (progn
-          (defvar nyxt-search-engines
-            (car (read-from-string (get-string-from-file "~/.emacs.d/config/init/dependent/search-engines.lisp"))))
+          (defvar dhnam/web-search-engine-list-file-path
+            "~/.emacs.d/config/init/dependent/search-engines.lisp")
+
+          (defvar dhnam/web-search-engines
+            (car (read-from-string (get-string-from-file dhnam/web-search-engine-list-file-path))))
+
+          (defun dhnam/update-web-search-engines ()
+            (setq dhnam/web-search-engines
+              (car (read-from-string (get-string-from-file dhnam/web-search-engine-list-file-path)))))
 
           (defun dhnam/exwm-query-to-browser (&optional query open-web-browser)
             (interactive "sSearch query: ")
             (let* ((splits (s-split " " query))
                    (search-engine-entry
-                    (assoc (car splits) nyxt-search-engines))
+                    (assoc (car splits) dhnam/web-search-engines))
                    (query-string nil)
                    (url nil))
               (cond
@@ -355,7 +362,7 @@
                 (setq url query))
                (t
                 (progn
-                  (setq search-engine-entry (assoc "gg" nyxt-search-engines))
+                  (setq search-engine-entry (assoc "gg" dhnam/web-search-engines))
                   (setq query-string query))))
 
               (unless url
@@ -614,6 +621,7 @@ When INITIAL-INPUT is non-nil, use it in the minibuffer during completion."
           ;; https://www.reddit.com/r/emacs/comments/arqg6z/comment/egp2e1u/?utm_source=share&utm_medium=web2x&context=3
 
           (defvar dhnam/exwm-workspace-start-number 1)
+          (setq ewg/workspace-start-number dhnam/exwm-workspace-start-number)
           (assert (member dhnam/exwm-workspace-start-number '(0 1))) ; should be 0 or 1
           (setq exwm-workspace-index-map
                 (lambda (index) (number-to-string (+ dhnam/exwm-workspace-start-number index)))))
