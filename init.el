@@ -24,7 +24,7 @@
 ;;; load my-machine-config-setting.el
 (load "~/.emacs.d/config/machine-config.el")
 
-;; base setup
+;;; base setup
 (load "~/.emacs.d/base/package-init.el")
 (comment (load "~/.emacs.d/base/evil-setup.el"))
 (load "~/.emacs.d/base/key-chord-setup.el")
@@ -34,7 +34,9 @@
 (load "~/.emacs.d/base/key-config.el")
 (comment (load "~/.emacs.d/base/modalka-setup.el"))
 (comment (load "~/.emacs.d/base/modalka-simple-setup.el"))
-(comment (load "~/.emacs.d/base/native-comp.el"))
+
+;;; bug fix
+(load "~/.emacs.d/bug-fix/emacs-28-bug-fix.el")
 
 ;;; common utility
 (load-directory "~/.emacs.d/config/utility")
