@@ -345,8 +345,9 @@
             (car (read-from-string (get-string-from-file dhnam/web-search-engine-list-file-path))))
 
           (defun dhnam/update-web-search-engines ()
+            (interactive)
             (setq dhnam/web-search-engines
-              (car (read-from-string (get-string-from-file dhnam/web-search-engine-list-file-path)))))
+                  (car (read-from-string (get-string-from-file dhnam/web-search-engine-list-file-path)))))
 
           (defun dhnam/exwm-query-to-browser (&optional query open-web-browser)
             (interactive "sSearch query: ")
