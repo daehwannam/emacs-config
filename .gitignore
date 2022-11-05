@@ -12,6 +12,7 @@
 !package/.gitkeep
 !setup.sh
 !LICENSE
+!bug-fix/
 
 # ignore some patterns or files
 *~
