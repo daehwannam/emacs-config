@@ -13,7 +13,7 @@
   (other-window count)
   (shell-new-instance))
 
-(key-chord-define-global "o3" 'shell-new-instance-other-window)
+(comment (key-chord-define-global "o3" 'shell-new-instance-other-window))
 
 ;; http://stackoverflow.com/questions/2472273/how-do-i-run-a-sudo-command-in-emacs
 (defun sudo-shell-command (command)
@@ -202,7 +202,7 @@
   (other-window count)
   (conda-shell-with-default-name))
 
-(key-chord-define-global "o4" 'conda-shell-with-default-name-other-window)
+(comment (key-chord-define-global "o4" 'conda-shell-with-default-name-other-window))
 
 (progn
   (require 'comint)
