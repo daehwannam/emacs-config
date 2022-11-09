@@ -139,17 +139,16 @@ Will prompt you shell name when you type `C-u' before this command."
 
 (progn
   ;; Enable opening terminal with tramp via ssh
+  ;; https://emacs.stackexchange.com/a/69784
 
-  (defun ansi-terminal (&optional path name)
-    ;; https://emacs.stackexchange.com/a/69784
+  (defun dhnam/ansi-term (&optional path name)
     "Opens a terminal at PATH. If no PATH is given, it uses
 the value of `default-directory'. PATH may be a tramp remote path.
 The term buffer is named based on `name' "
     (interactive)
     (require 'term)
     (unless path (setq path default-directory))
-    (unless name
-      (setq name (buffer-name (get-buffer-create (generate-new-buffer-name "ansi-term")))))
+    (unless name (setq name (generate-new-buffer-name "*ansi-term*")))
     (let ((path (replace-regexp-in-string "^file:" "" path))
           (cd-str "fn=%s; if test ! -d $fn; then fn=$(dirname $fn); fi; cd $fn; exec bash")
           (start-term (lambda (termbuf)
@@ -167,14 +166,14 @@ The term buffer is named based on `name' "
                  (switches (list "-l" user
                                  "-t" (tramp-file-name-host tstruct)
                                  cd-str-ssh))
-                 (termbuf (apply 'make-term name "ssh" nil switches)))
+                 (termbuf (apply 'term-ansi-make-term name "ssh" nil switches)))
             (cond
              ((equal (tramp-file-name-method tstruct) "ssh")
               (funcall start-term termbuf))
              (t (error "not implemented for method %s"
                        (tramp-file-name-method tstruct)))))
         (let* ((cd-str-local (format cd-str path))
-               (termbuf (apply 'make-term name "/bin/sh" nil (list "-c" cd-str-local))))
+               (termbuf (apply 'term-ansi-make-term name "/bin/sh" nil (list "-c" cd-str-local))))
           (funcall start-term termbuf)))))
-
-  (key-chord-define-global "o3" 'ansi-terminal))
+  
+  (key-chord-define-global "o3" 'dhnam/ansi-term))
