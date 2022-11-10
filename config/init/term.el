@@ -155,7 +155,8 @@ The term buffer is named based on `name' "
                         (progn
                           (set-buffer termbuf)
                           (term-mode)
-                          (term-char-mode)
+                          (comment (term-char-mode))
+                          (term-line-mode)
                           (switch-to-buffer termbuf)))))
       (if (tramp-tramp-file-p path)
           (let* ((tstruct (tramp-dissect-file-name path))
@@ -177,3 +178,41 @@ The term buffer is named based on `name' "
           (funcall start-term termbuf)))))
   
   (key-chord-define-global "o3" 'dhnam/ansi-term))
+
+(progn
+  (defun dhnam/move-beginning-of-command-line ()
+    (interactive)
+    (let* ((line-begin-point (save-excursion (move-beginning-of-line 1) (point)))
+           (input-begin-point (save-excursion
+                                (comment (move-end-of-line 1))
+                                (re-search-backward "[$\n]" nil t)
+                                (forward-char 2)
+                                (point)))
+           (input-end-point (save-excursion (move-end-of-line 1) (point))))
+      (goto-char
+       (if (< (+ line-begin-point 1) input-begin-point)
+           (if (<= input-begin-point input-end-point)
+               input-begin-point
+             input-end-point)
+         line-begin-point))))
+
+  (defun dhnam/term-previous-prompt ()
+    (interactive)
+    (let ((original-point (point)))
+      (move-beginning-of-line 1)
+      (if (re-search-backward "\\$" nil t)
+          (forward-char 2)
+        (goto-char original-point))))
+
+  (defun dhnam/term-next-prompt ()
+    (interactive)
+    (let ((original-point (point)))
+      (if (re-search-forward "\\$" nil t)
+          (forward-char 1)
+        (goto-char original-point))))
+
+  (define-key term-mode-map (kbd "C-a") 'dhnam/move-beginning-of-command-line)
+  (define-key term-mode-map (kbd "C-c C-p") 'dhnam/term-previous-prompt)
+  (define-key term-mode-map (kbd "C-c C-n") 'dhnam/term-next-prompt)
+  (define-key term-mode-map (kbd "M-P") 'term-previous-matching-input-from-input)
+  (define-key term-mode-map (kbd "M-N") 'term-next-matching-input-from-input))
