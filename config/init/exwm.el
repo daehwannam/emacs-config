@@ -16,10 +16,16 @@
   (defun exwm-simple-frame-init ()
     (progn
       "this code block has the same effect with `exwm-config-misc'"
-      (toggle-scroll-bar -1)
-      (menu-bar-mode -1)
-      (tool-bar-mode -1)
-      (fringe-mode 1)
+
+      (comment
+        ;; disable gui config
+        ;;
+        ;; similar effect with (exwm-config-misc)
+        (menu-bar-mode -1)
+        (tool-bar-mode -1)
+        (scroll-bar-mode -1)
+        (comment (fringe-mode 1)))
+
       (progn
         ;; window-divider config
         (setq window-divider-default-right-width 1)
@@ -59,9 +65,7 @@
 
     (comment
       ;; Configure Ido
-      (exwm-config-ido))
-    ;; Other configurations
-    (exwm-config-misc))
+      (exwm-config-ido)))
 
   (defun exwm-config-mine ()
     (exwm-simple-frame-init)

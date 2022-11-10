@@ -21,10 +21,10 @@
 
   (progn
     (setq linum-format "%4d \u2502 ")
-    (comment
+    (comment (fringe-mode 1))
+    (progn
       ;; https://emacs.stackexchange.com/a/5343
       ;; disable fringe color
-      (fringe-mode 1)
       (set-face-attribute 'fringe nil
                           :foreground (face-foreground 'default)
                           :background (face-background 'default))))))

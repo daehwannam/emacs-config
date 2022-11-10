@@ -283,3 +283,14 @@ Version 2019-11-04"
 
   (define-key dired-mode-map (kbd "C-c D") 'dired-do-direct-delete)
   (define-key dired-mode-map (kbd "C-c X") 'dired-do-direct-flagged-delete))
+
+(progn
+  (defun dired-find-file-following-symlinks ()
+    "In Dired, visit the file or directory on the line, following symlinks"
+    (interactive)
+    (let ((find-file-visit-truename t))
+      (dired-find-file)))
+
+  (progn
+    ;; `dired-find-file-following-symlinks' is mapped instead of `dired-find-file-other-window'
+    (define-key dired-mode-map (kbd "<C-return>") 'dired-find-file-following-symlinks)))

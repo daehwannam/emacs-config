@@ -180,3 +180,13 @@
   (key-chord-define-global "kk" 'kill-buffer)
   (key-chord-define-global "ff" 'find-file)
   )
+
+(defun find-actual-file (filename &optional wildcards)
+  "Open an actual file indicated by a symlink"
+  ;; https://emacs.stackexchange.com/a/41292
+
+  (interactive
+   (find-file-read-args "Find an actual file: "
+                        (confirm-nonexistent-file-or-buffer)))
+  (let ((find-file-visit-truename t))
+    (find-file filename wildcards)))

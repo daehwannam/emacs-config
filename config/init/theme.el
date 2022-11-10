@@ -86,7 +86,7 @@
 
     (progn
       ;; disable fringe color
-      (fringe-mode 1)
+      (comment (fringe-mode 1))
       (set-face-attribute 'fringe nil
                           :foreground (face-foreground 'default)
                           :background (face-background 'default)))
