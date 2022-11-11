@@ -416,6 +416,7 @@
         (comment (define-key map (kbd "f") 'dhnam/exwm-command-open-firefox))
         (comment (define-key map (kbd "F") 'dhnam/exwm-command-open-firefox-private))
         (define-key map (kbd "e") 'dhnam/exwm-command-open-terminal-emulator)
+        (comment (define-key map (kbd "e") 'dhnam/gui-terminal))
         (define-key map (kbd "<print>") 'dhnam/exwm-command-open-flameshot-gui)
 
 	    (defvar dhnam/exwm-command-prefix-map map
