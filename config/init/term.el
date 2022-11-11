@@ -234,5 +234,5 @@ The term buffer is named based on `name' "
     (:map vterm-mode-map
           ("C-z" . vterm-send-next-key)
           ("C-;" . vterm-send-next-key))
-    :config
+    :init
     (key-chord-define-global "o4" 'vterm)))
