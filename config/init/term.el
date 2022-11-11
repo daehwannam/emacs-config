@@ -216,3 +216,23 @@ The term buffer is named based on `name' "
   (define-key term-mode-map (kbd "C-c C-n") 'dhnam/term-next-prompt)
   (define-key term-mode-map (kbd "M-P") 'term-previous-matching-input-from-input)
   (define-key term-mode-map (kbd "M-N") 'term-next-matching-input-from-input))
+
+(progn
+  ;; vterm
+  ;; https://github.com/akermu/emacs-libvterm
+  ;;
+  ;; * Requirements
+  ;;
+  ;; - GNU Emacs (>= 25.1) with module support. You can check that, by verifying that module-file-suffix is not nil.
+  ;; - cmake (>= 3.11)
+  ;; - libtool-bin (related issues: #66 #85)
+  ;;
+  ;; $ sudo apt install cmake libtool-bin
+
+  (use-existing-pkg vterm
+    :bind
+    (:map vterm-mode-map
+          ("C-z" . vterm-send-next-key)
+          ("C-;" . vterm-send-next-key))
+    :config
+    (key-chord-define-global "o4" 'vterm)))
