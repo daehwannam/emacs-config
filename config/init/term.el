@@ -244,6 +244,7 @@ The term buffer is named based on `name' "
   ;; https://gist.github.com/dfeich/50ee86c3d4338dbc878b
 
   (defvar dhnam/gui-terminal-command "kitty")
+  (defvar dhnam/gui-terminal-command-arg "-e" )
 
   (defun dhnam/gui-terminal (&optional path)
     "Opens a gnome terminal at PATH. If no PATH is given, it uses
@@ -254,8 +255,10 @@ the value of `default-directory'. PATH may be a tramp remote path."
         (let ((tstruct (tramp-dissect-file-name path)))
 	      (cond
 	       ((equal (tramp-file-name-method tstruct) "ssh")
-	        (start-process "terminal" nil dhnam/gui-terminal-command
-			               "-e" "--" "bash" "-c"
+	        (start-process "terminal" nil
+                           dhnam/gui-terminal-command
+                           dhnam/gui-terminal-command-arg
+			               "--" "bash" "-c"
 			               (format "ssh -t %s@%s -p %s 'cd %s; exec bash'; exec bash"
                                    (tramp-file-name-user-domain tstruct)
 				                   (tramp-file-name-host tstruct)
@@ -272,7 +275,7 @@ the value of `default-directory'. PATH may be a tramp remote path."
     (interactive)
     (insert "conda activate "
             (completing-read "Environment name: " (pyvenv-virtualenv-list)
-                             nil t nil 'pyvenv-workon-history nil nil))
+                             nil t nil 'pyvenv-workon-history nil nil)))
 
-    (define-key 'shell-mode-map (kbd "C-c c") 'insert-conda-activate-env)
-    (define-key 'term-mode-map (kbd "C-c c") 'insert-conda-activate-env)))
+  (define-key 'shell-mode-map (kbd "C-c c") 'insert-conda-activate-env)
+  (define-key 'term-mode-map (kbd "C-c c") 'insert-conda-activate-env))
