@@ -225,7 +225,12 @@ The term buffer is named based on `name' "
   ;; - cmake (>= 3.11)
   ;; - libtool-bin (related issues: #66 #85)
   ;;
+  ;; Install with apt:
   ;; $ sudo apt install cmake libtool-bin
+  ;;
+  ;; Install with conda:
+  ;; $ conda install -c anaconda cmake
+  ;; $ conda install -c conda-forge libtool
 
   (use-existing-pkg vterm
     :bind
@@ -234,11 +239,26 @@ The term buffer is named based on `name' "
      ("C-z" . vterm-send-next-key)
      ("C-;" . vterm-send-next-key)
      ("C-c C-j" . vterm-copy-mode)
+     ("C-t" . vterm-insert-tty-fix-template)
 
      :map vterm-copy-mode-map
      ("C-c C-k" . vterm-copy-mode-done))
     :init
-    (key-chord-define-global "o3" 'vterm)))
+    (key-chord-define-global "o3" 'vterm-new-instance)
+
+    :config
+    (defun vterm-new-instance ()
+      (interactive)
+      (vterm t))
+
+    (defun vterm-insert-tty-fix-template ()
+      ;; fix for vterm when opened via ssh-tramp
+      ;; https://github.com/akermu/emacs-libvterm/issues/569
+      ;; https://unix.stackexchange.com/questions/404173/shell-command-tmux-throws-cant-use-dev-tty-error/512979
+
+      (interactive)
+      (vterm-insert "( exec </dev/tty; exec <&1; )")
+      (vterm-send-left))))
 
 (progn
   ;; https://gist.github.com/dfeich/50ee86c3d4338dbc878b
