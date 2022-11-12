@@ -277,5 +277,5 @@ the value of `default-directory'. PATH may be a tramp remote path."
             (completing-read "Environment name: " (pyvenv-virtualenv-list)
                              nil t nil 'pyvenv-workon-history nil nil)))
 
-  (define-key 'shell-mode-map (kbd "C-c c") 'insert-conda-activate-env)
-  (define-key 'term-mode-map (kbd "C-c c") 'insert-conda-activate-env))
+  (define-key shell-mode-map (kbd "C-c c") 'insert-conda-activate-env)
+  (define-key term-mode-map (kbd "C-c c") 'insert-conda-activate-env))
