@@ -285,12 +285,15 @@ Version 2019-11-04"
   (define-key dired-mode-map (kbd "C-c X") 'dired-do-direct-flagged-delete))
 
 (progn
-  (defun dired-find-file-following-symlinks ()
+  (defun dired-find-file-following-symlink ()
     "In Dired, visit the file or directory on the line, following symlinks"
+    ;; https://emacs.stackexchange.com/a/41292
+
     (interactive)
     (let ((find-file-visit-truename t))
       (dired-find-file)))
 
   (progn
     ;; `dired-find-file-following-symlinks' is mapped instead of `dired-find-file-other-window'
-    (define-key dired-mode-map (kbd "<C-return>") 'dired-find-file-following-symlinks)))
+    (define-key dired-mode-map (kbd "<C-return>") 'dired-find-file-following-symlink)
+    (define-key dired-mode-map (kbd "C-c RET") 'dired-find-file-following-symlink)))
