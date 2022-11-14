@@ -374,3 +374,11 @@ forward across one balanced group of parentheses."
   ;; (insert "source activate py2")
   (insert "conda activate py2")
   (comint-send-input))
+
+(progn
+  ;; Apply sh-mode for a specific file name
+  (add-to-list 'auto-mode-alist '("\\.sbatch\\'" . sh-mode))
+
+  ;; Apply sh-mode for a specific shebang
+  ;; https://unix.stackexchange.com/a/15633
+  (add-to-list 'interpreter-mode-alist '("sbatch" . sh-mode)))
