@@ -246,11 +246,12 @@ The term buffer is named based on `name' "
     :init
     (key-chord-define-global "o3" 'vterm-new-instance)
 
-    :config
+    :init
     (defun vterm-new-instance ()
       (interactive)
       (vterm t))
 
+    :config
     (defun vterm-insert-tty-fix-template ()
       ;; fix for vterm when opened via ssh-tramp
       ;; https://github.com/akermu/emacs-libvterm/issues/569
