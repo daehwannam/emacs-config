@@ -240,9 +240,13 @@ The term buffer is named based on `name' "
      ("C-;" . vterm-send-next-key)
      ("C-c C-j" . vterm-copy-mode)
      ("C-t" . vterm-insert-tty-fix-template)
+     ("C-c c" . vterm-insert-conda-activate-env)
 
      :map vterm-copy-mode-map
-     ("C-c C-k" . vterm-copy-mode-done))
+     ("C-c C-k" . vterm-copy-mode-done)
+     ("C-a" . dhnam/move-beginning-of-command-line)
+     ("C-c C-p" . dhnam/term-previous-prompt)
+     ("C-c C-n" . dhnam/term-next-prompt))
     :init
     (key-chord-define-global "o3" 'vterm-new-instance)
 
@@ -259,7 +263,13 @@ The term buffer is named based on `name' "
 
       (interactive)
       (vterm-insert "( exec </dev/tty; exec <&1; )")
-      (vterm-send-left))))
+      (vterm-send-left))
+
+    (defun vterm-insert-conda-activate-env ()
+      (interactive)
+      (vterm-insert "conda activate "
+                    (completing-read "Environment name: " (pyvenv-virtualenv-list)
+                                     nil t nil 'pyvenv-workon-history nil nil)))))
 
 (progn
   ;; https://gist.github.com/dfeich/50ee86c3d4338dbc878b
