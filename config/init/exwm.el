@@ -509,6 +509,7 @@ When INITIAL-INPUT is non-nil, use it in the minibuffer during completion."
       (progn
         (let ((map (make-sparse-keymap)))
           (define-key map (kbd "d") 'counsel-find-file-in-downloads)
+          (define-key map (kbd "w") 'dhnam/kill-gc)
 
           (defvar dhnam/exwm-extended-emacs-command-prefix-map map
 	        "Keymap for emacs related commands."))

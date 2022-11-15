@@ -51,3 +51,8 @@
     (add-hook 'proced-mode-hook (lambda () (key-chord-define-local "fu" 'proced-filter-interactive-user)))
     (comment (key-chord-define proced-mode-map "fl" 'proced-filter-interactive-all))
     (comment (key-chord-define proced-mode-map "fu" 'proced-filter-interactive-user))))
+
+(defun dhnam/kill-gc ()
+  (interactive)
+  (let ((path-file "~/gc-path.txt"))
+    (kill-new (trim-string (get-string-from-file (trim-string (get-string-from-file path-file)))))))
