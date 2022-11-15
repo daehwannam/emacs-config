@@ -231,6 +231,7 @@ The term buffer is named based on `name' "
   ;; Install with conda:
   ;; $ conda install -c anaconda cmake
   ;; $ conda install -c conda-forge libtool
+  ;; $ conda install gxx_linux-64
 
   (use-existing-pkg vterm
     :bind
