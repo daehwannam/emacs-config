@@ -58,7 +58,7 @@
       (progn
         ;; org mode code block begin/end color
         ;; https://emacs.stackexchange.com/a/26783
-        (custom-theme-set-faces 'user `(org-meta-line ((t (:foreground "seashell3")))))))
+        (custom-theme-set-faces 'user `(org-meta-line ((t (:foreground "goldenrod")))))))
      ((eq my-current-theme 'my-doom-material-dark)
       (custom-set-faces
        '(mode-line ((t (:background "gray25" :foreground "white" :box nil))))
