@@ -24,7 +24,7 @@
        (list
         (intern (completing-read "Load custom theme: "
                                  (mapcar #'symbol-name
-				         (custom-available-themes))))
+				                         (custom-available-themes))))
         nil nil))
       (setq my-current-theme theme)
       (load-theme theme my-current-theme)))
@@ -53,7 +53,12 @@
       (comment
         (when (and exwm-cmd-arg-passed (display-graphic-p))
           (custom-set-faces
-           '(default ((t (:background "gray12"))))))))
+           '(default ((t (:background "gray12")))))))
+
+      (progn
+        ;; org mode code block begin/end color
+        ;; https://emacs.stackexchange.com/a/26783
+        (custom-theme-set-faces 'user `(org-meta-line ((t (:foreground "seashell3")))))))
      ((eq my-current-theme 'my-doom-material-dark)
       (custom-set-faces
        '(mode-line ((t (:background "gray25" :foreground "white" :box nil))))
@@ -117,10 +122,10 @@
       ;; https://groups.google.com/g/gnu.emacs.help/c/gJpdhosRByY
       (require 'flymake)
       (progn
-	;; text color
-	(custom-set-faces
-	 '(flymake-errline ((((class color)) (:foreground "red"))))
-	 '(flymake-warnline ((((class color)) (:foreground "yellow")))))))
+	    ;; text color
+	    (custom-set-faces
+	     '(flymake-errline ((((class color)) (:foreground "red"))))
+	     '(flymake-warnline ((((class color)) (:foreground "yellow")))))))
 
     (custom-set-faces
      ;; swiper use underline instead of highlight
