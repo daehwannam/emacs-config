@@ -284,12 +284,11 @@ the PDFGrep job before it finishes, type \\[kill-compilation]."
                         bibliography-file-name-as-source-of-reference)
                (save-excursion
                  (beginning-of-buffer)
-                 (re-search-forward ref-id-str)
+                 (re-search-forward (format "@.*\\(article\\)\\|\\(inproceedings\\).*%s" ref-id-str))
                  (setq ref-pos (point)))
                (when ref-pos
                  (goto-char ref-pos)
                  (recenter-top-bottom)))))
-
          (comment
            (unless ref-id-str-valid
              (comment (xref-find-definitions (xref-backend-identifier-at-point (xref-find-backend))))
@@ -305,7 +304,7 @@ the PDFGrep job before it finishes, type \\[kill-compilation]."
       (my-org-kill-link-to-clipboard)
       (unless (eq original-kill-ring kill-ring)
         (let ((url (pop kill-ring)))
-          (exwm-my-command-open-firefox url)))))
+          (dhnam/exwm-command-open-web-browser url)))))
 
 
   (comment
