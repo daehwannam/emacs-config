@@ -827,10 +827,10 @@ When INITIAL-INPUT is non-nil, use it in the minibuffer during completion."
                   ([?\C-\M-0] . [?\M-q?\C-\M-f])
 
                   ;; Tab deletion commands
-                  ([?\C-q?\C-/] . [?\M-q?\M-k?\/])
-                  ([?\C-q?\C-o] . [?\M-q?\M-k?*])
-                  ([?\C-q?\C-9] . [?\M-q?\M-k?\(])
-                  ([?\C-q?\C-0] . [?\M-q?\M-k?\)])))
+                  ([?\C-q?\C-/] . [?\M-q?\/])
+                  ([?\C-q?\C-o] . [?\M-q?*])
+                  ([?\C-q?\C-9] . [?\M-q?\(])
+                  ([?\C-q?\C-0] . [?\M-q?\)])))
 
           (setq exwm-browser-app-input-simulation-keys
                 '(;; for fuzzy search
