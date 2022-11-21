@@ -239,9 +239,11 @@ the PDFGrep job before it finishes, type \\[kill-compilation]."
 (progn
   ;; my bibliography utilities
 
+  (defvar bibliography-file-as-source-of-reference nil
+    "The path to a bibliography file. It should be used as a local variable.")
   (comment
-    (make-local-variable 'bibliography-file-name-as-source-of-reference)
-    (setq-default bibliography-file-name-as-source-of-reference "some-bibliography.bib"))
+    (make-local-variable 'bibliography-file-as-source-of-reference)
+    (setq-default bibliography-file-as-source-of-reference "some-bibliography.bib"))
 
   (defun get-start-end-content-positions-of-curly-brackets ()
     (let (start-pos end-pos)
@@ -281,7 +283,7 @@ the PDFGrep job before it finishes, type \\[kill-compilation]."
            (when ref-id-str-valid
              (let ((ref-pos nil))
                (funcall (if opening-in-other-window #'find-file-other-window #'find-file)
-                        bibliography-file-name-as-source-of-reference)
+                        bibliography-file-as-source-of-reference)
                (save-excursion
                  (beginning-of-buffer)
                  (re-search-forward (format "@.*\\(article\\)\\|\\(inproceedings\\).*%s" ref-id-str))
@@ -307,8 +309,11 @@ the PDFGrep job before it finishes, type \\[kill-compilation]."
           (dhnam/exwm-command-open-web-browser url)))))
 
 
+  (defvar pdf-file-dir-as-source-of-reference nil
+    "The path to a pdf collection directory. It should be used as a local variable.")
   (comment
-    (setq-default pdf-file-dir-path-as-source-of-reference "some-pdf-directory-path"))
+    (make-local-variable 'pdf-file-dir-as-source-of-reference)
+    (setq-default pdf-file-dir-as-source-of-reference "some-pdf-directory-path"))
 
   (defun open-pdf-file-of-reference ()
     (interactive)
@@ -329,7 +334,7 @@ the PDFGrep job before it finishes, type \\[kill-compilation]."
                                 "/" "+" (replace-regexp-in-string
                                          ":" "=" ref-id-str))
                                ".pdf"))
-                   (file-path (dhnam/join-dirs pdf-file-dir-path-as-source-of-reference file-name)))
+                   (file-path (dhnam/join-dirs pdf-file-dir-as-source-of-reference file-name)))
 
               (if (file-exists-p file-path)
                   (find-file-other-window file-path)
@@ -348,7 +353,7 @@ the PDFGrep job before it finishes, type \\[kill-compilation]."
                                            (let ((default-command
                                                    (concat (pdfgrep-default-command) "'"))
                                                  (appended-arg-str
-                                                  (concat "' " (dhnam/join-paths pdf-file-dir-path-as-source-of-reference "*"))))
+                                                  (concat "' " (dhnam/join-paths pdf-file-dir-as-source-of-reference "*"))))
 					                         (cons (concat default-command appended-arg-str)
                                                    (1+ (length default-command))))
 					                       'pdfgrep-history)))
