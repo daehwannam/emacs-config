@@ -1,4 +1,5 @@
 (progn
+  ;; processing a custom command line argument
   (defvar exwm-cmd-arg-passed nil)
 
   (let ((remaining-cmd-args (cdr command-line-args)))
