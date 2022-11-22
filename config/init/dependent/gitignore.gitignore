@@ -3,6 +3,9 @@
 # ignore all files  with specific names (including directories)
 temp
 
+# ignore some files located at top-level (same location with .gitignore)
+/options.txt
+
 # ignore all directories with specific names
 data/
 model/
