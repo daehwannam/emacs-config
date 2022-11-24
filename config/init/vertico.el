@@ -24,7 +24,7 @@
 
     (progn
       ;; A few more useful configurations...
-      ;; 
+      ;;
       ;; Add prompt indicator to `completing-read-multiple'.
       ;; Alternatively try `consult-completing-read-multiple'.
       (defun crm-indicator (args)
@@ -138,10 +138,17 @@
         ;; for consult-line, consult-grep, ...
         (apply #'add-advice-for-vertico (append '(consult--line consult--line-multi-candidates)
                                                 '(consult--grep consult--read))))
+
+      (defun consult-grep-on-default-directory (&optional dir initial)
+        (interactive "P")
+        (setq dir (or dir default-directory))
+        (consult--grep "Grep" #'consult--grep-builder dir initial))
+
       (progn
         (comment (key-chord-define-global "js" 'consult-line))
         (key-chord-define-global "jt" 'consult-line-multi)
-        (key-chord-define-global "g;" 'consult-grep) ; use C-u prefix to set directory
+        ;; (key-chord-define-global "g;" 'consult-grep) ; use C-u prefix to set directory
+        (key-chord-define-global "g;" 'consult-grep-on-default-directory) ; use C-u prefix to set directory
         (key-chord-define-global "gj" 'consult-git-grep)))
     :after (vertico orderless)))
 
@@ -158,4 +165,3 @@
   ;; Must be in the :init section of use-package such that the mode gets
   ;; enabled right away. Note that this forces loading the package.
   (marginalia-mode))
-
