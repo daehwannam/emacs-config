@@ -14,12 +14,46 @@
 
     (add-to-list 'command-switch-alist '("--tui" . tui-cmd-arg-handler)))
 
-  (use-existing-pkg clipetty
+ (use-existing-pkg clipetty
     ;; https://github.com/spudlyo/clipetty
     ;;
     ;; - clipetty is available in some terminal emulators such as xterm, kitty or alacritty
     ;; - clipetty doesn't requrie X11 forwarding when interacting with remote terminal emacs via ssh
-    :hook (after-init . global-clipetty-mode))
+    :hook (after-init . global-clipetty-mode)
+
+    :init
+    (progn
+      ;; tmux error fix
+      ;; https://github.com/spudlyo/clipetty/issues/9#issuecomment-1289300261
+      ;;
+      ;; it's not working
+
+      (comment
+        (defun dhnam/clipetty-reset-tmux-ssh-tty ()
+          ;; This function is not tested yet.
+          ;; Changing 'clipetty-tmux-ssh-tty-regexp' may be enough.
+          ;;
+          ;; tmux error fix
+          ;; https://github.com/spudlyo/clipetty/issues/9#issuecomment-1289300261
+          (interactive)
+          (let ((tmux-pane-tty (trim-string (shell-command-to-string "tmux display-message -p '#{pane_tty}'"))))
+            (setq clipetty-tmux-ssh-tty-regexp (format "^SSH_TTY=%s" tmux-pane-tty))
+            (setenv "SSH_TTY" tmux-pane-tty))))
+
+      (comment
+        ;; tmux error fix
+        ;; https://github.com/spudlyo/clipetty/issues/9#issuecomment-1289300261
+        (setq clipetty-tmux-ssh-tty-regexp
+              (string-trim (shell-command-to-string "echo \"^SSH_TTY=$(tmux display-message -p '#{pane_tty}')\""))))
+
+
+      (defun dhnam/change-ssh-tty (ssh-tty-num)
+        (comment
+          (interactive (list (read-file-name "Select a number: " "/dev/pts/" default-directory
+                                             (confirm-nonexistent-file-or-buffer)))))
+        (interactive "nSelect a number: ")
+        (let ((ssh-tty-value (concat "/dev/pts/" (number-to-string ssh-tty-num))))
+          (setenv "SSH-TTY" ssh-tty-value)))))
 
   (comment
     ;; In some ssh connections, xclip-mode is not working a few mins after xclip-mode is enabled.
