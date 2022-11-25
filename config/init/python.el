@@ -562,3 +562,7 @@ Similarly for Soar, Scheme, etc."
 
 	  (add-hook 'ein:notebook-mode-hook 'display-line-numbers-mode)
 	  (setq ein:worksheet-enable-undo t)))
+
+(defun dhnam/insert-source-conda ()
+  (interactive)
+  (insert "source $(dirname $(which conda))/../etc/profile.d/conda.sh"))
