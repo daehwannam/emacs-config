@@ -16,6 +16,7 @@
  ;; ("gs" "https://scholar.google.com/scholar?hl=ko&as_sdt=0%2C5&q=~a&btnG=" "https://scholar.google.com/")
  ("gm" "https://mail.google.com/mail/u/0/#search/~a" "https://mail.google.com/mail/u/0/#inbox")
  ("github" "https://github.com/daehwannam/~a" "https://github.com/daehwannam?tab=repositories")
+ ("gh" "https://github.com/daehwannam/~a" "https://github.com/daehwannam?tab=repositories")
  ("ctan" "https://www.ctan.org/search?phrase=~a" "https://www.ctan.org/")
  ("reddit-emacs" "https://www.reddit.com/r/emacs/search/?q=~a&restrict_sr=1&sr_nsfw=" "https://www.reddit.com/r/emacs/")
  )
