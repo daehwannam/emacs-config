@@ -485,6 +485,9 @@ Similarly for Soar, Scheme, etc."
 
   (add-hook 'shell-mode-hook 'pdbtrace-shell-mode-hook)
   )
+
+(require 'pdb-tracking)
+
  
 (defun load-commands-for-pdb-with-hy ()
   (interactive)

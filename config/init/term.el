@@ -141,6 +141,8 @@ Will prompt you shell name when you type `C-u' before this command."
   ;; Enable opening terminal with tramp via ssh
   ;; https://emacs.stackexchange.com/a/69784
 
+  (defvar dhnam/ansi-term-char-mode-as-default t)
+
   (defun dhnam/ansi-term (&optional path name)
     "Opens a terminal at PATH. If no PATH is given, it uses
 the value of `default-directory'. PATH may be a tramp remote path.
@@ -155,8 +157,9 @@ The term buffer is named based on `name' "
                         (progn
                           (set-buffer termbuf)
                           (term-mode)
-                          (comment (term-char-mode))
-                          (term-line-mode)
+                          (if dhnam/ansi-term-char-mode-as-default
+                              (term-char-mode)
+                            (term-line-mode))
                           (switch-to-buffer termbuf)))))
       (if (tramp-tramp-file-p path)
           (let* ((tstruct (tramp-dissect-file-name path))
@@ -176,6 +179,14 @@ The term buffer is named based on `name' "
           (funcall start-term termbuf)))))
   
   (key-chord-define-global "o2" 'dhnam/ansi-term))
+
+(progn
+  ;; char mode binding
+  (define-key term-raw-map (kbd "M-x") (key-binding (kbd "M-x")))
+  (comment
+    term-raw-map
+    ;; this doesn't work
+    (add-to-list 'term-bind-key-alist `("M-x" . ,(key-binding (kbd "M-x"))))))
 
 (progn
   (defun dhnam/move-beginning-of-command-line ()
@@ -209,6 +220,7 @@ The term buffer is named based on `name' "
           (forward-char 1)
         (goto-char original-point))))
 
+  ;; line-mode bindings
   (define-key term-mode-map (kbd "C-a") 'dhnam/move-beginning-of-command-line)
   (define-key term-mode-map (kbd "C-c C-p") 'dhnam/term-previous-prompt)
   (define-key term-mode-map (kbd "C-c C-n") 'dhnam/term-next-prompt)
