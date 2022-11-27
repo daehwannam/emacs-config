@@ -35,12 +35,10 @@ Line number is expected in the second parenthesized expression."
   (let (file-name line-number)
     (save-excursion
       (comment (goto-char (point-max)))
-      (comment
-        (progn
-          ;; Use the below code instead of `move-beginning-of-line',
-          ;; whose action is different in `shell-mode'
-          (skip-chars-backward "^\n")))
-      (goto-char (line-beginning-position))
+      (progn
+        ;; Use the below code instead of `move-beginning-of-line',
+        ;; whose action is different in `shell-mode'
+        (skip-chars-backward "^\n"))
       (when (and (looking-at python-shell-prompt-pdb-regexp)
                  (re-search-backward python-pdbtrack-stacktrace-info-regexp (comment (- (point) 10000)) t))
 
@@ -75,18 +73,18 @@ Line number is expected in the second parenthesized expression."
 
   (defun pdb-tracking/toggle-automatic-tracking ()
     (interactive)
+    (setq automatic-tracking-p (not automatic-tracking-p))
     (if automatic-tracking-p
         (progn
-          (remove-hook 'post-command-hook #'pdb-tracking/trigger)
-          (message "Automatic pdb tracking is disabled"))
+          (add-hook 'post-command-hook #'pdb-tracking/trigger)
+          (message "Automatic pdb tracking is enabled"))
       (progn
-        (add-hook 'post-command-hook #'pdb-tracking/trigger)
-        (message "Automatic pdb tracking is enabled")))
-    (setq automatic-tracking-p (not automatic-tracking-p))))
+        (remove-hook 'post-command-hook #'pdb-tracking/trigger)
+        (message "Automatic pdb tracking is disabled")))))
 
 (defvar pdb-tracking-mode-map
   (let ((map (make-sparse-keymap)))
-    (define-key map (kbd "c-o") 'pdb-tracking/go-to-current-line)
+    (define-key map (kbd "C-o") 'pdb-tracking/go-to-current-line)
     map)
   "Keymap for `pdb-tracking-mode'.")
 
