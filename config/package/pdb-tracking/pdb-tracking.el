@@ -30,11 +30,17 @@ Line number is expected in the second parenthesized expression."
   (defmacro comment (&rest args)
     `nil))
 
+(progn
+  ;; update `python-shell-prompt-pdb-regexp' to recognize (Pdb++)
+  (setq python-shell-prompt-pdb-regexp "[(<]*[Ii]?[Pp]db\\(\\+\\+\\)?[>)]+ ")
+
+  ;; update `python-pdbtrack-stacktrace-info-regexp' to recognize sticky mode of Pdb++
+  (setq python-pdbtrack-stacktrace-info-regexp "> \\([^\"(]+\\)(\\([0-9]+\\))\\([?a-zA-Z0-9_<>]*\\)\\(()\\)?"))
+
 (defun pdb-tracking/go-to-current-line ()
   (interactive)
   (let (file-name line-number)
     (save-excursion
-      (comment (goto-char (point-max)))
       (progn
         ;; Use the below code instead of `move-beginning-of-line',
         ;; whose action is different in `shell-mode'
@@ -47,9 +53,9 @@ Line number is expected in the second parenthesized expression."
 
     (when (and file-name line-number (not (string-match "<.*>" file-name)))
       (let* ((original-window (selected-window))
-            (tracked-buffer (find-file-other-window file-name))
-            (tracked-buffer-window (get-buffer-window tracked-buffer))
-            (tracked-buffer-line-pos nil))
+             (tracked-buffer (find-file-other-window file-name))
+             (tracked-buffer-window (get-buffer-window tracked-buffer))
+             (tracked-buffer-line-pos nil))
         (with-current-buffer tracked-buffer
           (set (make-local-variable 'overlay-arrow-position) (make-marker))
           (setq tracked-buffer-line-pos (progn

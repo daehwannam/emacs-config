@@ -24,14 +24,14 @@ Will prompt you shell name when you type `C-u' before this command."
     "multi-term-tmux code is used: https://github.com/beyondmetis/multi-term-tmux"
     (interactive)
     (if user+host
-	(let* ((sessionlist (shell-command-to-string (concat "ssh " user+host " -q -t -t tmux list-sessions"))) (sessionlist (split-string sessionlist "\n" t)) (sesslist nil)) 
+	(let* ((sessionlist (shell-command-to-string (concat "ssh " user+host " -q -t -t tmux list-sessions"))) (sessionlist (split-string sessionlist "\n" t)) (sesslist nil))
 	  (dolist (elt sessionlist)
 	    (setq sessname (split-string elt ":" t))
 	    (setq sessname (nth 0 sessname))
 	    (setq sesslist (append sesslist (list sessname))))
 	  sesslist)
 
-      (let* ((sessionlist (shell-command-to-string "tmux list-sessions")) (sessionlist (split-string sessionlist "\n" t)) (sesslist nil)) 
+      (let* ((sessionlist (shell-command-to-string "tmux list-sessions")) (sessionlist (split-string sessionlist "\n" t)) (sesslist nil))
 	(dolist (elt sessionlist)
 	  (setq sessname (split-string elt ":" t))
 	  (setq sessname (nth 0 sessname))
@@ -177,7 +177,7 @@ The term buffer is named based on `name' "
         (let* ((cd-str-local (format cd-str path))
                (termbuf (apply 'term-ansi-make-term name "/bin/sh" nil (list "-c" cd-str-local))))
           (funcall start-term termbuf)))))
-  
+
   (key-chord-define-global "o2" 'dhnam/ansi-term))
 
 (progn
@@ -189,6 +189,7 @@ The term buffer is named based on `name' "
     (add-to-list 'term-bind-key-alist `("M-x" . ,(key-binding (kbd "M-x"))))))
 
 (progn
+
   (defun dhnam/move-beginning-of-command-line ()
     (interactive)
     (let* ((line-begin-point (save-excursion (move-beginning-of-line 1) (point)))
@@ -254,6 +255,8 @@ The term buffer is named based on `name' "
      ("C-c C-j" . vterm-copy-mode)
      ("C-t" . vterm-insert-tty-fix-template)
      ("C-c c" . vterm-insert-conda-activate-env)
+     ("M-9" . previous-buffer)
+     ("M-0" . next-buffer)
 
      :map vterm-copy-mode-map
      ("C-c C-k" . vterm-copy-mode-done)
