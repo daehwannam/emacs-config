@@ -258,6 +258,8 @@ The term buffer is named based on `name' "
      ("M-9" . previous-buffer)
      ("M-0" . next-buffer)
      ("C-c C-d" . pdb-tracking-mode)
+     ;; ("C-k" . vterm--self-insert)
+     ("C-k" . vterm-kill-line)
 
      :map vterm-copy-mode-map
      ("C-c C-k" . vterm-copy-mode-done)
@@ -286,7 +288,15 @@ The term buffer is named based on `name' "
       (interactive)
       (vterm-insert "conda activate "
                     (completing-read "Environment name: " (pyvenv-virtualenv-list)
-                                     nil t nil 'pyvenv-workon-history nil nil)))))
+                                     nil t nil 'pyvenv-workon-history nil nil)))
+
+    (defun vterm-kill-line ()
+      (interactive)
+      ;; https://www.emacswiki.org/emacs/CopyingWholeLines
+      (let ((beg (point))
+            (end (line-end-position)))
+        (kill-ring-save beg end))
+      (vterm--self-insert))))
 
 (progn
   ;; https://gist.github.com/dfeich/50ee86c3d4338dbc878b
