@@ -253,29 +253,30 @@ The term buffer is named based on `name' "
      ("C-z" . vterm-send-next-key)
      ("C-;" . vterm-send-next-key)
      ("C-c C-j" . vterm-copy-mode)
-     ("C-t" . vterm-insert-tty-fix-template)
-     ("C-c c" . vterm-insert-conda-activate-env)
+     ("C-t" . dhnam/vterm-insert-tty-fix-template)
+     ("C-c c" . dhnam/vterm-insert-conda-activate-env)
      ("M-9" . previous-buffer)
      ("M-0" . next-buffer)
      ("C-c C-d" . pdb-tracking-mode)
      ;; ("C-k" . vterm--self-insert)
-     ("C-k" . vterm-kill-line)
+     ("C-k" . dhnam/vterm-kill-line)
 
      :map vterm-copy-mode-map
-     ("C-c C-k" . vterm-copy-mode-done)
+     ;; ("C-c C-k" . vterm-copy-mode-done)
+     ("C-c C-k" . dhnam/vterm-copy-mode-exit)
      ("C-a" . dhnam/move-beginning-of-command-line)
      ("C-c C-p" . dhnam/term-previous-prompt)
      ("C-c C-n" . dhnam/term-next-prompt))
     :init
-    (key-chord-define-global "o3" 'vterm-new-instance)
+    (key-chord-define-global "o3" 'dhnam/vterm-new-instance)
 
     :init
-    (defun vterm-new-instance ()
+    (defun dhnam/vterm-new-instance ()
       (interactive)
       (vterm t))
 
     :config
-    (defun vterm-insert-tty-fix-template ()
+    (defun dhnam/vterm-insert-tty-fix-template ()
       ;; fix for vterm when opened via ssh-tramp
       ;; https://github.com/akermu/emacs-libvterm/issues/569
       ;; https://unix.stackexchange.com/questions/404173/shell-command-tmux-throws-cant-use-dev-tty-error/512979
@@ -284,13 +285,18 @@ The term buffer is named based on `name' "
       (vterm-insert "( exec </dev/tty; exec <&1; )")
       (vterm-send-left))
 
-    (defun vterm-insert-conda-activate-env ()
+    (defun dhnam/vterm-insert-conda-activate-env ()
       (interactive)
       (vterm-insert "conda activate "
                     (completing-read "Environment name: " (pyvenv-virtualenv-list)
                                      nil t nil 'pyvenv-workon-history nil nil)))
 
-    (defun vterm-kill-line ()
+    (defun dhnam/vterm-copy-mode-exit ()
+      (interactive)
+      "Exit `vterm-copy-mode'"
+      (vterm-copy-mode -1))
+
+    (defun dhnam/vterm-kill-line ()
       (interactive)
       ;; https://www.emacswiki.org/emacs/CopyingWholeLines
       (let ((beg (point))

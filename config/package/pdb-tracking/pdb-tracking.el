@@ -61,7 +61,7 @@ Line number is expected in the second parenthesized expression."
           (setq tracked-buffer-line-pos (progn
                                           (goto-char (point-min))
                                           (forward-line (1- line-number))
-                                          (recenter nil t)
+                                          (comment (recenter nil t))
                                           (point-marker)))
           (when tracked-buffer-window
             (set-window-point
