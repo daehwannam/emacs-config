@@ -264,6 +264,7 @@ The term buffer is named based on `name' "
      :map vterm-copy-mode-map
      ;; ("C-c C-k" . vterm-copy-mode-done)
      ("C-c C-k" . dhnam/vterm-copy-mode-exit)
+     ("RET" . dhnam/vterm-copy-mode-exit)
      ("C-a" . dhnam/move-beginning-of-command-line)
      ("C-c C-p" . dhnam/term-previous-prompt)
      ("C-c C-n" . dhnam/term-next-prompt))
