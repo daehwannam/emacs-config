@@ -667,7 +667,7 @@ When INITIAL-INPUT is non-nil, use it in the minibuffer during completion."
                    ([?\s-x] . (lambda () (interactive) (funcall (key-binding (kbd "M-x")))))
                    ([?\s-X] . (lambda () (interactive) (funcall (key-binding (kbd "M-x")))))
                    ([?\s-w] . tab-prefix-map)
-                   ([?\s-e] . my-ctl-c-map)
+                   ([?\s-e] . null) ; Use "s-e" as prefix key instead of "C-c" | https://emacs.stackexchange.com/a/64130
                    ([?\s-h] . help-map)
                    ([?\s-u] . universal-argument)
 
@@ -723,7 +723,12 @@ When INITIAL-INPUT is non-nil, use it in the minibuffer during completion."
                                      (,exwm-environment-switch-create
                                       ,(% (+ i 10 (- dhnam/exwm-workspace-start-number)) 10)))))
                                ; using number key 0 to 9
-                               (number-sequence 0 9))))))))
+                               (number-sequence 0 9))))))
+
+          (progn
+            ;; Use "s-e" as prefix key instead of "C-c"
+            ;; https://emacs.stackexchange.com/a/64130
+            (define-key key-translation-map (kbd "s-e")  (kbd "C-c")))))
 
       ;; line-editing shortcuts
       (unless (get 'exwm-input-simulation-keys 'saved-value)
