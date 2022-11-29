@@ -20,7 +20,7 @@
     (mapcar #'global-unset-key (where-is-internal 'delete-frame))
     (mapcar #'global-unset-key (where-is-internal 'delete-other-frames))))
 
-(comment
+(progn
   (defun define-key-from-C-c (map key)
     (define-key map (kbd key) (key-binding (kbd (concat "C-c " key)))))
 
@@ -49,4 +49,5 @@
 
     (fset 'my-ctl-c-map my-ctl-c-map)
 
-    (key-chord-define-global "qd" 'my-ctl-c-map)))
+    (comment
+      (key-chord-define-global "qd" 'my-ctl-c-map))))
