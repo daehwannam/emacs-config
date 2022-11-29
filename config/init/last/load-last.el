@@ -20,7 +20,7 @@
     (mapcar #'global-unset-key (where-is-internal 'delete-frame))
     (mapcar #'global-unset-key (where-is-internal 'delete-other-frames))))
 
-(progn
+(comment
   (defun define-key-from-C-c (map key)
     (define-key map (kbd key) (key-binding (kbd (concat "C-c " key)))))
 
