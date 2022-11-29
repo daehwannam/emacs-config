@@ -213,10 +213,12 @@
         ;; https://github.com/daviwil/emacs-from-scratch/blob/39f63fe133cd4c41e13bbd1551c6517162851411/show-notes/Emacs-Desktop-03.org#customizing-buffer-name-based-on-window-title
         ;; https://www.youtube.com/watch?v=HGGU5Zvljj8
 
+        (defvar exwm-buffer-name-joint ": ")
+
         (defun exwm-rename-buffer ()
           (interactive)
           (exwm-workspace-rename-buffer
-           (concat exwm-class-name ": "
+           (concat exwm-class-name exwm-buffer-name-joint
                    (if (<= (length exwm-title) 50) exwm-title
                      (concat (substring exwm-title 0 49) "...")))))
 
@@ -476,26 +478,70 @@ in the current window."
                '((ivy-switch-buffer . counsel--switch-buffer-update-fn)))
               (ivy-unwind-fns-alist
                '((ivy-switch-buffer . counsel--switch-buffer-unwind))))
-          (ivy-read "Switch to buffer: " #'internal-complete-buffer
-                    :keymap ivy-switch-buffer-map
-                    :preselect (buffer-name (other-buffer (current-buffer)))
-                    :action #'ivy--switch-buffer-action
-                    :matcher #'ivy--switch-buffer-matcher
-                    :caller 'ivy-switch-buffer
-                    :initial-input (and exwm-class-name
-                                        (concat (downcase (or exwm-class-name "")) ": ")))))
+          (ivy-switch-buffer-within-app)))
 
       (defun ivy-switch-buffer-within-app ()
         "Switch to another buffer within application.."
         (interactive)
-        (ivy-read "Switch to buffer: " #'internal-complete-buffer
-                  :keymap ivy-switch-buffer-map
-                  :preselect (buffer-name (other-buffer (current-buffer)))
-                  :action #'ivy--switch-buffer-action
-                  :matcher #'ivy--switch-buffer-matcher
-                  :caller 'ivy-switch-buffer
-                  :initial-input (and exwm-class-name
-                                      (concat (downcase (or exwm-class-name "")) ": ")))))
+        (let ((ivy-ignore-buffers
+               (if exwm-class-name  ; (string-match-p exwm-buffer-name-joint (buffer-name (current-buffer)))
+                   ivy-ignore-buffers
+                 (cons exwm-buffer-name-joint ivy-ignore-buffers))))
+          (ivy-read "Switch to buffer: " #'internal-complete-buffer
+                    :keymap ivy-switch-buffer-map
+                    :preselect (unless exwm-class-name (buffer-name (other-buffer (current-buffer))))
+                    :action #'ivy--switch-buffer-action
+                    :matcher #'ivy--switch-buffer-matcher
+                    :caller 'ivy-switch-buffer
+                    :initial-input (when exwm-class-name
+                                     (concat (downcase exwm-class-name) exwm-buffer-name-joint))))))
+
+    (progn
+      ;; additional functions for convenience
+      (defun counsel-switch-buffer-from-current ()
+        "Switch to another buffer within application.
+Display a preview of the selected ivy completion candidate buffer
+in the current window."
+        (interactive)
+        (let ((ivy-update-fns-alist
+               '((ivy-switch-buffer . counsel--switch-buffer-update-fn)))
+              (ivy-unwind-fns-alist
+               '((ivy-switch-buffer . counsel--switch-buffer-unwind))))
+          (ivy-switch-buffer-from-current)))
+
+      (defun ivy-switch-buffer-from-current ()
+        "Switch to another buffer within application.."
+        (interactive)
+        (let ((ivy-ignore-buffers
+               (if exwm-class-name  ; (string-match-p exwm-buffer-name-joint (buffer-name (current-buffer)))
+                   ivy-ignore-buffers
+                 (cons exwm-buffer-name-joint ivy-ignore-buffers))))
+          (ivy-read "Switch to buffer: " #'internal-complete-buffer
+                    :keymap ivy-switch-buffer-map
+                    ;; :preselect (buffer-name (current-buffer))
+                    :action #'ivy--switch-buffer-action
+                    :matcher #'ivy--switch-buffer-matcher
+                    :caller 'ivy-switch-buffer))))
+
+    (with-eval-after-load 'ivy
+      (defun ivy-insert-current-exwm-class-name ()
+        "Insert `exwm-class-name'"
+        (interactive)
+        (when dhnam/ivy-original-exwm-class-name
+          (delete-minibuffer-contents)
+          (insert (concat (downcase dhnam/ivy-original-exwm-class-name) exwm-buffer-name-joint))))
+
+      (progn
+        (defun dhnam/ivy-switch-buffer-advice-for-exwm (orig-fun &rest args)
+          (let ((dhnam/ivy-original-exwm-class-name exwm-class-name))
+            (apply orig-fun args)))
+
+        (advice-add 'ivy-switch-buffer :around #'dhnam/ivy-switch-buffer-advice-for-exwm)
+        (advice-add 'ivy-switch-buffer-within-app :around #'dhnam/ivy-switch-buffer-advice-for-exwm)
+        (advice-add 'ivy-switch-buffer-from-current :around #'dhnam/ivy-switch-buffer-advice-for-exwm))
+
+      (ivy-define-key ivy-minibuffer-map (kbd "s-j") 'ivy-insert-current-exwm-class-name)
+      (ivy-define-key ivy-minibuffer-map (kbd "C-s-j") 'ivy-insert-current-exwm-class-name))
 
     (progn
       ;; extended emacs commands for exwm
@@ -667,18 +713,23 @@ When INITIAL-INPUT is non-nil, use it in the minibuffer during completion."
                    ([?\s-x] . (lambda () (interactive) (funcall (key-binding (kbd "M-x")))))
                    ([?\s-X] . (lambda () (interactive) (funcall (key-binding (kbd "M-x")))))
                    ([?\s-w] . tab-prefix-map)
-                   ([?\s-e] . null) ; Use "s-e" as prefix key instead of "C-c" | https://emacs.stackexchange.com/a/64130
+                   ;; ([?\s-e] . null) ; Use "s-e" as prefix key instead of "C-c" | https://emacs.stackexchange.com/a/64130
+                   ([?\s-e] . my-ctl-c-map) ; Use "s-e" as prefix key instead of "C-c" | https://emacs.stackexchange.com/a/64130
                    ([?\s-h] . help-map)
                    ([?\s-u] . universal-argument)
 
                    ([?\s-l] . counsel-find-file)
                    ;; ([?\s-l] . find-file)
-                   ([?\s-j] . ivy-switch-buffer)
                    ([?\s-k] . kill-buffer)
-                   ([?\C-\s-j] . ivy-switch-buffer-within-app)
+
+                   ([?\s-j] . ivy-switch-buffer)
+                   ([?\C-\s-j] . counsel-switch-buffer)
+                   ;; ([?\C-\s-j] . ivy-switch-buffer-within-app)
+                   ;; ([?\C-\s-b] . ivy-switch-buffer-within-app)
                    ;; ([?\s-B] . counsel-switch-buffer-within-app)
-                   ([?\C-\s-b] . counsel-switch-buffer-within-app)
+                   ;; ([?\C-\s-b] . counsel-switch-buffer-within-app)
                    ;; ([?\C-\s-j] . counsel-switch-buffer-within-app)
+
                    ([?\s-!] . shell-command)
 
                    ([?\s-9] . previous-buffer)
@@ -725,7 +776,7 @@ When INITIAL-INPUT is non-nil, use it in the minibuffer during completion."
                                ; using number key 0 to 9
                                (number-sequence 0 9))))))
 
-          (progn
+          (comment
             ;; Use "s-e" as prefix key instead of "C-c"
             ;; https://emacs.stackexchange.com/a/64130
             (define-key key-translation-map (kbd "s-e")  (kbd "C-c")))))
