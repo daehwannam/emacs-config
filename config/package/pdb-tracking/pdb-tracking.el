@@ -70,11 +70,11 @@ Line number is expected in the second parenthesized expression."
         (pop-to-buffer tracked-buffer)
         (select-window original-window)))))
 
-(defun pdb-tracking/trigger ()
-  (when (equal this-command (key-binding (kbd "RET")))
-    (pdb-tracking/go-to-current-line)))
+(comment
+  (defun pdb-tracking/trigger ()
+    (when (equal this-command (key-binding (kbd "RET")))
+      (pdb-tracking/go-to-current-line)))
 
-(progn
   (defvar automatic-tracking-p nil)
 
   (defun pdb-tracking/toggle-automatic-tracking ()

@@ -257,6 +257,7 @@ The term buffer is named based on `name' "
      ("C-c c" . vterm-insert-conda-activate-env)
      ("M-9" . previous-buffer)
      ("M-0" . next-buffer)
+     ("C-c C-d" . pdb-tracking-mode)
 
      :map vterm-copy-mode-map
      ("C-c C-k" . vterm-copy-mode-done)
