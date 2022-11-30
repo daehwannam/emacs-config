@@ -523,6 +523,32 @@ in the current window."
                     :matcher #'ivy--switch-buffer-matcher
                     :caller 'ivy-switch-buffer))))
 
+    (progn
+      ;; additional functions for convenience
+      (defun counsel-switch-buffer-excluding-exwm ()
+        "Switch to another buffer within application.
+Display a preview of the selected ivy completion candidate buffer
+in the current window."
+        (interactive)
+        (let ((ivy-update-fns-alist
+               '((ivy-switch-buffer . counsel--switch-buffer-update-fn)))
+              (ivy-unwind-fns-alist
+               '((ivy-switch-buffer . counsel--switch-buffer-unwind))))
+          (ivy-switch-buffer-excluding-exwm)))
+
+      (defun ivy-switch-buffer-excluding-exwm ()
+        "Switch to another buffer within application.."
+        (interactive)
+        (let ((ivy-ignore-buffers
+               (cons (buffer-name (current-buffer))
+                     (cons exwm-buffer-name-joint ivy-ignore-buffers))))
+          (ivy-read "Switch to buffer: " #'internal-complete-buffer
+                    :keymap ivy-switch-buffer-map
+                    ;; :preselect (buffer-name (current-buffer))
+                    :action #'ivy--switch-buffer-action
+                    :matcher #'ivy--switch-buffer-matcher
+                    :caller 'ivy-switch-buffer))))
+
     (with-eval-after-load 'ivy
       (defun ivy-insert-current-exwm-class-name ()
         "Insert `exwm-class-name'"
@@ -538,7 +564,8 @@ in the current window."
 
         (advice-add 'ivy-switch-buffer :around #'dhnam/ivy-switch-buffer-advice-for-exwm)
         (advice-add 'ivy-switch-buffer-within-app :around #'dhnam/ivy-switch-buffer-advice-for-exwm)
-        (advice-add 'ivy-switch-buffer-from-current :around #'dhnam/ivy-switch-buffer-advice-for-exwm))
+        (advice-add 'ivy-switch-buffer-from-current :around #'dhnam/ivy-switch-buffer-advice-for-exwm)
+        (advice-add 'ivy-switch-buffer-excluding-exwm :around #'dhnam/ivy-switch-buffer-advice-for-exwm))
 
       (ivy-define-key ivy-minibuffer-map (kbd "s-j") 'ivy-insert-current-exwm-class-name)
       (ivy-define-key ivy-minibuffer-map (kbd "C-s-j") 'ivy-insert-current-exwm-class-name))
@@ -636,7 +663,8 @@ When INITIAL-INPUT is non-nil, use it in the minibuffer during completion."
         (global-set-key (kbd "C-x b") 'switch-to-buffer)
         (global-set-key (kbd "C-x M-b") 'ivy-switch-buffer)
         (global-set-key (kbd "C-x B") 'counsel-switch-buffer)
-        (key-chord-define-global "qj" 'ivy-switch-buffer)
+        (comment (key-chord-define-global "qj" 'ivy-switch-buffer))
+        (key-chord-define-global "qj" 'counsel-switch-buffer-excluding-exwm)
         (key-chord-define-global "qd" 'dhnam/exwm-workspace-prefix-map)
 
         (defhydra hydra-buffer-shift (global-map "C-c s")
@@ -722,8 +750,9 @@ When INITIAL-INPUT is non-nil, use it in the minibuffer during completion."
                    ;; ([?\s-l] . find-file)
                    ([?\s-k] . kill-buffer)
 
-                   ([?\s-j] . ivy-switch-buffer)
-                   ([?\C-\s-j] . counsel-switch-buffer)
+                   ([?\s-j] . counsel-switch-buffer-excluding-exwm)
+                   ([?\C-\s-j] . ivy-switch-buffer)
+                   ;; ([?\C-\s-j] . counsel-switch-buffer)
                    ;; ([?\C-\s-j] . ivy-switch-buffer-within-app)
                    ;; ([?\C-\s-b] . ivy-switch-buffer-within-app)
                    ;; ([?\s-B] . counsel-switch-buffer-within-app)
