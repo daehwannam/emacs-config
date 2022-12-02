@@ -184,16 +184,34 @@ ARG has the same meaning as for `kill-sexp'."
       (define-key paredit-mode-map (kbd "C-M-w") #'paredit-kill-region))
 
     (progn
-      (defun paredit-kill-ring-save (start end)
+      (defun dhnam/paredit-kill-ring-save (start end)
         "Save the region as if killed, but don't kill it, like `kill-region'.
 If that text is unbalanced, signal an error instead."
         (interactive "r")
         (if (and start end (not current-prefix-arg))
             (paredit-check-region-for-delete start end))
-        (setq this-command 'kill-region)
+        ;; (setq this-command 'kill-ring-save)
         (kill-ring-save start end))
 
-      (define-key paredit-mode-map (kbd "M-w") #'paredit-kill-ring-save))
+      (define-key paredit-mode-map (kbd "M-w") #'dhnam/paredit-kill-ring-save)
+
+      (defun dhnam/paredit-comment-dwim (&optional argument)
+        "Similar to `paredit-comment-dwim'.
+However, if text is unbalanced, signal an error instead."
+        (interactive "*P")
+        (paredit-initialize-comment-dwim)
+        (cond ((paredit-region-active-p)
+               (paredit-check-region-for-delete (region-beginning) (region-end))
+               (comment-or-uncomment-region (region-beginning)
+                                            (region-end)
+                                            argument))
+              ((paredit-comment-on-line-p)
+               (if argument
+                   (comment-kill (if (integerp argument) argument nil))
+                 (comment-indent)))
+              (t (paredit-insert-comment))))
+
+      (define-key paredit-mode-map (kbd "M-;") #'dhnam/paredit-comment-dwim))
 
     (progn
       (define-key paredit-mode-map (kbd "M-D") (make-repeatable-command #'paredit-backward-down))

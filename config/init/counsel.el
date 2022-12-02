@@ -1,3 +1,49 @@
+(use-existing-pkg ivy
+  :init
+  ;; (ivy-mode 1)
+  (defun dhnam/ivy-toggle-mark ()
+    ;; https://www.reddit.com/r/emacs/comments/b6zh91/comment/ejpujuq/?utm_source=share&utm_medium=web2x&context=3
+    "Toggle mark for current candidate and move forwards."
+    (interactive)
+    (if (ivy--marked-p)
+        (ivy-unmark)
+      (ivy-mark)))
+
+  (defun dhnam/ivy-kill-marked ()
+    (interactive)
+    ;; it's modified from `ivy--call-marked'
+    ;; this function is defined to kill `exwm' buffers
+    (let* ((action 'ivy--kill-buffer-action)
+           (prefix-len (length ivy-mark-prefix))
+           (marked-candidates
+            (mapcar
+             (lambda (s)
+               (let ((cand (substring s prefix-len)))
+                 (if ivy--directory
+                     (expand-file-name cand ivy--directory)
+                   cand)))
+             ivy-marked-candidates))
+           (multi-action (ivy--get-multi-action ivy-last)))
+      ;; (minibuffer-keyboard-quit)
+      ;; (ivy-done)
+      (if multi-action
+          (let ((default-directory (ivy-state-directory ivy-last)))
+            (funcall multi-action (mapcar #'ivy--call-cand marked-candidates)))
+        ;; 
+        (dolist (c marked-candidates)
+          (let ((default-directory (ivy-state-directory ivy-last)))
+            (funcall action (ivy--call-cand c)))))))
+  :bind
+  (nil
+   ;; ("C-c C-M-k" . dhnam/ivy-kill-marked)
+   ;; :map ivy-minibuffer-map
+   :map ivy-switch-buffer-map
+   ("C-SPC" . dhnam/ivy-toggle-mark)
+   ;; ("C-k" . dhnam/ivy-kill-marked)
+   ))
+(comment
+  ;; `ivy--call-marked' take an action, such as `ivy--kill-buffer-action' over marked items.
+  )
 
 (use-existing-pkg counsel
   :init

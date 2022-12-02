@@ -19,4 +19,9 @@
  ("gh" "https://github.com/daehwannam/~a" "https://github.com/daehwannam?tab=repositories")
  ("ctan" "https://www.ctan.org/search?phrase=~a" "https://www.ctan.org/")
  ("reddit-emacs" "https://www.reddit.com/r/emacs/search/?q=~a&restrict_sr=1&sr_nsfw=" "https://www.reddit.com/r/emacs/")
+
+ ("about:config" "about:config" "about:config")
+ ("config" "about:config" "about:config")
+ ("about:addons" "about:addons" "about:addons")
+ ("addons" "about:addons" "about:addons")
  )
