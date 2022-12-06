@@ -261,6 +261,10 @@ The term buffer is named based on `name' "
      ;; ("C-k" . vterm--self-insert)
      ("C-k" . dhnam/vterm-kill-line)
      ("C-_" . vterm-undo)
+     ("C-p" . dhnam/vterm-copy-mode-then-previous-line)
+     ("C-n" . dhnam/vterm-copy-mode-then-next-line)
+     ("M-p" . vterm-send-up)
+     ("M-n" . vterm-send-down)
 
      :map vterm-copy-mode-map
      ;; ("C-c C-k" . vterm-copy-mode-done)
@@ -270,7 +274,7 @@ The term buffer is named based on `name' "
      ("C-c C-p" . dhnam/term-previous-prompt)
      ("C-c C-n" . dhnam/term-next-prompt)
      ("M->" . vterm-reset-cursor-point)
-     ;; ([remap self-insert-command] . vterm--self-insert)
+     ([remap self-insert-command] . dhnam/vterm-vterm-copy-mode-exit-then-self-insert)
      )
 
     :init
@@ -285,6 +289,8 @@ The term buffer is named based on `name' "
 
     :config
     (key-chord-define vterm-mode-map "wj" 'vterm-copy-mode)
+    (key-chord-define vterm-mode-map "sj" 'dhnam/vterm-copy-mode-then-swiper)
+    (key-chord-define vterm-mode-map "fj" 'dhnam/vterm-copy-mode-then-ctrlf)
 
     (defun dhnam/vterm-insert-tty-fix-template ()
       ;; fix for vterm when opened via ssh-tramp
@@ -313,6 +319,31 @@ The term buffer is named based on `name' "
             (end (line-end-position)))
         (kill-ring-save beg end))
       (vterm--self-insert))
+
+    (defun dhnam/vterm-copy-mode-then-previous-line ()
+      (interactive)
+      (vterm-copy-mode 1)
+      (previous-line))
+
+    (defun dhnam/vterm-copy-mode-then-next-line ()
+      (interactive)
+      (vterm-copy-mode 1)
+      (next-line))
+
+    (defun dhnam/vterm-vterm-copy-mode-exit-then-self-insert ()
+      (interactive)
+      (dhnam/vterm-copy-mode-exit)
+      (vterm--self-insert))
+
+    (defun dhnam/vterm-copy-mode-then-swiper ()
+      (interactive)
+      (dhnam/vterm-copy-mode-exit)
+      (swiper-within-region))
+
+    (defun dhnam/vterm-copy-mode-then-ctrlf ()
+      (interactive)
+      (dhnam/vterm-copy-mode-exit)
+      (ctrlf-backward-default))
 
     (comment
       (defun disable-read-only-mode ()
