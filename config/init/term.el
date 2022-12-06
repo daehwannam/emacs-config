@@ -260,6 +260,7 @@ The term buffer is named based on `name' "
      ("C-c C-d" . pdb-tracking-mode)
      ;; ("C-k" . vterm--self-insert)
      ("C-k" . dhnam/vterm-kill-line)
+     ("C-_" . vterm-undo)
 
      :map vterm-copy-mode-map
      ;; ("C-c C-k" . vterm-copy-mode-done)
@@ -267,16 +268,24 @@ The term buffer is named based on `name' "
      ("RET" . dhnam/vterm-copy-mode-exit)
      ("C-a" . dhnam/move-beginning-of-command-line)
      ("C-c C-p" . dhnam/term-previous-prompt)
-     ("C-c C-n" . dhnam/term-next-prompt))
+     ("C-c C-n" . dhnam/term-next-prompt)
+     ("M->" . vterm-reset-cursor-point)
+     ;; ([remap self-insert-command] . vterm--self-insert)
+     )
+
     :init
     (key-chord-define-global "o3" 'dhnam/vterm-new-instance)
 
-    :init
+    ;; :hook
+    ;; (vterm-copy-mode . disable-read-only-mode)
+
     (defun dhnam/vterm-new-instance ()
       (interactive)
       (vterm t))
 
     :config
+    (key-chord-define vterm-mode-map "wj" 'vterm-copy-mode)
+
     (defun dhnam/vterm-insert-tty-fix-template ()
       ;; fix for vterm when opened via ssh-tramp
       ;; https://github.com/akermu/emacs-libvterm/issues/569
@@ -303,7 +312,11 @@ The term buffer is named based on `name' "
       (let ((beg (point))
             (end (line-end-position)))
         (kill-ring-save beg end))
-      (vterm--self-insert))))
+      (vterm--self-insert))
+
+    (comment
+      (defun disable-read-only-mode ()
+        (read-only-mode 0)))))
 
 (progn
   ;; https://gist.github.com/dfeich/50ee86c3d4338dbc878b
