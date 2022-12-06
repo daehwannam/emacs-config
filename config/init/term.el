@@ -414,8 +414,6 @@ The term buffer is named based on `name' "
         (define-key map (kbd "C-d")                       (vterm-dhnam/copy-mode-exit-then 'vterm-send-ctrl-a-and-delete))
         (define-key map (kbd "M-d")                       (vterm-dhnam/copy-mode-exit-then 'vterm-send-ctrl-a-and-meta-d))
 
-        (define-key map (kbd "C-z")           'vterm-send-next-key)
-
         ;; key-chords
         (key-chord-define vterm-mode-map "fj" (vterm-dhnam/copy-mode-then 'ctrlf-backward-default))
 
