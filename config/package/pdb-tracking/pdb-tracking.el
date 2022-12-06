@@ -31,13 +31,13 @@ Line number is expected in the second parenthesized expression."
     `nil))
 
 (progn
-  ;; update `python-shell-prompt-pdb-regexp' to recognize (Pdb++)
-  (setq python-shell-prompt-pdb-regexp "[(<]*[Ii]?[Pp]db\\(\\+\\+\\)?[>)]+ ")
+  ;; replace `python-shell-prompt-pdb-regexp' to recognize (Pdb++)
+  (defvar pdb-tracking/python-shell-prompt-pdb-regexp "[(<]*[Ii]?[Pp]db\\(\\+\\+\\)?[>)]+ ")
 
-  ;; update `python-pdbtrack-stacktrace-info-regexp' to recognize sticky mode of Pdb++
-  (setq python-pdbtrack-stacktrace-info-regexp "> \\([^\"(]+\\)(\\([0-9]+\\))\\([?a-zA-Z0-9_<>]*\\)\\(()\\)?"))
+  ;; replace `python-pdbtrack-stacktrace-info-regexp' to recognize sticky mode of Pdb++
+  (defvar pdb-tracking/python-pdbtrack-stacktrace-info-regexp "> \\([^\"(]+\\)(\\([0-9]+\\))\\([?a-zA-Z0-9_<>]*\\)\\(()\\)?"))
 
-(defun pdb-tracking/go-to-current-line ()
+(defun pdb-tracking/display-current-line (&optional switching-buffer)
   (interactive)
   (let (file-name line-number)
     (save-excursion
@@ -45,8 +45,8 @@ Line number is expected in the second parenthesized expression."
         ;; Use the below code instead of `move-beginning-of-line',
         ;; whose action is different in `shell-mode'
         (skip-chars-backward "^\n"))
-      (when (and (looking-at python-shell-prompt-pdb-regexp)
-                 (re-search-backward python-pdbtrack-stacktrace-info-regexp (comment (- (point) 10000)) t))
+      (when (and (looking-at pdb-tracking/python-shell-prompt-pdb-regexp)
+                 (re-search-backward pdb-tracking/python-pdbtrack-stacktrace-info-regexp (comment (- (point) 10000)) t))
 
         (setq file-name (match-string-no-properties 1))
         (setq line-number (string-to-number (match-string-no-properties 2)))))
@@ -68,7 +68,12 @@ Line number is expected in the second parenthesized expression."
              tracked-buffer-window tracked-buffer-line-pos))
           (set-marker overlay-arrow-position tracked-buffer-line-pos))
         (pop-to-buffer tracked-buffer)
-        (select-window original-window)))))
+        (unless switching-buffer
+          (select-window original-window))))))
+
+(defun pdb-tracking/go-to-current-line ()
+  (interactive)
+  (pdb-tracking/display-current-line t))
 
 (comment
   (defun pdb-tracking/trigger ()
@@ -91,6 +96,7 @@ Line number is expected in the second parenthesized expression."
 (defvar pdb-tracking-mode-map
   (let ((map (make-sparse-keymap)))
     (define-key map (kbd "C-o") 'pdb-tracking/go-to-current-line)
+    (define-key map (kbd "M-o") 'pdb-tracking/display-current-line)
     map)
   "Keymap for `pdb-tracking-mode'.")
 
