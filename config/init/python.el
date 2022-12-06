@@ -481,15 +481,16 @@ Similarly for Soar, Scheme, etc."
   (require 'python)
   
   (defun pdbtrace-shell-mode-hook ()
-    (add-hook 'comint-output-filter-functions 'python-pdbtrack-comint-output-filter-function t))
+    (add-hook 'comint-output-filter-functions 'python-pdbtrack-comint-output-filter-function nil t))
 
   (defun dhnam/enable-pdbtrace-shell-mode ()
     (interactive)
     (add-hook 'shell-mode-hook 'pdbtrace-shell-mode-hook))
 
-  (defun dhnam/disable-pdbtrace-shell-mode ()
-    (interactive)
-    (remove-hook 'shell-mode-hook 'pdbtrace-shell-mode-hook))
+  (comment
+    (defun dhnam/disable-pdbtrace-shell-mode ()
+      (interactive)
+      (remove-hook 'shell-mode-hook 'pdbtrace-shell-mode-hook t)))
 
   (dhnam/enable-pdbtrace-shell-mode))
 
