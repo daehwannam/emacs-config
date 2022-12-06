@@ -101,7 +101,7 @@ Line number is expected in the second parenthesized expression."
   "Keymap for `pdb-tracking-mode'.")
 
 (define-minor-mode pdb-tracking-mode
-  "Tracking code for PDB "
+  "Tracking code for PDB"
   nil   ; Initial value, nil for disabled
   :global nil
   :lighter " pdb-tracking"

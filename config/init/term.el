@@ -250,104 +250,156 @@ The term buffer is named based on `name' "
     :bind
     (nil
      :map vterm-mode-map
-     ("C-z" . vterm-send-next-key)
-     ("C-;" . vterm-send-next-key)
-     ("C-c C-j" . vterm-copy-mode)
-     ("C-t" . dhnam/vterm-insert-tty-fix-template)
-     ("C-c c" . dhnam/vterm-insert-conda-activate-env)
-     ("M-9" . previous-buffer)
-     ("M-0" . next-buffer)
-     ("C-c C-d" . pdb-tracking-mode)
-     ;; ("C-k" . vterm--self-insert)
-     ("C-k" . dhnam/vterm-kill-line)
      ("C-_" . vterm-undo)
-     ("C-p" . dhnam/vterm-copy-mode-then-previous-line)
-     ("C-n" . dhnam/vterm-copy-mode-then-next-line)
-     ("M-p" . vterm-send-up)
-     ("M-n" . vterm-send-down)
 
      :map vterm-copy-mode-map
      ;; ("C-c C-k" . vterm-copy-mode-done)
-     ("C-c C-k" . dhnam/vterm-copy-mode-exit)
-     ("RET" . dhnam/vterm-copy-mode-exit)
+     ("C-c C-k" . vterm-dhnam/copy-mode-exit)
+     ("RET" . vterm-dhnam/copy-mode-exit)
+     ("<return>" . vterm-dhnam/copy-mode-exit)
      ("C-a" . dhnam/move-beginning-of-command-line)
      ("C-c C-p" . dhnam/term-previous-prompt)
      ("C-c C-n" . dhnam/term-next-prompt)
      ("M->" . vterm-reset-cursor-point)
-     ([remap self-insert-command] . dhnam/vterm-vterm-copy-mode-exit-then-self-insert)
-     )
+     ("C-y" . vterm-dhnam/copy-mode-exit-then-yank)
+     ([remap self-insert-command] . vterm-dhnam/copy-mode-exit-then-self-insert))
+
+    :hook
+    (vterm-mode . vterm-dhnam-mode)
 
     :init
-    (key-chord-define-global "o3" 'dhnam/vterm-new-instance)
+    (key-chord-define-global "o3" 'vterm-dhnam/new-instance)
 
-    ;; :hook
-    ;; (vterm-copy-mode . disable-read-only-mode)
-
-    (defun dhnam/vterm-new-instance ()
+    (defun vterm-dhnam/new-instance ()
       (interactive)
       (vterm t))
 
-    :config
-    (key-chord-define vterm-mode-map "wj" 'vterm-copy-mode)
-    (key-chord-define vterm-mode-map "sj" 'dhnam/vterm-copy-mode-then-swiper)
-    (key-chord-define vterm-mode-map "fj" 'dhnam/vterm-copy-mode-then-ctrlf)
-
-    (defun dhnam/vterm-insert-tty-fix-template ()
-      ;; fix for vterm when opened via ssh-tramp
-      ;; https://github.com/akermu/emacs-libvterm/issues/569
-      ;; https://unix.stackexchange.com/questions/404173/shell-command-tmux-throws-cant-use-dev-tty-error/512979
-
-      (interactive)
-      (vterm-insert "( exec </dev/tty; exec <&1; )")
-      (vterm-send-left))
-
-    (defun dhnam/vterm-insert-conda-activate-env ()
-      (interactive)
-      (vterm-insert "conda activate "
-                    (completing-read "Environment name: " (pyvenv-virtualenv-list)
-                                     nil t nil 'pyvenv-workon-history nil nil)))
-
-    (defun dhnam/vterm-copy-mode-exit ()
-      (interactive)
-      "Exit `vterm-copy-mode'"
-      (vterm-copy-mode -1))
-
-    (defun dhnam/vterm-kill-line ()
-      (interactive)
-      ;; https://www.emacswiki.org/emacs/CopyingWholeLines
-      (let ((beg (point))
-            (end (line-end-position)))
-        (kill-ring-save beg end))
-      (vterm--self-insert))
-
-    (defun dhnam/vterm-copy-mode-then-previous-line ()
-      (interactive)
-      (vterm-copy-mode 1)
-      (previous-line))
-
-    (defun dhnam/vterm-copy-mode-then-next-line ()
-      (interactive)
-      (vterm-copy-mode 1)
-      (next-line))
-
-    (defun dhnam/vterm-vterm-copy-mode-exit-then-self-insert ()
-      (interactive)
-      (dhnam/vterm-copy-mode-exit)
-      (vterm--self-insert))
-
-    (defun dhnam/vterm-copy-mode-then-swiper ()
-      (interactive)
-      (dhnam/vterm-copy-mode-exit)
-      (swiper-within-region))
-
-    (defun dhnam/vterm-copy-mode-then-ctrlf ()
-      (interactive)
-      (dhnam/vterm-copy-mode-exit)
-      (ctrlf-backward-default))
-
     (comment
-      (defun disable-read-only-mode ()
-        (read-only-mode 0)))))
+      (defun disable-read-only ()
+        (read-only-mode 0)))
+
+    :config
+    (progn
+      ;; interactive functions for vterm-copy-mode
+      (defun vterm-dhnam/copy-mode-exit-then-yank ()
+        (interactive)
+        (vterm-dhnam/copy-mode-exit)
+        (vterm-yank))
+
+      (defun vterm-dhnam/copy-mode-exit-then-self-insert ()
+        (interactive)
+        (vterm-dhnam/copy-mode-exit)
+        (vterm--self-insert)))
+
+    (progn
+      ;; vterm-dhnam-mode
+
+      (defvar vterm-dhnam-mode-map
+        (let ((map (make-sparse-keymap)))
+          (define-key vterm-mode-map (kbd "C-z") 'vterm-send-next-key)
+          (define-key vterm-mode-map (kbd "C-;") 'vterm-send-next-key)
+          (define-key vterm-mode-map (kbd "C-c C-j") 'vterm-copy-mode)
+          (define-key vterm-mode-map (kbd "C-t") 'vterm-dhnam/insert-tty-fix-template)
+          (define-key vterm-mode-map (kbd "C-c c") 'vterm-dhnam/insert-conda-activate-env)
+          (define-key vterm-mode-map (kbd "M-9") 'previous-buffer)
+          (define-key vterm-mode-map (kbd "M-0") 'next-buffer)
+          (define-key vterm-mode-map (kbd "C-c C-d") 'pdb-tracking-mode)
+          (define-key vterm-mode-map (kbd "C-k") 'vterm-dhnam/kill-line)
+          (define-key vterm-mode-map (kbd "C-_") 'vterm-undo)
+          (define-key vterm-mode-map (kbd "C-p") 'vterm-dhnam/copy-mode-then-previous-line)
+          (define-key vterm-mode-map (kbd "C-n") 'vterm-dhnam/copy-mode-then-next-line)
+          (define-key vterm-mode-map (kbd "M-p") 'vterm-send-up)
+          (define-key vterm-mode-map (kbd "M-n") 'vterm-send-down)
+          (define-key vterm-mode-map (kbd "C-c C-p") 'vterm-dhnam/copy-mode-then-previous-prompt)
+          (define-key vterm-mode-map (kbd "C-c C-n") 'vterm-dhnam/copy-mode-then-next-prompt)
+          (define-key vterm-mode-map (kbd "M-<") 'vterm-dhnam/copy-mode-then-beginning-of-buffer)
+
+          ;; key-chords
+          (key-chord-define vterm-mode-map "wj" 'vterm-copy-mode)
+          (key-chord-define vterm-mode-map "w;" 'vterm-send-next-key)
+          (key-chord-define vterm-mode-map "sj" 'vterm-dhnam/copy-mode-then-swiper)
+          (key-chord-define vterm-mode-map "fj" 'vterm-dhnam/copy-mode-then-ctrlf)
+
+          map)
+        "Keymap for `vterm-dhnam-mode'.")
+
+      (progn
+        ;; Interactive functions
+
+        (defun vterm-dhnam/insert-tty-fix-template ()
+          ;; fix for vterm when opened via ssh-tramp
+          ;; https://github.com/akermu/emacs-libvterm/issues/569
+          ;; https://unix.stackexchange.com/questions/404173/shell-command-tmux-throws-cant-use-dev-tty-error/512979
+
+          (interactive)
+          (vterm-insert "( exec </dev/tty; exec <&1; )")
+          (vterm-send-left))
+
+        (defun vterm-dhnam/insert-conda-activate-env ()
+          (interactive)
+          (vterm-insert "conda activate "
+                        (completing-read "Environment name: " (pyvenv-virtualenv-list)
+                                         nil t nil 'pyvenv-workon-history nil nil)))
+
+        (defun vterm-dhnam/copy-mode-exit ()
+          (interactive)
+          "Exit `vterm-copy-mode'"
+          (vterm-copy-mode -1))
+
+        (defun vterm-dhnam/kill-line ()
+          (interactive)
+          ;; https://www.emacswiki.org/emacs/CopyingWholeLines
+          (let ((beg (point))
+                (end (line-end-position)))
+            (kill-ring-save beg end))
+          (vterm--self-insert))
+
+        (defun vterm-dhnam/copy-mode-then-previous-line ()
+          (interactive)
+          (vterm-copy-mode 1)
+          (previous-line))
+
+        (defun vterm-dhnam/copy-mode-then-next-line ()
+          (interactive)
+          (vterm-copy-mode 1)
+          (next-line))
+
+        (defun vterm-dhnam/copy-mode-then-swiper ()
+          (interactive)
+          (vterm-copy-mode 1)
+          (swiper-within-region))
+
+        (defun vterm-dhnam/copy-mode-then-ctrlf ()
+          (interactive)
+          (vterm-copy-mode 1)
+          (ctrlf-backward-default))
+
+        (defun vterm-dhnam/copy-mode-then-previous-prompt ()
+          (interactive)
+          (vterm-copy-mode 1)
+          (dhnam/term-previous-prompt))
+
+        (defun vterm-dhnam/copy-mode-then-next-prompt ()
+          (interactive)
+          (vterm-copy-mode 1)
+          (dhnam/term-next-prompt))
+
+        (defun vterm-dhnam/copy-mode-then-beginning-of-buffer ()
+          (interactive)
+          (vterm-copy-mode 1)
+          (beginning-of-buffer))
+
+        (defun vterm-dhnam/copy-mode-then-delete-backward-char ()
+          (interactive)
+          (vterm-copy-mode 1)
+          (backward-char)))
+
+      (define-minor-mode vterm-dhnam-mode
+        "vterm-mode extension"
+        nil                          ; Initial value, nil for disabled
+        :global nil
+        :lighter " VT-dhnam"
+        :keymap vterm-dhnam-mode-map))))
 
 (progn
   ;; https://gist.github.com/dfeich/50ee86c3d4338dbc878b
