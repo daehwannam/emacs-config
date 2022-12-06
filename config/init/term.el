@@ -347,27 +347,40 @@ The term buffer is named based on `name' "
         (defun vterm-send-ctrl-a-and-meta-d ()
           (interactive)
           (vterm-send-key "a" nil nil t)
-          (vterm-send-meta-d)))
+          (vterm-send-meta-d))
+
+        (defun vterm-dhnam/conditional-copy-mode-exit-then-move-beginning-of-command-line ()
+          (interactive)
+          (let ((cursor-line-begin (save-excursion
+                                     (vterm-reset-cursor-point)
+                                     (dhnam/move-beginning-of-command-line)
+                                     (point))))
+            (if (<= cursor-line-begin (point))
+                (progn
+                  (vterm-copy-mode -1)
+                  (vterm-send-key "a" nil nil t))
+              (dhnam/move-beginning-of-command-line)))))
 
       (defvar vterm-dhnam-mode-map
         (let ((map (make-sparse-keymap)))
-          (define-key map (kbd "C-z")           'vterm-send-next-key)
-          (define-key map (kbd "C-;")           'vterm-send-next-key)
-          (define-key map (kbd "C-c C-j")       'vterm-copy-mode)
-          (define-key map (kbd "C-t")           'vterm-dhnam/insert-tty-fix-template)
-          (define-key map (kbd "C-c c")         'vterm-dhnam/insert-conda-activate-env)
-          (define-key map (kbd "M-9")           'previous-buffer)
-          (define-key map (kbd "M-0")           'next-buffer)
-          (define-key map (kbd "C-c C-d")       'pdb-tracking-mode)
-          (define-key map (kbd "C-k")           'vterm-dhnam/kill-line)
-          (define-key map (kbd "C-_")           'vterm-undo)
-          (define-key map (kbd "M-p")           'vterm-send-up)
-          (define-key map (kbd "M-n")           'vterm-send-down)
+          (define-key map (kbd "C-z")           #'vterm-send-next-key)
+          (define-key map (kbd "C-;")           #'vterm-send-next-key)
+          (define-key map (kbd "C-c C-j")       #'vterm-copy-mode)
+          (define-key map (kbd "C-t")           #'vterm-dhnam/insert-tty-fix-template)
+          (define-key map (kbd "C-c c")         #'vterm-dhnam/insert-conda-activate-env)
+          (define-key map (kbd "M-9")           #'previous-buffer)
+          (define-key map (kbd "M-0")           #'next-buffer)
+          (define-key map (kbd "C-c C-d")       #'pdb-tracking-mode)
+          (define-key map (kbd "C-k")           #'vterm-dhnam/kill-line)
+          (define-key map (kbd "C-_")           #'vterm-undo)
+          (define-key map (kbd "M-p")           #'vterm-send-up)
+          (define-key map (kbd "M-n")           #'vterm-send-down)
           (define-key map (kbd "C-p")           (vterm-dhnam/copy-mode-then 'previous-line))
           (define-key map (kbd "C-n")           (vterm-dhnam/copy-mode-then 'next-line))
           (define-key map (kbd "C-c C-p")       (vterm-dhnam/copy-mode-then 'dhnam/term-previous-prompt))
           (define-key map (kbd "C-c C-n")       (vterm-dhnam/copy-mode-then 'dhnam/term-next-prompt))
           (define-key map (kbd "M-<")           (vterm-dhnam/copy-mode-then 'beginning-of-buffer))
+          (define-key map (kbd "C-l")           #'recenter-top-bottom)
 
           ;; key-chords
           (key-chord-define vterm-mode-map "wj" 'vterm-copy-mode)
@@ -398,9 +411,10 @@ The term buffer is named based on `name' "
         ;; (define-key map (kbd "C-c C-k") #'vterm-copy-mode-done)
         (define-key map (kbd "C-c C-k")                   #'vterm-dhnam/copy-mode-exit)
         (define-key map (kbd "RET")                       #'vterm-dhnam/copy-mode-exit)
-        (define-key map (kbd "C-j")                       #'vterm-dhnam/copy-mode-exit)
         (define-key map (kbd "<return>")                  #'vterm-dhnam/copy-mode-exit)
-        (define-key map (kbd "C-a")                       #'dhnam/move-beginning-of-command-line)
+        (define-key map (kbd "M-j")                       #'vterm-dhnam/copy-mode-exit)
+        ;; (define-key map (kbd "C-a")                       #'dhnam/move-beginning-of-command-line)
+        (define-key map (kbd "C-a")                       #'vterm-dhnam/conditional-copy-mode-exit-then-move-beginning-of-command-line)
         (define-key map (kbd "C-c C-p")                   #'dhnam/term-previous-prompt)
         (define-key map (kbd "C-c C-n")                   #'dhnam/term-next-prompt)
         (define-key map (kbd "M->")                       #'vterm-reset-cursor-point)
@@ -415,9 +429,7 @@ The term buffer is named based on `name' "
         (define-key map (kbd "M-d")                       (vterm-dhnam/copy-mode-exit-then 'vterm-send-ctrl-a-and-meta-d))
 
         ;; key-chords
-        (key-chord-define vterm-mode-map "fj" (vterm-dhnam/copy-mode-then 'ctrlf-backward-default))
-
-        map))))
+        (key-chord-define vterm-mode-map "fj" (vterm-dhnam/copy-mode-then 'ctrlf-backward-default))))))
 
 (progn
   ;; https://gist.github.com/dfeich/50ee86c3d4338dbc878b
