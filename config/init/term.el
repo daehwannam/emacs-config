@@ -256,180 +256,51 @@ The term buffer is named based on `name' "
      ;; ("C-c C-k" . vterm-copy-mode-done)
      )
 
-    :hook
-    (vterm-mode . vterm-dhnam-mode)
-
     :init
-    (key-chord-define-global "o3" 'vterm-dhnam/new-instance)
+    (progn
+      (key-chord-define-global "o3" 'dhnam/vterm-new-instance)
 
-    (defun vterm-dhnam/new-instance ()
-      (interactive)
-      (vterm t))
-
-    (comment
-      (defun disable-read-only ()
-        (read-only-mode 0)))
+      (defun dhnam/vterm-new-instance ()
+        (interactive)
+        (vterm t)))
 
     :config
     (progn
-      ;; vterm-dhnam-mode
-
       (progn
-        ;; Functions
-        (defun vterm-dhnam/copy-mode-then (cmd)
-          (let ((func-symbol (intern (concat "vterm-dhnam/copy-mode-then-" (symbol-name cmd)))))
-            (fset func-symbol
-                  `(lambda
-                     ;; ,(help-function-arglist cmd) ;; arg list
-                     (&rest args)
-                     ,(format "Switch to `vterm-copy-mode' then call `%s'." (symbol-name cmd)) ;; doc string
-                     ,(interactive-form cmd) ;; interactive form
-                     (vterm-copy-mode 1)
-                     (apply #',cmd args)))
-            func-symbol))
+        (require 'vterm-seamless)
+        (add-hook 'vterm-mode-hook 'vtsl/activate))
 
-        (defun vterm-dhnam/copy-mode-exit-then (cmd)
-          (let ((func-symbol (intern (concat "vterm-dhnam/copy-mode-exit-then-" (symbol-name cmd)))))
-            (fset func-symbol
-                  `(lambda
-                     ;; ,(help-function-arglist cmd) ;; arg list
-                     (&rest args)
-                     ,(format "Exit `vterm-copy-mode' then call `%s'." (symbol-name cmd)) ;; doc string
-                     ,(interactive-form cmd) ;; interactive form
-                     (vterm-dhnam/copy-mode-exit)
-                     (apply #',cmd args)))
-            func-symbol))
+      ;; Interactive functions
+      (defun dhnam/vterm-insert-tty-fix-template ()
+        ;; fix for vterm when opened via ssh-tramp
+        ;; https://github.com/akermu/emacs-libvterm/issues/569
+        ;; https://unix.stackexchange.com/questions/404173/shell-command-tmux-throws-cant-use-dev-tty-error/512979
 
-        ;; Interactive functions
-        (defun vterm-dhnam/insert-tty-fix-template ()
-          ;; fix for vterm when opened via ssh-tramp
-          ;; https://github.com/akermu/emacs-libvterm/issues/569
-          ;; https://unix.stackexchange.com/questions/404173/shell-command-tmux-throws-cant-use-dev-tty-error/512979
+        (interactive)
+        (vterm-insert "( exec </dev/tty; exec <&1; )")
+        (vterm-send-left))
 
-          (interactive)
-          (vterm-insert "( exec </dev/tty; exec <&1; )")
-          (vterm-send-left))
+      (defun dhnam/vterm-insert-conda-activate-env ()
+        (interactive)
+        (vterm-insert "conda activate "
+                      (completing-read "Environment name: " (pyvenv-virtualenv-list)
+                                       nil t nil 'pyvenv-workon-history nil nil)))
 
-        (defun vterm-dhnam/insert-conda-activate-env ()
-          (interactive)
-          (vterm-insert "conda activate "
-                        (completing-read "Environment name: " (pyvenv-virtualenv-list)
-                                         nil t nil 'pyvenv-workon-history nil nil)))
-
-        (defun vterm-dhnam/copy-mode-exit ()
-          (interactive)
-          "Exit `vterm-copy-mode'"
-          (vterm-copy-mode -1))
-
-        (defun vterm-dhnam/kill-line ()
-          (interactive)
-          ;; https://www.emacswiki.org/emacs/CopyingWholeLines
-          (let ((beg (point))
-                (end (line-end-position)))
-            (kill-ring-save beg end))
-          (vterm--self-insert))
-
-        (defun vterm-send-meta-d ()
-          "Send `M-d' to the libvterm."
-          (interactive)
-          (vterm-send-key "d" nil t))
-
-        (defun vterm-send-ctrl-backspace ()
-          "Send `C-<backspace>' to the libvterm."
-          (interactive)
-          (vterm-send-key "<backspace>" nil nil t))
-
-        (defun vterm-send-ctrl-a-and-delete ()
-          (interactive)
-          (vterm-send-key "a" nil nil t)
-          (vterm-send-delete))
-
-        (defun vterm-send-ctrl-a-and-meta-d ()
-          (interactive)
-          (vterm-send-key "a" nil nil t)
-          (vterm-send-meta-d))
-
-        (defun vterm-dhnam/conditional-copy-mode-exit-then-move-beginning-of-command-line ()
-          (interactive)
-          (let ((cursor-line-begin (save-excursion
-                                     (vterm-reset-cursor-point)
-                                     (dhnam/move-beginning-of-command-line)
-                                     (point))))
-            (if (<= cursor-line-begin (point))
-                (progn
-                  (vterm-copy-mode -1)
-                  (vterm-send-key "a" nil nil t))
-              (dhnam/move-beginning-of-command-line)))))
-
-      (defvar vterm-dhnam-mode-map
-        (let ((map (make-sparse-keymap)))
-          (define-key map (kbd "C-z")           #'vterm-send-next-key)
-          (define-key map (kbd "C-;")           #'vterm-send-next-key)
-          (define-key map (kbd "C-c C-j")       #'vterm-copy-mode)
-          (define-key map (kbd "C-t")           #'vterm-dhnam/insert-tty-fix-template)
-          (define-key map (kbd "C-c c")         #'vterm-dhnam/insert-conda-activate-env)
-          (define-key map (kbd "M-9")           #'previous-buffer)
-          (define-key map (kbd "M-0")           #'next-buffer)
-          (define-key map (kbd "C-c C-d")       #'pdb-tracking-mode)
-          (define-key map (kbd "C-k")           #'vterm-dhnam/kill-line)
-          (define-key map (kbd "C-_")           #'vterm-undo)
-          (define-key map (kbd "M-p")           #'vterm-send-up)
-          (define-key map (kbd "M-n")           #'vterm-send-down)
-          (define-key map (kbd "C-p")           (vterm-dhnam/copy-mode-then 'previous-line))
-          (define-key map (kbd "C-n")           (vterm-dhnam/copy-mode-then 'next-line))
-          (define-key map (kbd "C-c C-p")       (vterm-dhnam/copy-mode-then 'dhnam/term-previous-prompt))
-          (define-key map (kbd "C-c C-n")       (vterm-dhnam/copy-mode-then 'dhnam/term-next-prompt))
-          (define-key map (kbd "M-<")           (vterm-dhnam/copy-mode-then 'beginning-of-buffer))
-          (define-key map (kbd "C-l")           #'recenter-top-bottom)
-
-          ;; key-chords
-          (key-chord-define vterm-mode-map "wj" 'vterm-copy-mode)
-          (key-chord-define vterm-mode-map "w;" 'vterm-send-next-key)
-          (key-chord-define vterm-mode-map "sj" (vterm-dhnam/copy-mode-then 'swiper-within-region))
-          (key-chord-define vterm-mode-map "fj" (vterm-dhnam/copy-mode-then 'ctrlf-backward-default))
-
-          map)
-        "Keymap for `vterm-dhnam-mode'.")
-
-      (define-minor-mode vterm-dhnam-mode
-        "vterm-mode extension"
-        nil                          ; Initial value, nil for disabled
-        :global nil
-        :lighter " VT-dhnam"
-        :keymap vterm-dhnam-mode-map)
-
-      (progn
-        (defun activate-vterm-dhnam-conditioning-on-copy-mode ()
-          ;; https://emacs.stackexchange.com/a/47092
-          (if vterm-copy-mode
-              (vterm-dhnam-mode 0)
-            (vterm-dhnam-mode 1)))
-
-        (add-hook 'vterm-copy-mode-hook 'activate-vterm-dhnam-conditioning-on-copy-mode))
-
-      (let ((map vterm-copy-mode-map))
-        ;; (define-key map (kbd "C-c C-k") #'vterm-copy-mode-done)
-        (define-key map (kbd "C-c C-k")                   #'vterm-dhnam/copy-mode-exit)
-        (define-key map (kbd "RET")                       #'vterm-dhnam/copy-mode-exit)
-        (define-key map (kbd "<return>")                  #'vterm-dhnam/copy-mode-exit)
-        (define-key map (kbd "M-j")                       #'vterm-dhnam/copy-mode-exit)
-        ;; (define-key map (kbd "C-a")                       #'dhnam/move-beginning-of-command-line)
-        (define-key map (kbd "C-a")                       #'vterm-dhnam/conditional-copy-mode-exit-then-move-beginning-of-command-line)
-        (define-key map (kbd "C-c C-p")                   #'dhnam/term-previous-prompt)
-        (define-key map (kbd "C-c C-n")                   #'dhnam/term-next-prompt)
-        (define-key map (kbd "M->")                       #'vterm-reset-cursor-point)
-        (define-key map [remap self-insert-command]       (vterm-dhnam/copy-mode-exit-then 'vterm--self-insert))
-        (define-key map (kbd "C-y")                       (vterm-dhnam/copy-mode-exit-then 'vterm-yank))
-        (define-key map (kbd "DEL")                       (vterm-dhnam/copy-mode-exit-then 'vterm-send-backspace))
-        (define-key map (kbd "<backspace>")               (vterm-dhnam/copy-mode-exit-then 'vterm-send-backspace))
-        (define-key map (kbd "M-DEL")                     (vterm-dhnam/copy-mode-exit-then 'vterm-send-meta-backspace))
-        (define-key map (kbd "<M-backspace>")             (vterm-dhnam/copy-mode-exit-then 'vterm-send-meta-backspace))
-        (define-key map (kbd "<C-backspace>")             (vterm-dhnam/copy-mode-exit-then 'vterm-send-meta-backspace))
-        (define-key map (kbd "C-d")                       (vterm-dhnam/copy-mode-exit-then 'vterm-send-ctrl-a-and-delete))
-        (define-key map (kbd "M-d")                       (vterm-dhnam/copy-mode-exit-then 'vterm-send-ctrl-a-and-meta-d))
+      (let ((map vterm-seamless-mode-map))
+        (define-key map (kbd "C-z")           #'vterm-send-next-key)
+        (define-key map (kbd "C-;")           #'vterm-send-next-key)
+        (define-key map (kbd "C-c C-j")       #'vterm-copy-mode)
+        (define-key map (kbd "C-t")           #'dhnam/vterm-insert-tty-fix-template)
+        (define-key map (kbd "C-c c")         #'dhnam/vterm-insert-conda-activate-env)
+        (define-key map (kbd "M-9")           #'previous-buffer)
+        (define-key map (kbd "M-0")           #'next-buffer)
+        (define-key map (kbd "C-c C-d")       #'pdb-tracking-mode)
 
         ;; key-chords
-        (key-chord-define vterm-mode-map "fj" (vterm-dhnam/copy-mode-then 'ctrlf-backward-default))))))
+        (key-chord-define vterm-mode-map "wj" 'vterm-copy-mode)
+        (key-chord-define vterm-mode-map "w;" 'vterm-send-next-key)
+        (key-chord-define vterm-mode-map "sj" (vtsl/copy-mode-then 'swiper-within-region))
+        (key-chord-define vterm-mode-map "fj" (vtsl/copy-mode-then 'ctrlf-backward-default))))))
 
 (progn
   ;; https://gist.github.com/dfeich/50ee86c3d4338dbc878b

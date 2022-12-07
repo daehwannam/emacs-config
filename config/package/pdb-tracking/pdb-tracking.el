@@ -1,4 +1,8 @@
 
+(unless (fboundp 'comment)
+  (defmacro comment (&rest args)
+    `nil))
+
 (comment
   (defcustom python-shell-prompt-pdb-regexp "[(<]*[Ii]?[Pp]db[>)]+ "
     "Regular expression matching pdb input prompt of Python shell.
@@ -25,10 +29,6 @@ Line number is expected in the second parenthesized expression."
     :type 'string
     :version "27.1"
     :safe 'stringp))
-
-(unless (fboundp 'comment)
-  (defmacro comment (&rest args)
-    `nil))
 
 (progn
   ;; replace `python-shell-prompt-pdb-regexp' to recognize (Pdb++)
