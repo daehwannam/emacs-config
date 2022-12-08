@@ -294,6 +294,7 @@ The term buffer is named based on `name' "
         (define-key map (kbd "C-c c")         #'dhnam/vterm-insert-conda-activate-env)
         (define-key map (kbd "M-9")           #'previous-buffer)
         (define-key map (kbd "M-0")           #'next-buffer)
+        (define-key map (kbd "M-L")           #'reverse-recenter-top-bottom)
         (define-key map (kbd "C-c C-d")       #'pdb-tracking-mode)
 
         ;; key-chords
