@@ -18,7 +18,11 @@
     ;; unblind some keys
     (mapcar #'global-unset-key (where-is-internal 'make-frame-command))
     (mapcar #'global-unset-key (where-is-internal 'delete-frame))
-    (mapcar #'global-unset-key (where-is-internal 'delete-other-frames))))
+    (mapcar #'global-unset-key (where-is-internal 'delete-other-frames))
+    (mapcar #'global-unset-key (where-is-internal 'other-frame))
+    (mapcar #'global-unset-key (where-is-internal 'other-frame-backwards))
+    (mapcar #'global-unset-key (where-is-internal 'other-frame-repeat))
+    (mapcar #'global-unset-key (where-is-internal 'other-frame-backwards-repeat))))
 
 (progn
   (defun define-key-from-C-c (map key)

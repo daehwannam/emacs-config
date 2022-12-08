@@ -585,6 +585,7 @@ When INITIAL-INPUT is non-nil, use it in the minibuffer during completion."
           (define-key map (kbd "d") 'counsel-find-file-in-downloads)
           (define-key map (kbd "w") 'dhnam/kill-gc)
           (define-key map (kbd "k") 'dhnam/ivy-kill-marked)
+          (define-key map (kbd "s") 'dhnam/switch-to-scratch-buffer)
 
           (defvar dhnam/exwm-extended-emacs-command-prefix-map map
 	        "Keymap for emacs related commands."))
