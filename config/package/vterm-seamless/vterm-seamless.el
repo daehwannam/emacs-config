@@ -55,6 +55,7 @@
   (defun vtsl/copy-mode-exit ()
     (interactive)
     "Exit `vterm-copy-mode'"
+    (push-mark)
     (vterm-copy-mode -1))
 
   (defun vtsl/kill-line ()
@@ -183,9 +184,6 @@
     (define-key map (kbd "<C-backspace>")       (vtsl/copy-mode-exit-then 'vterm-send-meta-backspace))
     (define-key map (kbd "C-d")                 (vtsl/copy-mode-exit-then 'vterm-send-ctrl-a-and-delete))
     (define-key map (kbd "M-d")                 (vtsl/copy-mode-exit-then 'vterm-send-ctrl-a-and-meta-d))
-
-    ;; key-chords
-    (key-chord-define vterm-mode-map "fj" (vtsl/copy-mode-then 'ctrlf-backward-default))
 
     map))
 

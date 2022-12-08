@@ -297,6 +297,8 @@ The term buffer is named based on `name' "
         (define-key map (kbd "M-L")           #'reverse-recenter-top-bottom)
         (define-key map (kbd "C-v")           #'scroll-up-small)
         (define-key map (kbd "M-v")           #'scroll-down-small)
+        (define-key map (kbd "<f7>")          #'pop-to-mark-command)
+        (define-key map (kbd "<f8>")          #'unpop-to-mark-command)
 
         (define-key map (kbd "C-c C-d")       #'pdb-tracking-mode)
 
