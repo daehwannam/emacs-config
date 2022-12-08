@@ -190,3 +190,10 @@
                         (confirm-nonexistent-file-or-buffer)))
   (let ((find-file-visit-truename t))
     (find-file filename wildcards)))
+
+(progn
+  (defun dhnam/switch-to-scratch-buffer ()
+    (interactive)
+    (switch-to-buffer "*scratch*"))
+
+  (key-chord-define-global "s;" 'dhnam/switch-to-scratch-buffer))
