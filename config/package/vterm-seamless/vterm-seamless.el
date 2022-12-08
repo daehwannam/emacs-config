@@ -37,13 +37,17 @@
 
   (defvar vtls/prompt-separator-regex " \\|\n")
 
+
+  (require 'subr-x) ; to import `string-join'
+
   (defun vtsl/get-prompt-regexp (&optional other-regexp-list)
     (string-join (mapcar (lambda (s) (format "\\(%s\\)" s))
                          (append vtls/prompt-regexp-list other-regexp-list))
                  "\\|"))
 
   (defun vtsl/trigger-copy-mode-exit ()
-    (when (= (line-number-at-pos (point)) vtsl/last-cursor-line-num)
+    (when (and vterm-copy-mode
+               (= (line-number-at-pos (point)) vtsl/last-cursor-line-num))
       (vterm-copy-mode 0))))
 
 (progn
@@ -102,7 +106,36 @@
 
   (defun vtsl/next-prompt ()
     (interactive)
-    (vtsl/previous-prompt t)))
+    (vtsl/previous-prompt t))
+
+  (progn
+    (defvar vtsl/original-symbol-by-dabbrev-expand nil)
+    (defvar vtsl/expanded-symbol-by-dabbrev-expand nil)
+
+    (defun vtsl/get-symbol-at-point ()
+      (save-excursion
+        (let* ((bounds (bounds-of-thing-at-point 'symbol))
+               (start (car bounds))
+               (end (cdr bounds))
+               (currently-using-underscores-p (progn (goto-char start)
+                                                     (re-search-forward "_" end t))))
+          (buffer-substring-no-properties start end))))
+
+    (defun vtsl/dabbrev-expand ()
+      (interactive)
+      (unless (eq last-command 'dabbrev-expand)
+        (setq-local vtsl/original-symbol-by-dabbrev-expand (vtsl/get-symbol-at-point)))
+      (let ((buffer-read-only nil))
+        (dabbrev-expand nil))
+      (setq-local vtsl/expanded-symbol-by-dabbrev-expand (vtsl/get-symbol-at-point))
+      (setq last-command 'dabbrev-expand)
+      (add-hook 'pre-command-hook #'vtsl/write-symbol-by-dabbrev-expand 0 t))
+
+    (defun vtsl/write-symbol-by-dabbrev-expand ()
+      (when (not (eq this-command 'vtsl/dabbrev-expand))
+        (vterm-insert (substring vtsl/expanded-symbol-by-dabbrev-expand
+                                      (length vtsl/original-symbol-by-dabbrev-expand)))
+        (remove-hook 'pre-command-hook #'vtsl/write-symbol-by-dabbrev-expand t)))))
 
 (defvar vterm-seamless-mode-map
   (let ((map (make-sparse-keymap)))
@@ -119,6 +152,7 @@
     (define-key map (kbd "M-<")     (vtsl/copy-mode-then 'beginning-of-buffer))
     (define-key map (kbd "C-l")     #'recenter-top-bottom)
     (define-key map (kbd "M-r")     #'move-to-window-line-top-bottom)
+    (define-key map (kbd "M-/")     #'vtsl/dabbrev-expand)
 
     map)
   "Keymap for `vterm-seamless-mode'.")
