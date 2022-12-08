@@ -186,7 +186,6 @@
 (progn
   (defun vtsl/mode-switch ()
     ;; https://emacs.stackexchange.com/a/47092
-    (message "aaaaaaaaaaaaaa")
     (if vterm-copy-mode
         (progn
           (vterm-seamless-mode 0)
