@@ -397,9 +397,12 @@ jarring angry fruit salad look to reduce eye fatigue.")
  '(compilation-message-face  ((t (:underline t))))
  '(compilation-warning ((t (:bold t :foreground "Orange" :weight bold))))
  '(compilation-warning-face ((t (:bold t :foreground "Orange" :weight bold))))
+ ;; '(completions-common-part ((t (:width normal :weight normal
+ ;;                                :slant normal :foreground "WhiteSmoke"
+ ;;    			:background "black" :height 81))))
  '(completions-common-part ((t (:width normal :weight normal
                                 :slant normal :foreground "WhiteSmoke"
-				:background "black" :height 81))))
+    			:background "black"))))
  '(completions-first-difference ((t (:bold t :weight bold))))
 
  '(css-selector ((t (:foreground "LightSteelBlue"))))

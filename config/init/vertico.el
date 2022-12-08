@@ -169,3 +169,8 @@
     ;; Must be in the :init section of use-package such that the mode gets
     ;; enabled right away. Note that this forces loading the package.
     (marginalia-mode)))
+
+(comment
+  ;; Fix for the small font problem
+  ;; https://github.com/minad/vertico/issues/190
+  (set-face-attribute 'completions-common-part nil :height 'unspecified))
