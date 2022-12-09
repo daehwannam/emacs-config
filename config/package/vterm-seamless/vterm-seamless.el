@@ -129,7 +129,6 @@
       (let ((buffer-read-only nil))
         (dabbrev-expand nil))
       (setq-local vtsl/expanded-symbol-by-dabbrev-expand (vtsl/get-symbol-at-point))
-      ;; (setq-local last-command 'dabbrev-expand)
       (add-hook 'pre-command-hook #'vtsl/write-symbol-by-dabbrev-expand 0 t))
 
     (defun vtsl/write-symbol-by-dabbrev-expand ()
