@@ -887,9 +887,6 @@ When INITIAL-INPUT is non-nil, use it in the minibuffer during completion."
                   ([?\M-9] . [C-prior])
                   ([?\M-0] . [C-next])
 
-                  ([?\C-i] . [\q \u])
-                  ([?\M-i] . [\q \U])
-
                   ([?\C-l] . [f6])
                   ([?\M-l] . [?\C-t])
 
@@ -913,6 +910,14 @@ When INITIAL-INPUT is non-nil, use it in the minibuffer during completion."
                   ;; open back/forward history in a new tab
                   ([?\C-\M-9] . [?\M-q?\C-\M-b])
                   ([?\C-\M-0] . [?\M-q?\C-\M-f])
+
+                  ;; copy links
+                  ([?\C-i] . [\q \u])
+                  ([?\M-i] . [\q \U])
+
+                  ;; select/copy text
+                  ([?\M-s] . [?\M-q?s])
+                  ;; ([?\M-e] . [?\M-q?e])
 
                   ;; Tab deletion commands
                   ([?\C-q?\C-/] . [?\M-q?\/])
