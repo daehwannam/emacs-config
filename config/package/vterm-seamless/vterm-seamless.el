@@ -124,18 +124,17 @@
 
     (defun vtsl/dabbrev-expand ()
       (interactive)
-      (unless (eq last-command 'dabbrev-expand)
+      (unless (eq last-command 'vtsl/dabbrev-expand)
         (setq-local vtsl/original-symbol-by-dabbrev-expand (vtsl/get-symbol-at-point)))
       (let ((buffer-read-only nil))
         (dabbrev-expand nil))
       (setq-local vtsl/expanded-symbol-by-dabbrev-expand (vtsl/get-symbol-at-point))
-      (setq last-command 'dabbrev-expand)
       (add-hook 'pre-command-hook #'vtsl/write-symbol-by-dabbrev-expand 0 t))
 
     (defun vtsl/write-symbol-by-dabbrev-expand ()
       (when (not (eq this-command 'vtsl/dabbrev-expand))
         (vterm-insert (substring vtsl/expanded-symbol-by-dabbrev-expand
-                                      (length vtsl/original-symbol-by-dabbrev-expand)))
+                                 (length vtsl/original-symbol-by-dabbrev-expand)))
         (remove-hook 'pre-command-hook #'vtsl/write-symbol-by-dabbrev-expand t)))))
 
 (defvar vterm-seamless-mode-map
