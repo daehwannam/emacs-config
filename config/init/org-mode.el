@@ -13,6 +13,13 @@
 
   (require 'directory-files-recursive)
 
+  (when (package-installed-p 'valign)
+    ;; Fix for table alignment with CJK characters
+    ;;
+    ;; valign-mode
+    ;; https://github.com/casouri/valign
+    (add-hook 'org-mode-hook #'valign-mode))
+
   (progn
     (defun dhnam/org-add-hard-indentation (arg)
       ;; This function can be replaced with `org-indent-region' when `org-indent-mode' is `nil'
