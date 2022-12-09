@@ -151,7 +151,7 @@
     (define-key map (kbd "C-c C-n") (vtsl/copy-mode-then 'vtsl/next-prompt))
     (define-key map (kbd "M-<")     (vtsl/copy-mode-then 'beginning-of-buffer))
     (define-key map (kbd "C-l")     #'recenter-top-bottom)
-    (define-key map (kbd "M-r")     #'move-to-window-line-top-bottom)
+    (define-key map (kbd "M-r")     (vtsl/copy-mode-then 'move-to-window-line-top-bottom))
     (define-key map (kbd "M-/")     #'vtsl/dabbrev-expand)
 
     map)
