@@ -34,8 +34,12 @@ Line number is expected in the second parenthesized expression."
   ;; replace `python-shell-prompt-pdb-regexp' to recognize (Pdb++)
   (defvar pdb-tracking/python-shell-prompt-pdb-regexp "[(<]*[Ii]?[Pp]db\\(\\+\\+\\)?[>)]+ ")
 
-  ;; replace `python-pdbtrack-stacktrace-info-regexp' to recognize sticky mode of Pdb++
-  (defvar pdb-tracking/python-pdbtrack-stacktrace-info-regexp "> \\([^\"(]+\\)(\\([0-9]+\\))\\([?a-zA-Z0-9_<>]*\\)\\(()\\)?"))
+  ;; replace `python-pdbtrack-stacktrace-info-regexp'
+  ;; to recognize of Pdb++'s "sticky" mode and "where" command
+  (defvar pdb-tracking/python-pdbtrack-stacktrace-info-regexp
+    "\\(>\\|\\[[0-9]+\\]\\) \\([^\"(]+\\)(\\([0-9]+\\))\\([?a-zA-Z0-9_<>]*\\)\\(()\\)?")
+
+  (defvar pdb-tracking/file-name-match-idx 2))
 
 (defun pdb-tracking/display-current-line (&optional switching-buffer)
   (interactive)
@@ -48,8 +52,8 @@ Line number is expected in the second parenthesized expression."
       (when (and (looking-at pdb-tracking/python-shell-prompt-pdb-regexp)
                  (re-search-backward pdb-tracking/python-pdbtrack-stacktrace-info-regexp (comment (- (point) 10000)) t))
 
-        (setq file-name (match-string-no-properties 1))
-        (setq line-number (string-to-number (match-string-no-properties 2)))))
+        (setq file-name (match-string-no-properties pdb-tracking/file-name-match-idx))
+        (setq line-number (string-to-number (match-string-no-properties (+ pdb-tracking/file-name-match-idx 1))))))
 
     (when (and file-name line-number (not (string-match "<.*>" file-name)))
       (let* ((original-window (selected-window))
