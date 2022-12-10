@@ -219,7 +219,11 @@ However, if text is unbalanced, signal an error instead."
 
     (progn
       (define-key paredit-mode-map (kbd "C-M-p") 'backward-list)
-      (define-key paredit-mode-map (kbd "C-M-n") 'forward-list)))
+      (define-key paredit-mode-map (kbd "C-M-n") 'forward-list))
+
+    (progn
+      (define-key paredit-mode-map (kbd "C-M-b") 'backward-sexp)
+      (define-key paredit-mode-map (kbd "C-M-f") 'forward-sexp)))
 
   (comment
     (when (fboundp 'highlight-map)

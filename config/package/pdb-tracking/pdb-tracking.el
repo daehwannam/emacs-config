@@ -34,6 +34,8 @@ Line number is expected in the second parenthesized expression."
   ;; replace `python-shell-prompt-pdb-regexp' to recognize (Pdb++)
   (defvar pdb-tracking/python-shell-prompt-pdb-regexp "[(<]*[Ii]?[Pp]db\\(\\+\\+\\)?[>)]+ ")
 
+  (defvar pdb-tracking/check-python-shell-prompt-pdb-regexp nil)
+
   ;; replace `python-pdbtrack-stacktrace-info-regexp'
   ;; to recognize of Pdb++'s "sticky" mode and "where" command
   (defvar pdb-tracking/python-pdbtrack-stacktrace-info-regexp
@@ -49,8 +51,10 @@ Line number is expected in the second parenthesized expression."
         ;; Use the below code instead of `move-beginning-of-line',
         ;; whose action is different in `shell-mode'
         (skip-chars-backward "^\n"))
-      (when (and (looking-at pdb-tracking/python-shell-prompt-pdb-regexp)
-                 (re-search-backward pdb-tracking/python-pdbtrack-stacktrace-info-regexp (comment (- (point) 10000)) t))
+      (when (and (or (not pdb-tracking/check-python-shell-prompt-pdb-regexp)
+                     (looking-at pdb-tracking/python-shell-prompt-pdb-regexp))
+                 (re-search-backward pdb-tracking/python-pdbtrack-stacktrace-info-regexp
+                                     (comment (- (point) 10000)) t))
 
         (setq file-name (match-string-no-properties pdb-tracking/file-name-match-idx))
         (setq line-number (string-to-number (match-string-no-properties (+ pdb-tracking/file-name-match-idx 1))))))

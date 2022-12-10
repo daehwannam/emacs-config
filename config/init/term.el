@@ -306,7 +306,9 @@ The term buffer is named based on `name' "
         (key-chord-define vterm-mode-map "wj" 'vterm-copy-mode)
         (key-chord-define vterm-mode-map "w;" 'vterm-send-next-key)
         (key-chord-define vterm-mode-map "sj" (vtsl/copy-mode-then 'swiper-within-region))
-        (key-chord-define vterm-mode-map "fj" (vtsl/copy-mode-then 'ctrlf-backward-default))))))
+        (key-chord-define vterm-mode-map "fj" (vtsl/copy-mode-then 'ctrlf-backward-default)))
+
+      (setq pdb-tracking/check-python-shell-prompt-pdb-regexp nil))))
 
 (progn
   ;; https://gist.github.com/dfeich/50ee86c3d4338dbc878b
