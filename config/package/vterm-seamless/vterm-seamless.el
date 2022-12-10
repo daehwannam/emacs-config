@@ -86,9 +86,25 @@
     (vterm-send-key "a" nil nil t)
     (vterm-send-meta-d))
 
+  (defun vtsl/beginning-of-command-line ()
+    (interactive)
+    (let* ((line-begin
+            (save-excursion (vterm-beginning-of-line) (point)))
+           (cmd-begin
+            (save-excursion
+              (save-restriction
+                (narrow-to-region line-begin (point))
+                (if (re-search-backward (vtsl/get-prompt-regexp) nil t)
+                    (progn
+                      (unless (re-search-forward (concat "\\(" (vtsl/get-prompt-regexp) "\\)" " ") nil t)
+                        (re-search-forward (vtsl/get-prompt-regexp) nil t))
+                      (point))
+                  nil)))))
+      (goto-char (or cmd-begin line-begin))))
+
   (defun vtsl/previous-prompt (&optional forward)
     (interactive)
-    (let* ((unified-prompt-regexp (vtsl/get-prompt-regexp))
+    (let* (
            (original-point (point))
            (new-point
             (save-excursion
@@ -171,6 +187,7 @@
     (define-key map (kbd "RET")                 #'vtsl/copy-mode-exit)
     (define-key map (kbd "<return>")            #'vtsl/copy-mode-exit)
     (define-key map (kbd "M-j")                 #'vtsl/copy-mode-exit)
+    (define-key map (kbd "C-a")                 #'vtsl/beginning-of-command-line)
     (define-key map (kbd "C-c C-p")             #'vtsl/previous-prompt)
     (define-key map (kbd "C-c C-n")             #'vtsl/next-prompt)
     (define-key map (kbd "M->")                 #'vterm-reset-cursor-point)
