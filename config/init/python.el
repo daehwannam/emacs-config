@@ -494,9 +494,7 @@ Similarly for Soar, Scheme, etc."
 
   (dhnam/enable-pdbtrace-shell-mode))
 
-(require 'pdb-tracking)
 
- 
 (defun load-commands-for-pdb-with-hy ()
   (interactive)
   (local-set-key (kbd "M-j") #'comint-send-input-for-hy))

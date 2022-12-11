@@ -101,6 +101,12 @@ Line number is expected in the second parenthesized expression."
         (remove-hook 'post-command-hook #'pdb-tracking/trigger)
         (message "Automatic pdb tracking is disabled")))))
 
+(defun pdb-tracking/search-backward-pdbpp-arrow ()
+  (interactive)
+  (re-search-backward "->")
+  (forward-word)
+  (backward-word))
+
 (defvar pdb-tracking-mode-map
   (let ((map (make-sparse-keymap)))
     (define-key map (kbd "C-o") 'pdb-tracking/go-to-current-line)
