@@ -66,30 +66,44 @@
       (kill-ring-save beg end))
     (vterm--self-insert))
 
-  (defun vterm-send-meta-d ()
+  (defun vtsl/end-of-buffer ()
+    (interactive)
+    (push-mark)
+    (goto-char
+     (save-excursion
+       (vterm-reset-cursor-point)
+       (previous-line)
+       (move-end-of-line 1)
+       (point))))
+
+  (defun vtsl/vterm-send-meta-d ()
     "Send `M-d' to the libvterm."
     (interactive)
     (vterm-send-key "d" nil t))
 
-  (defun vterm-send-ctrl-backspace ()
+  (defun vtsl/vterm-send-ctrl-backspace ()
     "Send `C-<backspace>' to the libvterm."
     (interactive)
     (vterm-send-key "<backspace>" nil nil t))
 
-  (defun vterm-send-ctrl-a-and-delete ()
+  (defun vtsl/vterm-send-ctrl-a-and-delete ()
     (interactive)
     (vterm-send-key "a" nil nil t)
     (vterm-send-delete))
 
-  (defun vterm-send-ctrl-a-and-meta-d ()
+  (defun vtsl/vterm-send-ctrl-a-and-meta-d ()
     (interactive)
     (vterm-send-key "a" nil nil t)
-    (vterm-send-meta-d))
+    (vtsl/vterm-send-meta-d))
+
+  (defun vtsl/beginning-of-line ()
+    (interactive)
+    (goto-char (vterm--get-beginning-of-line)))
 
   (defun vtsl/beginning-of-command-line ()
     (interactive)
     (let* ((line-begin
-            (save-excursion (vterm-beginning-of-line) (point)))
+            (save-excursion (vtsl/beginning-of-line) (point)))
            (cmd-begin
             (save-excursion
               (save-restriction
@@ -182,15 +196,16 @@
 
 (defvar vterm-seamless-copy-mode-map
   (let ((map (make-sparse-keymap)))
-    ;; (define-key map (kbd "C-c C-k") #'vterm-copy-mode-done)
+    (comment (define-key map (kbd "C-c C-k")    #'vterm-copy-mode-done))
     (define-key map (kbd "C-c C-k")             #'vtsl/copy-mode-exit)
     (define-key map (kbd "RET")                 #'vtsl/copy-mode-exit)
     (define-key map (kbd "<return>")            #'vtsl/copy-mode-exit)
     (define-key map (kbd "M-j")                 #'vtsl/copy-mode-exit)
+    (define-key map (kbd "M->")                 #'vtsl/copy-mode-exit)
+    (comment (define-key map (kbd "M->")        #'vtsl/end-of-buffer))
     (define-key map (kbd "C-a")                 #'vtsl/beginning-of-command-line)
     (define-key map (kbd "C-c C-p")             #'vtsl/previous-prompt)
     (define-key map (kbd "C-c C-n")             #'vtsl/next-prompt)
-    (define-key map (kbd "M->")                 #'vterm-reset-cursor-point)
     (define-key map [remap self-insert-command] (vtsl/copy-mode-exit-then 'vterm--self-insert))
     (define-key map (kbd "C-y")                 (vtsl/copy-mode-exit-then 'vterm-yank))
     (define-key map (kbd "DEL")                 (vtsl/copy-mode-exit-then 'vterm-send-backspace))
@@ -198,8 +213,8 @@
     (define-key map (kbd "M-DEL")               (vtsl/copy-mode-exit-then 'vterm-send-meta-backspace))
     (define-key map (kbd "<M-backspace>")       (vtsl/copy-mode-exit-then 'vterm-send-meta-backspace))
     (define-key map (kbd "<C-backspace>")       (vtsl/copy-mode-exit-then 'vterm-send-meta-backspace))
-    (define-key map (kbd "C-d")                 (vtsl/copy-mode-exit-then 'vterm-send-ctrl-a-and-delete))
-    (define-key map (kbd "M-d")                 (vtsl/copy-mode-exit-then 'vterm-send-ctrl-a-and-meta-d))
+    (define-key map (kbd "C-d")                 (vtsl/copy-mode-exit-then 'vtsl/vterm-send-ctrl-a-and-delete))
+    (define-key map (kbd "M-d")                 (vtsl/copy-mode-exit-then 'vtsl/vterm-send-ctrl-a-and-meta-d))
 
     map))
 

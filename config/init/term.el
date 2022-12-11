@@ -286,6 +286,21 @@ The term buffer is named based on `name' "
                       (completing-read "Environment name: " (pyvenv-virtualenv-list)
                                        nil t nil 'pyvenv-workon-history nil nil)))
 
+      (defun vtsl/vterm-send-ctrl-r ()
+        "Send `C-r' to the libvterm."
+        (interactive)
+        (vterm-send-key "r" nil nil t))
+
+      (defun vtsl/vterm-send-ctrl-s ()
+        "Send `C-s' to the libvterm."
+        (interactive)
+        (vterm-send-key "s" nil nil t))
+
+      (defun vtsl/vterm-send-ctrl-c ()
+        "Send `C-c' to the libvterm."
+        (interactive)
+        (vterm-send-key "c" nil nil t))
+
       (let ((map vterm-seamless-mode-map))
         (define-key map (kbd "C-z")           #'vterm-send-next-key)
         (define-key map (kbd "C-;")           #'vterm-send-next-key)
@@ -299,6 +314,11 @@ The term buffer is named based on `name' "
         (define-key map (kbd "M-v")           #'scroll-down-small)
         (define-key map (kbd "<f7>")          #'pop-to-mark-command)
         (define-key map (kbd "<f8>")          #'unpop-to-mark-command)
+        (define-key map (kbd "C-r")           (vtsl/copy-mode-then 'isearch-backward))
+        (define-key map (kbd "C-s")           (vtsl/copy-mode-then 'isearch-forward))
+        (define-key map (kbd "M-P")           #'vtsl/vterm-send-ctrl-r)
+        (define-key map (kbd "M-N")           #'vtsl/vterm-send-ctrl-s)
+        (define-key map (kbd "C-g")           #'vtsl/vterm-send-ctrl-c)
 
         (define-key map (kbd "C-c C-d")       #'pdb-tracking-mode)
 
@@ -308,7 +328,20 @@ The term buffer is named based on `name' "
         (key-chord-define vterm-mode-map "sj" (vtsl/copy-mode-then 'swiper-within-region))
         (key-chord-define vterm-mode-map "fj" (vtsl/copy-mode-then 'ctrlf-backward-default)))
 
-      (setq pdb-tracking/check-python-shell-prompt-pdb-regexp nil))))
+
+      (setq pdb-tracking/check-python-shell-prompt-pdb-regexp nil)
+
+      (progn
+        (require 'pdb-tracking)
+
+        (key-chord-define pdb-tracking-mode-map "r;" 'pdb-tracking/search-backward-pdbpp-arrow)
+
+        (defun pdb-tracking/search-backward-pdbpp-arrow-advice-for-vterm (orig-fun &rest args)
+          (vterm-copy-mode)
+          (apply orig-fun args))
+
+        (advice-add 'pdb-tracking/search-backward-pdbpp-arrow
+                    :around 'pdb-tracking/search-backward-pdbpp-arrow-advice-for-vterm)))))
 
 (progn
   ;; https://gist.github.com/dfeich/50ee86c3d4338dbc878b
