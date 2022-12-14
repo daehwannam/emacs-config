@@ -17,7 +17,7 @@
   ;; archived packages
   (add-to-load-path-recursively "~/.emacs.d/config/package/")
 
-  ;; some functions used to initialized emacs
+  ;; some functions used to initialize emacs
   (add-to-load-path-recursively "~/.emacs.d/config/script/")
 
   ;; non-archived packages
@@ -29,7 +29,7 @@
   (load-directory "~/.emacs.d/base/utility"))
 
 (progn
-  ;; load my-machine-config-setting.el
+  ;; load machine-config-setting.el
   (load "~/.emacs.d/config/machine-config.el"))
 
 (progn

@@ -36,6 +36,8 @@ Line number is expected in the second parenthesized expression."
 
   (defvar pdb-tracking/check-python-shell-prompt-pdb-regexp nil)
 
+  (defvar pdb-tracking/search-from-end-of-the-current-line t)
+
   ;; replace `python-pdbtrack-stacktrace-info-regexp'
   ;; to recognize of Pdb++'s "sticky" mode and "where" command
   (defvar pdb-tracking/python-pdbtrack-stacktrace-info-regexp
@@ -47,14 +49,18 @@ Line number is expected in the second parenthesized expression."
   (interactive)
   (let (file-name line-number)
     (save-excursion
-      (progn
-        ;; Use the below code instead of `move-beginning-of-line',
-        ;; whose action is different in `shell-mode'
-        (skip-chars-backward "^\n"))
       (when (and (or (not pdb-tracking/check-python-shell-prompt-pdb-regexp)
-                     (looking-at pdb-tracking/python-shell-prompt-pdb-regexp))
-                 (re-search-backward pdb-tracking/python-pdbtrack-stacktrace-info-regexp
-                                     (comment (- (point) 10000)) t))
+                     (save-excursion
+                       (progn
+                         ;; Use the below code instead of `move-beginning-of-line',
+                         ;; whose action is different in `shell-mode'
+                         (skip-chars-backward "^\n")
+                         (looking-at pdb-tracking/python-shell-prompt-pdb-regexp))))
+                 (save-excursion
+                   (when pdb-tracking/search-from-end-of-the-current-line
+                     (move-end-of-line 1))
+                   (re-search-backward pdb-tracking/python-pdbtrack-stacktrace-info-regexp
+                                       (comment (- (point) 10000)) t)))
 
         (setq file-name (match-string-no-properties pdb-tracking/file-name-match-idx))
         (setq line-number (string-to-number (match-string-no-properties (+ pdb-tracking/file-name-match-idx 1))))))

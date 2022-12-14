@@ -280,11 +280,10 @@ The term buffer is named based on `name' "
         (vterm-insert "( exec </dev/tty; exec <&1; )")
         (vterm-send-left))
 
-      (defun dhnam/vterm-insert-conda-activate-env ()
-        (interactive)
-        (vterm-insert "conda activate "
-                      (completing-read "Environment name: " (pyvenv-virtualenv-list)
-                                       nil t nil 'pyvenv-workon-history nil nil)))
+      (defun dhnam/vterm-send-conda-activate-env (env-name)
+        (interactive (list (dhnam/get-conda-activate-env)))
+        (vterm-insert "conda activate " env-name)
+        (vterm-send-return))
 
       (defun vtsl/vterm-send-ctrl-r ()
         "Send `C-r' to the libvterm."
@@ -306,7 +305,7 @@ The term buffer is named based on `name' "
         (define-key map (kbd "C-;")           #'vterm-send-next-key)
         (define-key map (kbd "C-c C-j")       #'vterm-copy-mode)
         (define-key map (kbd "C-t")           #'dhnam/vterm-insert-tty-fix-template)
-        (define-key map (kbd "C-c c")         #'dhnam/vterm-insert-conda-activate-env)
+        (define-key map (kbd "C-c c")         #'dhnam/vterm-send-conda-activate-env)
         (define-key map (kbd "M-9")           #'previous-buffer)
         (define-key map (kbd "M-0")           #'next-buffer)
         (define-key map (kbd "M-L")           #'reverse-recenter-top-bottom)
@@ -316,6 +315,8 @@ The term buffer is named based on `name' "
         (define-key map (kbd "<f8>")          #'unpop-to-mark-command)
         (define-key map (kbd "C-r")           (vtsl/copy-mode-then 'isearch-backward))
         (define-key map (kbd "C-s")           (vtsl/copy-mode-then 'isearch-forward))
+        ;; (define-key map (kbd "M-r")           #'vtsl/vterm-send-ctrl-r)
+        ;; (define-key map (kbd "M-s")           #'vtsl/vterm-send-ctrl-s)
         (define-key map (kbd "M-P")           #'vtsl/vterm-send-ctrl-r)
         (define-key map (kbd "M-N")           #'vtsl/vterm-send-ctrl-s)
         (define-key map (kbd "C-g")           #'vtsl/vterm-send-ctrl-c)
@@ -374,11 +375,24 @@ the value of `default-directory'. PATH may be a tramp remote path."
   (key-chord-define-global "o4" 'dhnam/gui-terminal))
 
 (progn
-  (defun insert-conda-activate-env ()
-    (interactive)
-    (insert "conda activate "
-            (completing-read "Environment name: " (pyvenv-virtualenv-list)
-                             nil t nil 'pyvenv-workon-history nil nil)))
+  (defun dhnam/get-conda-activate-env ()
+    (completing-read "Environment name: " (pyvenv-virtualenv-list)
+                     nil t nil 'pyvenv-workon-history nil nil))
 
-  (define-key shell-mode-map (kbd "C-c c") 'insert-conda-activate-env)
-  (define-key term-mode-map (kbd "C-c c") 'insert-conda-activate-env))
+  (defun dhnam/insert-conda-activate-env (env-name)
+    (interactive (list (dhnam/get-conda-activate-env)))
+    (insert "conda activate " env-name))
+
+  (defun dhnam/shell-send-conda-activate-env (env-name)
+    (interactive (list (dhnam/get-conda-activate-env)))
+    (insert "conda activate " env-name)
+    (comint-send-input))
+
+  (defun dhnam/term-send-conda-activate-env (env-name)
+    (interactive (list (dhnam/get-conda-activate-env)))
+    (insert "conda activate " env-name)
+    (term-send-input))
+
+
+  (define-key shell-mode-map (kbd "C-c c") 'dhnam/shell-send-conda-activate-env)
+  (define-key term-mode-map (kbd "C-c c") 'dhnam/term-send-conda-activate-env))
