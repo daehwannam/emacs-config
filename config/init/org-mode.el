@@ -209,7 +209,14 @@
 	    (require 'org-tempo)
 	    ;; org-tempo
 	    ;; "<s + TAB" --> code block
-	    ))
+
+        (progn
+          ;; Code block template: <[code] + TAB
+          ;; e.g. <S + TAB
+          ;;      <py + TAB
+          (add-to-list 'org-structure-template-alist '("S" . "src <language> :results output drawer"))
+          (add-to-list 'org-structure-template-alist '("py" . "src python"))
+          (add-to-list 'org-structure-template-alist '("Py" . "src python :results output drawer")))))
 
     (comment
       (unless dhnam/org-hard-indentation-enabled

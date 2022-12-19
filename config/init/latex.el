@@ -8,8 +8,9 @@
 (if (boundp 'latex-preview-pane-enable)
     (latex-preview-pane-enable))
 
-;; https://tex.stackexchange.com/a/967
-(add-hook 'LaTeX-mode-hook #'turn-on-flyspell)
+(progn
+  ;; https://tex.stackexchange.com/a/967
+  (add-hook 'LaTeX-mode-hook #'turn-on-flyspell))
 
 (comment
   ;; Ignore crossref
@@ -64,135 +65,139 @@
      (local-set-key (kbd "M-p") 'dhnam/pdf-view-previous-page-command-in-other-window)
      (local-set-key (kbd "M-n") 'dhnam/pdf-view-next-page-command-in-other-window))))
 
-
 (when (package-installed-p 'pdf-tools)
-  (progn
-    ;; install pdf-tools if didin't yet
-    (pdf-tools-install))
+  (defvar dhnam/pdf-tools-initialized nil)
+  (defun dhnam/initialize-pdf-tools ()
+    (unless dhnam/pdf-tools-initialized
+      (progn
+        ;; install pdf-tools if didin't yet
+        (pdf-tools-install))
 
-  (custom-set-variables
-   ;; Fix for the following error:
-   ;; ---------------------------------------------------------------------------------
-   ;; Warning (pdf-view): These modes are incompatible with `pdf-view-mode',
-   ;; 	please deactivate them (or customize pdf-view-incompatible-modes): linum-mode
-   ;; ---------------------------------------------------------------------------------
+      (custom-set-variables
+       ;; Fix for the following error:
+       ;; ---------------------------------------------------------------------------------
+       ;; Warning (pdf-view): These modes are incompatible with `pdf-view-mode',
+       ;; 	please deactivate them (or customize pdf-view-incompatible-modes): linum-mode
+       ;; ---------------------------------------------------------------------------------
 
-   '(pdf-view-incompatible-modes
-     '(linum-relative-mode helm-linum-relative-mode nlinum-mode nlinum-hl-mode nlinum-relative-mode yalinum-mode)))
+       '(pdf-view-incompatible-modes
+         '(linum-relative-mode helm-linum-relative-mode nlinum-mode nlinum-hl-mode nlinum-relative-mode yalinum-mode)))
 
-  (comment
-    ;; continuous scrolling
-    ;; https://github.com/politza/pdf-tools/issues/27#issuecomment-927129868
-    (assert (package-installed-p 'quelpa))
-    (quelpa '(pdf-continuous-scroll-mode
-              :fetcher github
-              :repo "dalanicolai/pdf-continuous-scroll-mode.el"))
-    (add-hook 'pdf-view-mode-hook 'pdf-continuous-scroll-mode))
+      (comment
+        ;; continuous scrolling
+        ;; https://github.com/politza/pdf-tools/issues/27#issuecomment-927129868
+        (assert (package-installed-p 'quelpa))
+        (quelpa '(pdf-continuous-scroll-mode
+                  :fetcher github
+                  :repo "dalanicolai/pdf-continuous-scroll-mode.el"))
+        (add-hook 'pdf-view-mode-hook 'pdf-continuous-scroll-mode))
 
-  (setq pdf-view-resize-factor 1.1)
+      (setq pdf-view-resize-factor 1.1)
 
-  (define-key pdf-view-mode-map "D" 'doc-view-fit-window-to-page)
+      (define-key pdf-view-mode-map "D" 'doc-view-fit-window-to-page)
 
-  (when (require 'buffer-move nil t)
+      (when (require 'buffer-move nil t)
 
-    (defun dhnam/pdf-view-previous-page-in-multiple-columns-command (n)
-      (interactive "p")
-      (dhnam/pdf-view-next-page-in-multiple-columns-command (- n)))
+        (defun dhnam/pdf-view-previous-page-in-multiple-columns-command (n)
+          (interactive "p")
+          (dhnam/pdf-view-next-page-in-multiple-columns-command (- n)))
 
-    (comment
-      (defun dhnam/pdf-view-next-page-in-multiple-columns-command (n)
-        (interactive "p")
+        (comment
+          (defun dhnam/pdf-view-next-page-in-multiple-columns-command (n)
+            (interactive "p")
 
-        (let ((window (selected-window))
-              (sorted-same-buffer-windows nil))
-          (dotimes (n (length (window-list)))
-            (when (eq (current-buffer) (window-buffer window))
-              (push window sorted-same-buffer-windows))
-            (setq window (next-window window)))
+            (let ((window (selected-window))
+                  (sorted-same-buffer-windows nil))
+              (dotimes (n (length (window-list)))
+                (when (eq (current-buffer) (window-buffer window))
+                  (push window sorted-same-buffer-windows))
+                (setq window (next-window window)))
 
-          (let ((current-page (pdf-view-current-page (selected-window))))
-            (mapcar (lambda (window)
-                      (let ((offset (- (length (member window sorted-same-buffer-windows))
-                                       (length (member (selected-window) sorted-same-buffer-windows))
-                                       )))
-                        (pdf-view-goto-page (+ offset current-page n) window)))
-                    sorted-same-buffer-windows)))))
+              (let ((current-page (pdf-view-current-page (selected-window))))
+                (mapcar (lambda (window)
+                          (let ((offset (- (length (member window sorted-same-buffer-windows))
+                                           (length (member (selected-window) sorted-same-buffer-windows))
+                                           )))
+                            (pdf-view-goto-page (+ offset current-page n) window)))
+                        sorted-same-buffer-windows)))))
 
-    (defun dhnam/pdf-view-next-page-in-multiple-columns-command (n &optional non-overlapping)
-      (interactive "p")
+        (defun dhnam/pdf-view-next-page-in-multiple-columns-command (n &optional non-overlapping)
+          (interactive "p")
 
-      (let ((found nil)
-            (leftmost-window (selected-window)))
-        (while (not found)
-          (let ((new-window (windmove-find-other-window 'left 1 leftmost-window)))
-            (if new-window
-                (setq leftmost-window new-window)
-              (setq found t))))
+          (let ((found nil)
+                (leftmost-window (selected-window)))
+            (while (not found)
+              (let ((new-window (windmove-find-other-window 'left 1 leftmost-window)))
+                (if new-window
+                    (setq leftmost-window new-window)
+                  (setq found t))))
 
-        (let ((window leftmost-window)
-              (sorted-same-buffer-windows nil))
-          (dotimes (i (length (window-list)))  ; right (newly created) windows are first in window-list.
-            (when (eq (current-buffer) (window-buffer window))
-              (push window sorted-same-buffer-windows))
-            (setq window (next-window window)))
+            (let ((window leftmost-window)
+                  (sorted-same-buffer-windows nil))
+              (dotimes (i (length (window-list))) ; right (newly created) windows are first in window-list.
+                (when (eq (current-buffer) (window-buffer window))
+                  (push window sorted-same-buffer-windows))
+                (setq window (next-window window)))
 
-          (let ((current-page (pdf-view-current-page (selected-window))))
-            (mapcar (lambda (window)
-                      (let ((offset (- (length (member window sorted-same-buffer-windows))
-                                       (length (member (selected-window) sorted-same-buffer-windows))
-                                       )))
-                        (pdf-view-goto-page (+ offset current-page
-                                               (if non-overlapping
-                                                   (* n (length sorted-same-buffer-windows))
-                                                 n))
-                                            window)))
-                    sorted-same-buffer-windows)))))
+              (let ((current-page (pdf-view-current-page (selected-window))))
+                (mapcar (lambda (window)
+                          (let ((offset (- (length (member window sorted-same-buffer-windows))
+                                           (length (member (selected-window) sorted-same-buffer-windows))
+                                           )))
+                            (pdf-view-goto-page (+ offset current-page
+                                                   (if non-overlapping
+                                                       (* n (length sorted-same-buffer-windows))
+                                                     n))
+                                                window)))
+                        sorted-same-buffer-windows)))))
 
-    (defun dhnam/pdf-view-previous-non-overlapping-page-in-multiple-columns-command (n)
-      (interactive "p")
-      (dhnam/pdf-view-next-non-overlapping-page-in-multiple-columns-command (- n)))
+        (defun dhnam/pdf-view-previous-non-overlapping-page-in-multiple-columns-command (n)
+          (interactive "p")
+          (dhnam/pdf-view-next-non-overlapping-page-in-multiple-columns-command (- n)))
 
-    (defun dhnam/pdf-view-next-non-overlapping-page-in-multiple-columns-command (n)
-      (interactive "p")
-      (dhnam/pdf-view-next-page-in-multiple-columns-command n t))
+        (defun dhnam/pdf-view-next-non-overlapping-page-in-multiple-columns-command (n)
+          (interactive "p")
+          (dhnam/pdf-view-next-page-in-multiple-columns-command n t))
 
 
-    (progn
-      ;; (define-key pdf-view-mode-map (kbd "<prior>") 'dhnam/pdf-view-previous-page-in-multiple-columns-command)
-      ;; (define-key pdf-view-mode-map (kbd "<next>") 'dhnam/pdf-view-next-page-in-multiple-columns-command)
-      (define-key pdf-view-mode-map (kbd "<up>") 'dhnam/pdf-view-previous-non-overlapping-page-in-multiple-columns-command)
-      (define-key pdf-view-mode-map (kbd "<down>") 'dhnam/pdf-view-next-non-overlapping-page-in-multiple-columns-command)
-      (define-key pdf-view-mode-map (kbd "<left>") 'dhnam/pdf-view-previous-page-in-multiple-columns-command)
-      (define-key pdf-view-mode-map (kbd "<right>") 'dhnam/pdf-view-next-page-in-multiple-columns-command)
+        (progn
+          ;; (define-key pdf-view-mode-map (kbd "<prior>") 'dhnam/pdf-view-previous-page-in-multiple-columns-command)
+          ;; (define-key pdf-view-mode-map (kbd "<next>") 'dhnam/pdf-view-next-page-in-multiple-columns-command)
+          (define-key pdf-view-mode-map (kbd "<up>") 'dhnam/pdf-view-previous-non-overlapping-page-in-multiple-columns-command)
+          (define-key pdf-view-mode-map (kbd "<down>") 'dhnam/pdf-view-next-non-overlapping-page-in-multiple-columns-command)
+          (define-key pdf-view-mode-map (kbd "<left>") 'dhnam/pdf-view-previous-page-in-multiple-columns-command)
+          (define-key pdf-view-mode-map (kbd "<right>") 'dhnam/pdf-view-next-page-in-multiple-columns-command)
 
-      (define-key pdf-view-mode-map (kbd "M-p") 'dhnam/pdf-view-previous-non-overlapping-page-in-multiple-columns-command)
-      (define-key pdf-view-mode-map (kbd "M-n") 'dhnam/pdf-view-next-non-overlapping-page-in-multiple-columns-command)
-      (define-key pdf-view-mode-map (kbd "M-b") 'dhnam/pdf-view-previous-page-in-multiple-columns-command)
-      (define-key pdf-view-mode-map (kbd "M-f") 'dhnam/pdf-view-next-page-in-multiple-columns-command)))
+          (define-key pdf-view-mode-map (kbd "M-p") 'dhnam/pdf-view-previous-non-overlapping-page-in-multiple-columns-command)
+          (define-key pdf-view-mode-map (kbd "M-n") 'dhnam/pdf-view-next-non-overlapping-page-in-multiple-columns-command)
+          (define-key pdf-view-mode-map (kbd "M-b") 'dhnam/pdf-view-previous-page-in-multiple-columns-command)
+          (define-key pdf-view-mode-map (kbd "M-f") 'dhnam/pdf-view-next-page-in-multiple-columns-command)))
 
-  (progn
-    (defun pdffgrep-with-current-file (command-args)
-      "This function is modified from `pdfgrep'. 
+      (progn
+        (defun pdffgrep-with-current-file (command-args)
+          "This function is modified from `pdfgrep'. 
 Run pdfgrep with user-specified COMMAND-ARGS, collect output in a buffer.
 You can use \\[next-error], or RET in the `pdfgrep-buffer-name'
 buffer, to go to the lines where PDFGrep found matches.  To kill
 the PDFGrep job before it finishes, type \\[kill-compilation]."
-      (interactive (list (read-shell-command "Run pdfgrep (like this): "
-                                             (let ((default-command
-                                                     (concat (pdfgrep-default-command) "'"))
-                                                   (appended-arg-str
-                                                    (concat "' " (dhnam/get-current-file-path))))
-					                           (cons (concat default-command appended-arg-str)
-                                                     (1+ (length default-command))))
-					                         'pdfgrep-history)))
-      (unless pdfgrep-mode
-        (error "PDFGrep is not enabled, run `pdfgrep-mode' first."))
-      (unless (executable-find "pdfgrep")
-        (error "The 'pdfgrep' command not available on your system."))
-      (compilation-start command-args 'grep-mode
-		                 (lambda (_x) pdfgrep-buffer-name)))
+          (interactive (list (read-shell-command "Run pdfgrep (like this): "
+                                                 (let ((default-command
+                                                         (concat (pdfgrep-default-command) "'"))
+                                                       (appended-arg-str
+                                                        (concat "' " (dhnam/get-current-file-path))))
+					                               (cons (concat default-command appended-arg-str)
+                                                         (1+ (length default-command))))
+					                             'pdfgrep-history)))
+          (unless pdfgrep-mode
+            (error "PDFGrep is not enabled, run `pdfgrep-mode' first."))
+          (unless (executable-find "pdfgrep")
+            (error "The 'pdfgrep' command not available on your system."))
+          (compilation-start command-args 'grep-mode
+		                     (lambda (_x) pdfgrep-buffer-name)))
 
-    (key-chord-define pdf-view-mode-map "sj" 'pdffgrep-with-current-file)))
+        (key-chord-define pdf-view-mode-map "sj" 'pdffgrep-with-current-file))))
+
+  (add-hook 'doc-view-mode-hook 'dhnam/initialize-pdf-tools))
 
 (when (progn
         ;; to update `TeX-view-program-selection' with setcar,
@@ -365,116 +370,134 @@ the PDFGrep job before it finishes, type \\[kill-compilation]."
 		               (lambda (_x) pdfgrep-buffer-name))))
 
 (when (require 'biblio nil t)
-  (progn
-    (define-key biblio-selection-mode-map (kbd "u") #'dhnam/biblio--copy-url)
-    (define-key biblio-selection-mode-map (kbd "U") #'dhnam/biblio--copy-url-quit))
+  (defvar dhnam/langtool-initialized nil)
+  (defun dhnam/initialize-biblio ()
+    (interactive)
 
-  (progn
-    (defun dhnam/post-process-biblio-bibtex (bibtex)
-      (let* ((normalized (replace-regexp-in-string
-                          "@[a-zA-Z]*"
-                          #'downcase ; (lambda (matched) (downcase matched))
-                          bibtex))
-             (entries (split-string normalized "\n\n")))
-        (if (= (length entries) 2)
-            (if (string-match "@inproceedings" bibtex)
-                (car entries)
-              normalized)
-          normalized)))
+    (unless dhnam/langtool-initialized
+      (setq dhnam/langtool-initialized t)
 
-    (comment
-      (defun biblio--selection-copy-callback (bibtex entry)
-        "Add BIBTEX (from ENTRY) to kill ring."
-        (kill-new (dhnam/post-process-biblio-bibtex bibtex))
-        (message "Killed bibtex entry for %S."
-                 (biblio--prepare-title (biblio-alist-get 'title entry))))
+      (progn
+        (define-key biblio-selection-mode-map (kbd "u") #'dhnam/biblio--copy-url)
+        (define-key biblio-selection-mode-map (kbd "U") #'dhnam/biblio--copy-url-quit))
 
-      (defun biblio--selection-insert-callback (bibtex entry)
-        "Add BIBTEX (from ENTRY) to kill ring."
-        (let ((target-buffer biblio--target-buffer))
-          (with-selected-window (or (biblio--target-window) (selected-window))
-            (with-current-buffer target-buffer
-              (insert (dhnam/post-process-biblio-bibtex bibtex)
-                      "\n\n"))))
-        (message "Inserted bibtex entry for %S."
-                 (biblio--prepare-title (biblio-alist-get 'title entry)))))
+      (progn
+        (defun dhnam/post-process-biblio-bibtex (bibtex)
+          (let* ((normalized (replace-regexp-in-string
+                              "@[a-zA-Z]*"
+                              #'downcase ; (lambda (matched) (downcase matched))
+                              bibtex))
+                 (entries (split-string normalized "\n\n")))
+            (if (= (length entries) 2)
+                (if (string-match "@inproceedings" bibtex)
+                    (car entries)
+                  normalized)
+              normalized)))
 
-    (comment
-      (defun dhnam/biblio--selection-copy-callback-advice (orig-func bibtex &rest args)
-        (funcall orig-func (cons (dhnam/post-process-biblio-bibtex bibtex) args)))
+        (comment
+          (defun biblio--selection-copy-callback (bibtex entry)
+            "Add BIBTEX (from ENTRY) to kill ring."
+            (kill-new (dhnam/post-process-biblio-bibtex bibtex))
+            (message "Killed bibtex entry for %S."
+                     (biblio--prepare-title (biblio-alist-get 'title entry))))
 
-      (defun dhnam/biblio--selection-insert-callback-advice (orig-func bibtex &rest args)
-        (funcall orig-func (cons (dhnam/post-process-biblio-bibtex bibtex) args))))
+          (defun biblio--selection-insert-callback (bibtex entry)
+            "Add BIBTEX (from ENTRY) to kill ring."
+            (let ((target-buffer biblio--target-buffer))
+              (with-selected-window (or (biblio--target-window) (selected-window))
+                (with-current-buffer target-buffer
+                  (insert (dhnam/post-process-biblio-bibtex bibtex)
+                          "\n\n"))))
+            (message "Inserted bibtex entry for %S."
+                     (biblio--prepare-title (biblio-alist-get 'title entry)))))
 
-    (progn
-      (defun dhnam/biblio-format-bibtex-advice (orig-func &rest args)
-        (dhnam/post-process-biblio-bibtex (apply orig-func args)))
-      (advice-add 'biblio-format-bibtex :around #'dhnam/biblio-format-bibtex-advice)
-      (comment (advice-remove 'biblio-format-bibtex #'dhnam/biblio-format-bibtex-advice))))
+        (comment
+          (defun dhnam/biblio--selection-copy-callback-advice (orig-func bibtex &rest args)
+            (funcall orig-func (cons (dhnam/post-process-biblio-bibtex bibtex) args)))
 
-  (progn
-    (defun dhnam/biblio--copy-url-callback (bibtex entry)
-      (let* ((metadata (biblio--selection-metadata-at-point)))
-        (let-alist metadata
-          (if .direct-url
-              (let ((url-str (replace-regexp-in-string "v..?$" "" .direct-url)))
-                (kill-new url-str)
-                (message (concat "Copied: " url-str))
-                )
-            (user-error "This record does not contain a direct URL (try arXiv or HAL)")))))
+          (defun dhnam/biblio--selection-insert-callback-advice (orig-func bibtex &rest args)
+            (funcall orig-func (cons (dhnam/post-process-biblio-bibtex bibtex) args))))
 
-    (defun dhnam/biblio--copy-url ()
-      (interactive)
-      (biblio--selection-forward-bibtex #'dhnam/biblio--copy-url-callback))
+        (progn
+          (defun dhnam/biblio-format-bibtex-advice (orig-func &rest args)
+            (dhnam/post-process-biblio-bibtex (apply orig-func args)))
+          (advice-add 'biblio-format-bibtex :around #'dhnam/biblio-format-bibtex-advice)
+          (comment (advice-remove 'biblio-format-bibtex #'dhnam/biblio-format-bibtex-advice))))
 
-    (defun dhnam/biblio--copy-url-quit ()
-      (interactive)
-      (biblio--selection-forward-bibtex #'dhnam/biblio--copy-url-callback t))))
+      (progn
+        (defun dhnam/biblio--copy-url-callback (bibtex entry)
+          (let* ((metadata (biblio--selection-metadata-at-point)))
+            (let-alist metadata
+              (if .direct-url
+                  (let ((url-str (replace-regexp-in-string "v..?$" "" .direct-url)))
+                    (kill-new url-str)
+                    (message (concat "Copied: " url-str))
+                    )
+                (user-error "This record does not contain a direct URL (try arXiv or HAL)")))))
+
+        (defun dhnam/biblio--copy-url ()
+          (interactive)
+          (biblio--selection-forward-bibtex #'dhnam/biblio--copy-url-callback))
+
+        (defun dhnam/biblio--copy-url-quit ()
+          (interactive)
+          (biblio--selection-forward-bibtex #'dhnam/biblio--copy-url-callback t)))))
+
+  (add-hook 'bibtex-mode-hook 'dhnam/initialize-biblio))
 
 (progn
-  ;; langtool
-  ;; https://github.com/mhayashi1120/Emacs-langtool
+  (defvar dhnam/langtool-initialized nil)
+  (defun dhnam/initialize-langtool ()
+    (interactive)
 
-  (let ((languagetool-dir-path (machine-config-get-first 'languagetool-dir-path)))
-    (when languagetool-dir-path
-      ;; command-line
-      (setq langtool-language-tool-jar
-            (concat languagetool-dir-path "languagetool-commandline.jar"))
+    (unless dhnam/langtool-initialized
+      ;; langtool
+      ;; https://github.com/mhayashi1120/Emacs-langtool
 
-      (comment
-        ;; language config
-        (comment (setq langtool-mother-tongue "en-US"))
-        (setq langtool-default-language "en-US"))
+      (setq dhnam/langtool-initialized t)
 
-      (comment
-        ;; server setting
+      (let ((languagetool-dir-path (machine-config-get-first 'languagetool-dir-path)))
+        (when languagetool-dir-path
+          ;; command-line
+          (setq langtool-language-tool-jar
+                (concat languagetool-dir-path "languagetool-commandline.jar"))
 
-        ;; HTTP server & client
-        (setq langtool-language-tool-server-jar
-              (concat languagetool-dir-path "languagetool-server.jar"))
-        (setq langtool-server-user-arguments '("-p" "8082"))
+          (comment
+            ;; language config
+            (comment (setq langtool-mother-tongue "en-US"))
+            (setq langtool-default-language "en-US"))
 
-        ;; HTTP client
-        (setq langtool-http-server-host "localhost"
-              langtool-http-server-port 8082)
+          (comment
+            ;; server setting
 
-        ;; ssl/tls config
-        (setq langtool-http-server-stream-type 'tls))
+            ;; HTTP server & client
+            (setq langtool-language-tool-server-jar
+                  (concat languagetool-dir-path "languagetool-server.jar"))
+            (setq langtool-server-user-arguments '("-p" "8082"))
 
-      ;; langtool package load
-      (require 'langtool)))
+            ;; HTTP client
+            (setq langtool-http-server-host "localhost"
+                  langtool-http-server-port 8082)
 
-  (progn
-    (let ((map (make-sparse-keymap)))
-      (define-key map (kbd "c") 'langtool-check)
-      (define-key map (kbd "C") 'langtool-check-done)
-      (define-key map (kbd "s") 'langtool-switch-default-language)
-      (define-key map (kbd "m") 'langtool-show-message-at-point)
-      (define-key map (kbd "r") 'langtool-correct-buffer)
+            ;; ssl/tls config
+            (setq langtool-http-server-stream-type 'tls))
 
-      (defvar langtool-prefix-map map
-        "Keymap for workspace related commands."))
+          ;; langtool package load
+          (require 'langtool)))
 
-    (fset 'langtool-prefix-map langtool-prefix-map)
+      (progn
+        (let ((map (make-sparse-keymap)))
+          (define-key map (kbd "c") 'langtool-check)
+          (define-key map (kbd "C") 'langtool-check-done)
+          (define-key map (kbd "s") 'langtool-switch-default-language)
+          (define-key map (kbd "m") 'langtool-show-message-at-point)
+          (define-key map (kbd "r") 'langtool-correct-buffer)
 
-    (key-chord-define-global "t;" 'langtool-prefix-map)))
+          (defvar langtool-prefix-map map
+            "Keymap for workspace related commands."))
+
+        (fset 'langtool-prefix-map langtool-prefix-map)
+
+        (key-chord-define-global "t;" 'langtool-prefix-map))))
+
+  (add-hook 'TeX-mode-hook 'dhnam/initialize-langtool))
