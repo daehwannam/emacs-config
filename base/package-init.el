@@ -49,9 +49,10 @@
   (progn
     ;; change argument colors of use-existing-pkg
     (defconst use-existing-pkg-font-lock-keywords
+      ;; It's the same definition with `use-package-font-lock-keywords'
       '(("(\\(use-existing-pkg\\)\\_>[ \t']*\\(\\(?:\\sw\\|\\s_\\)+\\)?"
-	 (1 font-lock-keyword-face)
-	 (2 font-lock-constant-face nil t))))
+	     (1 font-lock-keyword-face)
+	     (2 font-lock-constant-face nil t))))
 
     (font-lock-add-keywords 'emacs-lisp-mode use-existing-pkg-font-lock-keywords))
 
