@@ -42,6 +42,6 @@ You can run EXWM in a [[https://en.wikipedia.org/wiki/Virtual_console][virtual c
 ~/.emacs.d/exwm/run.sh
 #+end_src
 
-** Addtional command-line emacs options
-- ~--exwm~: enable [[https://github.com/ch11ng/exwm][EXWM]] (this option is used by ~/.emacs.d/exwm/run.sh~)
+** Addtional command-line options
+- ~--exwm~: enable [[https://github.com/ch11ng/exwm][EXWM]] (this option is used by =~/.emacs.d/exwm/run.sh=)
 - ~--key-binding-style STYLE~: choose a key-binding style such as ~fbnp~ or ~ergoemacs~
