@@ -1,0 +1,47 @@
+* My emacs configuration
+This project is my daily used emacs configuration. The code is not well-documented and may have bugs.
+
+** Setup
+#+begin_src sh
+if [ -e ~/.emacs.d ]; then
+    echo "\"~/.emacs.d\" exists already"
+else
+    git clone https://github.com/daehwannam/emacs-config.git ~/.emacs.d
+    cd ~/.emacs.d
+    ./setup.sh
+fi
+#+end_src
+
+** Configuration
+*** Machine-independent configuration
+My emacs runs over different machines (computers), such as desktops, laptops and remote servers.
+Therefore, emacs should apply a differnt configuration to each machine.
+
+This demand is handled by ~~/machine-config.el~:
+1. ~~/machine-config.el~ loads ~~/.emacs.d/config/options.txt~
+2. Depending on the options (e.g. ~base~), each configuration value (e.g. ~installable-packages~) is determined.
+
+If ~~/.emacs.d/config/options.txt~ doesn't exist, it is created when emacs starts up.
+By default, ~~/.emacs.d/config/options.txt~ includes only ~base~.
+
+*** Key-binding style (under development)
+**** Key binding styles
+- ~fbnp~: the emacs's default key-binding style
+- ~ergoemacs~: an ergonomic key-binding style (https://github.com/ergoemacs/ergoemacs-mode)
+- ~evil~: vim key-binding style (https://github.com/emacs-evil/evil)
+**** Set a key-binding style
+#+begin_src sh
+STYLE="fbnp"  # or "ergoemacs"
+echo $STYLE > ~/.emacs.d/key-binding-style.txt
+#+end_src
+
+** EXWM
+To install EXWM, you should add ~exwm-setup~ to ~~/.emacs.d/config/options.txt~.
+You can run EXWM in a [[https://en.wikipedia.org/wiki/Virtual_console][virtual console]] in Linux by the following command:
+#+begin_src sh
+~/.emacs.d/exwm/run.sh
+#+end_src
+
+** Addtional command-line emacs options
+- ~--exwm~: enable [[https://github.com/ch11ng/exwm][EXWM]] (this option is used by ~/.emacs.d/exwm/run.sh~)
+- ~--key-binding-style STYLE~: choose a key-binding style such as ~fbnp~ or ~ergoemacs~

@@ -7,7 +7,7 @@
 !.gitignore
 !base/
 !config/
-!README.md
+!README.org
 !exwm/
 !package/.gitkeep
 !setup.sh
