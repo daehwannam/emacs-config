@@ -8,8 +8,8 @@
 
 
 ;; Common lisp
-(let ((path-to-slime-helper (machine-config-get-first 'path-to-slime-helper))
-      (path-to-inferior-lisp-program (machine-config-get-first 'path-to-inferior-lisp-program)))
+(let ((path-to-slime-helper (dhnam/machine-config-get-first 'path-to-slime-helper))
+      (path-to-inferior-lisp-program (dhnam/machine-config-get-first 'path-to-inferior-lisp-program)))
   (when path-to-slime-helper
     (load (expand-file-name path-to-slime-helper)))
   ;; Replace "sbcl" with the path to your implementation

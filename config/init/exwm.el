@@ -1,19 +1,19 @@
 (progn
   ;; processing a custom command line argument
-  (defvar exwm-cmd-arg-passed nil)
+  (defvar dhnam/exwm-cmd-arg-passed nil)
 
   (let ((remaining-cmd-args (cdr command-line-args)))
     ;; originally '(cdr command-line-args) is passed into `command-line-1'
-    (setq exwm-cmd-arg-passed (member "--exwm" remaining-cmd-args)))
+    (setq dhnam/exwm-cmd-arg-passed (member "--exwm" remaining-cmd-args)))
 
   ;; exwm setup
-  (defun exwm-cmd-arg-handler (switch)
+  (defun dhnam/exwm-cmd-arg-handler (switch)
     ;; do nothing
     )
 
-  (add-to-list 'command-switch-alist '("--exwm" . exwm-cmd-arg-handler)))
+  (add-to-list 'command-switch-alist '("--exwm" . dhnam/exwm-cmd-arg-handler)))
 
-(when exwm-cmd-arg-passed
+(when dhnam/exwm-cmd-arg-passed
   (defun exwm-simple-frame-init ()
     (progn
       "this code block has the same effect with `exwm-config-misc'"
@@ -233,7 +233,7 @@
       (setq exwm-workspace-show-all-buffers t)
       (setq exwm-layout-show-all-buffers t))
 
-    (when (machine-config-get-first 'exwm-physical-monitor-names)
+    (when (dhnam/machine-config-get-first 'exwm-physical-monitor-names)
       ;; multiple monitor setting
 
       (progn
@@ -254,7 +254,7 @@
               ;; `exwm-base-input-simulation-keys' has many commands
               (exwm-randr-refresh))))
 
-        (ewg/init (machine-config-get-first 'exwm-physical-monitor-names))
+        (ewg/init (dhnam/machine-config-get-first 'exwm-physical-monitor-names))
 
         (let ((map dhnam/exwm-workspace-prefix-map))
           ;; update `dhnam/exwm-workspace-prefix-map'
@@ -711,7 +711,7 @@ When INITIAL-INPUT is non-nil, use it in the minibuffer during completion."
                 (lambda (index) (number-to-string (+ dhnam/exwm-workspace-start-number index)))))
 
         (let ((physical-monitor-names
-               (machine-config-get-first 'exwm-physical-monitor-names)))
+               (dhnam/machine-config-get-first 'exwm-physical-monitor-names)))
           (setq exwm-environment-switch-create
                 (if (and physical-monitor-names (> (length physical-monitor-names) 1))
                     'ewg/switch-create-group
@@ -775,7 +775,7 @@ When INITIAL-INPUT is non-nil, use it in the minibuffer during completion."
                    ([S-s-down] . volume-lower-10))
 
                  (let ((physical-monitor-names
-                        (machine-config-get-first 'exwm-physical-monitor-names)))
+                        (dhnam/machine-config-get-first 'exwm-physical-monitor-names)))
                    (if (and physical-monitor-names (> (length physical-monitor-names) 1))
                        '(([?\C-\s-i] . ewg/other-workspace-in-group-backwards)
                          ([?\C-\s-o] . ewg/other-workspace-in-group)

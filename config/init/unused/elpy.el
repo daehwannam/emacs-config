@@ -12,7 +12,7 @@
      ;;   - python-mode
      ;;   - pyvenv-workon --> some-python-environment
      )
-    (let ((pyvenv-workon-home-path (machine-config-get-first 'pyvenv-workon-home-path)))
+    (let ((pyvenv-workon-home-path (dhnam/machine-config-get-first 'pyvenv-workon-home-path)))
       (when pyvenv-workon-home-path
 	(setenv "WORKON_HOME" pyvenv-workon-home-path)
 	(pyvenv-mode 1)
@@ -60,7 +60,7 @@
        "Return the current src repository root, if any."
        (locate-dominating-file default-directory ".src")))))
 
-(if (machine-config-get-first 'elpy-simple-config)
+(if (dhnam/machine-config-get-first 'elpy-simple-config)
     (progn
       (comment
        (add-hook 'python-mode-hook (lambda () (local-set-key (kbd "C-c Z") 'elpy-set-project-root)))
@@ -98,7 +98,7 @@
 	;; jedi is the default value
 	(setq elpy-rpc-backend "jedi"))
 
-      (let ((pyvenv-workon-home-path (machine-config-get-first 'pyvenv-workon-home-path)))
+      (let ((pyvenv-workon-home-path (dhnam/machine-config-get-first 'pyvenv-workon-home-path)))
 	(when pyvenv-workon-home-path
 	  (progn
 	    (setq elpy-rpc-virtualenv-path 'current)
@@ -108,7 +108,7 @@
 	     (let ((default-elpy-rpc-virtualenv-path elpy-rpc-virtualenv-path))
 	       (comment (assert (eq default-elpy-rpc-virtualenv-path 'default)))
 	       (setq elpy-rpc-virtualenv-path
-		     (or (machine-config-get-first 'elpy-rpc-virtualenv-path)
+		     (or (dhnam/machine-config-get-first 'elpy-rpc-virtualenv-path)
 			 (dhnam/join-dirs pyvenv-workon-home-path elpy-rpc-virtualenv-name))))))
 	  (comment
 	   ;; use the current virtual environment as RPC server
@@ -116,10 +116,10 @@
 	   ;; (this code is not tested yet)
 	   (setq elpy-rpc-virtualenv-path 'current))))
 
-      (when (machine-config-get-first 'pyvenv-name)
-	(pyvenv-workon (machine-config-get-first 'pyvenv-name))) ; use "M-x pyvenv-deactivate" to deactivate
+      (when (dhnam/machine-config-get-first 'pyvenv-name)
+	(pyvenv-workon (dhnam/machine-config-get-first 'pyvenv-name))) ; use "M-x pyvenv-deactivate" to deactivate
 
-      (when (machine-config-get-first 'elpy-flycheck-activate)
+      (when (dhnam/machine-config-get-first 'elpy-flycheck-activate)
 	;; https://realpython.com/blog/python/emacs-the-best-python-editor/
 	(use-existing-pkg flycheck
 	  :init
@@ -137,7 +137,7 @@
       ;; (setq python-shell-interpreter "ipython"
       ;;       python-shell-interpreter-args "-i --simple-prompt")
 
-      (when (machine-config-get-first 'elpy-autopep8-activate)
+      (when (dhnam/machine-config-get-first 'elpy-autopep8-activate)
 	(use-existing-pkg py-autopep8
 	  :init
 	  (progn

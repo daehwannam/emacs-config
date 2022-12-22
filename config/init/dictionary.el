@@ -34,7 +34,7 @@
     (global-set-key (kbd "C-c D") 'define-word)
     (setq define-word-default-service 'offline-wikitionary)
     (setq define-word-offline-dict-directory
-          (machine-config-get-first 'define-word-offline-dict-directory-path))))
+          (dhnam/machine-config-get-first 'define-word-offline-dict-directory-path))))
 
 (progn
   (defvar lookup-word-search-query-table

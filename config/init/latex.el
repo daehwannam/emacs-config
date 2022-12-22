@@ -456,7 +456,7 @@ the PDFGrep job before it finishes, type \\[kill-compilation]."
 
       (setq dhnam/langtool-initialized t)
 
-      (let ((languagetool-dir-path (machine-config-get-first 'languagetool-dir-path)))
+      (let ((languagetool-dir-path (dhnam/machine-config-get-first 'languagetool-dir-path)))
         (when languagetool-dir-path
           ;; command-line
           (setq langtool-language-tool-jar

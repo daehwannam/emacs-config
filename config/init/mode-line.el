@@ -1,5 +1,5 @@
 
-(when (or t (comment (member 'exwm-setup machine-options)))
+(when (or t (comment (member 'exwm-setup dhnam/machine-options)))
   (comment (add-to-list `load-path (expand-file-name "~/.emacs.d/config/package/awesome-tray/")))
   (require 'awesome-tray)
 

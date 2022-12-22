@@ -16,7 +16,7 @@
   )
 
 ;;; color theme change
-(let ((theme-style (machine-config-get-first 'theme-style)))
+(let ((theme-style (dhnam/machine-config-get-first 'theme-style)))
   (progn
     (defvar my-current-theme nil)
     (defun load-and-set-current-theme (theme &optional no-confirm no-enable)
@@ -51,7 +51,7 @@
        '(mode-line-inactive ((t (:background "gray10" :foreground "gray50" :box nil :weight light)))))
 
       (comment
-        (when (and exwm-cmd-arg-passed (display-graphic-p))
+        (when (and dhnam/exwm-cmd-arg-passed (display-graphic-p))
           (custom-set-faces
            '(default ((t (:background "gray12")))))))
 

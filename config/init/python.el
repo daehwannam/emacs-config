@@ -12,7 +12,7 @@
      ;;   - python-mode
      ;;   - pyvenv-workon --> some-python-environment
      )
-    (let ((pyvenv-workon-home-path (machine-config-get-first 'pyvenv-workon-home-path)))
+    (let ((pyvenv-workon-home-path (dhnam/machine-config-get-first 'pyvenv-workon-home-path)))
       (when pyvenv-workon-home-path
 	(setenv "WORKON_HOME" pyvenv-workon-home-path)
 	(pyvenv-mode 1)

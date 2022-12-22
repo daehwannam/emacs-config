@@ -9,5 +9,5 @@
 ;; setting tags table
 ;; https://www.gnu.org/software/emacs/manual/html_node/emacs/Select-Tags-Table.html
 
-(when (machine-config-get-first 'etags-list)
-  (setq tags-table-list (machine-config-get-first 'etags-list)))
+(when (dhnam/machine-config-get-first 'etags-list)
+  (setq tags-table-list (dhnam/machine-config-get-first 'etags-list)))

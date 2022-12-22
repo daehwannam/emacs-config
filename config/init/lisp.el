@@ -53,8 +53,8 @@
   ;; Common lisp
   (add-to-list 'auto-mode-alist '("\\.lisp\\'" . lisp-mode))
 
-  (let ((path-to-slime-helper (machine-config-get-first 'path-to-slime-helper))
-        (path-to-inferior-lisp-program (machine-config-get-first 'path-to-inferior-lisp-program)))
+  (let ((path-to-slime-helper (dhnam/machine-config-get-first 'path-to-slime-helper))
+        (path-to-inferior-lisp-program (dhnam/machine-config-get-first 'path-to-inferior-lisp-program)))
     ;; SLIME
 
     (when path-to-slime-helper
@@ -164,54 +164,18 @@
       (key-chord-define paredit-mode-map "{}" #'paredit-slurp-barf-sexp/body))
 
     (progn
-      (defun copy-and-forward-sexp (&optional arg)
-	    "Save the sexp following point to the kill ring.
-ARG has the same meaning as for `kill-sexp'."
-	    (interactive "p")
-	    (save-excursion
-	      (let ((orig-point (point)))
-	        (forward-sexp (or arg 1))
-	        (if (eq last-command 'copy-and-forward-sexp)
-		        (kill-append (buffer-substring orig-point (point)) nil)
-	          (kill-ring-save orig-point (point)))))
-	    (forward-sexp arg)
-	    (setq last-command 'copy-and-forward-sexp))
-
-      (key-chord-define paredit-mode-map "kk" (make-repeatable-command #'copy-and-forward-sexp)))
-
-    (progn
       (define-key paredit-mode-map (kbd "C-w") #'paredit-kill-region)
       (define-key paredit-mode-map (kbd "C-M-w") #'paredit-kill-region))
 
     (progn
-      (defun dhnam/paredit-kill-ring-save (start end)
-        "Save the region as if killed, but don't kill it, like `kill-region'.
-If that text is unbalanced, signal an error instead."
-        (interactive "r")
-        (if (and start end (not current-prefix-arg))
-            (paredit-check-region-for-delete start end))
-        ;; (setq this-command 'kill-ring-save)
-        (kill-ring-save start end))
+      (require 'dhnam-paredit)
 
-      (define-key paredit-mode-map (kbd "M-w") #'dhnam/paredit-kill-ring-save)
-
-      (defun dhnam/paredit-comment-dwim (&optional argument)
-        "Similar to `paredit-comment-dwim'.
-However, if text is unbalanced, signal an error instead."
-        (interactive "*P")
-        (paredit-initialize-comment-dwim)
-        (cond ((paredit-region-active-p)
-               (paredit-check-region-for-delete (region-beginning) (region-end))
-               (comment-or-uncomment-region (region-beginning)
-                                            (region-end)
-                                            argument))
-              ((paredit-comment-on-line-p)
-               (if argument
-                   (comment-kill (if (integerp argument) argument nil))
-                 (comment-indent)))
-              (t (paredit-insert-comment))))
-
-      (define-key paredit-mode-map (kbd "M-;") #'dhnam/paredit-comment-dwim))
+      (key-chord-define paredit-mode-map "kk" (make-repeatable-command #'copy-and-forward-sexp))
+      (define-key paredit-mode-map (kbd "M-w") #'dhnam-paredit/kill-ring-save)
+      (define-key paredit-mode-map (kbd "M-;") #'dhnam-paredit/comment-dwim)
+      (comment
+        (define-key paredit-mode-map (kbd "C-M-u") #'dhnam-paredit/backward-up-or-down)
+        (define-key paredit-mode-map (kbd "C-M-d") #'dhnam-paredit/forward-up-or-down)))
 
     (progn
       (define-key paredit-mode-map (kbd "M-D") (make-repeatable-command #'paredit-backward-down))

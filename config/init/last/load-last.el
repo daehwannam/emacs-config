@@ -5,8 +5,8 @@
   (when (file-exists-p "~/.emacs.d/config/init/eyebrowse.el")
     (load "~/.emacs.d/config/init/eyebrowse.el")))
 
-(when (and exwm-cmd-arg-passed
-           (let ((physical-monitor-names (machine-config-get-first 'exwm-physical-monitor-names)))
+(when (and dhnam/exwm-cmd-arg-passed
+           (let ((physical-monitor-names (dhnam/machine-config-get-first 'exwm-physical-monitor-names)))
              (and physical-monitor-names (> (length physical-monitor-names) 1))))
   (progn
     ;; this prevent wrong frame deployment when
