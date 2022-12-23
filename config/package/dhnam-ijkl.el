@@ -21,8 +21,8 @@
     (define-key map (kbd "C-M-l") 'forward-list)
     (define-key map (kbd "C-M-u") 'backward-up-list)
     (define-key map (kbd "C-M-o") 'down-list)
-    (comment (define-key map (kbd "C-M-u") 'dhnam-paredit/backward-up-or-down))
-    (comment (define-key map (kbd "C-M-o") 'dhnam-paredit/forward-up-or-down))
+    (comment (define-key map (kbd "C-M-u") 'dhnam/paredit-backward-up-or-down))
+    (comment (define-key map (kbd "C-M-o") 'dhnam/paredit-forward-up-or-down))
 
     (define-key map (kbd "M-n") 'electric-newline-and-maybe-indent)
     (define-key map (kbd "C-M-n") 'default-indent-new-line)

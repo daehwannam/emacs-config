@@ -170,12 +170,12 @@
     (progn
       (require 'dhnam-paredit)
 
-      (key-chord-define paredit-mode-map "kk" (make-repeatable-command #'copy-and-forward-sexp))
-      (define-key paredit-mode-map (kbd "M-w") #'dhnam-paredit/kill-ring-save)
-      (define-key paredit-mode-map (kbd "M-;") #'dhnam-paredit/comment-dwim)
+      (key-chord-define paredit-mode-map "kk" (make-repeatable-command #'dhnam/copy-and-forward-sexp))
+      (define-key paredit-mode-map (kbd "M-w") #'dhnam/paredit-kill-ring-save)
+      (define-key paredit-mode-map (kbd "M-;") #'dhnam/paredit-comment-dwim)
       (comment
-        (define-key paredit-mode-map (kbd "C-M-u") #'dhnam-paredit/backward-up-or-down)
-        (define-key paredit-mode-map (kbd "C-M-d") #'dhnam-paredit/forward-up-or-down)))
+        (define-key paredit-mode-map (kbd "C-M-u") #'dhnam/paredit-backward-up-or-down)
+        (define-key paredit-mode-map (kbd "C-M-d") #'dhnam/paredit-forward-up-or-down)))
 
     (progn
       (define-key paredit-mode-map (kbd "M-D") (make-repeatable-command #'paredit-backward-down))

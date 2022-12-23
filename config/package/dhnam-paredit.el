@@ -1,20 +1,20 @@
 
 (require 'paredit)
 
-(defun dhnam-paredit/copy-and-forward-sexp (&optional arg)
+(defun dhnam/copy-and-forward-sexp (&optional arg)
   "Save the sexp following point to the kill ring.
 ARG has the same meaning as for `kill-sexp'."
   (interactive "p")
   (save-excursion
 	(let ((orig-point (point)))
 	  (forward-sexp (or arg 1))
-	  (if (eq last-command 'copy-and-forward-sexp)
+	  (if (eq last-command 'dhnam/copy-and-forward-sexp)
 		  (kill-append (buffer-substring orig-point (point)) nil)
 	    (kill-ring-save orig-point (point)))))
   (forward-sexp arg)
-  (setq last-command 'copy-and-forward-sexp))
+  (setq last-command 'dhnam/copy-and-forward-sexp))
 
-(defun dhnam-paredit/backward-up-or-down (&optional arg)
+(defun dhnam/paredit-backward-up-or-down (&optional arg)
   (interactive "^p")
   (let ((start-point (point))
         (up-point (save-excursion (ignore-errors (paredit-backward-up arg)) (point)))
@@ -28,7 +28,7 @@ ARG has the same meaning as for `kill-sexp'."
       ((not (= start-point down-point)) down-point)
       start-point))))
 
-(defun dhnam-paredit/forward-up-or-down (&optional arg)
+(defun dhnam/paredit-forward-up-or-down (&optional arg)
   (interactive "^p")
   (let ((start-point (point))
         (up-point (save-excursion (ignore-errors (paredit-forward-up arg)) (point)))
@@ -42,7 +42,7 @@ ARG has the same meaning as for `kill-sexp'."
       ((not (= start-point down-point)) down-point)
       start-point))))
 
-(defun dhnam-paredit/kill-ring-save (start end)
+(defun dhnam/paredit-kill-ring-save (start end)
   "Save the region as if killed, but don't kill it, like `kill-region'.
 If that text is unbalanced, signal an error instead."
   (interactive "r")
@@ -51,7 +51,7 @@ If that text is unbalanced, signal an error instead."
   ;; (setq this-command 'kill-ring-save)
   (kill-ring-save start end))
 
-(defun dhnam-paredit/comment-dwim (&optional argument)
+(defun dhnam/paredit-comment-dwim (&optional argument)
   "Similar to `paredit-comment-dwim'.
 However, if text is unbalanced, signal an error instead."
   (interactive "*P")
