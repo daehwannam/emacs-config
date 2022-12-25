@@ -53,7 +53,7 @@
       ;; https://github.com/abo-abo/swiper/issues/2159#issuecomment-514967202
       t)
 
-    (defun swiper-with-text-in-region (start end)
+    (defun dhnam/swiper-with-text-in-region (start end)
       (interactive "r")
       (deactivate-mark)
       (swiper (buffer-substring start end)))
@@ -61,7 +61,7 @@
     (progn
       ;; https://github.com/abo-abo/swiper/issues/1206#issuecomment-345455888
 
-      (defun ivy-ignore-buffers-with-different-major-mode (str)
+      (defun dhnam/ivy-ignore-buffers-with-different-major-mode (str)
         "Return non-nil if STR names a buffer of a different major mode.
 This function is intended for use with `ivy-ignore-buffers'."
         (let ((current-major-mode (buffer-local-value 'major-mode (current-buffer)))
@@ -70,7 +70,7 @@ This function is intended for use with `ivy-ignore-buffers'."
               (not (eq (buffer-local-value 'major-mode buf)
                        current-major-mode)))))
 
-      (defun counsel-switch-buffer-within-same-major-mode ()
+      (defun dhnam/counsel-switch-buffer-within-same-major-mode ()
         "Switch to another buffer within the same major mode.
 Display a preview of the selected ivy completion candidate buffer
 in the current window."
@@ -80,7 +80,7 @@ in the current window."
               (ivy-unwind-fns-alist
                '((ivy-switch-buffer . counsel--switch-buffer-unwind)))
 
-              (ivy-ignore-buffers (cons #'ivy-ignore-buffers-with-different-major-mode
+              (ivy-ignore-buffers (cons #'dhnam/ivy-ignore-buffers-with-different-major-mode
                                         ivy-ignore-buffers)))
           (ivy-read "Switch to buffer: " #'internal-complete-buffer
                     :keymap ivy-switch-buffer-map
@@ -89,14 +89,14 @@ in the current window."
                     :matcher #'ivy--switch-buffer-matcher
                     :caller 'ivy-switch-buffer)))
 
-      (key-chord-define-global "qm" 'counsel-switch-buffer-within-same-major-mode))
+      (key-chord-define-global "qm" 'dhnam/counsel-switch-buffer-within-same-major-mode))
 
     (progn
       ;; swiper within highlited strings
       (require 'cl-lib)
 
       (comment
-        (defun swiper-over-highlights-simple ()
+        (defun dhnam/swiper-over-highlights-simple ()
           (interactive)
           (let ((original-swiper--candidates (symbol-function 'swiper--candidates)))
             (cl-letf (((symbol-function 'swiper--candidates)
@@ -107,7 +107,7 @@ in the current window."
               (swiper)))))
 
 
-      (defun swiper-over-highlights (&optional initial-input)
+      (defun dhnam/swiper-over-highlights (&optional initial-input)
         (interactive)
         (let ((original-swiper--candidates (symbol-function 'swiper--candidates))
               (pattern (mapconcat #'car hi-lock-interactive-patterns "\\|")))
@@ -156,7 +156,7 @@ in the current window."
                   (when swiper--reveal-mode
                     (reveal-mode 1)))))))))
 
-    (defun swiper-within-region (&optional initial-input)
+    (defun dhnam/swiper-within-region (&optional initial-input)
       "`isearch-forward' with an overview.
 When non-nil, INITIAL-INPUT is the initial search pattern."
       (interactive)
@@ -183,7 +183,7 @@ When non-nil, INITIAL-INPUT is the initial search pattern."
 	;; (global-set-key (kbd "C-s") 'isearch-forward)
 	;; (global-set-key (kbd "C-c s") 'swiper)
 	(comment (key-chord-define-global "js" 'swiper))
-	(key-chord-define-global "js" 'swiper-within-region)
+	(key-chord-define-global "js" 'dhnam/swiper-within-region)
 	(comment (space-chord-define-global "s" 'swiper))
 	;; (global-set-key (kbd "C-c C-s") 'swiper) ; conflict with 'elpy-rgrep-symbol
 	;; (global-set-key (kbd "C-r") 'swiper)
@@ -217,7 +217,7 @@ When non-nil, INITIAL-INPUT is the initial search pattern."
       (global-set-key (kbd "C-x l") 'counsel-locate)
       (global-set-key (kbd "C-S-o") 'counsel-rhythmbox))
 
-    ;; (global-set-key (kbd "C-c C-s") 'swiper-with-text-in-region)
+    ;; (global-set-key (kbd "C-c C-s") 'dhnam/swiper-with-text-in-region)
     )
 
   :after (key-chord)

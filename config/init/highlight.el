@@ -1,14 +1,14 @@
 
 (progn
-  (defvar highlight-map
+  (defvar dhnam/highlight-map
     (let ((map (make-sparse-keymap)))
       (define-key map (kbd "r") 'highlight-regexp)
       (define-key map (kbd ".") 'highlight-symbol-at-point)
       (define-key map (kbd "u") 'unhighlight-regexp)
-      (define-key map (kbd "w") 'swiper-over-highlights)
+      (define-key map (kbd "w") 'dhnam/swiper-over-highlights)
       map)
     "Keymap for rectangle commands.")
 
-  (fset 'highlight-map highlight-map)
+  (fset 'dhnam/highlight-map dhnam/highlight-map)
   
-  (key-chord-define global-map "qh" highlight-map))
+  (key-chord-define global-map "qh" dhnam/highlight-map))

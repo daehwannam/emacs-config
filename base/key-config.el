@@ -63,7 +63,7 @@
       (let ((cmd-arg-value (cadr matched-cmd-args)))
        (setq dhnam/key-binding-style
              (or (car (read-from-string cmd-arg-value))
-                 (car (read-from-string (get-string-from-file key-binding-style-file-name))))))
+                 (car (read-from-string (dhnam/get-string-from-file key-binding-style-file-name))))))
 
       (progn
         (defun dhnam/empty-cmd-arg-handler (switch))

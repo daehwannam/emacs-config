@@ -5,7 +5,7 @@
 ;;       (global-set-key (kbd "C-x g") 'magit-status)
 ;;       (global-set-key (kbd "C-x M-g") 'magit-dispatch-popup)))
 
-(when (package-installed-p 'magit)  ; (member 'magit installable-domain-specific-packages)
+(when (package-installed-p 'magit)  ; (member 'magit dhnam/installable-domain-specific-packages)
   (progn
     (global-set-key (kbd "C-x g") 'magit-status)
     (global-set-key (kbd "C-x M-g") 'magit-dispatch-popup)))

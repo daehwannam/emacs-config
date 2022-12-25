@@ -1,6 +1,6 @@
 
 (when (fboundp 'persp-mode)
-  (require 'make-repeatable-command)
+  (require 'dhnam-make-repeatable-command)
 
   ;;; change prefix-key
   ;; (setq persp-mode-prefix-key (kbd "C-z"))

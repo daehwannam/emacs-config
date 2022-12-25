@@ -37,21 +37,21 @@
           (dhnam/machine-config-get-first 'define-word-offline-dict-directory-path))))
 
 (progn
-  (defvar lookup-word-search-query-table
+  (defvar dhnam/lookup-word-search-query-table
     '(("daum" . "https://dic.daum.net/search.do?q=%s")
       ("collins" . "https://www.collinsdictionary.com/dictionary/english/%s")
       ("wiktionary" . "http://en.wiktionary.org/wiki/%s")))
-  (defvar lookup-word-search-query "https://dic.daum.net/search.do?q=%s")
-  (comment (setq lookup-word-search-query "https://www.collinsdictionary.com/dictionary/english/%s"))
+  (defvar dhnam/lookup-word-search-query "https://dic.daum.net/search.do?q=%s")
+  (comment (setq dhnam/lookup-word-search-query "https://www.collinsdictionary.com/dictionary/english/%s"))
 
-  (defun lookup-word-switch-dictionary (dictionary-name)
+  (defun dhnam/lookup-word-switch-dictionary (dictionary-name)
     (interactive
      (list (completing-read "Dictionary: "
-                            lookup-word-search-query-table
+                            dhnam/lookup-word-search-query-table
                             nil t)))
-    (setq lookup-word-search-query (cdr (assoc dictionary-name lookup-word-search-query-table))))
+    (setq dhnam/lookup-word-search-query (cdr (assoc dictionary-name dhnam/lookup-word-search-query-table))))
 
-  (defun get-lookup-word-candidate (&optional including-killed)
+  (defun dhnam/get-lookup-word-candidate (&optional including-killed)
     (cond
      ((eq major-mode 'pdf-view-mode)
       (car (pdf-view-active-region-text)))
@@ -62,43 +62,43 @@
           (when including-killed (current-kill 0))
           ""))))
 
-  (defun lookup-word-from-web (word)
+  (defun dhnam/lookup-word-from-web (word)
     (interactive
-     (let ((candidate (get-lookup-word-candidate)))
+     (let ((candidate (dhnam/get-lookup-word-candidate)))
        (list (read-string (format "Word (%s): " candidate)
                           nil nil candidate))))
-    (eww (format lookup-word-search-query word)
+    (eww (format dhnam/lookup-word-search-query word)
          (unless (eq major-mode 'eww-mode) 4)))
 
   (progn
-    (defun quit-window-and-other-window-backwards ()
+    (defun dhnam/quit-window-and-other-window-backwards ()
       (interactive)
       (quit-window)
-      (other-window-backwards))
+      (dhnam/other-window-backwards))
 
-    (defun lookup-word-from-web-other-window (word)
+    (defun dhnam/lookup-word-from-web-other-window (word)
       (interactive
-       (let ((candidate (get-lookup-word-candidate t)))
+       (let ((candidate (dhnam/get-lookup-word-candidate t)))
          (list (read-string (format "Word (%s): " candidate)
                             nil nil candidate))))
       (split-window-sensibly)
       (other-window 1)    
-      (eww (format lookup-word-search-query word) (unless (eq major-mode 'eww-mode) 4))
-      (comment (local-set-key (kbd "q") #'quit-window-and-other-window-backwards))
+      (eww (format dhnam/lookup-word-search-query word) (unless (eq major-mode 'eww-mode) 4))
+      (comment (local-set-key (kbd "q") #'dhnam/quit-window-and-other-window-backwards))
       (comment
        (with-help-window "*look-word-result*"
          ;; (split-window-sensibly)
          (pop-to-buffer "*look-word-result*")
-         (eww (format lookup-word-search-query word))
+         (eww (format dhnam/lookup-word-search-query word))
          (switch-to-buffer "*eww*"))))
 
-    (defun lookup-word-from-web-other-window-directly ()
+    (defun dhnam/lookup-word-from-web-other-window-directly ()
       (interactive)
-      (lookup-word-from-web-other-window (get-lookup-word-candidate t)))
+      (dhnam/lookup-word-from-web-other-window (dhnam/get-lookup-word-candidate t)))
 
     (comment (add-hook 'eww-mode-hook (lambda () (local-set-key (kbd "q") #'quit-window)))))
 
-  (defun lookup-word-from-web-other-window-for-exwm (word)
+  (defun dhnam/lookup-word-from-web-other-window-for-exwm (word)
     (interactive
      (progn
        (let ((keys (gethash (kbd "M-w") exwm-input--simulation-keys)))
@@ -110,18 +110,18 @@
                             nil nil candidate)))))
     (split-window-sensibly)
     (other-window 1)    
-    (eww (format lookup-word-search-query word) 4))
+    (eww (format dhnam/lookup-word-search-query word) 4))
 
   (comment
    (when (fboundp 'ispell)
      ;; https://www.reddit.com/r/emacs/comments/3yjzmu/comment/cye8lwu/?utm_source=share&utm_medium=web2x&context=3
      (autoload 'ispell-get-word "ispell")
-     (defun lookup-word-from-web-at-point-with-ispell (word)
+     (defun dhnam/lookup-word-from-web-at-point-with-ispell (word)
        (interactive (list (save-excursion (car (ispell-get-word nil)))))
-       (lookup-word-from-web word))))
+       (dhnam/lookup-word-from-web word))))
 
-  (defun lookup-word-from-web-at-point (word)
-    "Use `lookup-word-from-web-at-point' to lookup word at point.
+  (defun dhnam/lookup-word-from-web-at-point (word)
+    "Use `dhnam/lookup-word-from-web-at-point' to lookup word at point.
 When the region is active, lookup the marked phrase.
 Prefix ARG lets you choose service.
 
@@ -140,22 +140,22 @@ In a non-interactive call SERVICE can be passed."
             (t
              (substring-no-properties
               (thing-at-point 'word))))))
-      (lookup-word-from-web word)))
+      (dhnam/lookup-word-from-web word)))
 
-  (comment (global-set-key (kbd "C-c d") 'lookup-word-from-web-other-window))
-  (comment (global-set-key (kbd "M-#") 'lookup-word-from-web-other-window))
-  (comment (global-set-key (kbd "C-c d") 'lookup-word-from-web))
-  (comment (global-set-key (kbd "C-c D") 'lookup-word-from-web-at-point))
+  (comment (global-set-key (kbd "C-c d") 'dhnam/lookup-word-from-web-other-window))
+  (comment (global-set-key (kbd "M-#") 'dhnam/lookup-word-from-web-other-window))
+  (comment (global-set-key (kbd "C-c d") 'dhnam/lookup-word-from-web))
+  (comment (global-set-key (kbd "C-c D") 'dhnam/lookup-word-from-web-at-point))
 
   (progn
     (let ((map (make-sparse-keymap)))
-      (define-key map (kbd "w") 'lookup-word-from-web-other-window)
-      (define-key map (kbd "d") 'lookup-word-from-web-other-window-directly)
-      (define-key map (kbd "s") 'lookup-word-switch-dictionary)
+      (define-key map (kbd "w") 'dhnam/lookup-word-from-web-other-window)
+      (define-key map (kbd "d") 'dhnam/lookup-word-from-web-other-window-directly)
+      (define-key map (kbd "s") 'dhnam/lookup-word-switch-dictionary)
 
-      (defvar lookup-word-prefix-map map
+      (defvar dhnam/lookup-word-prefix-map map
         "Keymap for workspace related commands."))
 
-    (fset 'lookup-word-prefix-map lookup-word-prefix-map)
+    (fset 'dhnam/lookup-word-prefix-map dhnam/lookup-word-prefix-map)
 
-    (key-chord-define-global "d;" 'lookup-word-prefix-map)))
+    (key-chord-define-global "d;" 'dhnam/lookup-word-prefix-map)))

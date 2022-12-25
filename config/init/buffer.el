@@ -9,7 +9,7 @@
     ;; http://emacs.stackexchange.com/questions/202/close-all-dired-buffers
     (global-set-key "\C-x\C-b" 'ibuffer)))
 
-(require 'make-repeatable-command)
+(require 'dhnam-make-repeatable-command)
 
 (comment
  ;; other window with repeatition
@@ -101,11 +101,11 @@
     ("k" buf-move-down)))
 
 (progn
-  ;; buf-shift-* functions are defined for application buffers of EXWM
+  ;; dhnam/buf-shift-* functions are defined for application buffers of EXWM
 
   (comment (require 'buffer-move))
 
-  (defun buf-shift-up ()
+  (defun dhnam/buf-shift-up ()
     "It's modified from `buf-move-up'"
     (interactive)
     (let* ((other-win (windmove-find-other-window 'up))
@@ -118,7 +118,7 @@
         (set-window-buffer other-win buf-this-buf)
         (select-window other-win))))
 
-  (defun buf-shift-down ()
+  (defun dhnam/buf-shift-down ()
     "It's modified from `buf-move-down'"
     (interactive)
     (let* ((other-win (windmove-find-other-window 'down))
@@ -132,7 +132,7 @@
         (set-window-buffer other-win buf-this-buf)
         (select-window other-win))))
 
-  (defun buf-shift-left ()
+  (defun dhnam/buf-shift-left ()
     "It's modified from `buf-move-left'"
     (interactive)
     (let* ((other-win (windmove-find-other-window 'left))
@@ -145,7 +145,7 @@
         (set-window-buffer other-win buf-this-buf)
         (select-window other-win))))
 
-  (defun buf-shift-right ()
+  (defun dhnam/buf-shift-right ()
     "It's modified from `buf-move-right'"
     (interactive)
     (let* ((other-win (windmove-find-other-window 'right))
@@ -161,7 +161,7 @@
 (progn
   ;; https://stackoverflow.com/a/384346
 
-  (defun rename-file-and-buffer (new-name)
+  (defun dhnam/rename-file-and-buffer (new-name)
     "Renames both current buffer and file it's visiting to NEW-NAME."
     (interactive "sNew name: ")
     (let ((name (buffer-name))
@@ -181,7 +181,7 @@
   (key-chord-define-global "ff" 'find-file)
   )
 
-(defun find-actual-file (filename &optional wildcards)
+(defun dhnam/find-actual-file (filename &optional wildcards)
   "Open an actual file indicated by a symlink"
   ;; https://emacs.stackexchange.com/a/41292
 

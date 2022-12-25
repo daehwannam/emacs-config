@@ -148,9 +148,9 @@ ARG has the same meaning as for `kill-sexp'."
      (define-key global-map (kbd "C-c n") #'paredit-backward-down-forward-up/paredit-forward-up)))
 
   (comment
-   (when (fboundp 'highlight-map)
+   (when (fboundp 'dhnam/highlight-map)
      ;; paredit overwrites M-s and M-S bindings
-     (define-key paredit-mode-map (kbd "C-c h") 'highlight-map))))
+     (define-key paredit-mode-map (kbd "C-c h") 'dhnam/highlight-map))))
 
 (progn
   (comment

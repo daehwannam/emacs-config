@@ -7,11 +7,11 @@
     ;; customize
     (setq awesome-tray-active-modules '("tab-bar" "battery" "date"))
 
-    (defun awesome-tray-module-date-info ()
+    (defun-override awesome-tray-module-date-info ()
       (comment (format-time-string "%m-%d %H:%M %a"))
       (format-time-string "%H:%M %a %m-%d-%Y")))
   (progn
-    (defun awesome-tray-my-module-battery-info ()
+    (defun dhnam/awesome-tray-my-module-battery-info ()
       (let ((current-seconds (awesome-tray-current-seconds)))
         (if (> (- current-seconds awesome-tray-battery-status-last-time) awesome-tray-battery-update-duration)
             (let* ((battery-info (funcall battery-status-function))
@@ -32,24 +32,24 @@
               (setq awesome-tray-battery-status-cache (concat battery-load battery-status)))
           awesome-tray-battery-status-cache)))
 
-    (push '("battery" . (awesome-tray-my-module-battery-info awesome-tray-module-battery-face))
+    (push '("battery" . (dhnam/awesome-tray-my-module-battery-info awesome-tray-module-battery-face))
           awesome-tray-module-alist)
 
-    (defun awesome-tray-my-tab-bar-info ()
+    (defun dhnam/awesome-tray-my-tab-bar-info ()
       (let* ((tabs (funcall tab-bar-tabs-function))
              (current-idx (tab-bar--current-tab-index tabs))
              (current-tab-num (1+ current-idx))
              (num-tabs (length tabs)))
         (format "%d/%d" current-tab-num num-tabs)))
 
-    (push '("tab-bar" . (awesome-tray-my-tab-bar-info awesome-tray-module-awesome-tab-face))
+    (push '("tab-bar" . (dhnam/awesome-tray-my-tab-bar-info awesome-tray-module-awesome-tab-face))
           awesome-tray-module-alist))
 
   (unless (display-graphic-p)
     ;; prevent to make additional line in terminal emacs
     (advice-add 'awesome-tray-get-frame-width :filter-return #'1-))
 
-  (defun awesome-tray-enable ()
+  (defun-override awesome-tray-enable ()
     ;; Save mode-line colors when first time.
     ;; Don't change `awesome-tray-mode-line-colors' anymore.
     (unless awesome-tray-mode-line-colors

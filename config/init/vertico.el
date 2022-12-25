@@ -58,12 +58,12 @@
       (progn
         ;; set the default poshandler
         (setq vertico-posframe-poshandler #'posframe-poshandler-frame-bottom-center))
-      (defun my-vertico-posframe-poshandler-advice-to-display-at-frame-center (orig-func &rest args)
+      (defun dhnam/vertico-posframe-poshandler-advice-to-display-at-frame-center (orig-func &rest args)
         (let ((vertico-posframe-poshandler #'posframe-poshandler-frame-center))
           (apply orig-func args)))
       (progn
         ;; for find-file
-        (advice-add 'read-file-name :around #'my-vertico-posframe-poshandler-advice-to-display-at-frame-center))
+        (advice-add 'read-file-name :around #'dhnam/vertico-posframe-poshandler-advice-to-display-at-frame-center))
       (vertico-posframe-mode 1))))
 
 (use-existing-pkg savehist
@@ -112,7 +112,7 @@
               completion-category-defaults nil
               completion-category-overrides '((file (styles partial-completion)))))
 
-      (defun my-completion-style-advice (orig-func &rest args)
+      (defun dhnam/completion-style-advice (orig-func &rest args)
         (let ((completion-styles '(orderless))
               (completion-category-defaults nil)
               (completion-category-overrides '((file (styles partial-completion)))))
@@ -120,15 +120,15 @@
 
 
 
-(when (and (fboundp 'vertico--advice) (fboundp 'my-completion-style-advice))
-  (defun add-advice-for-vertico (&rest functions)
+(when (and (fboundp 'vertico--advice) (fboundp 'dhnam/completion-style-advice))
+  (defun dhnam/add-advice-for-vertico (&rest functions)
     (mapcar (lambda (x) (progn (advice-add x :around #'vertico--advice)
-                               (advice-add x :around #'my-completion-style-advice)))
+                               (advice-add x :around #'dhnam/completion-style-advice)))
             functions))
 
   (comment
     ;; for find-file
-    (add-advice-for-vertico 'read-file-name)
+    (dhnam/add-advice-for-vertico 'read-file-name)
     (comment (key-chord-define-global "f;" 'firnd-file)))
 
   (use-existing-pkg consult
@@ -136,7 +136,7 @@
     (progn
       (progn
         ;; for consult-line, consult-grep, ...
-        (apply #'add-advice-for-vertico (append '(consult--line consult--line-multi-candidates)
+        (apply #'dhnam/add-advice-for-vertico (append '(consult--line consult--line-multi-candidates)
                                                 '(consult--grep consult--read))))
 
       (defun consult-grep-on-default-directory (&optional dir initial)

@@ -4,13 +4,13 @@
   ;; built in line mode
   ;; https://www.reddit.com/r/orgmode/comments/e7pq7k/linummode_very_slow_for_large_org_files/
 
-  (defvar display-line-numbers-disabled-modes-list '(pdf-view-mode))
-  (defun turn-on-display-line-numbers-mode ()
+  (defvar dhnam/display-line-numbers-disabled-modes-list '(pdf-view-mode))
+  (defun dhnam/turn-on-display-line-numbers-mode ()
     ;; https://www.emacswiki.org/emacs/LineNumbers#h5o-10
-    (unless (or (minibufferp) (member major-mode display-line-numbers-disabled-modes-list))
+    (unless (or (minibufferp) (member major-mode dhnam/display-line-numbers-disabled-modes-list))
       (display-line-numbers-mode 1)))
   (comment (add-hook 'find-file-hook 'display-line-numbers-mode))
-  (add-hook 'find-file-hook 'turn-on-display-line-numbers-mode))
+  (add-hook 'find-file-hook 'dhnam/turn-on-display-line-numbers-mode))
  ((fboundp 'linum-mode)
   ;; linum-mode setting
   ;; https://emacs.stackexchange.com/questions/21504/enable-linum-mode-for-all-files-with-extension-but-not-other-buffers
@@ -29,7 +29,7 @@
                           :foreground (face-foreground 'default)
                           :background (face-background 'default))))))
 
-(defun copy-linum ()
+(defun dhnam/copy-linum ()
   ;; copy line number
   ;; http://ergoemacs.org/emacs/elisp_cut_copy_yank_kill-ring.html
   (interactive)

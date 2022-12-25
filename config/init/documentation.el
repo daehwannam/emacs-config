@@ -9,17 +9,17 @@
   (progn
     ;; common
     (progn
-      (defun poporg-kill-buffer-exit ()
+      (defun dhnam/poporg-kill-buffer-exit ()
 	(interactive)
 	(when (yes-or-no-p "Really abandon this edit? ")
 	  (poporg-kill-buffer-routine))))
     (comment
      (require 'poporg nil t)
-     (define-key poporg-mode-map (kbd "C-x k") #'poporg-kill-buffer-exit))
+     (define-key poporg-mode-map (kbd "C-x k") #'dhnam/poporg-kill-buffer-exit))
 
     (use-existing-pkg poporg
       :bind (:map poporg-mode-map
-		  ("C-x k" . poporg-kill-buffer-exit))))
+		  ("C-x k" . dhnam/poporg-kill-buffer-exit))))
 
   (progn
     ;; org-mode
@@ -27,11 +27,11 @@
 
   (progn
     ;; rst-mode
-    (defun pop-rst-dwim ()
+    (defun dhnam/pop-rst-dwim ()
       (interactive)
       (poporg-dwim)
       (rst-mode)
       (poporg-mode +1))
 
-    (global-set-key (kbd "C-c / r") 'pop-rst-dwim)))
+    (global-set-key (kbd "C-c / r") 'dhnam/pop-rst-dwim)))
   

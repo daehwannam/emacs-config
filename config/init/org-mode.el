@@ -11,7 +11,7 @@
   (require 'org)
   (require 'org-loaddefs)  ; No org-loaddefs.el file could be found from where org.el is loaded.
 
-  (require 'directory-files-recursive)
+  (require 'dhnam-directory-files-recursively)
 
   (when (package-installed-p 'valign)
     ;; Fix for table alignment with CJK characters
@@ -96,7 +96,7 @@
 
   ;; read file contents
   ;; http://ergoemacs.org/emacs/elisp_read_file_content.html
-  (defun get-string-from-file (filePath)
+  (defun dhnam/get-string-from-file (filePath)
     "Return filePath's file content."
     (with-temp-buffer
       (insert-file-contents filePath)
@@ -242,7 +242,7 @@
       ;; fix the problem of unbalanced parentheses by "<" and ">"
       ;; https://emacs.stackexchange.com/a/52209
 
-      (defun org-mode-<>-syntax-fix (start end)
+      (defun dhnam/org-mode-<>-syntax-fix (start end)
         "Change syntax of characters ?< and ?> to symbol within source code blocks."
         (let ((case-fold-search t))
           (when (eq major-mode 'org-mode)
@@ -257,21 +257,21 @@
                   (put-text-property (point) (1- (point))
                                      'syntax-table (string-to-syntax "_"))))))))
 
-      (defun org-setup-<>-syntax-fix ()
+      (defun dhnam/org-setup-<>-syntax-fix ()
         "Setup for characters ?< and ?> in source code blocks.
 Add this function to `org-mode-hook'."
         (make-local-variable 'syntax-propertize-function)
-        (setq syntax-propertize-function 'org-mode-<>-syntax-fix)
+        (setq syntax-propertize-function 'dhnam/org-mode-<>-syntax-fix)
         (syntax-propertize (point-max)))
 
-      (add-hook 'org-mode-hook #'org-setup-<>-syntax-fix)))
+      (add-hook 'org-mode-hook #'dhnam/org-setup-<>-syntax-fix)))
 
   ;;; table
   (add-hook 'org-mode-hook (lambda () (local-set-key (kbd "C-c C-x M-c") 'org-table-insert-column)))
   (add-hook 'org-mode-hook (lambda () (local-set-key (kbd "C-c C-x M-r") 'org-table-insert-row)))
 
 
-  (require 'make-repeatable-command)
+  (require 'dhnam-make-repeatable-command)
 
   (if (and nil (package-installed-p 'hydra))
       (progn
@@ -299,12 +299,12 @@ Add this function to `org-mode-hook'."
     (add-hook 'org-mode-hook (lambda () (org-latex-preview '(16)))) ; preview all formulas in the buffer
     (add-hook 'org-mode-hook 'org-fragtog-mode))
 
-  (defun org-format-latex-change-scale (scale)
+  (defun dhnam/org-format-latex-change-scale (scale)
     (interactive "nScale: " )
     (plist-put org-format-latex-options :scale scale))
 
   (progn
-    (org-format-latex-change-scale 1.5))
+    (dhnam/org-format-latex-change-scale 1.5))
 
   (progn
     ;; Bibliography with BibTeX
@@ -329,7 +329,7 @@ When nil, use the default face background."
         :group 'org
         :type '(choice color (const nil)))
 
-      (defun create-image-with-background-color (args)
+      (defun dhnam/create-image-with-background-color (args)
         "Specify background color of Org-mode inline image through modify `ARGS'."
         (let* ((file (car args))
                (type (cadr args))
@@ -341,7 +341,7 @@ When nil, use the default face background."
                   props)))
 
       (advice-add 'create-image :filter-args
-                  #'create-image-with-background-color))
+                  #'dhnam/create-image-with-background-color))
 
     (progn
       ;; set image background color
@@ -350,7 +350,7 @@ When nil, use the default face background."
       (custom-set-variables '(org-inline-image-background "light gray"))
       ))
 
-  (defun my-org-kill-link-to-clipboard ()
+  (defun dhnam/org-kill-link-to-clipboard ()
     ;; https://emacs.stackexchange.com/a/63051
     (interactive)
     (let* ((context (org-element-context))
@@ -360,7 +360,7 @@ When nil, use the default face background."
       (when (eq type 'link)
         (copy-region-as-kill beg end))))
 
-  (key-chord-define-global "wl" 'my-org-kill-link-to-clipboard)
+  (key-chord-define-global "wl" 'dhnam/org-kill-link-to-clipboard)
 
   (progn
     (defun dhnam/insert-inline-math ()

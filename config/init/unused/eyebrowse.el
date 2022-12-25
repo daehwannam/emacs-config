@@ -1,6 +1,6 @@
 
 (when (fboundp 'eyebrowse-mode)
-  ;; (require 'make-repeatable-command)
+  ;; (require 'dhnam-make-repeatable-command)
   (setq eyebrowse-keymap-prefix (kbd "C-z"))
   (setq eyebrowse-wrap-around t)
 

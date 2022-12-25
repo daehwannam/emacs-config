@@ -80,15 +80,15 @@
 		      ("M-P" backward-list)
 		      ("M-F" forward-sexp)
 		      ("M-B" backward-sexp)
-		      ("C-v" scroll-up-small)
-		      ("M-v" scroll-down-small)
+		      ("C-v" dhnam/scroll-up-small)
+		      ("M-v" dhnam/scroll-down-small)
 		      ("a" move-beginning-of-line)
 		      ;; remove keycall
 		      ("e" move-end-of-line)
 		      ("l" recenter-top-bottom)
-		      ("L" reverse-recenter-top-bottom)
+		      ("L" dhnam/reverse-recenter-top-bottom)
 		      ("M-r" move-to-window-line-top-bottom)
-		      ("M-R" reverse-move-to-window-line-top-bottom)
+		      ("M-R" dhnam/reverse-move-to-window-line-top-bottom)
 		      ("s" isearch-forward)
 		      ("r" isearch-backward)
 		      ("M->" end-of-buffer)
@@ -117,16 +117,16 @@
      ("M-J" forward-list)
      ("M-K" backward-list)
      ("M-L" forward-sexp)
-     ("C-v" scroll-up-small)
-     ("M-v" scroll-down-small)
+     ("C-v" dhnam/scroll-up-small)
+     ("M-v" dhnam/scroll-down-small)
      ("a" move-beginning-of-line)
      ("e" move-end-of-line)
      ("z <RET>" (recenter-top-bottom 0))
      ("z ." recenter-top-bottom)
-     ("z -" reverse-recenter-top-bottom)
+     ("z -" dhnam/reverse-recenter-top-bottom)
      ("H" (move-to-window-line-top-bottom 0))
      ("M" move-to-window-line-top-bottom)
-     ("L" (progn (reverse-move-to-window-line-top-bottom)
+     ("L" (progn (dhnam/reverse-move-to-window-line-top-bottom)
 		 (previous-line)))
      ("s" isearch-forward)
      ("r" isearch-backward)
@@ -140,11 +140,11 @@
    (comment (key-chord-define-global "fd" #'hydra-vi-move/body)))
 
   (comment
-   (defun other-window-backwards () (interactive) (other-window -1))
+   (defun dhnam/other-window-backwards () (interactive) (other-window -1))
    (defhydra hydra-window ()
      "window"
      ("o" other-window)
-     ("O" other-window-backwards)
+     ("O" dhnam/other-window-backwards)
 
      ("0" delete-window)
 
@@ -182,13 +182,13 @@
 
   (comment
     (progn
-      (defun other-window-backwards () (interactive) (other-window -1))
+      (defun dhnam/other-window-backwards () (interactive) (other-window -1))
       (defhydra hydra-window-switch-split ()
 	"window switch/split"
 	("q" nil "quit")  ; stop hydra
 
 	("o" other-window)
-	("O" other-window-backwards)
+	("O" dhnam/other-window-backwards)
 
 	("0" delete-window)
 
@@ -200,7 +200,7 @@
 	("8" split-window-below)
 	("7" split-window-right)
 
-	;; ("p" kill-path-to-clipboard "kill-path")
+	;; ("p" dhnam/kill-path-to-clipboard "kill-path")
 	)
 
       (global-set-key (kbd "C-x o") #'hydra-window-switch-split/other-window)

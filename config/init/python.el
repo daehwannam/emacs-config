@@ -3,29 +3,29 @@
   :init
   (progn
     (comment
-     ;; directory-local
-     ;; https://blog.allardhendriksen.nl/posts/tracking-project-virtual-environments-with-pyvenv-tracking-mode/
-     ;; https://endlessparentheses.com/a-quick-guide-to-directory-local-variables.html
-     ;;
-     ;; - Move to the project root
-     ;; - M-x add-dir-local-variable
-     ;;   - python-mode
-     ;;   - pyvenv-workon --> some-python-environment
-     )
+      ;; directory-local
+      ;; https://blog.allardhendriksen.nl/posts/tracking-project-virtual-environments-with-pyvenv-tracking-mode/
+      ;; https://endlessparentheses.com/a-quick-guide-to-directory-local-variables.html
+      ;;
+      ;; - Move to the project root
+      ;; - M-x add-dir-local-variable
+      ;;   - python-mode
+      ;;   - pyvenv-workon --> some-python-environment
+      )
     (let ((pyvenv-workon-home-path (dhnam/machine-config-get-first 'pyvenv-workon-home-path)))
       (when pyvenv-workon-home-path
-	(setenv "WORKON_HOME" pyvenv-workon-home-path)
-	(pyvenv-mode 1)
-	(comment
-	 ;; pyvenv-tracking-mode is very slow
-	 (pyvenv-tracking-mode 1))))))
+	    (setenv "WORKON_HOME" pyvenv-workon-home-path)
+	    (pyvenv-mode 1)
+	    (comment
+	      ;; pyvenv-tracking-mode is very slow
+	      (pyvenv-tracking-mode 1))))))
 
-;---;;; python-mode
-;---;; https://www.emacswiki.org/emacs/ProgrammingWithPythonModeDotEl
-;---;; https://gitlab.com/python-mode-devs/python-mode
-;---(autoload 'python-mode "python-mode" "Python Mode." t)
-;---(add-to-list 'auto-mode-alist '("\\.py\\'" . python-mode))
-;---add-to-list 'interpreter-mode-alist '("python" . python-mode))
+                                        ;---;;; python-mode
+                                        ;---;; https://www.emacswiki.org/emacs/ProgrammingWithPythonModeDotEl
+                                        ;---;; https://gitlab.com/python-mode-devs/python-mode
+                                        ;---(autoload 'python-mode "python-mode" "Python Mode." t)
+                                        ;---(add-to-list 'auto-mode-alist '("\\.py\\'" . python-mode))
+                                        ;---add-to-list 'interpreter-mode-alist '("python" . python-mode))
 
 ;;; python-mode linum-mode setting
 (comment (add-hook 'python-mode-hook 'linum-mode))
@@ -39,10 +39,13 @@
     (add-hook 'python-mode-hook 'highlight-indent-guides-mode)))
 
 
-;; use C-j as newline-and-indent
-(defun non-electric-indent-mode ()
-  (electric-indent-mode -1))
-;; (add-hook 'python-mode-hook 'non-electric-indent-mode) ; https://github.com/jorgenschaefer/elpy/issues/195
+(progn
+  ;; use C-j as newline-and-indent
+  (defun dhnam/non-electric-indent-mode ()
+    (electric-indent-mode -1))
+  ;; (add-hook 'python-mode-hook 'dhnam/non-electric-indent-mode) ; https://github.com/jorgenschaefer/elpy/issues/195
+  )
+
 
 ;;; python 3 setting
 ;; https://askubuntu.com/questions/460668/how-to-use-python3-in-emacs-on-ubuntu-14-04
@@ -51,18 +54,18 @@
 
 ;;; ipython
 ;; https://stackoverflow.com/a/17817119
-;; (defun run-ipython ()
+;; (defun dhnam/run-ipython ()
 ;;   (interactive)
 ;;   (term "ipython")
 ;;   (rename-buffer "*IPython*"))
 (comment
- (defun run-ipython ()
-   (interactive)
+  (defun dhnam/run-ipython ()
+    (interactive)
 ;;; count windows: https://emacs.stackexchange.com/questions/3494/how-to-count-all-of-the-windows-in-a-frame
-   (if (< (length (mapcar #'window-buffer (window-list))) 2)
-       (split-window-right))
-   (other-window 1)
-   (named-term "ipython" "*IPython*")))
+    (if (< (length (mapcar #'window-buffer (window-list))) 2)
+        (split-window-right))
+    (other-window 1)
+    (named-term "ipython" "*IPython*")))
 
 ;; (when (executable-find "ipython")
 ;;   (setq python-shell-interpreter "ipython"))
@@ -78,16 +81,16 @@
 ;;     (pyvenv-mode 1)))
 ;; )
 
-(defun how-many-str (regexp str)
+(defun dhnam/how-many-str (regexp str)
   (loop with start = 0
         for count from 0
         while (string-match regexp str start)
         do (setq start (match-end 0))
         finally return count))
 
-(defun py-repl-kill-ring-save-without-empty-lines (beg end &optional region)
+(defun dhnam/py-repl-kill-ring-save-without-empty-lines (beg end &optional region)
   (interactive (list (mark) (point)
-		     (prefix-numeric-value current-prefix-arg)))
+		             (prefix-numeric-value current-prefix-arg)))
   ;; https://stackoverflow.com/questions/605846/how-do-i-access-the-contents-of-the-current-region-in-emacs-lisp
   ;; https://stackoverflow.com/questions/6236196/elisp-split-string-function-to-split-a-string-by-character
   (let (lines char-lists indent-sizes min-indent result)
@@ -100,12 +103,12 @@
       (setq char-lists (cons (mapcar (lambda (x) (char-to-string x)) line) char-lists)))
     (setq char-lists (reverse char-lists))
     (setq indent-sizes (mapcar
-			(lambda (x) (let ((size 0) (li x))
-				      (while (string= (car x) " ")
-					(setq size (+ 1 size))
-					(setq x (cdr x)))
-				      size))
-			char-lists))
+			            (lambda (x) (let ((size 0) (li x))
+				                      (while (string= (car x) " ")
+					                    (setq size (+ 1 size))
+					                    (setq x (cdr x)))
+				                      size))
+			            char-lists))
     (setq min-indent (seq-min indent-sizes))
     (setq result "")
     (dolist (line lines)
@@ -115,7 +118,7 @@
 
 (progn
   (require 'python)  ; to access python-mode-map
-  (define-key python-mode-map (kbd "C-c M-w") 'py-repl-kill-ring-save-without-empty-lines))
+  (define-key python-mode-map (kbd "C-c M-w") 'dhnam/py-repl-kill-ring-save-without-empty-lines))
 
 ;; python docstring
 ;; https://github.com/naiquevin/sphinx-doc.el
@@ -123,8 +126,8 @@
 ;; The command is mapped to "C-c M-d"
 (when (fboundp 'sphinx-doc-mode)
   (add-hook 'python-mode-hook (lambda ()
-				(require 'sphinx-doc)
-				(sphinx-doc-mode t))))
+				                (require 'sphinx-doc)
+				                (sphinx-doc-mode t))))
 
 ;; Hy lang setup
 (when (fboundp 'hy-mode)
@@ -146,44 +149,44 @@
  '(gud-pdb-command-name "python -m pdb"))
 
 ;; command copying file path and line number for pdb's breakpoint
-(defun kill-ring-save-pdb-breakpoint ()
+(defun dhnam/kill-ring-save-pdb-breakpoint ()
   ;; https://stackoverflow.com/a/2178975
   (interactive)
   (kill-new (concat (buffer-file-name) ":" (number-to-string (line-number-at-pos)))))
 
-(add-hook 'python-mode-hook (lambda () (local-set-key (kbd "C-c C-x C-p") #'kill-ring-save-pdb-breakpoint)))
-(add-hook 'hy-mode-hook (lambda () (local-set-key (kbd "C-c C-x C-p") #'kill-ring-save-pdb-breakpoint)))
+(add-hook 'python-mode-hook (lambda () (local-set-key (kbd "C-c C-x C-p") #'dhnam/kill-ring-save-pdb-breakpoint)))
+(add-hook 'hy-mode-hook (lambda () (local-set-key (kbd "C-c C-x C-p") #'dhnam/kill-ring-save-pdb-breakpoint)))
 
 ;; pdb setup for Hy
 (setq pdb-hy-input-frame-left-side "import hy; from hy.contrib.hy_repr import hy_repr; print(hy_repr(hy.eval(hy.read_str(\"\"\"")
 (setq pdb-hy-input-frame-right-side "\"\"\"))))")
 
 (comment
- ;; not-used
- (defun insert-py-code-to-hy-output-frame ()
-   (interactive)
-   (setq back-move-len (length "\"))))"))
-   (insert pdb-hy-input-frame-left-side)
-   (insert pdb-hy-input-frame-right-side)
-   (backward-char back-move-len))
+  ;; not-used
+  (defun dhnam/insert-py-code-to-hy-output-frame ()
+    (interactive)
+    (setq back-move-len (length "\"))))"))
+    (insert pdb-hy-input-frame-left-side)
+    (insert pdb-hy-input-frame-right-side)
+    (backward-char back-move-len))
 
- (add-hook 'pdb-mode-hook
-	   (lambda () (local-set-key (kbd "C-c C-j") #'insert-py-code-to-hy-output-frame))))
+  (add-hook 'pdb-mode-hook
+	        (lambda () (local-set-key (kbd "C-c C-j") #'dhnam/insert-py-code-to-hy-output-frame))))
 
 (comment
- (defun hy-pdb-send-input ()
-   (interactive)
-   (move-beginning-of-line 1)
-   (insert pdb-hy-input-frame-left-side)
-   (move-end-of-line 1)
-   (insert pdb-hy-input-frame-right-side)
-   (comint-send-input))
+  (defun dhnam/hy-pdb-send-input ()
+    (interactive)
+    (move-beginning-of-line 1)
+    (insert pdb-hy-input-frame-left-side)
+    (move-end-of-line 1)
+    (insert pdb-hy-input-frame-right-side)
+    (comint-send-input))
 
- (add-hook 'pdb-mode-hook
-	   (lambda () (local-set-key (kbd "M-j") #'hy-pdb-send-input))))
+  (add-hook 'pdb-mode-hook
+	        (lambda () (local-set-key (kbd "M-j") #'dhnam/hy-pdb-send-input))))
 
 (progn
-  (defun comint-send-input-for-hy (&optional no-newline artificial)
+  (defun dhnam/comint-send-input-for-hy (&optional no-newline artificial)
     "comint-send-input for Hy
 
 Below is the original docstring:
@@ -246,231 +249,231 @@ Similarly for Soar, Scheme, etc."
     ;; Note that the input string does not include its terminal newline.
     (let ((proc (get-buffer-process (current-buffer))))
       (if (not proc) (user-error "Current buffer has no process")
-	(widen)
-	(let* ((pmark (process-mark proc))
-	       (intxt (if (>= (point) (marker-position pmark))
-			  (progn (if comint-eol-on-send
-				     (if comint-use-prompt-regexp
-					 (end-of-line)
-				       (goto-char (field-end))))
-				 (buffer-substring pmark (point)))
-			(let ((copy (funcall comint-get-old-input)))
-			  (goto-char pmark)
-			  (insert copy)
-			  copy)))
-	       (input (if (not (eq comint-input-autoexpand 'input))
-			  ;; Just whatever's already there.
-			  intxt
-			;; Expand and leave it visible in buffer.
-			(comint-replace-by-expanded-history t pmark)
-			(buffer-substring pmark (point))))
-	       (history (if (not (eq comint-input-autoexpand 'history))
-			    input
-			  ;; This is messy 'cos ultimately the original
-			  ;; functions used do insertion, rather than return
-			  ;; strings.  We have to expand, then insert back.
-			  (comint-replace-by-expanded-history t pmark)
-			  (let ((copy (buffer-substring pmark (point)))
-				(start (point)))
-			    (insert input)
-			    (delete-region pmark start)
-			    copy))))
+	    (widen)
+	    (let* ((pmark (process-mark proc))
+	           (intxt (if (>= (point) (marker-position pmark))
+			              (progn (if comint-eol-on-send
+				                     (if comint-use-prompt-regexp
+					                     (end-of-line)
+				                       (goto-char (field-end))))
+				                 (buffer-substring pmark (point)))
+			            (let ((copy (funcall comint-get-old-input)))
+			              (goto-char pmark)
+			              (insert copy)
+			              copy)))
+	           (input (if (not (eq comint-input-autoexpand 'input))
+			              ;; Just whatever's already there.
+			              intxt
+			            ;; Expand and leave it visible in buffer.
+			            (comint-replace-by-expanded-history t pmark)
+			            (buffer-substring pmark (point))))
+	           (history (if (not (eq comint-input-autoexpand 'history))
+			                input
+			              ;; This is messy 'cos ultimately the original
+			              ;; functions used do insertion, rather than return
+			              ;; strings.  We have to expand, then insert back.
+			              (comint-replace-by-expanded-history t pmark)
+			              (let ((copy (buffer-substring pmark (point)))
+				                (start (point)))
+			                (insert input)
+			                (delete-region pmark start)
+			                copy))))
 
-	  (unless no-newline
-	    (insert ?\n))
+	      (unless no-newline
+	        (insert ?\n))
 
-	  (comint-add-to-input-history history)
+	      (comint-add-to-input-history history)
 
-	  (run-hook-with-args 'comint-input-filter-functions
-			      (if no-newline input
-				(concat input "\n")))
+	      (run-hook-with-args 'comint-input-filter-functions
+			                  (if no-newline input
+				                (concat input "\n")))
 
-	  (let ((beg (marker-position pmark))
-		(end (if no-newline (point) (1- (point)))))
-	    (with-silent-modifications
-	      (when (> end beg)
-		(add-text-properties beg end
-				     '(front-sticky t
-						    font-lock-face comint-highlight-input))
-		(unless comint-use-prompt-regexp
-		  ;; Give old user input a field property of `input', to
-		  ;; distinguish it from both process output and unsent
-		  ;; input.  The terminating newline is put into a special
-		  ;; `boundary' field to make cursor movement between input
-		  ;; and output fields smoother.
-		  (add-text-properties
-		   beg end
-		   '(mouse-face highlight
-				help-echo "mouse-2: insert after prompt as new input"))))
-	      (unless (or no-newline comint-use-prompt-regexp)
-		;; Cover the terminating newline
-		(add-text-properties end (1+ end)
-				     '(rear-nonsticky t
-						      field boundary
-						      inhibit-line-move-field-capture t)))))
+	      (let ((beg (marker-position pmark))
+		        (end (if no-newline (point) (1- (point)))))
+	        (with-silent-modifications
+	          (when (> end beg)
+		        (add-text-properties beg end
+				                     '(front-sticky t
+						                            font-lock-face comint-highlight-input))
+		        (unless comint-use-prompt-regexp
+		          ;; Give old user input a field property of `input', to
+		          ;; distinguish it from both process output and unsent
+		          ;; input.  The terminating newline is put into a special
+		          ;; `boundary' field to make cursor movement between input
+		          ;; and output fields smoother.
+		          (add-text-properties
+		           beg end
+		           '(mouse-face highlight
+				                help-echo "mouse-2: insert after prompt as new input"))))
+	          (unless (or no-newline comint-use-prompt-regexp)
+		        ;; Cover the terminating newline
+		        (add-text-properties end (1+ end)
+				                     '(rear-nonsticky t
+						                              field boundary
+						                              inhibit-line-move-field-capture t)))))
 
-	  (comint-snapshot-last-prompt)
+	      (comint-snapshot-last-prompt)
 
-	  (setq comint-save-input-ring-index comint-input-ring-index)
-	  (setq comint-input-ring-index nil)
-	  ;; Update the markers before we send the input
-	  ;; in case we get output amidst sending the input.
-	  (set-marker comint-last-input-start pmark)
-	  (set-marker comint-last-input-end (point))
-	  (set-marker (process-mark proc) (point))
-	  ;; clear the "accumulation" marker
-	  (set-marker comint-accum-marker nil)
-	  (let ((comint-input-sender-no-newline no-newline))
-	    (funcall comint-input-sender proc (concat pdb-hy-input-frame-left-side
-						      input
-						      pdb-hy-input-frame-right-side)))  ; modified by dhnam
+	      (setq comint-save-input-ring-index comint-input-ring-index)
+	      (setq comint-input-ring-index nil)
+	      ;; Update the markers before we send the input
+	      ;; in case we get output amidst sending the input.
+	      (set-marker comint-last-input-start pmark)
+	      (set-marker comint-last-input-end (point))
+	      (set-marker (process-mark proc) (point))
+	      ;; clear the "accumulation" marker
+	      (set-marker comint-accum-marker nil)
+	      (let ((comint-input-sender-no-newline no-newline))
+	        (funcall comint-input-sender proc (concat pdb-hy-input-frame-left-side
+						                              input
+						                              pdb-hy-input-frame-right-side)))  ; modified by dhnam
 
-	  ;; Optionally delete echoed input (after checking it).
-	  (when (and comint-process-echoes (not artificial))
-	    (let ((echo-len (- comint-last-input-end
-			       comint-last-input-start)))
-	      ;; Wait for all input to be echoed:
-	      (while (and (> (+ comint-last-input-end echo-len)
-			     (point-max))
-			  (accept-process-output proc)
-			  (zerop
-			   (compare-buffer-substrings
-			    nil comint-last-input-start
-			    (- (point-max) echo-len)
-			    ;; Above difference is equivalent to
-			    ;; (+ comint-last-input-start
-			    ;;    (- (point-max) comint-last-input-end))
-			    nil comint-last-input-end (point-max)))))
-	      (if (and
-		   (<= (+ comint-last-input-end echo-len)
-		       (point-max))
-		   (zerop
-		    (compare-buffer-substrings
-		     nil comint-last-input-start comint-last-input-end
-		     nil comint-last-input-end
-		     (+ comint-last-input-end echo-len))))
-		  ;; Certain parts of the text to be deleted may have
-		  ;; been mistaken for prompts.  We have to prevent
-		  ;; problems when `comint-prompt-read-only' is non-nil.
-		  (let ((inhibit-read-only t))
-		    (delete-region comint-last-input-end
-				   (+ comint-last-input-end echo-len))
-		    (when comint-prompt-read-only
-		      (save-excursion
-			(goto-char comint-last-input-end)
-			(comint-update-fence)))))))
+	      ;; Optionally delete echoed input (after checking it).
+	      (when (and comint-process-echoes (not artificial))
+	        (let ((echo-len (- comint-last-input-end
+			                   comint-last-input-start)))
+	          ;; Wait for all input to be echoed:
+	          (while (and (> (+ comint-last-input-end echo-len)
+			                 (point-max))
+			              (accept-process-output proc)
+			              (zerop
+			               (compare-buffer-substrings
+			                nil comint-last-input-start
+			                (- (point-max) echo-len)
+			                ;; Above difference is equivalent to
+			                ;; (+ comint-last-input-start
+			                ;;    (- (point-max) comint-last-input-end))
+			                nil comint-last-input-end (point-max)))))
+	          (if (and
+		           (<= (+ comint-last-input-end echo-len)
+		               (point-max))
+		           (zerop
+		            (compare-buffer-substrings
+		             nil comint-last-input-start comint-last-input-end
+		             nil comint-last-input-end
+		             (+ comint-last-input-end echo-len))))
+		          ;; Certain parts of the text to be deleted may have
+		          ;; been mistaken for prompts.  We have to prevent
+		          ;; problems when `comint-prompt-read-only' is non-nil.
+		          (let ((inhibit-read-only t))
+		            (delete-region comint-last-input-end
+				                   (+ comint-last-input-end echo-len))
+		            (when comint-prompt-read-only
+		              (save-excursion
+			            (goto-char comint-last-input-end)
+			            (comint-update-fence)))))))
 
-	  ;; This used to call comint-output-filter-functions,
-	  ;; but that scrolled the buffer in undesirable ways.
-	  (run-hook-with-args 'comint-output-filter-functions "")))))
+	      ;; This used to call comint-output-filter-functions,
+	      ;; but that scrolled the buffer in undesirable ways.
+	      (run-hook-with-args 'comint-output-filter-functions "")))))
 
   (add-hook 'pdb-mode-hook
-	    (lambda () (local-set-key (kbd "M-j") #'comint-send-input-for-hy))))
+	        (lambda () (local-set-key (kbd "M-j") #'dhnam/comint-send-input-for-hy))))
 
 (progn
-  ;; hy-shell-set-project-root
-  (defun hy-get-project-root-change-expr-string (new-root)
+  ;; dhnam/hy-shell-set-project-root
+  (defun dhnam/hy-get-project-root-change-expr-string (new-root)
     (format "(do (import sys) (sys.path.insert 0 \"%s\"))" (file-truename new-root)))
 
-  (defun hy-shell-set-project-root (new-root)
+  (defun dhnam/hy-shell-set-project-root (new-root)
     ;; (interactive "DNew project root: ")
-    (interactive (list (read-directory-name "New project root: " (get-python-default-project-root))))
-    (hy-shell--eval-1 (hy-get-project-root-change-expr-string new-root)))
+    (interactive (list (read-directory-name "New project root: " (dhnam/get-python-default-project-root))))
+    (hy-shell--eval-1 (dhnam/hy-get-project-root-change-expr-string new-root)))
 
   (add-hook 'hy-mode-hook
-	    (lambda () (local-set-key (kbd "C-c Z") 'hy-shell-set-project-root)))
+	        (lambda () (local-set-key (kbd "C-c Z") 'dhnam/hy-shell-set-project-root)))
 
-  (defun get-python-default-project-root ()
+  (defun dhnam/get-python-default-project-root ()
     (expand-file-name (locate-dominating-file default-directory ".src")))
 
   (comment
-   (defun run-hy-with-default-project-root ()
-     "modified version of 'run-hy"
-     (interactive)
+    (defun dhnam/run-hy-with-default-project-root ()
+      "modified version of 'run-hy"
+      (interactive)
 
-     (hy-shell--with
-       (switch-to-buffer-other-window (current-buffer)))
-     (let ((project-root (locate-dominating-file default-directory ".src")))
-       (when project-root
-	 (hy-shell--with-live
-	   ;; TODO Force the initial/end cases in a nicer way if possible
-	   (hy-shell--send "\n")
-	   (hy-shell--send (hy-get-project-root-change-expr-string project-root))
-	   (hy-shell--send "\n")))))
+      (hy-shell--with
+        (switch-to-buffer-other-window (current-buffer)))
+      (let ((project-root (locate-dominating-file default-directory ".src")))
+        (when project-root
+	      (hy-shell--with-live
+	        ;; TODO Force the initial/end cases in a nicer way if possible
+	        (hy-shell--send "\n")
+	        (hy-shell--send (dhnam/hy-get-project-root-change-expr-string project-root))
+	        (hy-shell--send "\n")))))
 
-   (add-hook 'hy-mode-hook
-	     (lambda () (local-set-key (kbd "C-c C-Z") 'run-hy-with-default-project-root))))
+    (add-hook 'hy-mode-hook
+	          (lambda () (local-set-key (kbd "C-c C-Z") 'dhnam/run-hy-with-default-project-root))))
 
-  (defun get-py-default-package-name ()
-    (let ((project-root (get-python-default-project-root))
-	  (file-path (buffer-file-name)))
+  (defun dhnam/get-py-default-package-name ()
+    (let ((project-root (dhnam/get-python-default-project-root))
+	      (file-path (buffer-file-name)))
       (when project-root
-	  (substring file-path (length project-root)
-		     (- -1 (length (file-name-extension file-path)))))))
+	    (substring file-path (length project-root)
+		           (- -1 (length (file-name-extension file-path)))))))
 
-  (defun kill-py-default-package-name ()
+  (defun dhnam/kill-py-default-package-name ()
     (interactive)
-    (let ((package-name (get-python-default-project-root)))
+    (let ((package-name (dhnam/get-python-default-project-root)))
       (if package-name
-	  (kill-new (replace-regexp-in-string "/" "." (get-py-default-package-name)))
-	(message "Cannot find project root"))))
+	      (kill-new (replace-regexp-in-string "/" "." (dhnam/get-py-default-package-name)))
+	    (message "Cannot find project root"))))
 
-  (defun kill-hy-default-package-name ()
+  (defun dhnam/kill-hy-default-package-name ()
     (interactive)
-    (let ((package-name (get-python-default-project-root)))
+    (let ((package-name (dhnam/get-python-default-project-root)))
       (if package-name
-	  (kill-new (replace-regexp-in-string "_" "-"
-		     (replace-regexp-in-string "/" "." (get-py-default-package-name))))
-	(message "Cannot find project root"))))
+	      (kill-new (replace-regexp-in-string "_" "-"
+		                                      (replace-regexp-in-string "/" "." (dhnam/get-py-default-package-name))))
+	    (message "Cannot find project root"))))
 
   (require 'cl-lib)
-  (defun find-python-package-at-point (filename)
+  (defun dhnam/find-python-package-at-point (filename)
     (interactive
      (list
       (read-file-name
        "Find a package: " 
        (let ((package-name (cl-destructuring-bind
-			       (start end) (if (use-region-p)
-					       (list (region-beginning) (region-end))
-					     (progn
-					       (let* ((bounds (bounds-of-thing-at-point 'symbol)))
-						 (list (car bounds) (cdr bounds)))))
-			     (buffer-substring-no-properties start end))))
-	 (if (string/starts-with package-name ".")
-	     (let ((num-dot-prefixs (+ (string-match "\\.[^\\.]" package-name) 1)))
-	       (concat (file-name-directory buffer-file-name)
-		       (string-join (mapcar (lambda (x) "..")
-					    (number-sequence 0 (- num-dot-prefixs 2))) "/")
-		       (if (> num-dot-prefixs 1) "/" "")
-		       (replace-regexp-in-string
-			"\\." "/" (replace-regexp-in-string
-				   "-" "_" (substring package-name num-dot-prefixs)))))
-	   (let ((python-default-project-root (get-python-default-project-root)))
-	     (if python-default-project-root
-		 (concat python-default-project-root
-			 (replace-regexp-in-string
-			  "\\." "/" (replace-regexp-in-string
-				     "-" "_" package-name)))
-	       python-default-project-root)))))))
+			                   (start end) (if (use-region-p)
+					                           (list (region-beginning) (region-end))
+					                         (progn
+					                           (let* ((bounds (bounds-of-thing-at-point 'symbol)))
+						                         (list (car bounds) (cdr bounds)))))
+			                 (buffer-substring-no-properties start end))))
+	     (if (string/starts-with package-name ".")
+	         (let ((num-dot-prefixs (+ (string-match "\\.[^\\.]" package-name) 1)))
+	           (concat (file-name-directory buffer-file-name)
+		               (string-join (mapcar (lambda (x) "..")
+					                        (number-sequence 0 (- num-dot-prefixs 2))) "/")
+		               (if (> num-dot-prefixs 1) "/" "")
+		               (replace-regexp-in-string
+			            "\\." "/" (replace-regexp-in-string
+				                   "-" "_" (substring package-name num-dot-prefixs)))))
+	       (let ((python-default-project-root (dhnam/get-python-default-project-root)))
+	         (if python-default-project-root
+		         (concat python-default-project-root
+			             (replace-regexp-in-string
+			              "\\." "/" (replace-regexp-in-string
+				                     "-" "_" package-name)))
+	           python-default-project-root)))))))
     (find-file filename))
 
-  (add-hook 'python-mode-hook (lambda () (local-set-key (kbd "C-c C-x C-f") 'find-python-package-at-point)))
-  (add-hook 'hy-mode-hook (lambda () (local-set-key (kbd "C-c C-x C-f") 'find-python-package-at-point)))
+  (add-hook 'python-mode-hook (lambda () (local-set-key (kbd "C-c C-x C-f") 'dhnam/find-python-package-at-point)))
+  (add-hook 'hy-mode-hook (lambda () (local-set-key (kbd "C-c C-x C-f") 'dhnam/find-python-package-at-point)))
   )
 
 ;; prettify-symbols-mode
 (comment
- (defun init-python-prettify-symbols-alist ()
-   "make some word or string show as pretty Unicode symbols"
-   ;; http://ergoemacs.org/emacs/emacs_pretty_lambda.html
+  (defun dhnam/init-python-prettify-symbols-alist ()
+    "make some word or string show as pretty Unicode symbols"
+    ;; http://ergoemacs.org/emacs/emacs_pretty_lambda.html
 
-   (setq prettify-symbols-alist
-	 `(
-	   ("lambda" . 955)
-	   )))
- (add-hook 'python-mode-hook 'prettify-symbols-mode)
- (add-hook 'python-mode-hook 'init-python-prettify-symbols-alist)
- )
+    (setq prettify-symbols-alist
+	      `(
+	        ("lambda" . 955)
+	        )))
+  (add-hook 'python-mode-hook 'prettify-symbols-mode)
+  (add-hook 'python-mode-hook 'dhnam/init-python-prettify-symbols-alist)
+  )
 
 (progn
   ;; pdbtrace
@@ -480,28 +483,28 @@ Similarly for Soar, Scheme, etc."
   ;; e.g. "(env) user@computer:~/path/to/some(source)dir$"
   (require 'python)
   
-  (defun pdbtrace-shell-mode-hook ()
+  (defun dhnam/pdbtrace-shell-mode-hook ()
     (add-hook 'comint-output-filter-functions 'python-pdbtrack-comint-output-filter-function nil t))
 
   (defun dhnam/enable-pdbtrace-shell-mode ()
     (interactive)
-    (add-hook 'shell-mode-hook 'pdbtrace-shell-mode-hook))
+    (add-hook 'shell-mode-hook 'dhnam/pdbtrace-shell-mode-hook))
 
   (comment
     (defun dhnam/disable-pdbtrace-shell-mode ()
       (interactive)
-      (remove-hook 'shell-mode-hook 'pdbtrace-shell-mode-hook t)))
+      (remove-hook 'shell-mode-hook 'dhnam/pdbtrace-shell-mode-hook t)))
 
   (dhnam/enable-pdbtrace-shell-mode))
 
 
-(defun load-commands-for-pdb-with-hy ()
+(defun dhnam/load-commands-for-pdb-with-hy ()
   (interactive)
-  (local-set-key (kbd "M-j") #'comint-send-input-for-hy))
+  (local-set-key (kbd "M-j") #'dhnam/comint-send-input-for-hy))
 
 
 (progn
-  (defun convert-path-to-package ()
+  (defun dhnam/convert-path-to-package ()
     ""
     ;; https://stackoverflow.com/a/25886353
     (interactive)
@@ -509,11 +512,11 @@ Similarly for Soar, Scheme, etc."
       (let* ((bounds (bounds-of-thing-at-point 'symbol))
              (start (car bounds))
              (end (cdr bounds)))
-	(if (use-region-p)
-	    (replace-regexp "/" "." nil (region-beginning) (region-end))
-	  (replace-regexp "/" "." nil start end)))))
+	    (if (use-region-p)
+	        (replace-regexp "/" "." nil (region-beginning) (region-end))
+	      (replace-regexp "/" "." nil start end)))))
 
-  (defun convert-package-to-path ()
+  (defun dhnam/convert-package-to-path ()
     ""
     ;; https://stackoverflow.com/a/25886353
     (interactive)
@@ -521,9 +524,9 @@ Similarly for Soar, Scheme, etc."
       (let* ((bounds (bounds-of-thing-at-point 'symbol))
              (start (car bounds))
              (end (cdr bounds)))
-	(if (use-region-p)
-	    (replace-regexp "." "/" nil (region-beginning) (region-end))
-	  (replace-regexp "." "/" nil start end))))))
+	    (if (use-region-p)
+	        (replace-regexp "." "/" nil (region-beginning) (region-end))
+	      (replace-regexp "." "/" nil start end))))))
 
 (comment
   (when (package-installed-p 'conda)
@@ -536,7 +539,7 @@ Similarly for Soar, Scheme, etc."
     (conda-env-autoactivate-mode t)))
 
 (progn
-  (require 'make-repeatable-command)
+  (require 'dhnam-make-repeatable-command)
   (define-key python-mode-map (kbd "C-c >") (make-repeatable-command 'python-indent-shift-right))
   (define-key python-mode-map (kbd "C-c <") (make-repeatable-command 'python-indent-shift-left)))
 
@@ -548,29 +551,29 @@ Similarly for Soar, Scheme, etc."
 
 
 (when (fboundp 'ein:run)
-	;; EIN: Emacs IPython Notebook
-	;; https://github.com/millejoh/emacs-ipython-notebook
+  ;; EIN: Emacs IPython Notebook
+  ;; https://github.com/millejoh/emacs-ipython-notebook
 
-	(comment
-	 ;; run IPython notebook server with specific port number
-	 ;; https://github.com/tkf/emacs-ipython-notebook/issues/109#issuecomment-16874676
-	 ;;
-	 ;; $ ipython notebook --port 9999
-	 ;;
-	 ;; then login EIN --> M-x ein:login RET 9999 RET
+  (comment
+	;; run IPython notebook server with specific port number
+	;; https://github.com/tkf/emacs-ipython-notebook/issues/109#issuecomment-16874676
+	;;
+	;; $ ipython notebook --port 9999
+	;;
+	;; then login EIN --> M-x ein:login RET 9999 RET
+	)
+
+  (progn
+	(custom-set-variables
+	 '(ein:polymode t)		; enable other modes such as Elpy
+	 ;; '(ein:cell-input-area ((t (:background "black"))))
+	 '(ein:cell-input-area ((t (:background "gray10"))))
 	 )
+    (custom-set-variables
+     '(ein:jupyter-default-kernel 'python3))
 
-	(progn
-	  (custom-set-variables
-	   '(ein:polymode t)		; enable other modes such as Elpy
-	   ;; '(ein:cell-input-area ((t (:background "black"))))
-	   '(ein:cell-input-area ((t (:background "gray10"))))
-	   )
-      (custom-set-variables
-       '(ein:jupyter-default-kernel 'python3))
-
-	  (add-hook 'ein:notebook-mode-hook 'display-line-numbers-mode)
-	  (setq ein:worksheet-enable-undo t)))
+	(add-hook 'ein:notebook-mode-hook 'display-line-numbers-mode)
+	(setq ein:worksheet-enable-undo t)))
 
 (defun dhnam/insert-source-conda ()
   (interactive)

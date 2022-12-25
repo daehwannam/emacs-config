@@ -13,28 +13,28 @@
 ;;; other window with repeatition
   ;; http://stackoverflow.com/questions/91071/emacs-switch-to-previous-window
 
-  (defun other-window-backwards () (interactive) (other-window -1))
-  (defun other-frame-backwards () (interactive) (other-frame -1))
+  (defun dhnam/other-window-backwards () (interactive) (other-window -1))
+  (defun dhnam/other-frame-backwards () (interactive) (other-frame -1))
 
   (progn
-    (defun split-move-window-below (&optional size)
+    (defun dhnam/split-move-window-below (&optional size)
       (interactive "P")
       (split-window-below size)
       (windmove-down))
 
-    (defun split-move-window-right (&optional size)
+    (defun dhnam/split-move-window-right (&optional size)
       (interactive "P")
       (split-window-right size)
       (windmove-right)))
 
-					;(load "make-repeatable-command") ;(load "~/.emacs.d/package/make-repeatable-command.el")
-  (require 'make-repeatable-command)
+  ;; (load "make-repeatable-command") ;(load "~/.emacs.d/package/make-repeatable-command.el")
+  (require 'dhnam-make-repeatable-command)
   (progn
     (progn
       (global-set-key (kbd "C-x o") (make-repeatable-command 'other-window))
-      (global-set-key (kbd "C-x O") (make-repeatable-command 'other-window-backwards))
+      (global-set-key (kbd "C-x O") (make-repeatable-command 'dhnam/other-window-backwards))
       (global-set-key (kbd "C-x 5 o") (make-repeatable-command 'other-frame))
-      (global-set-key (kbd "C-x 5 O") (make-repeatable-command 'other-frame-backwards))
+      (global-set-key (kbd "C-x 5 O") (make-repeatable-command 'dhnam/other-frame-backwards))
 
       (global-set-key (kbd "C-x ㅐ") (make-repeatable-command 'other-window))
 
@@ -42,11 +42,11 @@
 
     (comment
       (unless (and (boundp 'exwm-split-defined) exwm-split-defined)
-        (global-set-key (kbd "C-x 2") 'split-move-window-below)
-        (global-set-key (kbd "C-x 3") 'split-move-window-right)
+        (global-set-key (kbd "C-x 2") 'dhnam/split-move-window-below)
+        (global-set-key (kbd "C-x 3") 'dhnam/split-move-window-right)
 
-        (global-set-key (kbd "C-x 8") 'split-move-window-below)
-        (global-set-key (kbd "C-x 7") 'split-move-window-right)))
+        (global-set-key (kbd "C-x 8") 'dhnam/split-move-window-below)
+        (global-set-key (kbd "C-x 7") 'dhnam/split-move-window-right)))
 
     (progn
       (global-set-key (kbd "C-x 8") 'split-window-below)
@@ -55,7 +55,7 @@
     (progn
       ;; other-frame key setting
       (global-set-key (kbd "C-c o") (make-repeatable-command 'other-frame))
-      (global-set-key (kbd "C-c O") (make-repeatable-command 'other-frame-backwards))
+      (global-set-key (kbd "C-c O") (make-repeatable-command 'dhnam/other-frame-backwards))
 
       (global-set-key (kbd "C-c ㅐ") (make-repeatable-command 'other-frame))
 
@@ -71,9 +71,9 @@
     (comment
       (let ((map (make-sparse-keymap)))
 	(define-key map (kbd "o") (make-repeatable-command 'other-window))
-	(define-key map (kbd "O") (make-repeatable-command 'other-window-backwards))
+	(define-key map (kbd "O") (make-repeatable-command 'dhnam/other-window-backwards))
 	(define-key map (kbd "5 o") (make-repeatable-command 'other-frame))
-	(define-key map (kbd "5 O") (make-repeatable-command 'other-frame-backwards))
+	(define-key map (kbd "5 O") (make-repeatable-command 'dhnam/other-frame-backwards))
 
 	(define-key map (kbd "ㅐ") (make-repeatable-command 'other-window))
 
@@ -92,7 +92,7 @@
       (let ((map (make-sparse-keymap)))
 	;; other-frame key setting
 	(define-key map (kbd "o") (make-repeatable-command 'other-frame))
-	(define-key map (kbd "O") (make-repeatable-command 'other-frame-backwards))
+	(define-key map (kbd "O") (make-repeatable-command 'dhnam/other-frame-backwards))
 
 	(define-key map (kbd "ㅐ") (make-repeatable-command 'other-frame))
 
@@ -111,9 +111,9 @@
 
   (comment
    (when (and (boundp 'dhnam/exwm-cmd-arg-passed) dhnam/exwm-cmd-arg-passed)
-     (global-set-key (kbd "C-c o") (make-repeatable-command 'exwm-other-workspace-in-group))
-     (global-set-key (kbd "C-c O") (make-repeatable-command 'exwm-other-workspace-in-group-backwards))
-     (global-set-key (kbd "C-c ㅐ") (make-repeatable-command 'exwm-other-workspace-in-group))))
+     (global-set-key (kbd "C-c o") (make-repeatable-command 'dhnam/exwm-other-workspace-in-group))
+     (global-set-key (kbd "C-c O") (make-repeatable-command 'dhnam/exwm-other-workspace-in-group-backwards))
+     (global-set-key (kbd "C-c ㅐ") (make-repeatable-command 'dhnam/exwm-other-workspace-in-group))))
 
   (progn
     ;; window size adjust
@@ -142,20 +142,20 @@
   (key-chord-define-global "j3" 'split-window-right)
   (progn
     (key-chord-define-global "jx" 'other-window)
-    (key-chord-define-global "jc" 'other-window-backwards))
+    (key-chord-define-global "jc" 'dhnam/other-window-backwards))
   (comment
    (key-chord-define-global "jf" 'other-window)
-   (key-chord-define-global "jd" 'other-window-backwards))
+   (key-chord-define-global "jd" 'dhnam/other-window-backwards))
 
   (key-chord-define-global "k4" 'delete-frame)
   (key-chord-define-global "k1" 'delete-other-frames)
   (key-chord-define-global "k2" 'make-frame-command)
   (progn
    (key-chord-define-global "kx" 'other-frame)
-   (key-chord-define-global "kc" 'other-frame-backwards))
+   (key-chord-define-global "kc" 'dhnam/other-frame-backwards))
   (comment
     (key-chord-define-global "kf" 'other-frame)
-    (key-chord-define-global "kd" 'other-frame-backwards)))
+    (key-chord-define-global "kd" 'dhnam/other-frame-backwards)))
 
 (comment
  (global-unset-key (kbd "C-x 1"))
@@ -166,23 +166,23 @@
  (global-unset-key (kbd "C-c 2")))
 
 ;; kill buffer and delete window
-(defun kill-buffer-and-delete-window ()
+(defun dhnam/kill-buffer-and-delete-window ()
   (interactive)
   (kill-buffer)
   (delete-window))
 
-;; (global-set-key (kbd "C-x K") 'kill-buffer-and-delete-window)
+;; (global-set-key (kbd "C-x K") 'dhnam/kill-buffer-and-delete-window)
 
 ;; kill buffer and delete frame
-(defun kill-buffer-and-delete-frame ()
+(defun dhnam/kill-buffer-and-delete-frame ()
   (interactive)
   (kill-buffer)
   (delete-frame))
 
-;(global-set-key (kbd "C-c K") 'kill-buffer-and-delete-frame)
+;(global-set-key (kbd "C-c K") 'dhnam/kill-buffer-and-delete-frame)
 
 ;; kill other window buffer
-(defun kill-other-window-buffer ()
+(defun dhnam/kill-other-window-buffer ()
   (interactive)
   (let ((curr-window (selected-window)))
     (other-window 1)
@@ -190,19 +190,19 @@
     (unless (equal (selected-window) curr-window)
       (other-window -1))))
 
-(global-set-key (kbd "C-x K") 'kill-other-window-buffer)
+(global-set-key (kbd "C-x K") 'dhnam/kill-other-window-buffer)
 
 ;; kill other window
-(defun delete-other-window ()
+(defun dhnam/delete-other-window ()
   (interactive)
   (other-window 1)
   (delete-window))
 
 (comment
- (global-set-key (kbd "C-x 9") 'delete-other-window))
+ (global-set-key (kbd "C-x 9") 'dhnam/delete-other-window))
 
 ;; split windows below or right
-(defun split-window-below-or-right-and-find-file (filename &optional wildcards)
+(defun dhnam/split-window-below-or-right-and-find-file (filename &optional wildcards)
   (interactive
    (find-file-read-args "Find file in other window: "
                         (confirm-nonexistent-file-or-buffer)))
@@ -212,10 +212,10 @@
   (other-window 1)
   (find-file filename))
 
-(comment (global-set-key (kbd "C-x F") 'split-window-below-or-right-and-find-file))
+(comment (global-set-key (kbd "C-x F") 'dhnam/split-window-below-or-right-and-find-file))
 
 
-(defun split-window-below-or-right-and-execute-extended-command (prefixarg &optional command-name)
+(defun dhnam/split-window-below-or-right-and-execute-extended-command (prefixarg &optional command-name)
   ;; Based on Fexecute_extended_command in keyboard.c of Emacs.
   ;; Aaron S. Hawley <aaron.s.hawley(at)gmail.com> 2009-08-24
   "Read function name, then read its arguments and call it.
@@ -269,10 +269,10 @@ give to the command you invoke, if it asks for an argument."
             (sit-for (if (numberp suggest-key-bindings)
                          suggest-key-bindings
                        2))))))))
-(comment (global-set-key (kbd "M-X") 'split-window-below-or-right-and-execute-extended-command))
+(comment (global-set-key (kbd "M-X") 'dhnam/split-window-below-or-right-and-execute-extended-command))
 
 
-(defun split-window-below-or-right-and-switch-to-buffer (buffer-or-name &optional norecord force-same-window)
+(defun dhnam/split-window-below-or-right-and-switch-to-buffer (buffer-or-name &optional norecord force-same-window)
   "Display buffer BUFFER-OR-NAME in the selected window.
 
 WARNING: This is NOT the way to work on another buffer temporarily
@@ -347,7 +347,7 @@ Return the buffer switched to."
       (select-window (selected-window)))
     (set-buffer buffer)))
 
-(comment (global-set-key (kbd "C-x B") 'split-window-below-or-right-and-switch-to-buffer))
+(comment (global-set-key (kbd "C-x B") 'dhnam/split-window-below-or-right-and-switch-to-buffer))
 
 
 (comment

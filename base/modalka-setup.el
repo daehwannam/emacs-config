@@ -71,7 +71,7 @@
 		  mode-line-end-spaces)))
 	(comment
 	 (setq mode-line-format
-	       (get-list-inserted-after
+	       (dhnam/get-list-inserted-after
 		mode-line-format
 		(cl-position 'mode-line-position mode-line-format)
 		'("" (:eval (if (bound-and-true-p modalka-mode) "<M>" "<E>")) "  ")))))
@@ -151,8 +151,8 @@
       (comment
        ;; (modalka-define-kbd "l" "C-l")
        ;; (modalka-define-kbd "L" "M-L")
-       ;; (define-key modalka-mode-map (kbd "L") 'reverse-recenter-top-bottom)
-       (modalka-define-kbd-for-function "L" 'reverse-recenter-top-bottom))
+       ;; (define-key modalka-mode-map (kbd "L") 'dhnam/reverse-recenter-top-bottom)
+       (modalka-define-kbd-for-function "L" 'dhnam/reverse-recenter-top-bottom))
       
       (progn
 	;; (modalka-define-kbd "x s" "C-x s")

@@ -1,7 +1,7 @@
 
 
 ;; https://stackoverflow.com/questions/26478594/how-to-delete-empty-lines-in-a-file-by-emacs/26492924#26492924
-(defun remove-empty-lines ()
+(defun dhnam/remove-empty-lines ()
   (interactive)
   (flush-lines "^[[:space:]]*$"))
 
@@ -12,13 +12,12 @@
 ;; USE "delete-trailing-whitespace" instead
 ;; https://www.emacswiki.org/emacs/DeletingWhitespace#toc3
 
-(defun shrink-empty-lines ()
+(defun dhnam/shrink-empty-lines ()
   (interactive)
   (replace-regexp "^[[:space:]]*\n\\([[:space:]]*\n\\)+" "\n"))
-(shrink-empty-lines)
 
-;; https://stackoverflow.com/a/25886353
-(defun toggle-camelcase-underscores ()
+(defun dhnam/toggle-camelcase-underscores ()
+  ;; https://stackoverflow.com/a/25886353
   "Toggle between camelcase and underscore notation for the symbol at point."
   (interactive)
   (save-excursion
@@ -35,9 +34,9 @@
         (replace-regexp "\\([A-Z]\\)" "_\\1" nil (1+ start) end)
         (downcase-region start (cdr (bounds-of-thing-at-point 'symbol)))))))
 
-(global-set-key (kbd "M-_") 'toggle-camelcase-underscores)
+(global-set-key (kbd "M-_") 'dhnam/toggle-camelcase-underscores)
 
-(defun kill-ring-save-at-point ()
+(defun dhnam/kill-ring-save-at-point ()
   "Copy the symbol at point."
   (interactive)
   (save-excursion
@@ -49,11 +48,11 @@
       (kill-ring-save start end)
       )))
 
-(comment (global-set-key (kbd "C-x M-w") 'kill-ring-save-at-point))
-(comment (global-set-key (kbd "M-W") 'kill-ring-save-at-point))
-(key-chord-define-global "w." 'kill-ring-save-at-point)
+(comment (global-set-key (kbd "C-x M-w") 'dhnam/kill-ring-save-at-point))
+(comment (global-set-key (kbd "M-W") 'dhnam/kill-ring-save-at-point))
+(key-chord-define-global "w." 'dhnam/kill-ring-save-at-point)
 
-(defun just-one-space-in-region (beg end)
+(defun dhnam/just-one-space-in-region (beg end)
   "replace all whitespace in the region with single spaces"
   ;; https://stackoverflow.com/a/8674989
 
@@ -70,25 +69,25 @@
       (while (re-search-forward "\\s-+" nil t)  ; \\s-+
 	    (replace-match " ")))))
 
-(defun just-one-space-conditionally (&optional n)
+(defun dhnam/just-one-space-conditionally (&optional n)
   (interactive "*p")
   (if (use-region-p)
-      (just-one-space-in-region (region-beginning) (region-end))
+      (dhnam/just-one-space-in-region (region-beginning) (region-end))
     (just-one-space n)))
 
-;; (global-set-key (kbd "M-<SPC>") 'just-one-space-conditionally)
+;; (global-set-key (kbd "M-<SPC>") 'dhnam/just-one-space-conditionally)
 (cl-flet ((bound-key-p (k) (when (let ((func (lookup-key (current-global-map) k)))
 				   (or (eq func 'just-one-space)
-				       (eq func 'just-one-space-conditionally)))
+				       (eq func 'dhnam/just-one-space-conditionally)))
 			     k)))
   (let ((k (or (bound-key-p (kbd "M-<SPC>"))
 	       (bound-key-p (kbd "M-'"))
 	       (t (error "No key for 'just-one-space is found")))))
-    (global-set-key k 'just-one-space-conditionally)))
+    (global-set-key k 'dhnam/just-one-space-conditionally)))
 
 (progn
   ;; https://www.emacswiki.org/emacs/CopyingWholeLines
-  (defun copy-and-next-line (arg)
+  (defun dhnam/copy-and-next-line (arg)
     "Copy lines (as many as prefix argument) in the kill ring.
       Ease of use features:
       - Move to start of next line.
@@ -102,14 +101,14 @@
         (if (> (point) (mark))
             (setq beg (save-excursion (goto-char (mark)) (line-beginning-position)))
           (setq end (save-excursion (goto-char (mark)) (line-end-position)))))
-      (if (eq last-command 'copy-and-next-line)
+      (if (eq last-command 'dhnam/copy-and-next-line)
           (kill-append (buffer-substring beg end) (< end beg))
         (kill-ring-save beg end)))
     (kill-append "\n" nil)
     (beginning-of-line (or (and arg (1+ arg)) 2))
     (if (and arg (not (= 1 arg))) (message "%d lines copied" arg)))
 
-  (key-chord-define (current-global-map) "kk" (make-repeatable-command #'copy-and-next-line)))
+  (key-chord-define (current-global-map) "kk" (make-repeatable-command #'dhnam/copy-and-next-line)))
 
 (progn
   ;; add new keybindings for kitty terminal

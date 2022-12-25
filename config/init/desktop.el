@@ -1,5 +1,5 @@
 
-(defun desktop-change-and-make-dir (dirname)
+(defun dhnam/desktop-change-and-make-dir (dirname)
   "Change to desktop saved in DIRNAME.
 Kill the desktop as specified by variables `desktop-save-mode' and
 `desktop-save', then clear the desktop and load the desktop file in

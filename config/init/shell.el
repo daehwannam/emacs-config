@@ -1,45 +1,45 @@
 
-(require 'make-repeatable-command)
+(require 'dhnam-make-repeatable-command)
 
-(defun shell-new-instance ()
+(defun dhnam/shell-new-instance ()
   (interactive)
   (shell (get-buffer-create (generate-new-buffer-name "*shell*"))))
 
-(key-chord-define-global "o1" 'shell-new-instance)
+(key-chord-define-global "o1" 'dhnam/shell-new-instance)
 
-(defun shell-new-instance-other-window (count)
+(defun dhnam/shell-new-instance-other-window (count)
   (interactive "p")
   (split-window-sensibly)
   (other-window count)
-  (shell-new-instance))
+  (dhnam/shell-new-instance))
 
-(comment (key-chord-define-global "o3" 'shell-new-instance-other-window))
+(comment (key-chord-define-global "o3" 'dhnam/shell-new-instance-other-window))
 
 ;; http://stackoverflow.com/questions/2472273/how-do-i-run-a-sudo-command-in-emacs
-(defun sudo-shell-command (command)
+(defun dhnam/sudo-shell-command (command)
   (interactive "MShell command (root): ")
   (shell-command (concat "echo " (shell-quote-argument (read-passwd "Password? "))
                          " | sudo -S " command))
   )
 
-;(defun sudo-shell-command (command)
-;  (interactive "MShell command (root): ")
-;  (with-temp-buffer
-;    (cd "/sudo::/")
-;    (async-shell-command command)))
+;;(defun dhnam/sudo-shell-command (command)
+;;  (interactive "MShell command (root): ")
+;;  (with-temp-buffer
+;;    (cd "/sudo::/")
+;;    (async-shell-command command)))
 (progn
   ;; hide output of 'async-shell-command
   ;; https://emacs.stackexchange.com/a/58341
   (add-to-list 'display-buffer-alist '("*Async Shell Command*" display-buffer-no-window (nil))))
 
-(global-set-key (kbd "C-c M-!") 'sudo-shell-command)
+(global-set-key (kbd "C-c M-!") 'dhnam/sudo-shell-command)
 
 (progn
   ;; open a shell in the current window.
   (comment
-   ;; https://stackoverflow.com/a/46122387
-   ;; WARNING: this change the behavior of 'pdbtrace, so pdbtrace doesn't show the indicated source code
-   (push (cons "\\*shell\\*" display-buffer--same-window-action) display-buffer-alist))
+    ;; https://stackoverflow.com/a/46122387
+    ;; WARNING: this change the behavior of 'pdbtrace, so pdbtrace doesn't show the indicated source code
+    (push (cons "\\*shell\\*" display-buffer--same-window-action) display-buffer-alist))
 
   (progn
     ;; [WARNING]
@@ -48,57 +48,57 @@
     ;; It's because of the prifix argument (C-u), whose value is 4 as default.
     ;; So, other-window-repeat repeats 4 times.
     (add-to-list 'display-buffer-alist
-		 '("\\*shell\\*" . (display-buffer-same-window)))
+		         '("\\*shell\\*" . (display-buffer-same-window)))
     (comment
-     ;; [THIS CODE IS NOT WORKING]
-     ;; trick to consume the prefix argument by advice
-     (defun shell-same-window-advice (orig-fun &rest args)
-       (apply orig-fun args)
-       (universal-argument-more 1))
+      ;; [THIS CODE IS NOT WORKING]
+      ;; trick to consume the prefix argument by advice
+      (defun dhnam/shell-same-window-advice (orig-fun &rest args)
+        (apply orig-fun args)
+        (universal-argument-more 1))
 
-     (advice-add 'shell :around #'shell-same-window-advice)))
-
-  (comment
-   (defun shell-same-window-advice (orig-fun &rest args)
-     (let ((prev-window (selected-window))
-	   (num-windows (count-windows)))
-       (apply orig-fun args)
-       (when (not (equal (count-windows) num-windows))
-	 (delete-window))
-       (let ((shell-buffer (current-buffer)))
-	 (previous-buffer)
-	 (select-window prev-window)
-	 (switch-to-buffer shell-buffer))))
-
-   (advice-add 'shell :around #'shell-same-window-advice))
+      (advice-add 'shell :around #'dhnam/shell-same-window-advice)))
 
   (comment
-   ;; below link contains a more general method which is applied without matching buffer names
-   ;; https://stackoverflow.com/a/40351851/6710003
-   )
+    (defun dhnam/shell-same-window-advice (orig-fun &rest args)
+      (let ((prev-window (selected-window))
+	        (num-windows (count-windows)))
+        (apply orig-fun args)
+        (when (not (equal (count-windows) num-windows))
+	      (delete-window))
+        (let ((shell-buffer (current-buffer)))
+	      (previous-buffer)
+	      (select-window prev-window)
+	      (switch-to-buffer shell-buffer))))
+
+    (advice-add 'shell :around #'dhnam/shell-same-window-advice))
 
   (comment
-   (defun shell-same-window-advice (orig-fun &rest args)
-     (split-window-right)
-     (apply orig-fun args)
-     (other-window -1)
-     (delete-window)
-     (other-window 1))
-
-   (advice-add 'shell :around #'shell-same-window-advice))
+    ;; below link contains a more general method which is applied without matching buffer names
+    ;; https://stackoverflow.com/a/40351851/6710003
+    )
 
   (comment
-   ;; another option is replacing 'pop-to-buffer with 'pop-to-buffer-same-window in 'shell
-   ;; however, it has the same problem with prefix argument
-   (comment
-    (defun shell (...)
-      ...
-      (progn
-	;; [dhnam]
-	;; shell is oppend in the current window 
-	(comment (pop-to-buffer buffer))
-	(pop-to-buffer-same-window buffer))
-      ...))))
+    (defun dhnam/shell-same-window-advice (orig-fun &rest args)
+      (split-window-right)
+      (apply orig-fun args)
+      (other-window -1)
+      (delete-window)
+      (other-window 1))
+
+    (advice-add 'shell :around #'dhnam/shell-same-window-advice))
+
+  (comment
+    ;; another option is replacing 'pop-to-buffer with 'pop-to-buffer-same-window in 'shell
+    ;; however, it has the same problem with prefix argument
+    (comment
+      (defun shell (...)
+        ...
+        (progn
+	      ;; [dhnam]
+	      ;; shell is oppend in the current window 
+	      (comment (pop-to-buffer buffer))
+	      (pop-to-buffer-same-window buffer))
+        ...))))
 
 ;;; shell for virtual env or conda
 ;;
@@ -116,40 +116,40 @@
 ;; below is based on emacs "shell" function
 ;; https://github.com/emacs-mirror/emacs/blob/master/lisp/shell.el
 
-(defun source-shell (&optional buffer env-name)
+(defun dhnam/source-shell (&optional buffer env-name)
   (interactive
    (list
     (and current-prefix-arg
-	 (prog1
-	     (read-buffer "Shell buffer: "
-			  ;; If the current buffer is an inactive
-			  ;; shell buffer, use it as the default.
-			  (if (and (eq major-mode 'shell-mode)
-				   (null (get-buffer-process (current-buffer))))
-			      (buffer-name)
-			    (generate-new-buffer-name "*shell*")))
-	   (if (file-remote-p default-directory)
-	       ;; It must be possible to declare a local default-directory.
-	       ;; FIXME: This can't be right: it changes the default-directory
-	       ;; of the current-buffer rather than of the *shell* buffer.
-	       (setq default-directory
-		     (expand-file-name
-		      (read-directory-name
-		       "Default directory: " default-directory default-directory
-		       t nil))))))
+	     (prog1
+	         (read-buffer "Shell buffer: "
+			              ;; If the current buffer is an inactive
+			              ;; shell buffer, use it as the default.
+			              (if (and (eq major-mode 'shell-mode)
+				                   (null (get-buffer-process (current-buffer))))
+			                  (buffer-name)
+			                (generate-new-buffer-name "*shell*")))
+	       (if (file-remote-p default-directory)
+	           ;; It must be possible to declare a local default-directory.
+	           ;; FIXME: This can't be right: it changes the default-directory
+	           ;; of the current-buffer rather than of the *shell* buffer.
+	           (setq default-directory
+		             (expand-file-name
+		              (read-directory-name
+		               "Default directory: " default-directory default-directory
+		               t nil))))))
     (read-string "Environment name: ")))
   (setq buffer (if (or buffer (not (derived-mode-p 'shell-mode))
-		       (comint-check-proc (current-buffer)))
-		   (get-buffer-create (or buffer "*shell*"))
-		 ;; If the current buffer is a dead shell buffer, use it.
-		 (current-buffer)))
+		               (comint-check-proc (current-buffer)))
+		           (get-buffer-create (or buffer "*shell*"))
+		         ;; If the current buffer is a dead shell buffer, use it.
+		         (current-buffer)))
   (shell buffer)
   ;; (insert (concat "conda activate " (dhnam/machine-config-get-first 'pyvenv-name)))
   (insert (concat "source activate " env-name))
   (comint-send-input))
 
 (progn
-  (defun conda-shell (&optional buffer env-name)
+  (defun dhnam/conda-shell (&optional buffer env-name)
     (interactive
      (list
       (and current-prefix-arg
@@ -187,68 +187,68 @@
     (insert (concat "conda activate " env-name))
     (comint-send-input))
 
-  (defun conda-shell-with-default-name ()
+  (defun dhnam/conda-shell-with-default-name ()
     (interactive)
-    (conda-shell (generate-new-buffer-name "*shell*")
+    (dhnam/conda-shell (generate-new-buffer-name "*shell*")
 		         (completing-read "Environment name: " (pyvenv-virtualenv-list)
 				                  nil t nil 'pyvenv-workon-history nil nil)))
 
-  (comment (key-chord-define-global "o2" 'conda-shell-with-default-name)))
+  (comment (key-chord-define-global "o2" 'dhnam/conda-shell-with-default-name)))
 
-(defun conda-shell-with-default-name-other-window (count)
+(defun dhnam/conda-shell-with-default-name-other-window (count)
   (interactive "p")
   split-window-sensibly
   (other-window count)
-  (conda-shell-with-default-name))
+  (dhnam/conda-shell-with-default-name))
 
-(comment (key-chord-define-global "o4" 'conda-shell-with-default-name-other-window))
+(comment (key-chord-define-global "o4" 'dhnam/conda-shell-with-default-name-other-window))
 
 (progn
   (require 'comint)
   (comment
-   (defhydra hydra-comint-previous-next-matching-input-from-input ()
-     "comint previous/next matching input"
-     ("p" comint-previous-matching-input-from-input)
-     ("n" comint-next-matching-input-from-input))
-   (progn
-     (key-chord-define comint-mode-map "fp" 'hydra-comint-previous-next-matching-input-from-input/comint-previous-matching-input-from-input)
-     (key-chord-define comint-mode-map "fn" 'hydra-comint-previous-next-matching-input-from-input/comint-next-matching-input-from-input)))
+    (defhydra dhnam/hydra-comint-previous-next-matching-input-from-input ()
+      "comint previous/next matching input"
+      ("p" comint-previous-matching-input-from-input)
+      ("n" comint-next-matching-input-from-input))
+    (progn
+      (key-chord-define comint-mode-map "fp" 'dhnam/hydra-comint-previous-next-matching-input-from-input/comint-previous-matching-input-from-input)
+      (key-chord-define comint-mode-map "fn" 'dhnam/hydra-comint-previous-next-matching-input-from-input/comint-next-matching-input-from-input)))
 
   (progn
-    (define-key comint-mode-map (kbd "M-P") 'comint-previous-matching-input-from-input-or-backward-list)
-    (define-key comint-mode-map (kbd "M-N") 'comint-next-matching-input-from-input-or-forward-list))
+    (define-key comint-mode-map (kbd "M-P") 'dhnam/comint-previous-matching-input-from-input-or-backward-list)
+    (define-key comint-mode-map (kbd "M-N") 'dhnam/comint-next-matching-input-from-input-or-forward-list))
 
   (if (and nil (package-installed-p 'hydra))
       (progn
-	(defhydra hydra-comint-previous-next-prompt ()
-	  "comint previous/next promp"
-	  ("p" comint-previous-prompt)
-	  ("n" comint-next-prompt))
-	(define-key comint-mode-map (kbd "C-c C-p")
-	  #'hydra-comint-previous-next-prompt/comint-previous-prompt)
-	(define-key comint-mode-map (kbd "C-c C-n")
-	  #'hydra-comint-previous-next-prompt/comint-next-prompt))
+	    (defhydra dhnam/hydra-comint-previous-next-prompt ()
+	      "comint previous/next promp"
+	      ("p" comint-previous-prompt)
+	      ("n" comint-next-prompt))
+	    (define-key comint-mode-map (kbd "C-c C-p")
+	      #'dhnam/hydra-comint-previous-next-prompt/comint-previous-prompt)
+	    (define-key comint-mode-map (kbd "C-c C-n")
+	      #'dhnam/hydra-comint-previous-next-prompt/comint-next-prompt))
     (progn
       (define-key comint-mode-map (kbd "C-c C-p") (make-repeatable-command 'comint-previous-prompt))
       (define-key comint-mode-map (kbd "C-c C-n") (make-repeatable-command 'comint-next-prompt)))))
 
 (progn
   (comment
-   (if (and nil (package-installed-p 'hydra))
-       (progn
-	 (defhydra hydra-compilation-previous-next-error ()
-	   "compilation previous/next error"
-	   ("p" compilation-previous-error)
-	   ("n" compilation-next-error))
-	 (define-key compilation-shell-minor-mode-map
-	   (kbd "C-c M-p") #'hydra-compilation-previous-next-error/compilation-previous-error)
-	 (define-key compilation-shell-minor-mode-map
-	   (kbd "C-c M-n") #'hydra-compilation-previous-next-error/compilation-next-error))
-     (progn
-       (define-key compilation-shell-minor-mode-map (kbd "C-c M-p")
-	 (make-repeatable-command 'compilation-previous-error))
-       (define-key compilation-shell-minor-mode-map (kbd "C-c M-n")
-	 (make-repeatable-command 'compilation-next-error)))))
+    (if (and nil (package-installed-p 'hydra))
+        (progn
+	      (defhydra dhnam/hydra-compilation-previous-next-error ()
+	        "compilation previous/next error"
+	        ("p" compilation-previous-error)
+	        ("n" compilation-next-error))
+	      (define-key compilation-shell-minor-mode-map
+	        (kbd "C-c M-p") #'dhnam/hydra-compilation-previous-next-error/compilation-previous-error)
+	      (define-key compilation-shell-minor-mode-map
+	        (kbd "C-c M-n") #'dhnam/hydra-compilation-previous-next-error/compilation-next-error))
+      (progn
+        (define-key compilation-shell-minor-mode-map (kbd "C-c M-p")
+	      (make-repeatable-command 'compilation-previous-error))
+        (define-key compilation-shell-minor-mode-map (kbd "C-c M-n")
+	      (make-repeatable-command 'compilation-next-error)))))
 
   (define-key compilation-shell-minor-mode-map (kbd "C-c ]")
     (make-repeatable-command 'compilation-next-error))
@@ -258,46 +258,46 @@
   (define-key compilation-shell-minor-mode-map (kbd "C-M-p") 'backward-list))
 
 (comment
- (defun comint-previous-input-or-compilation-previous-error (arg)
-   "Cycle backwards through input history, saving input, or move
+  (defun dhnam/comint-previous-input-or-compilation-previous-error (arg)
+    "Cycle backwards through input history, saving input, or move
 point to the previous error in the compilation buffer"
-   (interactive "*p")
-   (if (comint-after-pmark-p)
-       (comint-previous-input arg)
-     (compilation-previous-error arg)))
+    (interactive "*p")
+    (if (comint-after-pmark-p)
+        (comint-previous-input arg)
+      (compilation-previous-error arg)))
 
- (defun comint-next-input-or-compilation-next-error (arg)
-   "Cycle forwards through input history, saving input, or move
+  (defun dhnam/comint-next-input-or-compilation-next-error (arg)
+    "Cycle forwards through input history, saving input, or move
 point to the next error in the compilation buffer"
-   (interactive "*p")
-   (if (comint-after-pmark-p)
-       (comint-next-input arg)
-     (compilation-next-error arg)))
+    (interactive "*p")
+    (if (comint-after-pmark-p)
+        (comint-next-input arg)
+      (compilation-next-error arg)))
 
- (defun comint-previous-matching-input-from-input-or-compilation-previous-error (arg)
-   "Cycle backwards through input history, saving input, or move
+  (defun dhnam/comint-previous-matching-input-from-input-or-compilation-previous-error (arg)
+    "Cycle backwards through input history, saving input, or move
 point to the previous error in the compilation buffer"
-   (interactive "*p")
-   (if (comint-after-pmark-p)
-       (comint-previous-matching-input-from-input arg)
-     (compilation-previous-error arg)))
+    (interactive "*p")
+    (if (comint-after-pmark-p)
+        (comint-previous-matching-input-from-input arg)
+      (compilation-previous-error arg)))
 
- (defun comint-next-matching-input-from-input-or-compilation-next-error (arg)
-   "Cycle forwards through input history, saving input, or move
+  (defun dhnam/comint-next-matching-input-from-input-or-compilation-next-error (arg)
+    "Cycle forwards through input history, saving input, or move
 point to the next error in the compilation buffer"
-   (interactive "*p")
-   (if (comint-after-pmark-p)
-       (comint-next-matching-input-from-input arg)
-     (compilation-next-error arg)))
+    (interactive "*p")
+    (if (comint-after-pmark-p)
+        (comint-next-matching-input-from-input arg)
+      (compilation-next-error arg)))
 
- (add-hook 'compilation-shell-minor-mode-hook
-	   (lambda () (local-set-key (kbd "M-p") 'comint-previous-matching-input-from-input-or-compilation-previous-error)))
+  (add-hook 'compilation-shell-minor-mode-hook
+	        (lambda () (local-set-key (kbd "M-p") 'comint-previous-matching-input-from-input-or-compilation-previous-error)))
 
- (add-hook 'compilation-shell-minor-mode-hook
-	   (lambda () (local-set-key (kbd "M-n") 'comint-next-matching-input-from-input-or-compilation-next-error))))
+  (add-hook 'compilation-shell-minor-mode-hook
+	        (lambda () (local-set-key (kbd "M-n") 'comint-next-matching-input-from-input-or-compilation-next-error))))
 
 (progn
-  (defun comint-previous-matching-input-from-input-or-backward-list (arg)
+  (defun dhnam/comint-previous-matching-input-from-input-or-backward-list (arg)
     "Search backwards through input history for match for current input, or move
 backward across one balanced group of parentheses."
     (interactive "^p")
@@ -305,7 +305,7 @@ backward across one balanced group of parentheses."
         (comint-previous-matching-input-from-input arg)
       (backward-list arg)))
 
-  (defun comint-next-matching-input-from-input-or-forward-list (arg)
+  (defun dhnam/comint-next-matching-input-from-input-or-forward-list (arg)
     "Search forwards through input history for match for current input, or move
 forward across one balanced group of parentheses."
     (interactive "^p")
@@ -313,63 +313,63 @@ forward across one balanced group of parentheses."
         (comint-next-matching-input-from-input arg)
       (forward-list arg))))
 
-(defun py3-shell (&optional buffer)
+(defun dhnam/py3-shell (&optional buffer)
   (interactive
    (list
     (and current-prefix-arg
-	 (prog1
-	     (read-buffer "Shell buffer: "
-			  ;; If the current buffer is an inactive
-			  ;; shell buffer, use it as the default.
-			  (if (and (eq major-mode 'shell-mode)
-				   (null (get-buffer-process (current-buffer))))
-			      (buffer-name)
-			    (generate-new-buffer-name "*shell*")))
-	   (if (file-remote-p default-directory)
-	       ;; It must be possible to declare a local default-directory.
-	       ;; FIXME: This can't be right: it changes the default-directory
-	       ;; of the current-buffer rather than of the *shell* buffer.
-	       (setq default-directory
-		     (expand-file-name
-		      (read-directory-name
-		       "Default directory: " default-directory default-directory
-		       t nil))))))))
+	     (prog1
+	         (read-buffer "Shell buffer: "
+			              ;; If the current buffer is an inactive
+			              ;; shell buffer, use it as the default.
+			              (if (and (eq major-mode 'shell-mode)
+				                   (null (get-buffer-process (current-buffer))))
+			                  (buffer-name)
+			                (generate-new-buffer-name "*shell*")))
+	       (if (file-remote-p default-directory)
+	           ;; It must be possible to declare a local default-directory.
+	           ;; FIXME: This can't be right: it changes the default-directory
+	           ;; of the current-buffer rather than of the *shell* buffer.
+	           (setq default-directory
+		             (expand-file-name
+		              (read-directory-name
+		               "Default directory: " default-directory default-directory
+		               t nil))))))))
   (setq buffer (if (or buffer (not (derived-mode-p 'shell-mode))
-		       (comint-check-proc (current-buffer)))
-		   (get-buffer-create (or buffer "*shell*"))
-		 ;; If the current buffer is a dead shell buffer, use it.
-		 (current-buffer)))
+		               (comint-check-proc (current-buffer)))
+		           (get-buffer-create (or buffer "*shell*"))
+		         ;; If the current buffer is a dead shell buffer, use it.
+		         (current-buffer)))
   (shell buffer)
   ;; (insert "source activate py3")
   (insert "conda activate py3")
   (comint-send-input))
 
-(defun py2-shell (&optional buffer)
+(defun dhnam/py2-shell (&optional buffer)
   (interactive
    (list
     (and current-prefix-arg
-	 (prog1
-	     (read-buffer "Shell buffer: "
-			  ;; If the current buffer is an inactive
-			  ;; shell buffer, use it as the default.
-			  (if (and (eq major-mode 'shell-mode)
-				   (null (get-buffer-process (current-buffer))))
-			      (buffer-name)
-			    (generate-new-buffer-name "*shell*")))
-	   (if (file-remote-p default-directory)
-	       ;; It must be possible to declare a local default-directory.
-	       ;; FIXME: This can't be right: it changes the default-directory
-	       ;; of the current-buffer rather than of the *shell* buffer.
-	       (setq default-directory
-		     (expand-file-name
-		      (read-directory-name
-		       "Default directory: " default-directory default-directory
-		       t nil))))))))
+	     (prog1
+	         (read-buffer "Shell buffer: "
+			              ;; If the current buffer is an inactive
+			              ;; shell buffer, use it as the default.
+			              (if (and (eq major-mode 'shell-mode)
+				                   (null (get-buffer-process (current-buffer))))
+			                  (buffer-name)
+			                (generate-new-buffer-name "*shell*")))
+	       (if (file-remote-p default-directory)
+	           ;; It must be possible to declare a local default-directory.
+	           ;; FIXME: This can't be right: it changes the default-directory
+	           ;; of the current-buffer rather than of the *shell* buffer.
+	           (setq default-directory
+		             (expand-file-name
+		              (read-directory-name
+		               "Default directory: " default-directory default-directory
+		               t nil))))))))
   (setq buffer (if (or buffer (not (derived-mode-p 'shell-mode))
-		       (comint-check-proc (current-buffer)))
-		   (get-buffer-create (or buffer "*shell*"))
-		 ;; If the current buffer is a dead shell buffer, use it.
-		 (current-buffer)))
+		               (comint-check-proc (current-buffer)))
+		           (get-buffer-create (or buffer "*shell*"))
+		         ;; If the current buffer is a dead shell buffer, use it.
+		         (current-buffer)))
   (shell buffer)
   ;; (insert "source activate py2")
   (insert "conda activate py2")

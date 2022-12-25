@@ -13,7 +13,7 @@
 ;;; other window with repeatition
 ;; http://stackoverflow.com/questions/91071/emacs-switch-to-previous-window
 ;(load "make-repeatable-command") ;(load "~/.emacs.d/package/make-repeatable-command.el")
-(require 'make-repeatable-command)
+(require 'dhnam-make-repeatable-command)
 
 
 ;;; move forward and backward
@@ -30,7 +30,7 @@
 
 ;;; move forward and backward
 ;; http://stackoverflow.com/questions/3393834/how-to-move-forward-and-backward-in-emacs-mark-ring
-(defun unpop-to-mark-command ()
+(defun dhnam/unpop-to-mark-command ()
   "Unpop off mark ring. Does nothing if mark ring is empty."
   (interactive)
       (when mark-ring
@@ -41,10 +41,10 @@
         (goto-char (marker-position (car (last mark-ring))))))
 
 ;; (global-set-key (kbd "C-x <f7>") (make-repeatable-command 'pop-to-mark-command))
-;; (global-set-key (kbd "C-x <f8>") (make-repeatable-command 'unpop-to-mark-command))
+;; (global-set-key (kbd "C-x <f8>") (make-repeatable-command 'dhnam/unpop-to-mark-command))
 
 ;; (global-set-key (kbd "<f7>") (make-repeatable-command 'pop-to-mark-command))
-;; (global-set-key (kbd "<f8>") (make-repeatable-command 'unpop-to-mark-command))
+;; (global-set-key (kbd "<f8>") (make-repeatable-command 'dhnam/unpop-to-mark-command))
 
 (global-set-key (kbd "<f7>") 'pop-to-mark-command)
-(global-set-key (kbd "<f8>") 'unpop-to-mark-command)
+(global-set-key (kbd "<f8>") 'dhnam/unpop-to-mark-command)

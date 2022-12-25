@@ -9,7 +9,7 @@
 
 
 ;; https://www.emacswiki.org/emacs/DiredSortDirectoriesFirst
-(defun mydired-sort ()
+(defun dhnam/dired-sort ()
   "Sort dired listings with directories first."
   (save-excursion
     (let (buffer-read-only)
@@ -20,7 +20,7 @@
 (defadvice dired-readin
   (after dired-after-updating-hook first () activate)
   "Sort dired listings with directories first before adding marks."
-  (mydired-sort))
+  (dhnam/dired-sort))
 
 (comment
   ;; (This doesn't work)
@@ -38,17 +38,18 @@
   (ad-set-arg 0 t))
 (ad-activate 'quit-window)
 
-(fset 'dired-open-next
-      "no\C-[-\C-xo")
+(comment
+  (fset 'dhnam/dired-open-next
+        "no\C-[-\C-xo"))
 
-(defun dired-open-next ()
+(defun dhnam/dired-open-next ()
   (interactive)
   (let ((window (selected-window)))
 	(dired-next-line 1)
 	(dired-find-file-other-window)
 	(select-window window)))
 
-(defun dired-open-prev ()
+(defun dhnam/dired-open-prev ()
   (interactive)
   (let ((window (selected-window)))
 	(dired-previous-line 1)
@@ -56,10 +57,10 @@
 	(select-window window)))
 
 (add-hook 'dired-mode-hook
-	  (lambda () (local-set-key (kbd "M-n") #'dired-open-next)))
+	  (lambda () (local-set-key (kbd "M-n") #'dhnam/dired-open-next)))
 
 (add-hook 'dired-mode-hook
-	  (lambda () (local-set-key (kbd "M-p") #'dired-open-prev)))
+	  (lambda () (local-set-key (kbd "M-p") #'dhnam/dired-open-prev)))
 
 (progn
   ;; File path copy
@@ -70,7 +71,7 @@
         default-directory
       (or (buffer-file-name) default-directory)))
 
-  (defun kill-path-to-clipboard ()
+  (defun dhnam/kill-path-to-clipboard ()
     "Copy the current buffer file name to the clipboard."
     (interactive)
     (let ((path (dhnam/get-current-file-path)))
@@ -78,7 +79,7 @@
         (kill-new path)
         (message "'%s'" path))))
 
-  (defun kill-file-name-to-clipboard ()
+  (defun dhnam/kill-file-name-to-clipboard ()
     "Copy the current buffer file name to the clipboard."
     (interactive)
     (let ((path (dhnam/get-current-file-path)))
@@ -87,18 +88,18 @@
 	      (kill-new file-name)
 	      (message "'%s'" file-name)))))
 
-  (defun kill-buffer-name-to-clipboard ()
+  (defun dhnam/kill-buffer-name-to-clipboard ()
     "Copy the current buffer file name to the clipboard."
     (interactive)
     (let ((name (buffer-name)))
       (kill-new name)
       (message "'%s'" name)))
 
-  (key-chord-define-global "wp" 'kill-path-to-clipboard)
-  (key-chord-define-global "wn" 'kill-file-name-to-clipboard)
-  (key-chord-define-global "wb" 'kill-buffer-name-to-clipboard)
+  (key-chord-define-global "wp" 'dhnam/kill-path-to-clipboard)
+  (key-chord-define-global "wn" 'dhnam/kill-file-name-to-clipboard)
+  (key-chord-define-global "wb" 'dhnam/kill-buffer-name-to-clipboard)
 
-  (defun kill-other-window-path-to-clipboard (count)
+  (defun dhnam/kill-other-window-path-to-clipboard (count)
     "Copy the other window's path."
     (interactive "p")
     (let ((path (progn (other-window count)
@@ -110,34 +111,34 @@
         (message "'%s'" path)))))
 
 (fset 'dired-do-copy-into-other-window
-   "\C-[xkill-other-window-path-to-clipboard\C-mC\C-y")
+   "\C-[xdhnam/kill-other-window-path-to-clipboard\C-mC\C-y")
 
 (add-hook 'dired-mode-hook
 	  (lambda () (local-set-key (kbd "M-C") #'dired-do-copy-into-other-window)))
 
 (fset 'dired-do-rename-into-other-window
-   "\C-[xkill-other-window-path-to-clipboard\C-mR\C-y")
+   "\C-[xdhnam/kill-other-window-path-to-clipboard\C-mR\C-y")
 
 (add-hook 'dired-mode-hook
 	  (lambda () (local-set-key (kbd "M-R") #'dired-do-rename-into-other-window)))
 
 ;;; functions to process pdf
-(defun normalize-paper-name (str)
+(defun dhnam/normalize-paper-name (str)
   (setq str (downcase str))
   (setq str (replace-regexp-in-string ":" "=" str))
   (setq str (replace-regexp-in-string "[ \n]" "_" str)))
 
-(defun unnormalize-paper-name (str)
+(defun dhnam/unnormalize-paper-name (str)
   (setq str (replace-regexp-in-string "=" ":" str))
   (setq str (replace-regexp-in-string "_" " " str)))
 
-(defun message-normalized-paper-name (name)
+(defun dhnam/message-normalized-paper-name (name)
   (interactive "sEnter paper name: ")
-  (message "%s" (normalize-paper-name name)))
+  (message "%s" (dhnam/normalize-paper-name name)))
 
-(defun message-unnormalized-paper-name (name)
+(defun dhnam/message-unnormalized-paper-name (name)
   (interactive "sEnter paper name: ")
-  (message "%s" (unnormalize-paper-name name)))
+  (message "%s" (dhnam/unnormalize-paper-name name)))
 
 (defun dired-mark-files-by-paths (file-paths)
   (let ((original-point (point)))
@@ -154,26 +155,26 @@
     (goto-char original-point)
     ))
 
-(defun dired-do-normalize-paper-name (&optional arg)
+(defun dhnam/dired-do-normalize-paper-name (&optional arg)
   (interactive "P")
   (let (new-file-paths)
     (dolist (file-path (dired-get-marked-files nil arg))
       (let* ((dir-path (file-name-directory file-path))
 	     (file-name (file-name-nondirectory file-path))
-	     (new-file-path (concat dir-path (normalize-paper-name file-name))))
+	     (new-file-path (concat dir-path (dhnam/normalize-paper-name file-name))))
 	(unless (equal file-path new-file-path)
 	  (rename-file file-path new-file-path))
 	(setq new-file-paths (cons new-file-path new-file-paths))))
     (dired-mark-files-by-paths new-file-paths)))
 
-(defun dired-do-convert-pdf-to-txt (&optional arg)
+(defun dhnam/dired-do-convert-pdf-to-txt (&optional arg)
   (interactive "P")
   (let (new-file-paths)
     (dolist (file-path (dired-get-marked-files nil arg))
       (let* ((dir-path (file-name-directory file-path))
 	     (file-name (file-name-nondirectory file-path))
 	     (new-file-path (replace-regexp-in-string ".pdf" ".txt"
-			     (concat dir-path (normalize-paper-name file-name)))))
+			     (concat dir-path (dhnam/normalize-paper-name file-name)))))
 	(unless (file-exists-p new-file-path)
 	  (setq new-file-paths (cons new-file-path new-file-paths)) ; exclude existing files
 	  (shell-command (concat "pdftotext" " " file-path " " new-file-path)))))
@@ -264,28 +265,28 @@ Version 2019-11-04"
   (setq delete-by-moving-to-trash t)
 
   (comment
-   (defun toggle-delete-by-moving-to-trash ()
+   (defun dhnam/toggle-delete-by-moving-to-trash ()
      (interactive)
      (setq delete-by-moving-to-trash (not delete-by-moving-to-trash))
      (if delete-by-moving-to-trash
 	 (message "Trashing is activated")
        (message "Deleting is activated"))))
 
-  (defun dired-do-direct-delete (&optional arg)
+  (defun dhnam/dired-do-direct-delete (&optional arg)
     (interactive "P")
     (let ((delete-by-moving-to-trash nil))
       (dired-do-delete arg)))
 
-  (defun dired-do-direct-flagged-delete (&optional nomessage)
+  (defun dhnam/dired-do-direct-flagged-delete (&optional nomessage)
     (interactive)
     (let ((delete-by-moving-to-trash nil))
       (dired-do-flagged-delete nomessage)))
 
-  (define-key dired-mode-map (kbd "C-c D") 'dired-do-direct-delete)
-  (define-key dired-mode-map (kbd "C-c X") 'dired-do-direct-flagged-delete))
+  (define-key dired-mode-map (kbd "C-c D") 'dhnam/dired-do-direct-delete)
+  (define-key dired-mode-map (kbd "C-c X") 'dhnam/dired-do-direct-flagged-delete))
 
 (progn
-  (defun dired-find-file-following-symlink ()
+  (defun dhnam/dired-find-file-following-symlink ()
     "In Dired, visit the file or directory on the line, following symlinks"
     ;; https://emacs.stackexchange.com/a/41292
 
@@ -294,6 +295,6 @@ Version 2019-11-04"
       (dired-find-file)))
 
   (progn
-    ;; `dired-find-file-following-symlinks' is mapped instead of `dired-find-file-other-window'
-    (define-key dired-mode-map (kbd "<C-return>") 'dired-find-file-following-symlink)
-    (define-key dired-mode-map (kbd "C-c RET") 'dired-find-file-following-symlink)))
+    ;; `dhnam/dired-find-file-following-symlink' is mapped instead of `dired-find-file-other-window'
+    (define-key dired-mode-map (kbd "<C-return>") 'dhnam/dired-find-file-following-symlink)
+    (define-key dired-mode-map (kbd "C-c RET") 'dhnam/dired-find-file-following-symlink)))

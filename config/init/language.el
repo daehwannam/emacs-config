@@ -1,19 +1,10 @@
 (progn
   ;; Korean setup
 
-  ;; read file contents
-  ;; http://ergoemacs.org/emacs/elisp_read_file_content.html
-  (defun get-string-from-file (filePath)
-    "Return filePath's file content."
-    (with-temp-buffer
-      (insert-file-contents filePath)
-      (buffer-string)))
-
-
-  ;; check OS type
-  ;; http://ergoemacs.org/emacs/elisp_determine_OS_version.html
-
   (cond
+   ;; check OS type
+   ;; http://ergoemacs.org/emacs/elisp_determine_OS_version.html
+
    ((string-equal system-type "windows-nt") ; Microsoft Windows
     ;; ((string-equal machine-domain "ms") ; Microsoft Windows
     (progn
@@ -75,17 +66,17 @@
               (set-face-attribute 'completions-common-part nil :height 'unspecified))))))
     (comment
      ;; this make non full-sized frames for exwm
-     (defun make-frame-command-font-advice (&rest args)
+     (defun dhnam/make-frame-command-font-advice (&rest args)
        (set-frame-font "Inconsolata-12"))
      (advice-add 
       'make-frame-command
       :after
-      'make-frame-command-font-advice
-      '((name . "make-frame-command-font-advice")))
+      'dhnam/make-frame-command-font-advice
+      '((name . "dhnam/make-frame-command-font-advice")))
      (progn
        ;; for thee fist frame
-       (make-frame-command-font-advice)))))
+       (dhnam/make-frame-command-font-advice)))))
 
-(defun toggle-caps-lock-key ()
+(defun dhnam/toggle-caps-lock-key ()
   (interactive)
   (start-process-shell-command "xte" nil "xte 'key Caps_Lock'"))

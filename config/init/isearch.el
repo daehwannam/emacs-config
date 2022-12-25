@@ -14,19 +14,19 @@
 (progn
   ;; https://www.reddit.com/r/emacs/comments/gf64oq/comment/fprm9nn/?utm_source=share&utm_medium=web2x&context=3
 
-  (defun isearch-mark-and-exit ()
+  (defun dhnam/isearch-mark-and-exit ()
     (interactive)
     (isearch-done)
     (push-mark isearch-other-end 'no-message 'activate))
 
-  (defun isearch-kill-string-exit ()
+  (defun dhnam/isearch-kill-string-exit ()
     (interactive)
     (isearch-done)
     (kill-new isearch-string))
 
-  (define-key isearch-mode-map (kbd "C-c C-SPC") 'isearch-mark-and-exit)
-  ;; (define-key isearch-mode-map (kbd "<C-return>") 'isearch-kill-string-exit)
-  (define-key isearch-mode-map (kbd "C-c M-w") 'isearch-kill-string-exit))
+  (define-key isearch-mode-map (kbd "C-c C-SPC") 'dhnam/isearch-mark-and-exit)
+  ;; (define-key isearch-mode-map (kbd "<C-return>") 'dhnam/isearch-kill-string-exit)
+  (define-key isearch-mode-map (kbd "C-c M-w") 'dhnam/isearch-kill-string-exit))
 
 (when (fboundp 'ctrlf-mode)
   (comment

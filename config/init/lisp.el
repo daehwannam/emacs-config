@@ -1,5 +1,5 @@
 
-(require 'make-repeatable-command)
+(require 'dhnam-make-repeatable-command)
 
 (progn
   ;; Emacs lisp 
@@ -38,6 +38,8 @@
       (require 'cl-indent)
       (put 'comment 'lisp-indent-function
            (get 'progn 'common-lisp-indent-function))
+      (put 'defun-override 'lisp-indent-function
+           (get 'defun 'lisp-indent-function))
       (comment
         (put 'cl-flet 'lisp-indent-function
              (get 'flet 'common-lisp-indent-function))
@@ -190,9 +192,9 @@
       (define-key paredit-mode-map (kbd "C-M-f") 'forward-sexp)))
 
   (comment
-    (when (fboundp 'highlight-map)
+    (when (fboundp 'dhnam/highlight-map)
       ;; paredit overwrites M-s and M-S bindings
-      (define-key paredit-mode-map (kbd "C-c h") 'highlight-map))))
+      (define-key paredit-mode-map (kbd "C-c h") 'dhnam/highlight-map))))
 
 (comment
   (when (package-installed-p 'highlight-parentheses)

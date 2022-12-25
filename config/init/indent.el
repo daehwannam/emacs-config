@@ -34,8 +34,8 @@
   (setq-default indent-tabs-mode nil)
   (setq-default tab-width 4)
 
-  (defun enable-indent-tabs-mode ()
+  (defun dhnam/enable-indent-tabs-mode ()
     (setq indent-tabs-mode t))
 
-  (add-hook 'makefile-mode-hook 'enable-indent-tabs-mode))
+  (add-hook 'makefile-mode-hook 'dhnam/enable-indent-tabs-mode))
 

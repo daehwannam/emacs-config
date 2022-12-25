@@ -12,7 +12,7 @@
   (add-to-list 'god-exempt-major-modes 'dired-mode)  ;; god-mode disabled mode list
 
   ;; https://emacs.stackexchange.com/a/38318
-  (defun god-mode-indicator ()
+  (defun dhnam/god-mode-indicator ()
     (cond (god-local-mode
 	   (progn
 	     (set-face-background 'mode-line "blue4")
@@ -26,8 +26,8 @@
 	     (set-face-background 'mode-line "gray75")
 	     (set-face-foreground 'mode-line "black")))))
 
-  (add-hook 'god-mode-enabled-hook 'god-mode-indicator)
-  (add-hook 'god-mode-disabled-hook 'god-mode-indicator)
+  (add-hook 'god-mode-enabled-hook 'dhnam/god-mode-indicator)
+  (add-hook 'god-mode-disabled-hook 'dhnam/god-mode-indicator)
 
   (defun c/god-mode-update-cursor ()
     (let ((limited-colors-p (> 257 (length (defined-colors)))))

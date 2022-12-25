@@ -174,7 +174,7 @@
           (define-key pdf-view-mode-map (kbd "M-f") 'dhnam/pdf-view-next-page-in-multiple-columns-command)))
 
       (progn
-        (defun pdffgrep-with-current-file (command-args)
+        (defun dhnam/pdfgrep-with-current-file (command-args)
           "This function is modified from `pdfgrep'. 
 Run pdfgrep with user-specified COMMAND-ARGS, collect output in a buffer.
 You can use \\[next-error], or RET in the `pdfgrep-buffer-name'
@@ -195,7 +195,7 @@ the PDFGrep job before it finishes, type \\[kill-compilation]."
           (compilation-start command-args 'grep-mode
 		                     (lambda (_x) pdfgrep-buffer-name)))
 
-        (key-chord-define pdf-view-mode-map "sj" 'pdffgrep-with-current-file))))
+        (key-chord-define pdf-view-mode-map "sj" 'dhnam/pdfgrep-with-current-file))))
 
   (add-hook 'doc-view-mode-hook 'dhnam/initialize-pdf-tools))
 
@@ -244,13 +244,13 @@ the PDFGrep job before it finishes, type \\[kill-compilation]."
 (progn
   ;; my bibliography utilities
 
-  (defvar bibliography-file-as-source-of-reference nil
+  (defvar dhnam/bibliography-file-as-source-of-reference nil
     "The path to a bibliography file. It should be used as a local variable.")
   (comment
-    (make-local-variable 'bibliography-file-as-source-of-reference)
-    (setq-default bibliography-file-as-source-of-reference "some-bibliography.bib"))
+    (make-local-variable 'dhnam/bibliography-file-as-source-of-reference)
+    (setq-default dhnam/bibliography-file-as-source-of-reference "some-bibliography.bib"))
 
-  (defun get-start-end-content-positions-of-curly-brackets ()
+  (defun dhnam/get-start-end-content-positions-of-curly-brackets ()
     (let (start-pos end-pos)
       (save-excursion
         ;; find identifiers separated by curly bracket, comma, white-space
@@ -262,33 +262,33 @@ the PDFGrep job before it finishes, type \\[kill-compilation]."
             (setq end-pos (1- (point))))))
       (list start-pos end-pos)))
 
-  (defun kill-current-content-of-curly-brackets-to-clipboard ()
+  (defun dhnam/kill-current-content-of-curly-brackets-to-clipboard ()
     (interactive)
     (let (start-pos end-pos)
-      (let ((start-end-pos-pair (get-start-end-content-positions-of-curly-brackets)))
+      (let ((start-end-pos-pair (dhnam/get-start-end-content-positions-of-curly-brackets)))
         (setq start-pos (car start-end-pos-pair)
               end-pos (cadr start-end-pos-pair))
         (when (and start-pos end-pos)
           (copy-region-as-kill start-pos end-pos)))))
 
-  (defun find-reference-in-bibliography-file () ;; (&optional opening-in-other-window)
+  (defun dhnam/find-reference-in-bibliography-file () ;; (&optional opening-in-other-window)
     (interactive)
     (let ((opening-in-other-window t))
      (let (start-pos end-pos)
-       (let ((start-end-pos-pair (get-start-end-content-positions-of-curly-brackets)))
+       (let ((start-end-pos-pair (dhnam/get-start-end-content-positions-of-curly-brackets)))
          (setq start-pos (car start-end-pos-pair)
                end-pos (cadr start-end-pos-pair)))
        (let ((ref-id-str nil)
              (ref-id-str-valid nil))
          (when (and start-pos end-pos)
-           (setq ref-id-str (trim-string (buffer-substring-no-properties start-pos end-pos)))
+           (setq ref-id-str (dhnam/trim-string (buffer-substring-no-properties start-pos end-pos)))
            (message ref-id-str)
            (setq ref-id-str-valid (not (or (string-match-p "[{}]" ref-id-str)
                                            (string-empty-p ref-id-str))))
            (when ref-id-str-valid
              (let ((ref-pos nil))
                (funcall (if opening-in-other-window #'find-file-other-window #'find-file)
-                        bibliography-file-as-source-of-reference)
+                        dhnam/bibliography-file-as-source-of-reference)
                (save-excursion
                  (beginning-of-buffer)
                  (re-search-forward (format "@.*\\(article\\)\\|\\(inproceedings\\).*%s" ref-id-str))
@@ -301,35 +301,39 @@ the PDFGrep job before it finishes, type \\[kill-compilation]."
              (comment (xref-find-definitions (xref-backend-identifier-at-point (xref-find-backend))))
              (call-interactively 'xref-find-definitions)))))))
 
-  (defun open-pdfurl-of-reference-in-bibliography-file ()
+  (defun dhnam/open-pdfurl-of-reference-in-bibliography-file ()
     (interactive)
-    (find-reference-in-bibliography-file)
-    (re-search-forward "\\(pdfurl\\|@\\)")
-    (re-search-forward "{")
-    (re-search-forward "[^ ]")
-    (let ((original-kill-ring kill-ring))
-      (my-org-kill-link-to-clipboard)
-      (unless (eq original-kill-ring kill-ring)
-        (let ((url (pop kill-ring)))
-          (dhnam/exwm-command-open-web-browser url)))))
+    (dhnam/find-reference-in-bibliography-file)
+    (let ((new-point
+           (save-excursion
+             (re-search-forward "\\(pdfurl\\|@\\)")
+             (re-search-forward "{")
+             (re-search-forward "[^ ]")
+             (point))))
+      (goto-char new-point)
+      (let ((original-kill-ring kill-ring))
+        (my-org-kill-link-to-clipboard)
+        (unless (eq original-kill-ring kill-ring)
+          (let ((url (pop kill-ring)))
+            (dhnam/exwm-command-open-web-browser url))))))
 
 
-  (defvar pdf-file-dir-as-source-of-reference nil
+  (defvar dhnam/pdf-file-dir-as-source-of-reference nil
     "The path to a pdf collection directory. It should be used as a local variable.")
   (comment
-    (make-local-variable 'pdf-file-dir-as-source-of-reference)
-    (setq-default pdf-file-dir-as-source-of-reference "some-pdf-directory-path"))
+    (make-local-variable 'dhnam/pdf-file-dir-as-source-of-reference)
+    (setq-default dhnam/pdf-file-dir-as-source-of-reference "some-pdf-directory-path"))
 
-  (defun open-pdf-file-of-reference ()
+  (defun dhnam/open-pdf-file-of-reference ()
     (interactive)
     (let (start-pos end-pos)
-      (let ((start-end-pos-pair (get-start-end-content-positions-of-curly-brackets)))
+      (let ((start-end-pos-pair (dhnam/get-start-end-content-positions-of-curly-brackets)))
         (setq start-pos (car start-end-pos-pair)
               end-pos (cadr start-end-pos-pair)))
       (let ((ref-id-str nil)
             (ref-id-str-valid nil))
         (when (and start-pos end-pos)
-          (setq ref-id-str (trim-string (buffer-substring-no-properties start-pos end-pos)))
+          (setq ref-id-str (dhnam/trim-string (buffer-substring-no-properties start-pos end-pos)))
           (message ref-id-str)
           (setq ref-id-str-valid (not (or (string-match-p "[{}]" ref-id-str)
                                           (string-empty-p ref-id-str))))
@@ -339,7 +343,7 @@ the PDFGrep job before it finishes, type \\[kill-compilation]."
                                 "/" "+" (replace-regexp-in-string
                                          ":" "=" ref-id-str))
                                ".pdf"))
-                   (file-path (dhnam/join-dirs pdf-file-dir-as-source-of-reference file-name)))
+                   (file-path (dhnam/join-dirs dhnam/pdf-file-dir-as-source-of-reference file-name)))
 
               (if (file-exists-p file-path)
                   (find-file-other-window file-path)
@@ -348,7 +352,7 @@ the PDFGrep job before it finishes, type \\[kill-compilation]."
         (unless ref-id-str-valid
           (message "Invalid cursor position")))))
 
-  (defun pdfgrep-with-default-dir (command-args)
+  (defun dhnam/pdfgrep-with-default-dir (command-args)
     "This function is modified from `pdfgrep'. 
 Run pdfgrep with user-specified COMMAND-ARGS, collect output in a buffer.
 You can use \\[next-error], or RET in the `pdfgrep-buffer-name'
@@ -358,7 +362,7 @@ the PDFGrep job before it finishes, type \\[kill-compilation]."
                                            (let ((default-command
                                                    (concat (pdfgrep-default-command) "'"))
                                                  (appended-arg-str
-                                                  (concat "' " (dhnam/join-paths pdf-file-dir-as-source-of-reference "*"))))
+                                                  (concat "' " (dhnam/join-paths dhnam/pdf-file-dir-as-source-of-reference "*"))))
 					                         (cons (concat default-command appended-arg-str)
                                                    (1+ (length default-command))))
 					                       'pdfgrep-history)))
@@ -395,13 +399,13 @@ the PDFGrep job before it finishes, type \\[kill-compilation]."
               normalized)))
 
         (comment
-          (defun biblio--selection-copy-callback (bibtex entry)
+          (defun dhnam/biblio--selection-copy-callback (bibtex entry)
             "Add BIBTEX (from ENTRY) to kill ring."
             (kill-new (dhnam/post-process-biblio-bibtex bibtex))
             (message "Killed bibtex entry for %S."
                      (biblio--prepare-title (biblio-alist-get 'title entry))))
 
-          (defun biblio--selection-insert-callback (bibtex entry)
+          (defun dhnam/biblio--selection-insert-callback (bibtex entry)
             "Add BIBTEX (from ENTRY) to kill ring."
             (let ((target-buffer biblio--target-buffer))
               (with-selected-window (or (biblio--target-window) (selected-window))

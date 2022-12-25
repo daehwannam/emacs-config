@@ -20,38 +20,38 @@
     (mapcar #'global-unset-key (where-is-internal 'delete-frame))
     (mapcar #'global-unset-key (where-is-internal 'delete-other-frames))
     (mapcar #'global-unset-key (where-is-internal 'other-frame))
-    (mapcar #'global-unset-key (where-is-internal 'other-frame-backwards))
+    (mapcar #'global-unset-key (where-is-internal 'dhnam/other-frame-backwards))
     (mapcar #'global-unset-key (where-is-internal 'other-frame-repeat))
-    (mapcar #'global-unset-key (where-is-internal 'other-frame-backwards-repeat))))
+    (mapcar #'global-unset-key (where-is-internal 'dhnam/other-frame-backwards-repeat))))
 
 (progn
-  (defun define-key-from-C-c (map key)
+  (defun dhnam/define-key-from-C-c (map key)
     (define-key map (kbd key) (key-binding (kbd (concat "C-c " key)))))
 
   (let ((map (make-sparse-keymap)))
     ;; hydra-buffer-move
-    (define-key-from-C-c map "m i")
-    (define-key-from-C-c map "m k")
-    (define-key-from-C-c map "m j")
-    (define-key-from-C-c map "m l")
+    (dhnam/define-key-from-C-c map "m i")
+    (dhnam/define-key-from-C-c map "m k")
+    (dhnam/define-key-from-C-c map "m j")
+    (dhnam/define-key-from-C-c map "m l")
 
     ;; hydra-buffer-shift
-    (define-key-from-C-c map "s i")
-    (define-key-from-C-c map "s k")
-    (define-key-from-C-c map "s j")
-    (define-key-from-C-c map "s l")
+    (dhnam/define-key-from-C-c map "s i")
+    (dhnam/define-key-from-C-c map "s k")
+    (dhnam/define-key-from-C-c map "s j")
+    (dhnam/define-key-from-C-c map "s l")
 
     ;; winner mode
-    (define-key-from-C-c map "<left>")
-    (define-key-from-C-c map "<right>")
+    (dhnam/define-key-from-C-c map "<left>")
+    (dhnam/define-key-from-C-c map "<right>")
 
     ;; er/expand-region
-    (define-key-from-C-c map ".")
+    (dhnam/define-key-from-C-c map ".")
 
-    (defvar my-ctl-c-map map
+    (defvar dhnam/ctl-c-map map
       "Keymap simulating C-c bindings")
 
-    (fset 'my-ctl-c-map my-ctl-c-map)
+    (fset 'dhnam/ctl-c-map dhnam/ctl-c-map)
 
     (comment
-      (key-chord-define-global "qd" 'my-ctl-c-map))))
+      (key-chord-define-global "qd" 'dhnam/ctl-c-map))))

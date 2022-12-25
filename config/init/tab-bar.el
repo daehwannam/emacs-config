@@ -4,30 +4,30 @@
     ;; hide tabs
     (setq tab-bar-show nil))
 
-  (defun tab-bar-move-tab-reverse (&optional arg)
+  (defun dhnam/tab-bar-move-tab-reverse (&optional arg)
     (interactive "p")
     (tab-bar-move-tab (- (or arg 1))))
 
   (progn
-    (require 'make-repeatable-command)
-    ;; (define-self-insert-commands-unless-bound tab-prefix-map "ii")
+    (require 'dhnam-make-repeatable-command)
+    ;; (dhnam/define-self-insert-commands-unless-bound tab-prefix-map "ii")
     (define-key tab-prefix-map "8" 'tab-new)
     (define-key tab-prefix-map "9" 'tab-close-other)
     (define-key tab-prefix-map "o" (make-repeatable-command 'tab-next))
     (define-key tab-prefix-map "O" (make-repeatable-command 'tab-previous))
     (define-key tab-prefix-map "m" (make-repeatable-command 'tab-bar-move-tab))
-    (define-key tab-prefix-map "M" (make-repeatable-command 'tab-bar-move-tab-reverse))
+    (define-key tab-prefix-map "M" (make-repeatable-command 'dhnam/tab-bar-move-tab-reverse))
     (define-key tab-prefix-map "a" 'self-insert-command)
 
     (fset 'tab-prefix-map tab-prefix-map)
     (define-key global-map (kbd "C-z") 'tab-prefix-map)
     (progn
-      (comment (define-self-insert-commands-unless-bound tab-prefix-map "ww"))
+      (comment (dhnam/define-self-insert-commands-unless-bound tab-prefix-map "ww"))
       (key-chord-define-global "qe" 'tab-prefix-map)))
 
   (progn
     ;; advice for tab-next and tab-previous
-    (defun tab-bar-redisplay-advice (orig-fun &rest args)
+    (defun dhnam/tab-bar-redisplay-advice (orig-fun &rest args)
       (apply orig-fun args)
       (progn
 	;; to fix the problem of disappeared text with vertical
@@ -49,11 +49,11 @@
     (comment (dolist (tab-bar-func '(tab-new tab-close tab-close-other tab-next tab-previous)) ...))
     (comment (dolist (tab-bar-func '(tab-bar-new-tab tab-bar-close-tab tab-bar-close-other-tabs tab-bar-switch-to-next-tab))))
     (dolist (tab-bar-func '(tab-new tab-close tab-close-other tab-next tab-previous))
-      (advice-add tab-bar-func :around #'tab-bar-redisplay-advice)))
+      (advice-add tab-bar-func :around #'dhnam/tab-bar-redisplay-advice)))
 
   (comment
    (let ((hydra-def
-	  (defhydra hydra-tab-bar ()
+	  (defhydra dhnam/hydra-tab-bar ()
 	    "tab-bar"
 
 	    ;; from default key bindings
@@ -72,7 +72,7 @@
 	    ("8" tab-new)
 	    ("9" tab-close-other)
 	    ("O" tab-previous)
-	    ("M" tab-bar-move-tab-reverse))))
+	    ("M" dhnam/tab-bar-move-tab-reverse))))
      (global-set-key (kbd "C-z") hydra-def)))
 
   ;; Default tab-bar-mode key map

@@ -2,8 +2,8 @@
 ;;; wgrep
 (require 'wgrep nil t)
 
-;;; grep-file
-(defun grep-file (command-args)
+(defun dhnam/grep-file (command-args)
+  ;; modified from `grep'
   (interactive
    (progn
      (grep-compute-defaults)

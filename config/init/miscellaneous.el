@@ -15,7 +15,7 @@
   (comment (setq old-save-buffers-kill-function #'save-buffers-kill-emacs))
   (setq old-save-buffers-kill-function #'save-buffers-kill-terminal)
 
-  (defun save-buffers-kill-emacs-with-asking ()
+  (defun dhnam/save-buffers-kill-emacs-with-asking ()
     "Close only if y was pressed."
     (interactive)
     (if (y-or-n-p (format "Are you sure you want to close this frame? "))
@@ -26,9 +26,9 @@
       (message "Canceled frame close")))
 
   (when (or t (daemonp))
-    (global-set-key (kbd "C-x C-c") 'save-buffers-kill-emacs-with-asking)
-    (global-set-key (kbd "C-x C-c") 'save-buffers-kill-emacs-with-asking)
-    (key-chord-define-global "xc" 'save-buffers-kill-emacs-with-asking)))
+    (global-set-key (kbd "C-x C-c") 'dhnam/save-buffers-kill-emacs-with-asking)
+    (global-set-key (kbd "C-x C-c") 'dhnam/save-buffers-kill-emacs-with-asking)
+    (key-chord-define-global "xc" 'dhnam/save-buffers-kill-emacs-with-asking)))
 
 (progn
   ;; proced config
@@ -38,21 +38,21 @@
     (add-to-list 'display-buffer-alist '("proced" . (display-buffer-same-window))))
 
   (comment
-   (defun proced-all (&optional arg)
+   (defun dhnam/proced-all (&optional arg)
      (interactive "P")
      (let ((proced-filter 'all))
        (proced arg))))
 
   (progn
-    (defun proced-filter-interactive-all () (interactive) (proced-filter-interactive 'all))
-    (defun proced-filter-interactive-user () (interactive) (proced-filter-interactive 'user))
+    (defun dhnam/proced-filter-interactive-all () (interactive) (proced-filter-interactive 'all))
+    (defun dhnam/proced-filter-interactive-user () (interactive) (proced-filter-interactive 'user))
 
-    (add-hook 'proced-mode-hook (lambda () (key-chord-define-local "fl" 'proced-filter-interactive-all)))
-    (add-hook 'proced-mode-hook (lambda () (key-chord-define-local "fu" 'proced-filter-interactive-user)))
-    (comment (key-chord-define proced-mode-map "fl" 'proced-filter-interactive-all))
-    (comment (key-chord-define proced-mode-map "fu" 'proced-filter-interactive-user))))
+    (add-hook 'proced-mode-hook (lambda () (key-chord-define-local "fl" 'dhnam/proced-filter-interactive-all)))
+    (add-hook 'proced-mode-hook (lambda () (key-chord-define-local "fu" 'dhnam/proced-filter-interactive-user)))
+    (comment (key-chord-define proced-mode-map "fl" 'dhnam/proced-filter-interactive-all))
+    (comment (key-chord-define proced-mode-map "fu" 'dhnam/proced-filter-interactive-user))))
 
 (defun dhnam/kill-gc ()
   (interactive)
   (let ((path-file "~/gc-path.txt"))
-    (kill-new (trim-string (get-string-from-file (trim-string (get-string-from-file path-file)))))))
+    (kill-new (dhnam/trim-string (dhnam/get-string-from-file (dhnam/trim-string (dhnam/get-string-from-file path-file)))))))

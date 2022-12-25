@@ -1,11 +1,11 @@
 (when (eq window-system nil)  ; when it's in terminal mode
   (comment
     ;; processing a custom command line argument
-    (defvar tui-cmd-arg-passed nil)
+    (defvar dhnam/tui-cmd-arg-passed nil)
 
     (let ((remaining-cmd-args (cdr command-line-args)))
       ;; originally '(cdr command-line-args) is passed into `command-line-1'
-      (setq tui-cmd-arg-passed (member "--tui" remaining-cmd-args)))
+      (setq dhnam/tui-cmd-arg-passed (member "--tui" remaining-cmd-args)))
 
     ;; tui setup
     (defun tui-cmd-arg-handler (switch)

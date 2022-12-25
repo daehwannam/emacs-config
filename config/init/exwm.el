@@ -14,7 +14,7 @@
   (add-to-list 'command-switch-alist '("--exwm" . dhnam/exwm-cmd-arg-handler)))
 
 (when dhnam/exwm-cmd-arg-passed
-  (defun exwm-simple-frame-init ()
+  (defun dhnam/exwm-simple-frame-init ()
     (progn
       "this code block has the same effect with `exwm-config-misc'"
 
@@ -68,14 +68,14 @@
       ;; Configure Ido
       (exwm-config-ido)))
 
-  (defun exwm-config-mine ()
-    (exwm-simple-frame-init)
+  (defun dhnam/exwm-config-mine ()
+    (dhnam/exwm-simple-frame-init)
     (dhnam/exwm-config-base)
 
     (progn
       ;; interactive functions
 
-      (defun exwm-get-pid-of-buffer (buffer-or-name)
+      (defun dhnam/exwm-get-pid-of-buffer (buffer-or-name)
         (interactive "bBuffer name: ")
         (let* ((buf (or buffer-or-name (current-buffer)))
                (id (exwm--buffer->id (get-buffer buf)))) ; ID of X window being displayed
@@ -91,25 +91,25 @@
     (progn
       ;; workspace switching functions
       (progn
-        (defun exwm-other-workspace (count)
+        (defun dhnam/exwm-other-workspace (count)
           (interactive "p")
           (exwm-workspace-switch (% (+ exwm-workspace-current-index 1)
                                     (exwm-workspace--count))))
 
-        (defun exwm-other-workspace-backwards () (interactive) (exwm-other-workspace -1))
+        (defun dhnam/exwm-other-workspace-backwards () (interactive) (dhnam/exwm-other-workspace -1))
 
         (let ((map (make-sparse-keymap)))
           (define-key map (kbd "r") 'exwm-reset)
           (define-key map (kbd "t") 'exwm-floating-toggle-floating)
-          (define-key map (kbd "f") 'exwm-layout-set-fullscreen)
+          (define-key map (kbd "f") 'dhnam/exwm-layout-set-fullscreen)
 
           (define-key map (kbd "j") 'exwm-input-grab-keyboard)
           (define-key map (kbd "k") 'exwm-input-release-keyboard)
 
-	      (define-key map (kbd "o") (make-repeatable-command 'exwm-other-workspace))
-	      (define-key map (kbd "O") (make-repeatable-command 'exwm-other-workspace-backwards))
-          (define-key map (kbd "ㅐ") (make-repeatable-command 'exwm-other-workspace))
-          (define-key map (kbd "ㅒ") (make-repeatable-command 'exwm-other-workspace-backwards))
+	      (define-key map (kbd "o") (make-repeatable-command 'dhnam/exwm-other-workspace))
+	      (define-key map (kbd "O") (make-repeatable-command 'dhnam/exwm-other-workspace-backwards))
+          (define-key map (kbd "ㅐ") (make-repeatable-command 'dhnam/exwm-other-workspace))
+          (define-key map (kbd "ㅒ") (make-repeatable-command 'dhnam/exwm-other-workspace-backwards))
           (define-key map (kbd "s") 'exwm-workspace-switch)
           (define-key map (kbd "0") 'exwm-workspace-delete)
           (define-key map (kbd "8") 'exwm-workspace-add)
@@ -135,7 +135,7 @@
 
     (comment
       ;; disable fullscreen
-      (cl-defun exwm-layout-set-fullscreen (&optional id)
+      (cl-defun dhnam/exwm-layout-set-fullscreen (&optional id)
         "Make window ID fullscreen."
         (interactive)
         ;; (exwm-layoaut-unset-fullscreen id)
@@ -148,11 +148,11 @@
 
     (progn
       ;; brightness
-      (defun xrandr-set-brightness (brightness)
+      (defun dhnam/xrandr-set-brightness (brightness)
         (interactive "NEnter brightness percentage: ")
         (if (<= 0 brightness 100)
             (start-process-shell-command
-             "xrandr-set-brightness" nil
+             "dhnam/xrandr-set-brightness" nil
              "~/.emacs.d/config/init/dependent/xrandr-set-brightness.sh"
              (number-to-string (/ brightness 100.0)))
           (user-error "Out of range"))))
@@ -213,18 +213,18 @@
         ;; https://github.com/daviwil/emacs-from-scratch/blob/39f63fe133cd4c41e13bbd1551c6517162851411/show-notes/Emacs-Desktop-03.org#customizing-buffer-name-based-on-window-title
         ;; https://www.youtube.com/watch?v=HGGU5Zvljj8
 
-        (defvar exwm-buffer-name-joint ": ")
+        (defvar dhnam/exwm-buffer-name-joint ": ")
 
-        (defun exwm-rename-buffer ()
+        (defun dhnam/exwm-rename-buffer ()
           (interactive)
           (exwm-workspace-rename-buffer
-           (concat exwm-class-name exwm-buffer-name-joint
+           (concat exwm-class-name dhnam/exwm-buffer-name-joint
                    (if (<= (length exwm-title) 50) exwm-title
                      (concat (substring exwm-title 0 49) "...")))))
 
         ;; Add these hooks in a suitable place (e.g., as done in exwm-config-default)
-        (add-hook 'exwm-update-class-hook 'exwm-rename-buffer)
-        (add-hook 'exwm-update-title-hook 'exwm-rename-buffer)))
+        (add-hook 'exwm-update-class-hook 'dhnam/exwm-rename-buffer)
+        (add-hook 'exwm-update-title-hook 'dhnam/exwm-rename-buffer)))
 
     (progn
       ;; enable switching betwen buffers in other workspaces
@@ -292,7 +292,7 @@
           (string-match "[^[:blank:][:space:]]*://[^[:blank:][:space:]]*"
                         s))
 
-        (defun get-web-search-query-url-string (query-string)
+        (defun dhnam/get-web-search-query-url-string (query-string)
           (cond
            ((string-empty-p query-string)
             "https://www.google.com/")
@@ -307,7 +307,7 @@
                   (url url)
                   ((use-region-p)
                    (deactivate-mark)
-                   (get-web-search-query-url-string
+                   (dhnam/get-web-search-query-url-string
                     (buffer-substring-no-properties (region-beginning) (region-end))))
                   (t ""))))
             (start-process-shell-command "web-browser" nil
@@ -349,12 +349,12 @@
             "~/.emacs.d/config/init/dependent/search-engines.lisp")
 
           (defvar dhnam/web-search-engines
-            (car (read-from-string (get-string-from-file dhnam/web-search-engine-list-file-path))))
+            (car (read-from-string (dhnam/get-string-from-file dhnam/web-search-engine-list-file-path))))
 
           (defun dhnam/update-web-search-engines ()
             (interactive)
             (setq dhnam/web-search-engines
-                  (car (read-from-string (get-string-from-file dhnam/web-search-engine-list-file-path)))))
+                  (car (read-from-string (dhnam/get-string-from-file dhnam/web-search-engine-list-file-path)))))
 
           (defun dhnam/exwm-query-to-browser (&optional query open-web-browser)
             (interactive "sSearch query: ")
@@ -469,7 +469,7 @@
 
     (progn
       ;; additional functions for convenience
-      (defun counsel-switch-buffer-within-app ()
+      (defun dhnam/counsel-switch-buffer-within-app ()
         "Switch to another buffer within application.
 Display a preview of the selected ivy completion candidate buffer
 in the current window."
@@ -478,15 +478,15 @@ in the current window."
                '((ivy-switch-buffer . counsel--switch-buffer-update-fn)))
               (ivy-unwind-fns-alist
                '((ivy-switch-buffer . counsel--switch-buffer-unwind))))
-          (ivy-switch-buffer-within-app)))
+          (dhnam/ivy-switch-buffer-within-app)))
 
-      (defun ivy-switch-buffer-within-app ()
+      (defun dhnam/ivy-switch-buffer-within-app ()
         "Switch to another buffer within application.."
         (interactive)
         (let ((ivy-ignore-buffers
-               (if exwm-class-name  ; (string-match-p exwm-buffer-name-joint (buffer-name (current-buffer)))
+               (if exwm-class-name  ; (string-match-p dhnam/exwm-buffer-name-joint (buffer-name (current-buffer)))
                    ivy-ignore-buffers
-                 (cons exwm-buffer-name-joint ivy-ignore-buffers))))
+                 (cons dhnam/exwm-buffer-name-joint ivy-ignore-buffers))))
           (ivy-read "Switch to buffer: " #'internal-complete-buffer
                     :keymap ivy-switch-buffer-map
                     :preselect (unless exwm-class-name (buffer-name (other-buffer (current-buffer))))
@@ -494,11 +494,11 @@ in the current window."
                     :matcher #'ivy--switch-buffer-matcher
                     :caller 'ivy-switch-buffer
                     :initial-input (when exwm-class-name
-                                     (concat (downcase exwm-class-name) exwm-buffer-name-joint))))))
+                                     (concat (downcase exwm-class-name) dhnam/exwm-buffer-name-joint))))))
 
     (progn
       ;; additional functions for convenience
-      (defun counsel-switch-buffer-from-current ()
+      (defun dhnam/counsel-switch-buffer-from-current ()
         "Switch to another buffer within application.
 Display a preview of the selected ivy completion candidate buffer
 in the current window."
@@ -507,15 +507,15 @@ in the current window."
                '((ivy-switch-buffer . counsel--switch-buffer-update-fn)))
               (ivy-unwind-fns-alist
                '((ivy-switch-buffer . counsel--switch-buffer-unwind))))
-          (ivy-switch-buffer-from-current)))
+          (dhnam/ivy-switch-buffer-from-current)))
 
-      (defun ivy-switch-buffer-from-current ()
+      (defun dhnam/ivy-switch-buffer-from-current ()
         "Switch to another buffer within application.."
         (interactive)
         (let ((ivy-ignore-buffers
-               (if exwm-class-name  ; (string-match-p exwm-buffer-name-joint (buffer-name (current-buffer)))
+               (if exwm-class-name  ; (string-match-p dhnam/exwm-buffer-name-joint (buffer-name (current-buffer)))
                    ivy-ignore-buffers
-                 (cons exwm-buffer-name-joint ivy-ignore-buffers))))
+                 (cons dhnam/exwm-buffer-name-joint ivy-ignore-buffers))))
           (ivy-read "Switch to buffer: " #'internal-complete-buffer
                     :keymap ivy-switch-buffer-map
                     ;; :preselect (buffer-name (current-buffer))
@@ -525,7 +525,7 @@ in the current window."
 
     (progn
       ;; additional functions for convenience
-      (defun counsel-switch-buffer-excluding-exwm ()
+      (defun dhnam/counsel-switch-buffer-excluding-exwm ()
         "Switch to another buffer within application.
 Display a preview of the selected ivy completion candidate buffer
 in the current window."
@@ -534,14 +534,14 @@ in the current window."
                '((ivy-switch-buffer . counsel--switch-buffer-update-fn)))
               (ivy-unwind-fns-alist
                '((ivy-switch-buffer . counsel--switch-buffer-unwind))))
-          (ivy-switch-buffer-excluding-exwm)))
+          (dhnam/ivy-switch-buffer-excluding-exwm)))
 
-      (defun ivy-switch-buffer-excluding-exwm ()
+      (defun dhnam/ivy-switch-buffer-excluding-exwm ()
         "Switch to another buffer within application.."
         (interactive)
         (let ((ivy-ignore-buffers
                (cons (buffer-name (current-buffer))
-                     (cons exwm-buffer-name-joint ivy-ignore-buffers))))
+                     (cons dhnam/exwm-buffer-name-joint ivy-ignore-buffers))))
           (ivy-read "Switch to buffer: " #'internal-complete-buffer
                     :keymap ivy-switch-buffer-map
                     ;; :preselect (buffer-name (current-buffer))
@@ -550,12 +550,12 @@ in the current window."
                     :caller 'ivy-switch-buffer))))
 
     (with-eval-after-load 'ivy
-      (defun ivy-insert-current-exwm-class-name ()
+      (defun dhnam/ivy-insert-current-exwm-class-name ()
         "Insert `exwm-class-name'"
         (interactive)
         (when dhnam/ivy-original-exwm-class-name
           (delete-minibuffer-contents)
-          (insert (concat (downcase dhnam/ivy-original-exwm-class-name) exwm-buffer-name-joint))))
+          (insert (concat (downcase dhnam/ivy-original-exwm-class-name) dhnam/exwm-buffer-name-joint))))
 
       (progn
         (defun dhnam/ivy-switch-buffer-advice-for-exwm (orig-fun &rest args)
@@ -563,17 +563,17 @@ in the current window."
             (apply orig-fun args)))
 
         (advice-add 'ivy-switch-buffer :around #'dhnam/ivy-switch-buffer-advice-for-exwm)
-        (advice-add 'ivy-switch-buffer-within-app :around #'dhnam/ivy-switch-buffer-advice-for-exwm)
-        (advice-add 'ivy-switch-buffer-from-current :around #'dhnam/ivy-switch-buffer-advice-for-exwm)
-        (advice-add 'ivy-switch-buffer-excluding-exwm :around #'dhnam/ivy-switch-buffer-advice-for-exwm))
+        (advice-add 'dhnam/ivy-switch-buffer-within-app :around #'dhnam/ivy-switch-buffer-advice-for-exwm)
+        (advice-add 'dhnam/ivy-switch-buffer-from-current :around #'dhnam/ivy-switch-buffer-advice-for-exwm)
+        (advice-add 'dhnam/ivy-switch-buffer-excluding-exwm :around #'dhnam/ivy-switch-buffer-advice-for-exwm))
 
-      (ivy-define-key ivy-minibuffer-map (kbd "s-j") 'ivy-insert-current-exwm-class-name)
-      (ivy-define-key ivy-minibuffer-map (kbd "C-s-j") 'ivy-insert-current-exwm-class-name))
+      (ivy-define-key ivy-minibuffer-map (kbd "s-j") 'dhnam/ivy-insert-current-exwm-class-name)
+      (ivy-define-key ivy-minibuffer-map (kbd "C-s-j") 'dhnam/ivy-insert-current-exwm-class-name))
 
     (progn
       ;; extended emacs commands for exwm
 
-      (defun counsel-find-file-in-downloads (&optional initial-input initial-directory)
+      (defun dhnam/counsel-find-file-in-downloads (&optional initial-input initial-directory)
         "Forward to `find-file'.
 When INITIAL-INPUT is non-nil, use it in the minibuffer during completion."
         (interactive)
@@ -582,7 +582,7 @@ When INITIAL-INPUT is non-nil, use it in the minibuffer during completion."
 
       (progn
         (let ((map (make-sparse-keymap)))
-          (define-key map (kbd "d") 'counsel-find-file-in-downloads)
+          (define-key map (kbd "d") 'dhnam/counsel-find-file-in-downloads)
           (define-key map (kbd "w") 'dhnam/kill-gc)
           (define-key map (kbd "k") 'dhnam/ivy-kill-marked)
           (define-key map (kbd "s") 'dhnam/switch-to-scratch-buffer)
@@ -613,9 +613,9 @@ When INITIAL-INPUT is non-nil, use it in the minibuffer during completion."
                '((t char-mode t))))))
 
     (progn
-      (defvar exwm-split-defined t)
+      (defvar dhnam/exwm-split-defined t)
 
-      (defun exwm-split-window-below (&optional size)
+      (defun dhnam/exwm-split-window-below (&optional size)
         ;; https://github.com/ch11ng/exwm/issues/685#issuecomment-879903947
         (interactive "P")
         (split-window-below size)
@@ -624,7 +624,7 @@ When INITIAL-INPUT is non-nil, use it in the minibuffer during completion."
         (redisplay)
         (windmove-up))
 
-      (defun exwm-split-window-right (&optional size)
+      (defun dhnam/exwm-split-window-right (&optional size)
         ;; https://github.com/ch11ng/exwm/issues/685#issuecomment-879903947
         (interactive "P")
         (split-window-right size)
@@ -633,14 +633,14 @@ When INITIAL-INPUT is non-nil, use it in the minibuffer during completion."
         (redisplay)
         (windmove-left))
 
-      (defun exwm-split-move-window-below (&optional size)
+      (defun dhnam/exwm-split-move-window-below (&optional size)
         ;; https://github.com/ch11ng/exwm/issues/685#issuecomment-879903947
         (interactive "P")
         (split-window-below size)
         (redisplay)
         (windmove-down))
 
-      (defun exwm-split-move-window-right (&optional size)
+      (defun dhnam/exwm-split-move-window-right (&optional size)
         ;; https://github.com/ch11ng/exwm/issues/685#issuecomment-879903947
         (interactive "P")
         (split-window-right size)
@@ -666,29 +666,29 @@ When INITIAL-INPUT is non-nil, use it in the minibuffer during completion."
         (global-set-key (kbd "C-x M-b") 'ivy-switch-buffer)
         (global-set-key (kbd "C-x B") 'counsel-switch-buffer)
         (comment (key-chord-define-global "qj" 'ivy-switch-buffer))
-        (key-chord-define-global "qj" 'counsel-switch-buffer-excluding-exwm)
+        (key-chord-define-global "qj" 'dhnam/counsel-switch-buffer-excluding-exwm)
         (key-chord-define-global "qd" 'dhnam/exwm-workspace-prefix-map)
 
         (defhydra hydra-buffer-shift (global-map "C-c s")
           "buffer-shift"
           ("q" nil "quit")
-          ("j" buf-shift-left)
-          ("l" buf-shift-right)
-          ("i" buf-shift-up)
-          ("k" buf-shift-down))
+          ("j" dhnam/buf-shift-left)
+          ("l" dhnam/buf-shift-right)
+          ("i" dhnam/buf-shift-up)
+          ("k" dhnam/buf-shift-down))
 
         (comment
-          (global-set-key (kbd "C-x 2") 'exwm-split-window-below)
-          (global-set-key (kbd "C-x 3") 'exwm-split-window-right)
+          (global-set-key (kbd "C-x 2") 'dhnam/exwm-split-window-below)
+          (global-set-key (kbd "C-x 3") 'dhnam/exwm-split-window-right)
 
-          (global-set-key (kbd "C-x 8") 'exwm-split-window-below)
-          (global-set-key (kbd "C-x 7") 'exwm-split-window-right)))
+          (global-set-key (kbd "C-x 8") 'dhnam/exwm-split-window-below)
+          (global-set-key (kbd "C-x 7") 'dhnam/exwm-split-window-right)))
 
       (comment
         ;; enable key-chord and hydra
         ;; https://www.reddit.com/r/emacs/comments/8yf6dx/key_chords_in_exwm/
         (comment (setq exwm-input-line-mode-passthrough t))
-        (defun toggle-exwm-input-line-mode-passthrough ()
+        (defun dhnam/toggle-exwm-input-line-mode-passthrough ()
           (setq exwm-input-line-mode-passthrough (not exwm-input-line-mode-passthrough))))
 
 
@@ -744,7 +744,7 @@ When INITIAL-INPUT is non-nil, use it in the minibuffer during completion."
                    ([?\s-X] . (lambda () (interactive) (funcall (key-binding (kbd "M-x")))))
                    ([?\s-w] . tab-prefix-map)
                    ;; ([?\s-e] . null) ; Use "s-e" as prefix key instead of "C-c" | https://emacs.stackexchange.com/a/64130
-                   ([?\s-e] . my-ctl-c-map) ; Use "s-e" as prefix key instead of "C-c" | https://emacs.stackexchange.com/a/64130
+                   ([?\s-e] . dhnam/ctl-c-map) ; Use "s-e" as prefix key instead of "C-c" | https://emacs.stackexchange.com/a/64130
                    ([?\s-h] . help-map)
                    ([?\s-u] . universal-argument)
 
@@ -752,21 +752,21 @@ When INITIAL-INPUT is non-nil, use it in the minibuffer during completion."
                    ;; ([?\s-l] . find-file)
                    ([?\s-k] . kill-buffer)
 
-                   ([?\s-j] . counsel-switch-buffer-excluding-exwm)
+                   ([?\s-j] . dhnam/counsel-switch-buffer-excluding-exwm)
                    ([?\C-\s-j] . ivy-switch-buffer)
                    ;; ([?\C-\s-j] . counsel-switch-buffer)
-                   ;; ([?\C-\s-j] . ivy-switch-buffer-within-app)
-                   ;; ([?\C-\s-b] . ivy-switch-buffer-within-app)
-                   ;; ([?\s-B] . counsel-switch-buffer-within-app)
-                   ;; ([?\C-\s-b] . counsel-switch-buffer-within-app)
-                   ;; ([?\C-\s-j] . counsel-switch-buffer-within-app)
+                   ;; ([?\C-\s-j] . dhnam/ivy-switch-buffer-within-app)
+                   ;; ([?\C-\s-b] . dhnam/ivy-switch-buffer-within-app)
+                   ;; ([?\s-B] . dhnam/counsel-switch-buffer-within-app)
+                   ;; ([?\C-\s-b] . dhnam/counsel-switch-buffer-within-app)
+                   ;; ([?\C-\s-j] . dhnam/counsel-switch-buffer-within-app)
 
                    ([?\s-!] . shell-command)
 
                    ([?\s-9] . previous-buffer)
                    ([?\s-0] . next-buffer)
 
-                   ([?\s-i] . other-window-backwards)
+                   ([?\s-i] . dhnam/other-window-backwards)
                    ([?\s-o] . other-window)
                    ([?\s-p] . tab-previous)
                    ([?\s-n] . tab-next))
@@ -781,10 +781,10 @@ When INITIAL-INPUT is non-nil, use it in the minibuffer during completion."
                          ([?\C-\s-o] . ewg/other-workspace-in-group)
                          ([?\C-\s-p] . ewg/switch-previous-group)
                          ([?\C-\s-n] . ewg/switch-next-group))
-                     '(([?\C-\s-i] . exwm-other-workspace-backwards)
-                       ([?\C-\s-o] . exwm-other-workspace)
-                       ([?\C-\s-p] . exwm-other-workspace-backwards)
-                       ([?\C-\s-n] . exwm-other-workspace))))
+                     '(([?\C-\s-i] . dhnam/exwm-other-workspace-backwards)
+                       ([?\C-\s-o] . dhnam/exwm-other-workspace)
+                       ([?\C-\s-p] . dhnam/exwm-other-workspace-backwards)
+                       ([?\C-\s-n] . dhnam/exwm-other-workspace))))
 
                  `(;; 's-N': Switch to certain workspace.
                    ,@(mapcar (lambda (i)
@@ -1005,7 +1005,7 @@ When INITIAL-INPUT is non-nil, use it in the minibuffer during completion."
         (define-key exwm-mode-map (kbd "C-;") 'exwm-input-send-next-key)
         (comment (define-key exwm-mode-map (kbd "C-q") 'ctl-x-map))
         (define-key exwm-mode-map (kbd "M-!") 'shell-command)
-        (comment (define-key exwm-mode-map (kbd "M-#") 'lookup-word-from-web-other-window-for-exwm))
+        (comment (define-key exwm-mode-map (kbd "M-#") 'dhnam/lookup-word-from-web-other-window-for-exwm))
         (comment (define-key exwm-mode-map (kbd "C-x b") 'switch-to-buffer))
         (comment (define-key exwm-mode-map (kbd "M-&") 'dhnam/exwm-execute-shell-command))
         (lambda (command)
@@ -1016,12 +1016,12 @@ When INITIAL-INPUT is non-nil, use it in the minibuffer during completion."
           (define-key exwm-mode-map (kbd "M-9") 'previous-buffer)
           (define-key exwm-mode-map (kbd "M-0") 'next-buffer))
 
-        (comment (define-key exwm-mode-map (kbd "s-i") 'counsel-switch-buffer-within-app)))
+        (comment (define-key exwm-mode-map (kbd "s-i") 'dhnam/counsel-switch-buffer-within-app)))
       ))
 
   (progn
     ;; pre-config
-    (exwm-config-mine)
+    (dhnam/exwm-config-mine)
 
     ;; Enabling EXWM should be the last
     (exwm-enable))

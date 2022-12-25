@@ -1,7 +1,7 @@
 
-(defun insert-gitignore-example ()
+(defun dhnam/insert-gitignore-example ()
   (interactive)
-  (insert (get-string-from-file "~/.emacs.d/config/init/dependent/gitignore.gitignore")))
+  (insert (dhnam/get-string-from-file "~/.emacs.d/config/init/dependent/gitignore.gitignore")))
 
 
 (progn
@@ -10,11 +10,11 @@
 
   (defun dhnam/insert-org-tikz-output-frame ()
     (interactive)
-    (insert (get-string-from-file "~/.emacs.d/config/init/dependent/org-tikz-output-frame.org")))
+    (insert (dhnam/get-string-from-file "~/.emacs.d/config/init/dependent/org-tikz-output-frame.org")))
 
   (defun dhnam/insert-org-tikz-silent-frame ()
     (interactive)
-    (insert (get-string-from-file "~/.emacs.d/config/init/dependent/org-tikz-silent-frame.org"))))
+    (insert (dhnam/get-string-from-file "~/.emacs.d/config/init/dependent/org-tikz-silent-frame.org"))))
 
 (progn
   ;; When a symlink indicates a file in a repository

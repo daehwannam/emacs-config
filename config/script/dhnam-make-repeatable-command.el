@@ -45,10 +45,10 @@ OP-TYPE specifies the file operation being performed over FILENAME."
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
-(provide 'make-repeatable-command)
-(require 'repeat)
-(defun make-repeatable-command (cmd)
-  "Returns a new command that is a repeatable version of CMD.
+(unless (fboundp 'make-repeatable-command)
+  (require 'repeat)
+  (defun make-repeatable-command (cmd)
+    "Returns a new command that is a repeatable version of CMD.
 The new command is named CMD-repeat.  CMD should be a quoted
 command.
 
@@ -64,11 +64,14 @@ and so on.
 See related discussion here: 
 http://batsov.com/articles/2012/03/08/emacs-tip-number-4-repeat-last-command/#comment-459843643
 https://groups.google.com/forum/?hl=en&fromgroups=#!topic/gnu.emacs.help/RHKP2gjx7I8"
-  (fset (intern (concat (symbol-name cmd) "-repeat"))
-        `(lambda ,(help-function-arglist cmd) ;; arg list
-           ,(format "A repeatable version of `%s'." (symbol-name cmd)) ;; doc string
-           ,(interactive-form cmd) ;; interactive form
-           ;; see also repeat-message-function
-           (setq last-repeatable-command ',cmd)
-           (repeat nil)))
-  (intern (concat (symbol-name cmd) "-repeat")))
+    (fset (intern (concat (symbol-name cmd) "-repeat"))
+          `(lambda ,(help-function-arglist cmd) ;; arg list
+             ,(format "A repeatable version of `%s'." (symbol-name cmd)) ;; doc string
+             ,(interactive-form cmd) ;; interactive form
+             ;; see also repeat-message-function
+             (setq last-repeatable-command ',cmd)
+             (repeat nil)))
+    (intern (concat (symbol-name cmd) "-repeat"))))
+
+
+(provide 'dhnam-make-repeatable-command)

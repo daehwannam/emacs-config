@@ -1,6 +1,6 @@
 
 ;; https://stackoverflow.com/questions/23636226/how-to-round-all-the-numbers-in-a-region
-(defun round-number (start end &optional fp)
+(defun dhnam/round-number (start end &optional fp)
   "round the numbers of region."
   (interactive "r")  ; region is necessary
   ;; https://www.gnu.org/software/emacs/manual/html_node/elisp/Text-from-Minibuffer.html

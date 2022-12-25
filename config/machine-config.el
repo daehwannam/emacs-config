@@ -7,7 +7,7 @@
     ;;
     ;; options are sorted in descending order of priority
     (write-region "(base other-machine option1 option2)" nil option-file-name))
-  (defvar dhnam/machine-options (car (read-from-string (get-string-from-file option-file-name)))))
+  (defvar dhnam/machine-options (car (read-from-string (dhnam/get-string-from-file option-file-name)))))
 
 (defvar dhnam/machine-config-list)
 (setq dhnam/machine-config-list

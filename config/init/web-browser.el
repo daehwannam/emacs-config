@@ -26,7 +26,7 @@
 
    (comment
     ;; default edit-server map
-    (defvar edit-server-edit-mode-map
+    (defvar dhnam/edit-server-edit-mode-map
       (let ((map (make-sparse-keymap)))
         (define-key map (kbd "C-x C-s") 'edit-server-save)
         (define-key map (kbd "C-x #")   'edit-server-done)
@@ -42,12 +42,12 @@
 	'(("overleaf\\.com" . latex-mode))))
 
 (progn
-  (defun quit-window-and-other-window-backwards ()
+  (defun dhnam/quit-window-and-other-window-backwards ()
     (interactive)
     (quit-window)
-    (other-window-backwards))
+    (dhnam/other-window-backwards))
 
-  (add-hook 'eww-mode-hook (lambda () (local-set-key (kbd "Q") #'quit-window-and-other-window-backwards)))
+  (add-hook 'eww-mode-hook (lambda () (local-set-key (kbd "Q") #'dhnam/quit-window-and-other-window-backwards)))
 
   (progn
     ;; disable making new tab when `eww-open-in-new-buffer' is called

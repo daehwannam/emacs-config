@@ -8,7 +8,7 @@
      (error "Assertion failed: %s" (format "%s" ',test-form))))
 
 (progn
-  (defmacro define-self-insert-commands-unless-bound (keymap &optional prefix)
+  (defmacro dhnam/define-self-insert-commands-unless-bound (keymap &optional prefix)
     (append
      '(progn)
      (mapcar (lambda (ch)
@@ -16,3 +16,8 @@
 		  (define-key ,keymap (kbd (char-to-string ,ch))
 		    (lambda () (interactive) (insert (or ,prefix "") (char-to-string ,ch))))))
 	     (append (number-sequence ?A ?Z) (number-sequence ?a ?z))))))
+
+(defmacro defun-override (function-name &rest args)
+  `(progn
+     (assert (fboundp ',function-name))
+     (defun ,function-name ,@args)))

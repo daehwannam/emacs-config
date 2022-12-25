@@ -1,4 +1,4 @@
-(defun animate-something ()
+(defun dhnam/animate-something ()
   (interactive)
   (let ((buffer (buffer-name)))
     (switch-to-buffer (get-buffer-create "*Animation*"))

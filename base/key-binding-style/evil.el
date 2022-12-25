@@ -36,11 +36,11 @@
   (require 'evil)
 
   (progn
-    (define-key evil-normal-state-map   (kbd "M-'") #'just-one-space-conditionally)
-    (define-key evil-motion-state-map   (kbd "M-'") #'just-one-space-conditionally)
-    (define-key evil-insert-state-map   (kbd "M-'") #'just-one-space-conditionally)
-    (define-key evil-window-map         (kbd "M-'") #'just-one-space-conditionally)
-    (define-key evil-operator-state-map (kbd "M-'") #'just-one-space-conditionally)
+    (define-key evil-normal-state-map   (kbd "M-'") #'dhnam/just-one-space-conditionally)
+    (define-key evil-motion-state-map   (kbd "M-'") #'dhnam/just-one-space-conditionally)
+    (define-key evil-insert-state-map   (kbd "M-'") #'dhnam/just-one-space-conditionally)
+    (define-key evil-window-map         (kbd "M-'") #'dhnam/just-one-space-conditionally)
+    (define-key evil-operator-state-map (kbd "M-'") #'dhnam/just-one-space-conditionally)
 
     (define-key evil-normal-state-map   (kbd "M-<SPC>") #'evil-force-normal-state)
     (define-key evil-motion-state-map   (kbd "M-<SPC>") #'evil-force-normal-state)

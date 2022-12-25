@@ -1,6 +1,6 @@
 
 (comment
-  (defvar rectangle-map
+  (defvar dhnam/rectangle-map
     (let ((map (make-sparse-keymap)))
       (define-key map (kbd "k") 'kill-rectangle)
       (define-key map (kbd "M-w") 'copy-rectangle-as-kill)
@@ -13,6 +13,6 @@
       map)
     "Keymap for rectangle commands.")
 
-  (fset 'rectangle-map rectangle-map)
-  (comment (define-key global-map (kbd "C-x r") 'rectangle-map))
-  (key-chord-define-global "rl" rectangle-map))
+  (fset 'dhnam/rectangle-map dhnam/rectangle-map)
+  (comment (define-key global-map (kbd "C-x r") 'dhnam/rectangle-map))
+  (key-chord-define-global "rl" dhnam/rectangle-map))
