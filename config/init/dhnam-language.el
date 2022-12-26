@@ -55,7 +55,7 @@
       ;; https://emacs.stackexchange.com/a/16314
       (set-face-font 'default "Inconsolata-12")
 
-      (when (and (boundp 'dhnam/exwm-cmd-arg-passed) dhnam/exwm-cmd-arg-passed)
+      (when (and (boundp 'dhnam/exwm-cmd-line-arg-passed) dhnam/exwm-cmd-line-arg-passed)
         (let ((font-height (dhnam/machine-config-get-first 'exwm-font-height)))
           (when font-height
             ;; font size

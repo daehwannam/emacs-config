@@ -51,7 +51,7 @@
        '(mode-line-inactive ((t (:background "gray10" :foreground "gray50" :box nil :weight light)))))
 
       (comment
-        (when (and dhnam/exwm-cmd-arg-passed (display-graphic-p))
+        (when (and dhnam/exwm-cmd-line-arg-passed (display-graphic-p))
           (custom-set-faces
            '(default ((t (:background "gray12")))))))
 

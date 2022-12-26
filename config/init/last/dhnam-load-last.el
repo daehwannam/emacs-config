@@ -5,7 +5,7 @@
   (when (file-exists-p "~/.emacs.d/config/init/eyebrowse.el")
     (load "~/.emacs.d/config/init/eyebrowse.el")))
 
-(when (and dhnam/exwm-cmd-arg-passed
+(when (and dhnam/exwm-cmd-line-arg-passed
            (let ((physical-monitor-names (dhnam/machine-config-get-first 'exwm-physical-monitor-names)))
              (and physical-monitor-names (> (length physical-monitor-names) 1))))
   (progn
@@ -55,3 +55,5 @@
 
     (comment
       (key-chord-define-global "qd" 'dhnam/ctl-c-map))))
+
+(provide 'dhnam-load-last)

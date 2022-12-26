@@ -53,34 +53,17 @@
     ;; the default key binding style is `fbnp'
     (write-region "fbnp" nil key-binding-style-file-name))
 
-  (defvar dhnam/key-binding-style nil)
-
-  (let* ((remaining-cmd-args (cdr command-line-args))
-         (cmd-arg-key "--key-binding-style")
-         (matched-cmd-args (member cmd-arg-key remaining-cmd-args)))
-    ;; originally '(cdr command-line-args) is passed into `command-line-1'
-    (when matched-cmd-args
-      (let ((cmd-arg-value (cadr matched-cmd-args)))
-       (setq dhnam/key-binding-style
-             (or (car (read-from-string cmd-arg-value))
-                 (car (read-from-string (dhnam/get-string-from-file key-binding-style-file-name))))))
-
-      (progn
-        (defun dhnam/empty-cmd-arg-handler (switch))
-        (add-to-list 'command-switch-alist `(,cmd-arg-key . dhnam/empty-cmd-arg-handler)))
-
-      (progn
-        (defun dhnam/key-binding-style-cmd-arg-remove-handler ()
-          "Remove arguments of --key-binding-style"
-          (let* ((remaining-cmd-args (cdr command-line-args))
-                 (cmd-arg-key "--key-binding-style")
-                 (matched-cmd-args (member cmd-arg-key remaining-cmd-args)))
-            (when matched-cmd-args
-              (let ((cmd-arg-value (cadr matched-cmd-args)))
-                (setq command-line-args (remove cmd-arg-value (remove cmd-arg-key command-line-args)))))))
-        (add-to-list 'command-line-functions 'dhnam/key-binding-style-cmd-arg-remove-handler))))
+  (let ((cmd-line-arg-key "--key-binding-style"))
+    (defvar dhnam/key-binding-style nil)
+    (let ((cmd-line-arg-value (cmd-line-arg/register-then-get cmd-line-arg-key t)))
+      (when cmd-line-arg-value
+        (setq dhnam/key-binding-style
+              (or (car (read-from-string cmd-line-arg-value))
+                  (car (read-from-string (dhnam/get-string-from-file key-binding-style-file-name)))))))
+    (cmd-line-arg/register cmd-line-arg-key t))
 
   (let ((key-binding-style-file-path (format "~/.emacs.d/base/key-binding/%s.el"
                                              (symbol-name dhnam/key-binding-style))))
-    (when (file-exists-p key-binding-style-file-path)
-      (load key-binding-style-file-path))))
+    (if (file-exists-p key-binding-style-file-path)
+        (load key-binding-style-file-path)
+      (error (format "Unknown key-binding style: %s" dhnam/key-binding-style)))))

@@ -2,6 +2,9 @@
 (progn
   (package-initialize)
 
+  (defun dhnam/add-to-load-path (path)
+    (add-to-list 'load-path path))
+
   (defun dhnam/add-to-load-path-recursively (path)
     ;; adding to load-path recursively
     (add-to-list 'load-path path)
@@ -23,6 +26,10 @@
   ;; my library
   (dhnam/add-to-load-path-recursively "~/.emacs.d/config/library/")
 
+  ;; initialization
+  (dhnam/add-to-load-path "~/.emacs.d/config/init/")
+  (dhnam/add-to-load-path "~/.emacs.d/config/init/last/")
+
   ;; non-archived packages
   (dhnam/add-to-load-path-recursively "~/.emacs.d/package/"))
 
@@ -37,6 +44,7 @@
 
 (progn
   ;; base setup
+  (load "~/.emacs.d/base/cmd-line-arg.el")
   (load "~/.emacs.d/base/package-init.el")
   (load "~/.emacs.d/base/key-chord-setup.el")
   (progn
@@ -59,9 +67,13 @@
   (load "~/.emacs.d/base/package-install.el"))
 
 (progn
-  ;; load all init files
-  (dhnam/load-directory "~/.emacs.d/config/init")
-  (dhnam/load-directory "~/.emacs.d/config/init/last"))
+  (defvar dhnam/no-config-init-cmd-line-arg-passed
+    (cmd-line-arg/register-then-get "--no-config-init" nil))
+
+  (unless dhnam/no-config-init-cmd-line-arg-passed
+    ;; load all init files
+    (dhnam/require-directory "~/.emacs.d/config/init")
+    (dhnam/require-directory "~/.emacs.d/config/init/last")))
 
 (progn
   ;; starting page

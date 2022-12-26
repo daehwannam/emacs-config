@@ -1,5 +1,5 @@
 
-(progn
+(with-eval-after-load 'dired
   (require 'dired-async)
   (define-key dired-mode-map (kbd "C-c R") 'dired-async-do-rename)
   (define-key dired-mode-map (kbd "C-c C") 'dired-async-do-copy)

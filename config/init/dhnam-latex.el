@@ -20,7 +20,7 @@
   ;;
   ;; how to configure bibtex command
   ;; https://tex.stackexchange.com/a/397667
-  (eval-after-load "tex"
+  (eval-after-load 'tex
     '(setcdr (assoc "BibTeX" TeX-command-list)
              '("bibtex --min-crossrefs=10000 %s"
                TeX-run-BibTeX nil t :help "Run BibTeX with ..."))))

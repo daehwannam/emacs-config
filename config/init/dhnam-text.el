@@ -132,3 +132,10 @@
   (insert "# End:\n")
   (re-search-backward "eval: ")
   (end-of-line))
+
+(defun dhnam/insert-provide ()
+  (interactive)
+  (end-of-buffer)
+  (let ((feature-name (file-name-sans-extension (buffer-name))))
+    (insert "\n")
+    (insert (format "(provide '%s)" feature-name))))

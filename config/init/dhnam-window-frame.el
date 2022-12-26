@@ -110,7 +110,7 @@
       (key-chord-define-global "rr" 'frame-modification-prefix-map)))
 
   (comment
-   (when (and (boundp 'dhnam/exwm-cmd-arg-passed) dhnam/exwm-cmd-arg-passed)
+   (when (and (boundp 'dhnam/exwm-cmd-line-arg-passed) dhnam/exwm-cmd-line-arg-passed)
      (global-set-key (kbd "C-c o") (make-repeatable-command 'dhnam/exwm-other-workspace-in-group))
      (global-set-key (kbd "C-c O") (make-repeatable-command 'dhnam/exwm-other-workspace-in-group-backwards))
      (global-set-key (kbd "C-c ㅐ") (make-repeatable-command 'dhnam/exwm-other-workspace-in-group))))

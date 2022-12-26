@@ -195,7 +195,7 @@ When non-nil, INITIAL-INPUT is the initial search pattern."
 
     (key-chord-define-global "qj" 'counsel-switch-buffer)
     (comment
-     (unless (and (boundp 'dhnam/exwm-cmd-arg-passed) dhnam/exwm-cmd-arg-passed)
+     (unless (and (boundp 'dhnam/exwm-cmd-line-arg-passed) dhnam/exwm-cmd-line-arg-passed)
        (global-set-key (kbd "C-x b") 'counsel-switch-buffer)
        (global-set-key (kbd "C-x B") 'switch-to-buffer)))
 

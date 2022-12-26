@@ -3,7 +3,7 @@
   (which-key-mode))
 
 (when (fboundp 'which-key-posframe-mode)
-  (with-eval-after-load "which-key-posframe"
+  (with-eval-after-load 'which-key-posframe
     (comment (assert (fboundp 'ivy-posframe-mode)))
 
     ;; `which-key-posframe--show-buffer' is updated to fix the problem of hidden posframe by X windows

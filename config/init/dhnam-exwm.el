@@ -1,19 +1,8 @@
-(progn
-  ;; processing a custom command line argument
-  (defvar dhnam/exwm-cmd-arg-passed nil)
 
-  (let ((remaining-cmd-args (cdr command-line-args)))
-    ;; originally '(cdr command-line-args) is passed into `command-line-1'
-    (setq dhnam/exwm-cmd-arg-passed (member "--exwm" remaining-cmd-args)))
+(defvar dhnam/exwm-cmd-line-arg-passed
+  (cmd-line-arg/register-then-get "--exwm" nil))
 
-  ;; exwm setup
-  (defun dhnam/exwm-cmd-arg-handler (switch)
-    ;; do nothing
-    )
-
-  (add-to-list 'command-switch-alist '("--exwm" . dhnam/exwm-cmd-arg-handler)))
-
-(when dhnam/exwm-cmd-arg-passed
+(when dhnam/exwm-cmd-line-arg-passed
   (defun dhnam/exwm-simple-frame-init ()
     (progn
       "this code block has the same effect with `exwm-config-misc'"
