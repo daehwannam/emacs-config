@@ -1,5 +1,5 @@
 
-(install-package-unless-installed 'modalka)
+(dhnam/install-package-unless-installed 'modalka)
 
 (use-existing-pkg modalka
   :init

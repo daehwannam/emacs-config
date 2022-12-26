@@ -52,7 +52,7 @@
     (use-local-map newmap)))
 
 (defun dhnam/buffer-local-set-key-chord (key-chord command)
-  "Set a key binding for a specific buffer only"
+  "Set a key-chord binding for a specific buffer only"
   ;; https://stackoverflow.com/a/21493693
   (interactive "KSet key buffer-locally: \nCSet key %s buffer-locally to command: ")
   (let ((oldmap (current-local-map))

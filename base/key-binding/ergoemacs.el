@@ -9,7 +9,7 @@
 ;;; https://github.com/ergoemacs/ergoemacs-mode/issues/147#issuecomment-36071299
 
 
-(install-package-unless-installed 'ergoemacs-mode)
+(dhnam/install-package-unless-installed 'ergoemacs-mode)
 
 (progn
   (setq ergoemacs-theme nil)

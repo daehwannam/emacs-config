@@ -9,7 +9,7 @@
 
 
 (progn
-  (install-package-unless-installed 'evil-collection)
+  (dhnam/install-package-unless-installed 'evil-collection)
 
   (setq evil-want-keybinding nil)
 
@@ -18,7 +18,7 @@
 
 (progn
   ;; Download Evil
-  (install-package-unless-installed 'evil)
+  (dhnam/install-package-unless-installed 'evil)
 
   ;; Enable Evil
   (progn

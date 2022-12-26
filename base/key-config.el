@@ -80,7 +80,7 @@
                 (setq command-line-args (remove cmd-arg-value (remove cmd-arg-key command-line-args)))))))
         (add-to-list 'command-line-functions 'dhnam/key-binding-style-cmd-arg-remove-handler))))
 
-  (let ((key-binding-style-file-path (format "~/.emacs.d/base/key-binding-style/%s.el"
+  (let ((key-binding-style-file-path (format "~/.emacs.d/base/key-binding/%s.el"
                                              (symbol-name dhnam/key-binding-style))))
     (when (file-exists-p key-binding-style-file-path)
       (load key-binding-style-file-path))))

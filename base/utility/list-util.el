@@ -1,4 +1,6 @@
 
+(require 'cl-lib)
+
 (defun dhnam/get-list-inserted-after (lst index newelt)
   (dhnam/list-insert-after (cl-copy-list lst) index newelt))
 
@@ -16,4 +18,3 @@
       (`string (apply #'concat sequences))
       (`list (apply #'append (append sequences '(nil))))
       (_ (error "Not a sequence type name: %S" type)))))
-

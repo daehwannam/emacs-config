@@ -1,9 +1,9 @@
 
 (progn
-  ;; adding to load-path recursively
   (package-initialize)
 
   (defun dhnam/add-to-load-path-recursively (path)
+    ;; adding to load-path recursively
     (add-to-list 'load-path path)
 
     (let ((default-directory path))
@@ -25,7 +25,7 @@
 
 (progn
   ;; base utility
-  (require 'dhnam-load-directory)
+  (require 'dhnam-file-loading)
   (dhnam/load-directory "~/.emacs.d/base/utility"))
 
 (progn
@@ -35,7 +35,6 @@
 (progn
   ;; base setup
   (load "~/.emacs.d/base/package-init.el")
-  (comment (load "~/.emacs.d/base/evil-setup.el"))
   (load "~/.emacs.d/base/key-chord-setup.el")
   (progn
     ;; hydra may be laggy and it's not compatible with key-chord
@@ -58,8 +57,6 @@
 
 (progn
   ;; load all init files
-  ;; https://www.emacswiki.org/emacs/LoadingLispFiles
-  ;; (require 'dhnam/load-directory)
   (dhnam/load-directory "~/.emacs.d/config/init")
   (dhnam/load-directory "~/.emacs.d/config/init/last"))
 

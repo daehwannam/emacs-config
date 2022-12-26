@@ -98,20 +98,24 @@
          (theme-setup (doom-themes))
          )))
 
-;;; emacs configuration association list
-(comment
-  (defun dhnam/machine-config-get (key)
-    (car (cdr (cl-assoc dhnam/machine-options (cdr (assoc key dhnam/machine-config-list))
-		                :test (lambda (x y) (member y x))))))
+(progn
+  (require 'cl-lib)
 
-  (defun dhnam/machine-config-get (key)
-    (car (cdr (cl-assoc dhnam/machine-options (cdr (assoc key dhnam/machine-config-list))
-		                :test (lambda (x y) (eq (car x) y)))))))
+  ;; emacs configuration association list
 
-(defun dhnam/machine-config-get-first (key)
-  (car (dhnam/machine-config-get-all key)))
+  (comment
+    (defun dhnam/machine-config-get (key)
+      (car (cdr (cl-assoc dhnam/machine-options (cdr (assoc key dhnam/machine-config-list))
+		                  :test (lambda (x y) (member y x))))))
 
-(defun dhnam/machine-config-get-all (key)
-  (mapcar (lambda (x) (car (cdr x)))
-	      (cl-remove-if-not (lambda (x) (member (car x) dhnam/machine-options))
-			                (cdr (assoc key dhnam/machine-config-list)))))
+    (defun dhnam/machine-config-get (key)
+      (car (cdr (cl-assoc dhnam/machine-options (cdr (assoc key dhnam/machine-config-list))
+		                  :test (lambda (x y) (eq (car x) y)))))))
+
+  (defun dhnam/machine-config-get-first (key)
+    (car (dhnam/machine-config-get-all key)))
+
+  (defun dhnam/machine-config-get-all (key)
+    (mapcar (lambda (x) (car (cdr x)))
+	        (cl-remove-if-not (lambda (x) (member (car x) dhnam/machine-options))
+			                  (cdr (assoc key dhnam/machine-config-list))))))

@@ -1,7 +1,7 @@
 
 (comment
   ;; This modalka config crashes TeX input method
-  (install-package-unless-installed 'modalka)
+  (dhnam/install-package-unless-installed 'modalka)
 
   (use-existing-pkg modalka
     :init

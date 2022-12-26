@@ -1,5 +1,5 @@
 
-(install-package-unless-installed 'key-chord)
+(dhnam/install-package-unless-installed 'key-chord)
 
 (use-existing-pkg key-chord
   :init

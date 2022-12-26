@@ -28,17 +28,17 @@
      (package-refresh-contents))))
 
 (progn
-  (defvar package-content-refreshed nil)
-  (defun install-package-unless-installed (package)
+  (defvar dhnam/package-content-refreshed nil)
+  (defun dhnam/install-package-unless-installed (package)
     (unless (package-installed-p package)
-      (unless package-content-refreshed
+      (unless dhnam/package-content-refreshed
 	    ;; https://magit.vc/manual/magit/Installing-from-Melpa.html
 	    (package-refresh-contents)
-	    (setq package-content-refreshed t))
+	    (setq dhnam/package-content-refreshed t))
       (package-install package))))
 
 (progn
-  (install-package-unless-installed 'use-package)
+  (dhnam/install-package-unless-installed 'use-package)
 
   ;; use-package initialization
   (require 'use-package)
@@ -62,6 +62,6 @@
     (function-put 'use-existing-pkg 'lisp-indent-function '1)))
 
 (progn
-  (install-package-unless-installed 'quelpa)
+  (dhnam/install-package-unless-installed 'quelpa)
   (setq quelpa-update-melpa-p nil)  ; disabling auto-updating
   )

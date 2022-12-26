@@ -9,5 +9,5 @@
           (if (consp package)
               (unless (package-installed-p (car package))
                 (quelpa package))
-            (install-package-unless-installed package)))
+            (dhnam/install-package-unless-installed package)))
 	    dhnam/installable-domain-specific-packages))
