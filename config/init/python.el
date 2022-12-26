@@ -439,7 +439,7 @@ Similarly for Soar, Scheme, etc."
 					                           (let* ((bounds (bounds-of-thing-at-point 'symbol)))
 						                         (list (car bounds) (cdr bounds)))))
 			                 (buffer-substring-no-properties start end))))
-	     (if (string/starts-with package-name ".")
+	     (if (dhnam/string-starts-with package-name ".")
 	         (let ((num-dot-prefixs (+ (string-match "\\.[^\\.]" package-name) 1)))
 	           (concat (file-name-directory buffer-file-name)
 		               (string-join (mapcar (lambda (x) "..")

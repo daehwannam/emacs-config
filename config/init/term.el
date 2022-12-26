@@ -127,7 +127,7 @@ Will prompt you shell name when you type `C-u' before this command."
   ;; string join: https://stackoverflow.com/questions/12999530/is-there-a-function-that-joins-a-string-into-a-delimited-string
   (defun dhnam/tmux-kill-numbered-sessions ()
     (interactive)
-    (let ((session-names (split-string (dhnam/trim-string (shell-command-to-string
+    (let ((session-names (split-string (dhnam/string-trim (shell-command-to-string
 						     "tmux ls | grep '^[0-9][0-9]*: ' | awk '{print substr($1, 0, length($1))}' | xargs echo")))))
       (dolist (session-name session-names)
 	(shell-command (concat "tmux kill-session -t " session-name)))

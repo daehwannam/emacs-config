@@ -20,6 +20,9 @@
   ;; some functions used to initialize emacs
   (dhnam/add-to-load-path-recursively "~/.emacs.d/config/script/")
 
+  ;; my library
+  (dhnam/add-to-load-path-recursively "~/.emacs.d/config/library/")
+
   ;; non-archived packages
   (dhnam/add-to-load-path-recursively "~/.emacs.d/package/"))
 

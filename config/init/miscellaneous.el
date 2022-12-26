@@ -55,4 +55,4 @@
 (defun dhnam/kill-gc ()
   (interactive)
   (let ((path-file "~/gc-path.txt"))
-    (kill-new (dhnam/trim-string (dhnam/get-string-from-file (dhnam/trim-string (dhnam/get-string-from-file path-file)))))))
+    (kill-new (dhnam/string-trim (dhnam/get-string-from-file (dhnam/string-trim (dhnam/get-string-from-file path-file)))))))
