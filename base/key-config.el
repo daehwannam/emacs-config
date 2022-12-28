@@ -50,10 +50,10 @@
 
   (progn
     ;; <CruzeiroSign> = ₢
-    (progn
+    (comment
       (keyboard-translate ?\₢ ?\C-g)
       (comment (global-set-key (kbd "C-g") 'dhnam/keyboard-quit)))
-    (comment
+    (progn
       (global-set-key (kbd "₢") 'dhnam/keyboard-quit)
       (define-key isearch-mode-map (kbd "₢") 'isearch-abort))))
 
