@@ -27,8 +27,8 @@
   (dhnam/add-to-load-path-recursively "~/.emacs.d/config/library/")
 
   ;; initialization
-  (dhnam/add-to-load-path "~/.emacs.d/config/init/")
-  (dhnam/add-to-load-path "~/.emacs.d/config/init/last/")
+  ;; (dhnam/add-to-load-path "~/.emacs.d/config/init/")
+  ;; (dhnam/add-to-load-path "~/.emacs.d/config/init/last/")
 
   ;; non-archived packages
   (dhnam/add-to-load-path-recursively "~/.emacs.d/package/"))
@@ -72,8 +72,8 @@
 
   (unless dhnam/no-config-init-cmd-line-arg-passed
     ;; load all init files
-    (dhnam/require-directory "~/.emacs.d/config/init")
-    (dhnam/require-directory "~/.emacs.d/config/init/last")))
+    (dhnam/require-directory-with-prefix "~/.emacs.d/config/init" "dhnam-")
+    (dhnam/require-directory-with-prefix "~/.emacs.d/config/init/last" "dhnam-")))
 
 (progn
   ;; starting page

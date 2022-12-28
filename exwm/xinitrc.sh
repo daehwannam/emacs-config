@@ -40,8 +40,8 @@ fcitx &  # run fcitx daemon
 # Set keyboard repeat rate
 xset r rate 250 50
 
-# Adjust screen off time
-# xset dpms 0 0 1800  # 30 mins
+# # Make short-pressed Ctrl behave like Escape
+# xcape -e 'Control_L=Escape'
 
 # dbus setting
 eval $(dbus-launch)

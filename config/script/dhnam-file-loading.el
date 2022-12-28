@@ -13,4 +13,14 @@
                     (require (intern (substring file-name 0 (- post-fix-len)))))))
     (mapcar load-it (directory-files dir nil "\\.el$"))))
 
+(when t
+  (defun dhnam/require-directory-with-prefix (dir prefix)
+    (let* ((post-fix-len (length ".el"))
+           (dir-path (file-name-as-directory dir))
+           (load-it (lambda (file-name)
+                      (require (intern (concat prefix (substring file-name 0 (- post-fix-len))))
+                               (concat dir-path file-name)))))
+      (mapcar load-it (directory-files dir nil "\\.el$")))))
+
 (provide 'dhnam-file-loading)
+

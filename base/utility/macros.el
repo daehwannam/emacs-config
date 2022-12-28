@@ -21,3 +21,12 @@
   `(progn
      (assert (fboundp ',function-name))
      (defun ,function-name ,@args)))
+
+(defmacro once-only (&rest args)
+  "Evaluate expressions only once"
+  (let ((evaluated-p (gensym)))
+    `(progn
+       (defvar ,evaluated-p nil)
+       (unless ,evaluated-p
+         (setq ,evaluated-p t)
+         ,@args))))

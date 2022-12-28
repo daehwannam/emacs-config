@@ -12,7 +12,7 @@
 (defun cmd-line-arg/register (cmd-line-arg-key with-value)
   (add-to-list 'command-switch-alist `(,cmd-line-arg-key . cmd-line-arg/empyt-handler))
   (when with-value
-    (add-to-list 'command-line-functions (lambda () (cmd-line-arg/removal-handler cmd-line-arg-key)))))
+    (add-to-list 'command-line-functions `(lambda () (cmd-line-arg/removal-handler ,cmd-line-arg-key)))))
 
 (defun cmd-line-arg/passed-p (cmd-line-arg-key)
   (let ((remaining-cmd-args (cdr command-line-args)))

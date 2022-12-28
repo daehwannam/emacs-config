@@ -5,16 +5,17 @@
 
   (when (>= emacs-major-version 24)
     (require 'package)
+
+    ;; https://emacs.stackexchange.com/a/27599
     (let ((package-archive-list '(("melpa" . "https://melpa.org/packages/")
-				   ; https://emacs.stackexchange.com/a/27599
-				  )))
+                                  ("nongnu" . "https://elpa.nongnu.org/nongnu/"))))
       (comment
-       ;; skipped repositories
-       ("marmalade" . "https://marmalade-repo.org/packages/")
-       ("org" . "https://orgmode.org/elpa/"))
+        ;; skipped repositories
+        ("marmalade" . "https://marmalade-repo.org/packages/")
+        ("org" . "https://orgmode.org/elpa/"))
 	       
       (mapc #'(lambda (archive-pair) (add-to-list 'package-archives archive-pair))
-	    package-archive-list)))
+	        package-archive-list)))
 
   (comment
    ;; package initialization

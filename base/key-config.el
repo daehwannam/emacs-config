@@ -46,24 +46,74 @@
     (progn
       (key-chord-define-global "qd" 'null)
       (define-key key-translation-map (kbd "<key-chord> qd")  (kbd "C-c"))
-      (define-key key-translation-map (kbd "<key-chord> dq")  (kbd "C-c")))))
+      (define-key key-translation-map (kbd "<key-chord> dq")  (kbd "C-c"))))
 
-(let ((key-binding-style-file-name "~/.emacs.d/key-binding-style.txt"))
-  (unless (file-exists-p key-binding-style-file-name)
-    ;; the default key binding style is `fbnp'
-    (write-region "fbnp" nil key-binding-style-file-name))
+  (progn
+    ;; <CruzeiroSign> = ₢
+    (progn
+      (keyboard-translate ?\₢ ?\C-g)
+      (comment (global-set-key (kbd "C-g") 'dhnam/keyboard-quit)))
+    (comment
+      (global-set-key (kbd "₢") 'dhnam/keyboard-quit)
+      (define-key isearch-mode-map (kbd "₢") 'isearch-abort))))
 
-  (let ((cmd-line-arg-key "--key-binding-style"))
-    (defvar dhnam/key-binding-style nil)
-    (let ((cmd-line-arg-value (cmd-line-arg/register-then-get cmd-line-arg-key t)))
-      (when cmd-line-arg-value
-        (setq dhnam/key-binding-style
-              (or (car (read-from-string cmd-line-arg-value))
-                  (car (read-from-string (dhnam/get-string-from-file key-binding-style-file-name)))))))
-    (cmd-line-arg/register cmd-line-arg-key t))
+(progn
+  (defvar dhnam/key-binding-style
+    (let ((key-binding-style-file-name "~/.emacs.d/key-binding-style.txt"))
+      (unless (file-exists-p key-binding-style-file-name)
+        ;; the default key binding style is `fbnp'
+        (write-region "fbnp" nil key-binding-style-file-name))
+
+      (let ((cmd-line-arg-key "--key-binding-style"))
+        (let ((cmd-line-arg-value (cmd-line-arg/register-then-get cmd-line-arg-key t)))
+          (or (and cmd-line-arg-value(car (read-from-string cmd-line-arg-value)))
+              (car (read-from-string (dhnam/get-string-from-file key-binding-style-file-name))))))))
 
   (let ((key-binding-style-file-path (format "~/.emacs.d/base/key-binding/%s.el"
-                                             (symbol-name dhnam/key-binding-style))))
-    (if (file-exists-p key-binding-style-file-path)
-        (load key-binding-style-file-path)
-      (error (format "Unknown key-binding style: %s" dhnam/key-binding-style)))))
+                                               (symbol-name dhnam/key-binding-style))))
+      (if (file-exists-p key-binding-style-file-path)
+          (load key-binding-style-file-path)
+        (error (format "Unknown key-binding style: %s" dhnam/key-binding-style))))
+
+  (progn
+    (defvar dhnam/fbnp-on (eq dhnam/key-binding-style 'fbnp))
+    (defvar dhnam/ergoemacs-on (eq dhnam/key-binding-style 'ergoemacs))
+    (defvar dhnam/xah-fly-keys-on (eq dhnam/key-binding-style 'xah-fly-keys))))
+
+(progn
+  ;; Commands
+  (defun dhnam/keyboard-quit ()
+    ;; Same definition with `ergoemacs-keyboard-quit'
+    "Quit the current command/process.
+Similar to `keyboard-quit', with the following changes:
+
+• In the minibuffer, use `minibuffer-keyboard-quit'
+
+• When a region is active, (see `region-active-p') deactivate the
+  region with the function `deactivate-mark'.
+
+• When \"C-g\" is bound to something other than ergoemacs /
+  standard quit commands, run that command.
+
+• When \"q\" is bound to something other than self-insert
+  commands, run that command.
+
+• Otherwise run `keyboard-quit'"
+    (interactive)
+    (let (bind)
+      (cond
+       ((minibufferp)
+        (minibuffer-keyboard-quit))
+       ((region-active-p)
+        (setq saved-region-selection nil)
+        (let (select-active-regions)
+          (deactivate-mark)))
+       ((and (setq bind (key-binding [7])) ;; C-g
+             (not (memq bind '(dhnam/key-binding-style minibuffer-keyboard-quit keyboard-quit))))
+        (call-interactively bind))
+       ((and (setq bind (key-binding [?q]))
+             (not (string-match-p "self-insert" (symbol-name bind)))
+             (not (eq bind 'dhnam/key-binding-style)))
+        (call-interactively bind))
+       (t
+        (keyboard-quit))))))

@@ -14,3 +14,9 @@ White space here is any of: space, tab, emacs newline (line feed, ASCII 10)."
   (cond ((>= (length s) (length begins))
          (string-equal (substring s 0 (length begins)) begins))
         (t nil)))
+
+
+(defun dhnam-key-swap/string-to-char (s)
+  (let ((k (kbd s)))
+    (cond ((stringp k) (string-to-char k))
+          ((vectorp k) (elt k 0)))))

@@ -16,3 +16,5 @@
   (setq ergoemacs-keyboard-layout "us")
   (require 'ergoemacs-mode)
   (ergoemacs-mode 1))
+
+(define-key ergoemacs-user-keymap (kbd "C-h j") 'ergoemacs-where-is-old-binding)
