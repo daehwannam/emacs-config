@@ -73,12 +73,7 @@
                                                (symbol-name dhnam/key-binding-style))))
       (if (file-exists-p key-binding-style-file-path)
           (load key-binding-style-file-path)
-        (error (format "Unknown key-binding style: %s" dhnam/key-binding-style))))
-
-  (progn
-    (defvar dhnam/fbnp-on (eq dhnam/key-binding-style 'fbnp))
-    (defvar dhnam/ergoemacs-on (eq dhnam/key-binding-style 'ergoemacs))
-    (defvar dhnam/xah-fly-keys-on (eq dhnam/key-binding-style 'xah-fly-keys))))
+        (error (format "Unknown key-binding style: %s" dhnam/key-binding-style)))))
 
 (progn
   ;; Commands
