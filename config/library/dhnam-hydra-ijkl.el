@@ -3,12 +3,20 @@
   (defmacro comment (&rest args)
     `nil))
 
+(defvar dhnam-hydra-ijkl/default-cursor-color "orchid")
+(defvar dhnam-hydra-ijkl/activated-cursor-color "cyan")
+
+(defun dhnam-hydra-ijkl/set-cursor-color (color)
+  (if (display-graphic-p)
+      (set-cursor-color color)
+    (send-string-to-terminal (format "\033]12;%s\007" color))))
+
 (defhydra dhnam-hydra-ijkl
   (:hint nil
-   :pre (set-cursor-color "#40e0d0")
-   :post (progn
-           (set-cursor-color "#ffffff")
-           (comment (message "Thank you, come again."))))
+         :pre (progn
+                (dhnam-hydra-ijkl/set-cursor-color dhnam-hydra-ijkl/activated-cursor-color))
+         :post (progn
+                 (dhnam-hydra-ijkl/set-cursor-color dhnam-hydra-ijkl/default-cursor-color)))
   "ijkl"
 
   ("i" previous-line)
@@ -18,14 +26,15 @@
   ("u" backward-word)
   ("o" forward-word)
 
-  ("M-i" backward-sexp)
-  ("M-k" forward-sexp)
-  ("M-j" backward-list)
-  ("M-l" forward-list)
+  ("M-i" backward-list)
+  ("M-k" forward-list)
+  ("M-j" backward-sexp)
+  ("M-l" forward-sexp)
   ("M-u" backward-up-list)
   ("M-o" down-list)
-  ("C-i"  dhnam/scroll-up-small)
-  ("C-k"  dhnam/scroll-down-small)
+
+  ("C-i"  dhnam/scroll-down-small)
+  ("C-k"  dhnam/scroll-up-small)
 
   ("a" move-beginning-of-line)
   ("s" move-end-of-line)
@@ -39,64 +48,34 @@
   ("D" kill-word)
   ("f" kill-line)
   ("F" kill-sexp)
+  ("DEL" delete-backward-char)
+  ("M-DEL" backward-kill-word)
 
   ("y" yank)
   ("M-y" yank-pop)
   ("M-Y" dhnam/yank-pop-forwards)
+  ("C-M-y" counsel-yank-pop)
 
-  ("SPC" set-mark-command)
-  ("r" exchange-point-and-mark)
+  ("r" recenter-top-bottom)
+  ("R" move-to-window-line-top-bottom)
+
+  ;; ("SPC" set-mark-command)
+  ("v" set-mark-command)
+  ("'" exchange-point-and-mark)
   ("g" keyboard-quit)
 
-  ("p" other-window-repeat)
+  ("/" undo)
 
+  (";" other-window-repeat)
+  ("p" tab-next-repeat)
+
+  ("₫" nil "quit")
   ("RET" nil "quit")
   ("q" nil "quit"))
 
-(comment
-  (global-set-key (kbd "<XF86WWAN>") 'dhnam-hydra-ijkl/body))
+(hydra-set-property 'dhnam-hydra-ijkl :verbosity 0)
 
 (comment
-  (require 'dhnam-paredit))
-
-(defvar dhnam-ijkl-mode-map
-  (let ((map (make-sparse-keymap)))
-    (define-key map (kbd "M-i") 'previous-line)
-    (define-key map (kbd "M-k") 'next-line)
-    (define-key map (kbd "M-j") 'backward-char)
-    (define-key map (kbd "M-l") 'forward-char)
-    (define-key map (kbd "M-u") 'backward-word)
-    (define-key map (kbd "M-o") 'forward-word)
-
-    (define-key map (kbd "C-M-i") 'backward-sexp)
-    (define-key map (kbd "C-M-k") 'forward-sexp)
-    (define-key map (kbd "C-M-j") 'backward-list)
-    (define-key map (kbd "C-M-l") 'forward-list)
-    (define-key map (kbd "C-M-u") 'backward-up-list)
-    (define-key map (kbd "C-M-o") 'down-list)
-    (comment (define-key map (kbd "C-M-u") 'dhnam/paredit-backward-up-or-down))
-    (comment (define-key map (kbd "C-M-o") 'dhnam/paredit-forward-up-or-down))
-
-    (define-key map (kbd "M-n") 'electric-newline-and-maybe-indent)
-    (define-key map (kbd "C-M-n") 'default-indent-new-line)
-
-    (define-key map (kbd "M-'") dhnam-ijkl/default-global-map)
-    map)
-  "Keymap for `dhnam-ijkl-mode'.")
-
-
-(fset 'dhnam-ijkl/default-global-map global-map)
-
-
-(define-minor-mode dhnam-ijkl-mode
-  "IJKL key binding"
-  nil                                ; Initial value, nil for disabled
-  :global t
-  :lighter " IJKL"
-  :keymap dhnam-ijkl-mode-map
-
-  (if dhnam-ijkl-mode
-      (comment)
-    (comment)))
+  (global-set-key (kbd "₢") 'dhnam-hydra-ijkl/body))
 
 (provide 'dhnam-hydra-ijkl)

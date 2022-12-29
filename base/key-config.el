@@ -49,20 +49,21 @@
       (define-key key-translation-map (kbd "<key-chord> dq")  (kbd "C-c"))))
 
   (progn
-    ;; <CruzeiroSign> = ₢
+    ;; <CruzeiroSign> = ₫
     (comment
-      (keyboard-translate ?\₢ ?\C-g)
+      (keyboard-translate ?\₫ ?\C-g)
       (comment (global-set-key (kbd "C-g") 'dhnam/keyboard-quit)))
     (progn
-      (global-set-key (kbd "₢") 'dhnam/keyboard-quit)
-      (define-key isearch-mode-map (kbd "₢") 'isearch-abort))))
+      (global-set-key (kbd "₫") 'dhnam/keyboard-quit)
+      (define-key isearch-mode-map (kbd "₫") 'isearch-abort))))
 
 (progn
+  (defvar dhnam/default-key-binding-style 'ijkl)
   (defvar dhnam/key-binding-style
     (let ((key-binding-style-file-name "~/.emacs.d/key-binding-style.txt"))
       (unless (file-exists-p key-binding-style-file-name)
         ;; the default key binding style is `fbnp'
-        (write-region "fbnp" nil key-binding-style-file-name))
+        (write-region (symbol-name dhnam/default-key-binding-style) nil key-binding-style-file-name))
 
       (let ((cmd-line-arg-key "--key-binding-style"))
         (let ((cmd-line-arg-value (cmd-line-arg/register-then-get cmd-line-arg-key t)))

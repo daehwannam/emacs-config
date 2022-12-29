@@ -20,7 +20,7 @@
     (defun dhnam/avy-handler-default-advice (orig-fun &rest args)
       (assert (= (length args) 1))
       (let ((char (car args)))
-        (when (equal char ?\₢)
+        (when (equal char ?\₫)
           (setq char ?\C-g))
         (funcall orig-fun char)))
 

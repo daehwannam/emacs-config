@@ -825,7 +825,7 @@ When INITIAL-INPUT is non-nil, use it in the minibuffer during completion."
                   ([?\C-d] . [delete])
                   ([?\C-k] . [S-end C-c delete]) ; updated
 
-                  ([?\₢] . [escape]) ; CruzeiroSign
+                  ([?\₫] . [escape]) ; CruzeiroSign
 
                   ;; the below is newly added
                   ([?\C-w] . [?\C-x])
