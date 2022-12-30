@@ -1,7 +1,10 @@
 
-;; How to install latest org mode
-;; [[https://www.reddit.com/r/emacs/comments/5sx7j0/how_do_i_get_usepackage_to_ignore_the_bundled/]]
-;; we can install 'org-plus-contrib' to do together the latest version of 'org' which 'org-plus-contrib' depends on.
+(comment
+  ;; How to install latest org mode
+  ;; [[https://www.reddit.com/r/emacs/comments/5sx7j0/how_do_i_get_usepackage_to_ignore_the_bundled/]]
+  ;; we can install 'org-contrib' to do together the latest version of 'org' which 'org-contrib' depends on.
+  ;; When using old version of org-mode, install 'org-plus-contrib' instead.
+)
 
 ;;; org-mode
 ;; http://orgmode.org/worg/org-tutorials/orgtutorial_dto.html
@@ -155,12 +158,16 @@
                                    (,shell-symbol . t)
                                    (latex . t))))
 
-    ;; https://www.reddit.com/r/orgmode/comments/64tiq9/syntax_highlighting_in_code_blocks/dg548nx/
-    ;; Code black highlighting and indentation
-    (setq org-src-fontify-natively t
-	      org-src-tab-acts-natively t
-	      org-confirm-babel-evaluate nil
-	      org-edit-src-content-indentation 0)
+    (progn
+      ;; https://www.reddit.com/r/orgmode/comments/64tiq9/syntax_highlighting_in_code_blocks/dg548nx/
+      ;; Code black highlighting and indentation
+      (setq org-src-fontify-natively t)
+      (progn
+        ;; In org-mode 9.3, the option has bug when making a new code block just before another code block.
+        ;; e.g. "<s" => TAB => previous-line "<s" => TAB
+        (setq org-src-tab-acts-natively t))
+      (setq org-confirm-babel-evaluate nil)
+      (setq org-edit-src-content-indentation 0))
 
     (if (version< emacs-version "27.1")
 	    ;; comparing org-mode version would be better

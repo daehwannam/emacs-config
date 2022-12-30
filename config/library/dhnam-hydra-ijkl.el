@@ -12,11 +12,12 @@
     (send-string-to-terminal (format "\033]12;%s\007" color))))
 
 (defhydra dhnam-hydra-ijkl
-  (:hint nil
-         :pre (progn
-                (dhnam-hydra-ijkl/set-cursor-color dhnam-hydra-ijkl/activated-cursor-color))
-         :post (progn
-                 (dhnam-hydra-ijkl/set-cursor-color dhnam-hydra-ijkl/default-cursor-color)))
+  (:pre (progn
+          (dhnam-hydra-ijkl/set-cursor-color dhnam-hydra-ijkl/activated-cursor-color))
+   :post (progn
+           (dhnam-hydra-ijkl/set-cursor-color dhnam-hydra-ijkl/default-cursor-color))
+   :verbosity 0)
+
   "ijkl"
 
   ("i" previous-line)
@@ -35,6 +36,8 @@
 
   ("C-i"  dhnam/scroll-down-small)
   ("C-k"  dhnam/scroll-up-small)
+  ("I"  scroll-down)
+  ("K"  scroll-up)
 
   ("a" move-beginning-of-line)
   ("s" move-end-of-line)
@@ -57,23 +60,34 @@
   ("C-M-y" counsel-yank-pop)
 
   ("r" recenter-top-bottom)
-  ("R" move-to-window-line-top-bottom)
+  ("R" dhnam/reverse-recenter-top-bottom)
+  ("t" move-to-window-line-top-bottom)
+  ("T" dhnam/reverse-move-to-window-line-top-bottom)
 
   ;; ("SPC" set-mark-command)
   ("v" set-mark-command)
   ("'" exchange-point-and-mark)
-  ("g" keyboard-quit)
+  ("<f7>" pop-to-mark-command)
+  ("<f8>" dhnam/unpop-to-mark-command)
 
+  ("." xref-find-definitions)
+  ("," xref-go-back)
+
+  ("g" keyboard-quit)
   ("/" undo)
 
-  (";" other-window-repeat)
+  (";" other-window)
+  (":" dhnam/other-window-backwards)
   ("p" tab-next-repeat)
+  ("P" tab-previous-repeat)
 
   ("₫" nil "quit")
   ("RET" nil "quit")
   ("q" nil "quit"))
 
-(hydra-set-property 'dhnam-hydra-ijkl :verbosity 0)
+(progn
+  ;; Disable any hint message
+  (hydra-set-property 'dhnam-hydra-ijkl :verbosity 0))
 
 (comment
   (global-set-key (kbd "₢") 'dhnam-hydra-ijkl/body))

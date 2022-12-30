@@ -43,6 +43,13 @@
   (load "~/.emacs.d/config/machine-config.el"))
 
 (progn
+  ;; theme
+  (add-to-list 'custom-theme-load-path "~/.emacs.d/config/init/theme-collection")
+  (let ((theme-style (dhnam/machine-config-get-first 'theme-style)))
+    (when (or (eq theme-style 'dark) (eq theme-style nil))
+      (load-theme 'my-manoj-dark t))))
+
+(progn
   ;; base setup
   (load "~/.emacs.d/base/cmd-line-arg.el")
   (load "~/.emacs.d/base/package-init.el")
@@ -83,3 +90,16 @@
     (setq inhibit-splash-screen t))
 
   (switch-to-buffer "*scratch*"))
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   '(org cmake-mode yaml-mode which-key-posframe wgrep vterm volume vlf vertico-posframe valign use-package sphinx-doc realgud quelpa pyvenv poporg pdfgrep pdf-tools paredit org-fragtog orderless multi-term mini-frame markdown-mode marginalia magit lice latex-preview-pane langtool key-chord jsonnet-mode ivy-posframe hydra hy-mode highlight-indentation hide-mode-line exwm expand-region embark-consult ein eglot define-word ctrlf csv-mode counsel company clipetty biblio auctex async)))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )

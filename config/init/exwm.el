@@ -636,6 +636,13 @@ When INITIAL-INPUT is non-nil, use it in the minibuffer during completion."
         (redisplay)
         (windmove-right)))
 
+    (progn
+      ;; miscellaneous commands
+
+      (defun dhnam/exwm-reload-key-config ()
+        (interactive)
+        (call-process-shell-command "bash ~/.emacs.d/exwm/reload-key-config.sh")))
+
     ;; (progn
     ;;   ;; run machine-specific config
     ;;   (start-process-shell-command
@@ -709,9 +716,9 @@ When INITIAL-INPUT is non-nil, use it in the minibuffer during completion."
         (comment
           (dotimes (workspace-num 9)
             (lexical-let ((idx (% (+ workspace-num 10 (- dhnam/exwm-workspace-start-number)) 10)))
-              (define-key dhnam/exwm-workspapce-prefix-map (kbd (format "%d" workspace-num))
-                #'(lambda () (interactive)
-                    (funcall exwm-environment-switch-create idx))))))
+                         (define-key dhnam/exwm-workspapce-prefix-map (kbd (format "%d" workspace-num))
+                           #'(lambda () (interactive)
+                               (funcall exwm-environment-switch-create idx))))))
 
         (progn
           (assert (not (get 'exwm-input-global-keys 'saved-value)))
@@ -782,7 +789,7 @@ When INITIAL-INPUT is non-nil, use it in the minibuffer during completion."
                                    (interactive)
                                    (,exwm-environment-switch-create
                                     ,(% (+ i 10 (- dhnam/exwm-workspace-start-number)) 10)))))
-                             ; using number key 1 to 7
+                                        ; using number key 1 to 7
                              (number-sequence 1 7)))
 
                  (comment
@@ -793,7 +800,7 @@ When INITIAL-INPUT is non-nil, use it in the minibuffer during completion."
                                      (interactive)
                                      (,exwm-environment-switch-create
                                       ,(% (+ i 10 (- dhnam/exwm-workspace-start-number)) 10)))))
-                               ; using number key 0 to 9
+                                        ; using number key 0 to 9
                                (number-sequence 0 9))))))
 
           (comment
@@ -825,7 +832,7 @@ When INITIAL-INPUT is non-nil, use it in the minibuffer during completion."
                   ([?\C-d] . [delete])
                   ([?\C-k] . [S-end C-c delete]) ; updated
 
-                  ([?\₫] . [escape]) ; CruzeiroSign
+                  ([?\₫] . [escape])    ; CruzeiroSign
 
                   ;; the below is newly added
                   ([?\C-w] . [?\C-x])

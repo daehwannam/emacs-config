@@ -28,6 +28,11 @@
         (put 'if 'common-lisp-indent-function 2))))
 
   (progn
+    ;; Lisp indentation fix for plist
+    ;; https://emacs.stackexchange.com/a/34757
+    (require 'lisp-indentation-fix))
+
+  (progn
     (comment
       ;; replace emacs-lisp's indentation with common-lisp's
       ;; https://stackoverflow.com/a/22167050
