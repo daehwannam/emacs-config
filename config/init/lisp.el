@@ -157,6 +157,13 @@
     (define-key paredit-mode-map (kbd "C-M-p") 'backward-list)
     (define-key paredit-mode-map (kbd "C-M-n") 'forward-list)
 
+    (define-key paredit-mode-map (kbd "{") 'paredit-open-curly)
+    (define-key paredit-mode-map (kbd "M-)") 'paredit-splice-sexp)
+    (define-key paredit-mode-map (kbd "M-[") 'paredit-wrap-square)
+    (define-key paredit-mode-map (kbd "M-]") 'paredit-splice-sexp)
+    (define-key paredit-mode-map (kbd "M-{") 'paredit-wrap-curly)
+    (define-key paredit-mode-map (kbd "M-}") 'paredit-splice-sexp)
+
     (progn
       (defhydra paredit-slurp-barf-sexp ()
 	    "paredit slurp/barf"
