@@ -1,4 +1,7 @@
 
+(require 'dhnam-macro)
+(require 'dhnam-hydra)
+
 (unless (fboundp 'comment)
   (defmacro comment (&rest args)
     `nil))
@@ -6,15 +9,7 @@
 (defvar dhnam-ijkl/default-cursor-color "orchid")
 (defvar dhnam-ijkl/activated-cursor-color "cyan")
 (defvar dhnam-ijkl-paredit-struct-cursor-color "orange")
-
-
-      (defvar dhnam-ijkl-paredit-struct-cursor-color "orange")
-
-      (defconst dhnam-ijkl/paredit-struct-plist
-        '(:pre (dhnam-ijkl/set-cursor-color dhnam-ijkl-paredit-struct-cursor-color)
-          :post (dhnam-ijkl/set-cursor-color dhnam-ijkl/default-cursor-color)))
-
-
+(defvar dhnam-ijkl-paredit-struct-cursor-color "orange")
 
 (defconst dhnam-ijkl/activation-key "₢")
 (defconst dhnam-ijkl/quit-key "₫")
@@ -24,13 +19,20 @@
       (set-cursor-color color)
     (send-string-to-terminal (format "\033]12;%s\007" color))))
 
+(dhnam-ijkl/set-cursor-color dhnam-ijkl/default-cursor-color)
+
 (defconst dhnam-ijkl/plist
   '(:pre (dhnam-ijkl/set-cursor-color dhnam-ijkl/activated-cursor-color)
+    :post (dhnam-ijkl/set-cursor-color dhnam-ijkl/default-cursor-color)))
+
+(defconst dhnam-ijkl/paredit-struct-plist
+  '(:pre (dhnam-ijkl/set-cursor-color dhnam-ijkl-paredit-struct-cursor-color)
     :post (dhnam-ijkl/set-cursor-color dhnam-ijkl/default-cursor-color)))
 
 (eval
  `(progn
     (progn
+      ;; dhnam-ijkl
       (defhydra dhnam-ijkl
         ,dhnam-ijkl/plist
 
@@ -71,7 +73,14 @@
         ("f" kill-line)
         ("F" kill-sexp)
         ("DEL" delete-backward-char)
-        ("M-DEL" backward-kill-word)
+        ("M-DEL" baqckward-kill-word)
+
+        ;; ("W ." dhnam/kill-ring-save-at-point)
+        ;; ("W p" dhnam/kill-path-to-clipboard)
+        ;; ("W l" dhnam/org-kill-link-to-clipboard)
+
+        ("n" electric-newline-and-maybe-indent)
+        ("M-j" default-indent-new-line)
 
         ("\\" indent-region)
 
@@ -107,8 +116,11 @@
         ("#" eval-last-sexp)
         ("M-#" eval-print-last-sexp)
 
+        ("SPC ;" comment-dwim)
+        ("SPC :" eval-expression)
+
         (,dhnam-ijkl/quit-key nil "quit")
-        ("RET" nil "quit")
+        ;; ("RET" nil "quit")
         ("q" nil "quit"))
 
       (progn
@@ -140,9 +152,12 @@
 
         ("/" undo)
 
-        (,dhnam-ijkl/quit-key dhnam-ijkl/body :exit t))
+        ;; (,dhnam-ijkl/quit-key dhnam-ijkl/body :exit t)
+        ("q" nil "quit"))
 
-      (clone-hydra dhnam-ijkl-paredit-ijkl dhnam-ijkl
+      (hydra-set-property 'dhnam-ijkl-paredit-struct :verbosity 0) ; disable any hint message
+
+      (clone-hydra dhnam-ijkl-paredit-move dhnam-ijkl
         ,dhnam-ijkl/plist
 
         "ijkl"
@@ -155,6 +170,9 @@
         ("F" kill-sexp)
         ("DEL" paredit-backward-delete)
         ("M-DEL" paredit-backward-kill-word)
+
+        ("n" paredit-newline)
+        ("M-j" default-indent-new-line)
 
         ("(" paredit-open-round)
         (")" paredit-close-round)
@@ -170,10 +188,13 @@
         ("M-{" paredit-wrap-curly)
         ("M-}" paredit-splice-sexp)
 
-        ("SPC e" dhnam-ijkl-paredit-struct/body  :exit t))
+        ("SPC ;" dhnam/paredit-comment-dwim)
 
-      (hydra-set-property 'dhnam-ijkl-paredit-ijkl :verbosity 0) ; disable any hint message
-      (define-key paredit-mode-map (kbd ,dhnam-ijkl/activation-key) 'dhnam-ijkl-paredit-ijkl/body)))) 
+        (comment ("SPC e" dhnam-ijkl-paredit-struct/body  :exit t))
+        ("c" dhnam-ijkl-paredit-struct/body  :exit t))
+
+      (hydra-set-property 'dhnam-ijkl-paredit-move :verbosity 0) ; disable any hint message
+      (define-key paredit-mode-map (kbd ,dhnam-ijkl/activation-key) 'dhnam-ijkl-paredit-move/body)))) 
 
 
 (provide 'dhnam-ijkl)

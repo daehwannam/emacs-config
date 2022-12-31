@@ -30,3 +30,5 @@
        (unless ,evaluated-p
          (setq ,evaluated-p t)
          ,@args))))
+
+(provide 'dhnam-macro)

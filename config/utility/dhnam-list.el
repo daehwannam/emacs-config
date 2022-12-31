@@ -18,3 +18,5 @@
       (`string (apply #'concat sequences))
       (`list (apply #'append (append sequences '(nil))))
       (_ (error "Not a sequence type name: %S" type)))))
+
+(provide 'dhnam-list)

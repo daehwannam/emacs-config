@@ -1,11 +1,16 @@
 
+(defun dhnam/string-to-chars (str)
+  ;; example
+  ;; (setq chars (dhnam/string-to-chars "abcde"))
+  ;; (setq char-strs (mapcar #'char-to-string chars))
+  (append str nil))
+
 
 (defun dhnam/string-trim (string)
   ;; http://ergoemacs.org/emacs/modernization_elisp_lib_problem.html
   "Remove white spaces in beginning and ending of STRING.
 White space here is any of: space, tab, emacs newline (line feed, ASCII 10)."
-  (replace-regexp-in-string "\\`[ \t\n]*" "" (replace-regexp-in-string "[ \t\n]*\\'" "" string))
-  )
+  (replace-regexp-in-string "\\`[ \t\n]*" "" (replace-regexp-in-string "[ \t\n]*\\'" "" string)))
 
 
 (defun dhnam/string-starts-with (s begins)
@@ -20,3 +25,5 @@ White space here is any of: space, tab, emacs newline (line feed, ASCII 10)."
   (let ((k (kbd s)))
     (cond ((stringp k) (string-to-char k))
           ((vectorp k) (elt k 0)))))
+
+(provide 'dhnam-string)

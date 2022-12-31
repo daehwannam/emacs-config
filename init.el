@@ -23,6 +23,9 @@
   ;; some functions used to initialize emacs
   (dhnam/add-to-load-path-recursively "~/.emacs.d/config/script/")
 
+  ;; utility
+  (dhnam/add-to-load-path-recursively "~/.emacs.d/config/utility/")
+
   ;; my library
   (dhnam/add-to-load-path-recursively "~/.emacs.d/config/library/")
 
@@ -33,10 +36,12 @@
   ;; non-archived packages
   (dhnam/add-to-load-path-recursively "~/.emacs.d/package/"))
 
+;; use functions to load files and require features
+(require 'dhnam-file-loading)
+
 (progn
-  ;; base utility
-  (require 'dhnam-file-loading)
-  (dhnam/load-directory "~/.emacs.d/base/utility"))
+  ;; utility
+  (dhnam/require-directory "~/.emacs.d/config/utility"))
 
 (progn
   ;; load machine-config-setting.el
@@ -55,7 +60,7 @@
   (load "~/.emacs.d/base/package-init.el")
   (load "~/.emacs.d/base/key-chord-setup.el")
   (progn
-    ;; hydra may be laggy and it's not compatible with key-chord
+    ;; hydra is not compatible with key-chord
     (load "~/.emacs.d/base/hydra-setup.el"))
   (load "~/.emacs.d/base/key-config.el")
   (comment (load "~/.emacs.d/base/modalka-setup.el"))
