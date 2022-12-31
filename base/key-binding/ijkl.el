@@ -1,4 +1,4 @@
 
-(require 'dhnam-hydra-ijkl)
+(require 'dhnam-ijkl)
 
-;; (global-set-key (kbd "₢") 'dhnam-hydra-ijkl/body)
+;; (global-set-key (kbd "₢") 'dhnam-ijkl/body)
