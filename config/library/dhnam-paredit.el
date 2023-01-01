@@ -67,4 +67,13 @@ However, if text is unbalanced, signal an error instead."
            (comment-indent)))
         (t (paredit-insert-comment))))
 
+
+(defun dhnam/paredit-backward-delete (&optional argument)
+  (interactive "P")
+  (if (paredit-region-active-p)
+      (progn
+        (paredit-check-region-for-delete (region-beginning) (region-end))
+        (delete-region (region-beginning) (region-end)))
+    (paredit-backward-delete argument)))
+
 (provide 'dhnam-paredit)

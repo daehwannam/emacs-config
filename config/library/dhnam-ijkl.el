@@ -13,6 +13,7 @@
 
 (defconst dhnam-ijkl/activation-key "₢")
 (defconst dhnam-ijkl/quit-key "₫")
+(defconst dhnam-avy-key "₣")
 
 (defun dhnam-ijkl/set-cursor-color (color)
   (if (display-graphic-p)
@@ -46,9 +47,9 @@
         ("o" forward-word)
 
         ("M-i" backward-up-list)
-        ("M-I" down-list)
+        ("M-I" paredit-backward-down)
         ("M-k" paredit-forward-up)
-        ("M-K" paredit-backward-down)
+        ("M-K" down-list)
 
         ("M-j" backward-sexp)
         ("M-l" forward-sexp)
@@ -66,8 +67,11 @@
         ("S" end-of-buffer)
         ("m" back-to-indentation)
 
-        ("w" kill-ring-save)
-        ("e" kill-region)
+        ("w w" kill-ring-save)
+        ("w ." dhnam/kill-ring-save-at-point)
+        ("w p" dhnam/kill-path-to-clipboard)
+        ("w l" dhnam/org-kill-link-to-clipboard)
+        ("W" kill-region)
         ("d" delete-char)
         ("D" kill-word)
         ("f" kill-line)
@@ -75,9 +79,6 @@
         ("DEL" delete-backward-char)
         ("M-DEL" baqckward-kill-word)
 
-        ("SPC w ." dhnam/kill-ring-save-at-point)
-        ("SPC w p" dhnam/kill-path-to-clipboard)
-        ("SPC w l" dhnam/org-kill-link-to-clipboard)
 
         ("RET" newline)
         ("n" electric-newline-and-maybe-indent)
@@ -93,19 +94,21 @@
         ("M-Y" dhnam/yank-pop-forwards)
         ("C-M-y" counsel-yank-pop)
 
+        ("e" move-to-window-line-top-bottom)
+        ("E" dhnam/reverse-move-to-window-line-top-bottom)
         ("r" recenter-top-bottom)
         ("R" dhnam/reverse-recenter-top-bottom)
-        ("t" move-to-window-line-top-bottom)
-        ("T" dhnam/reverse-move-to-window-line-top-bottom)
 
         ("v" set-mark-command)
         ("'" exchange-point-and-mark)
         ("<f7>" pop-to-mark-command)
         ("<f8>" dhnam/unpop-to-mark-command)
 
-        ;; ("SPC s s" dhnam/swiper-within-region)
-        ;; ("SPC s f" ctrlf-forward-default)
-        ;; ("SPC s r" rgrep)
+        ("SPC s s" dhnam/swiper-within-region)
+        ("SPC s f" ctrlf-forward-default)
+        ("SPC s r" rgrep)
+        ("SPC s d" consult-grep-on-default-directory)
+        ("SPC s g" consult-git-grep)
         ("." xref-find-definitions)
         ("," xref-pop-marker-stack)
 
@@ -129,11 +132,12 @@
         ;; (":" dhnam/other-window-backwards)
         ;; ("p" tab-next)
         ;; ("P" tab-previous)
-        ("SPC d" dhnam-ijkl-window/body :exit t)
-        ("SPC f" dhnam-ijkl-tab/body :exit t)
+
+        ("t" dhnam-ijkl-window-tab/body :exit t)
 
         ("C-h k" describe-key)
         (,dhnam-ijkl/quit-key nil "quit")
+        (,dhnam-avy-key avy-goto-char-timer)
         ;; ("RET" nil "quit")
         ("q" nil "quit"))
 
@@ -144,46 +148,36 @@
       (define-key global-map (kbd ,dhnam-ijkl/activation-key) 'dhnam-ijkl/body))
 
     (progn
-      (defhydra dhnam-ijkl-window
+      (defhydra dhnam-ijkl-window-tab
         ,dhnam-ijkl/plist-2
 
         "ijkl"
 
-        ("k" dhnam/other-window-backwards)
+        ("j" dhnam/other-window-backwards)
         ("l" other-window)
-        ("i" dhnam/other-window-backwards)
-        ("o" other-window)
-        ("0" delete-window)
-        ("9" delete-other-windows)
-        ("8" split-window-below)
-        ("7" split-window-right)
-
-        (,dhnam-ijkl/quit-key dhnam-ijkl/body :exit t))
-
-      (hydra-set-property 'dhnam-ijkl-window :verbosity 0))
-
-    (progn
-      (defhydra dhnam-ijkl-tab
-        ,dhnam-ijkl/plist-2
-
-        "ijkl"
-
-        ("k" tab-previous)
-        ("l" tab-next)
         ("i" tab-previous)
-        ("o" tab-next)
-        ("0" tab-close)
-        ("9" tab-close-other)
-        ("8" tab-new)
+        ("k" tab-next)
 
-        (,dhnam-ijkl/quit-key dhnam-ijkl/body :exit t))
+        ("w 0" delete-window)
+        ("w 9" delete-other-windows)
+        ("w 8" split-window-below)
+        ("w 7" split-window-right)
 
-      (hydra-set-property 'dhnam-ijkl-tab :verbosity 0))
+        ("W" hydra-buffer-move/body :exit t)
+
+        ("e 0" tab-close)
+        ("e 9" tab-close-other)
+        ("e 8" tab-new)
+
+        ;; (,dhnam-ijkl/quit-key dhnam-ijkl/body :exit t)
+        )
+
+      (hydra-set-property 'dhnam-ijkl-window-tab :verbosity 0))
 
     (when (package-installed-p 'paredit)
       (require 'dhnam-paredit)
 
-      (defhydra dhnam-ijkl-paredit-struct
+      (defhydra dhnam-ijkl-pparedit-struct
         ,dhnam-ijkl/plist-2
 
         "paredit structure editing"
@@ -203,7 +197,7 @@
 
         ("/" undo)
 
-        (,dhnam-ijkl/quit-key dhnam-ijkl/body :exit t)
+        ;; (,dhnam-ijkl/quit-key dhnam-ijkl-paredit-move/body :exit t)
         ("q" nil "quit"))
 
       (hydra-set-property 'dhnam-ijkl-paredit-struct :verbosity 0) ; disable any hint message
@@ -213,13 +207,13 @@
 
         "ijkl"
 
-        ("w" dhnam/paredit-kill-ring-save)
-        ("e" paredit-kill-region)
+        ("w w" dhnam/paredit-kill-ring-save)
+        ("W" paredit-kill-region)
         ("d" paredit-forward-delete)
         ("D" paredit-forward-kill-word)
         ("f" paredit-kill)
         ("F" kill-sexp)
-        ("DEL" paredit-backward-delete)
+        ("DEL" dhnam/paredit-backward-delete)
         ("M-DEL" paredit-backward-kill-word)
 
         ("n" paredit-newline)
@@ -242,7 +236,7 @@
         ("SPC ;" dhnam/paredit-comment-dwim)
 
         ;; ("SPC e" dhnam-ijkl-paredit-struct/body  :exit t)
-        ("c" dhnam-ijkl-paredit-struct/body  :exit t))
+        ("p" dhnam-ijkl-paredit-struct/body  :exit t))
 
       (hydra-set-property 'dhnam-ijkl-paredit-move :verbosity 0) ; disable any hint message
       (define-key paredit-mode-map (kbd ,dhnam-ijkl/activation-key) 'dhnam-ijkl-paredit-move/body))

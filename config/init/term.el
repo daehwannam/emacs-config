@@ -315,6 +315,7 @@ The term buffer is named based on `name' "
         (define-key map (kbd "<f8>")          #'dhnam/unpop-to-mark-command)
         (define-key map (kbd "C-r")           (vtsl/copy-mode-then 'isearch-backward))
         (define-key map (kbd "C-s")           (vtsl/copy-mode-then 'isearch-forward))
+        (define-key map (kbd "₣")             (vtsl/copy-mode-then 'avy-goto-char-timer))
         ;; (define-key map (kbd "M-r")           #'vtsl/vterm-send-ctrl-r)
         ;; (define-key map (kbd "M-s")           #'vtsl/vterm-send-ctrl-s)
         (define-key map (kbd "M-P")           #'vtsl/vterm-send-ctrl-r)

@@ -189,7 +189,8 @@
       (define-key paredit-mode-map (kbd "M-;") #'dhnam/paredit-comment-dwim)
       (comment
         (define-key paredit-mode-map (kbd "C-M-u") #'dhnam/paredit-backward-up-or-down)
-        (define-key paredit-mode-map (kbd "C-M-d") #'dhnam/paredit-forward-up-or-down)))
+        (define-key paredit-mode-map (kbd "C-M-d") #'dhnam/paredit-forward-up-or-down))
+      (define-key paredit-mode-map (kbd "DEL") #'dhnam/paredit-backward-delete))
 
     (progn
       (define-key paredit-mode-map (kbd "M-D") (make-repeatable-command #'paredit-backward-down))
