@@ -58,11 +58,10 @@
       (define-key isearch-mode-map (kbd "₫") 'isearch-abort))))
 
 (progn
-  (defvar dhnam/default-key-binding-style 'ijkl)
+  (defvar dhnam/default-key-binding-style 'fbnp)
   (defvar dhnam/key-binding-style
     (let ((key-binding-style-file-name "~/.emacs.d/key-binding-style.txt"))
       (unless (file-exists-p key-binding-style-file-name)
-        ;; the default key binding style is `fbnp'
         (write-region (symbol-name dhnam/default-key-binding-style) nil key-binding-style-file-name))
 
       (let ((cmd-line-arg-key "--key-binding-style"))

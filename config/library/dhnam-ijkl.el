@@ -21,11 +21,11 @@
 
 (dhnam-ijkl/set-cursor-color dhnam-ijkl/default-cursor-color)
 
-(defconst dhnam-ijkl/plist
+(defconst dhnam-ijkl/plist-1
   '(:pre (dhnam-ijkl/set-cursor-color dhnam-ijkl/activated-cursor-color)
     :post (dhnam-ijkl/set-cursor-color dhnam-ijkl/default-cursor-color)))
 
-(defconst dhnam-ijkl/paredit-struct-plist
+(defconst dhnam-ijkl/plist-2
   '(:pre (dhnam-ijkl/set-cursor-color dhnam-ijkl-paredit-struct-cursor-color)
     :post (dhnam-ijkl/set-cursor-color dhnam-ijkl/default-cursor-color)))
 
@@ -34,7 +34,7 @@
     (progn
       ;; dhnam-ijkl
       (defhydra dhnam-ijkl
-        ,dhnam-ijkl/plist
+        ,dhnam-ijkl/plist-1
 
         "ijkl"
 
@@ -46,8 +46,8 @@
         ("o" forward-word)
 
         ("M-i" backward-up-list)
-        ("M-k" down-list)
-        ("M-I" paredit-forward-up)
+        ("M-I" down-list)
+        ("M-k" paredit-forward-up)
         ("M-K" paredit-backward-down)
 
         ("M-j" backward-sexp)
@@ -55,10 +55,10 @@
         ("M-u" backward-list)
         ("M-o" forward-list)
 
-        ("C-i"  dhnam/scroll-down-small)
-        ("C-k"  dhnam/scroll-up-small)
-        ("I"  scroll-down)
-        ("K"  scroll-up)
+        ("M-h"  dhnam/scroll-down-small)
+        ("h"  dhnam/scroll-up-small)
+        ("M-H"  scroll-down)
+        ("H"  scroll-up)
 
         ("a" move-beginning-of-line)
         ("s" move-end-of-line)
@@ -75,12 +75,16 @@
         ("DEL" delete-backward-char)
         ("M-DEL" baqckward-kill-word)
 
-        ;; ("W ." dhnam/kill-ring-save-at-point)
-        ;; ("W p" dhnam/kill-path-to-clipboard)
-        ;; ("W l" dhnam/org-kill-link-to-clipboard)
+        ("SPC w ." dhnam/kill-ring-save-at-point)
+        ("SPC w p" dhnam/kill-path-to-clipboard)
+        ("SPC w l" dhnam/org-kill-link-to-clipboard)
 
+        ("RET" newline)
         ("n" electric-newline-and-maybe-indent)
-        ("M-j" default-indent-new-line)
+        ("M-n" default-indent-new-line)
+        ("M-SPC" dhnam/just-one-space-conditionally)
+        ("M-\\" delete-horizontal-space)
+        ("b" indent-for-tab-command)
 
         ("\\" indent-region)
 
@@ -94,31 +98,41 @@
         ("t" move-to-window-line-top-bottom)
         ("T" dhnam/reverse-move-to-window-line-top-bottom)
 
-        ;; ("SPC" set-mark-command)
         ("v" set-mark-command)
         ("'" exchange-point-and-mark)
         ("<f7>" pop-to-mark-command)
         ("<f8>" dhnam/unpop-to-mark-command)
 
+        ;; ("SPC s s" dhnam/swiper-within-region)
+        ;; ("SPC s f" ctrlf-forward-default)
+        ;; ("SPC s r" rgrep)
         ("." xref-find-definitions)
         ("," xref-pop-marker-stack)
 
         ("g" keyboard-quit)
         ("/" undo)
 
-        ("M-9" previous-buffer)
-        ("M-0" next-buffer)
-        (";" other-window)
-        (":" dhnam/other-window-backwards)
-        ("p" tab-next-repeat)
-        ("P" tab-previous-repeat)
-
         ("#" eval-last-sexp)
         ("M-#" eval-print-last-sexp)
 
-        ("SPC ;" comment-dwim)
-        ("SPC :" eval-expression)
+        (";" comment-dwim)
+        (":" eval-expression)
+        ;; ("SPC ;" comment-dwim)
+        ;; ("SPC :" eval-expression)
 
+        ("M-9" previous-buffer)
+        ("M-0" next-buffer)
+
+        ;; ("SPC 2" split-window-below)
+        ;; ("SPC 3" split-window-right)
+        ;; (";" other-window)
+        ;; (":" dhnam/other-window-backwards)
+        ;; ("p" tab-next)
+        ;; ("P" tab-previous)
+        ("SPC d" dhnam-ijkl-window/body :exit t)
+        ("SPC f" dhnam-ijkl-tab/body :exit t)
+
+        ("C-h k" describe-key)
         (,dhnam-ijkl/quit-key nil "quit")
         ;; ("RET" nil "quit")
         ("q" nil "quit"))
@@ -129,11 +143,48 @@
 
       (define-key global-map (kbd ,dhnam-ijkl/activation-key) 'dhnam-ijkl/body))
 
+    (progn
+      (defhydra dhnam-ijkl-window
+        ,dhnam-ijkl/plist-2
+
+        "ijkl"
+
+        ("k" dhnam/other-window-backwards)
+        ("l" other-window)
+        ("i" dhnam/other-window-backwards)
+        ("o" other-window)
+        ("0" delete-window)
+        ("9" delete-other-windows)
+        ("8" split-window-below)
+        ("7" split-window-right)
+
+        (,dhnam-ijkl/quit-key dhnam-ijkl/body :exit t))
+
+      (hydra-set-property 'dhnam-ijkl-window :verbosity 0))
+
+    (progn
+      (defhydra dhnam-ijkl-tab
+        ,dhnam-ijkl/plist-2
+
+        "ijkl"
+
+        ("k" tab-previous)
+        ("l" tab-next)
+        ("i" tab-previous)
+        ("o" tab-next)
+        ("0" tab-close)
+        ("9" tab-close-other)
+        ("8" tab-new)
+
+        (,dhnam-ijkl/quit-key dhnam-ijkl/body :exit t))
+
+      (hydra-set-property 'dhnam-ijkl-tab :verbosity 0))
+
     (when (package-installed-p 'paredit)
       (require 'dhnam-paredit)
 
       (defhydra dhnam-ijkl-paredit-struct
-        ,dhnam-ijkl/paredit-struct-plist
+        ,dhnam-ijkl/plist-2
 
         "paredit structure editing"
 
@@ -152,13 +203,13 @@
 
         ("/" undo)
 
-        ;; (,dhnam-ijkl/quit-key dhnam-ijkl/body :exit t)
+        (,dhnam-ijkl/quit-key dhnam-ijkl/body :exit t)
         ("q" nil "quit"))
 
       (hydra-set-property 'dhnam-ijkl-paredit-struct :verbosity 0) ; disable any hint message
 
       (clone-hydra dhnam-ijkl-paredit-move dhnam-ijkl
-        ,dhnam-ijkl/plist
+        ,dhnam-ijkl/plist-1
 
         "ijkl"
 
@@ -172,7 +223,7 @@
         ("M-DEL" paredit-backward-kill-word)
 
         ("n" paredit-newline)
-        ("M-j" default-indent-new-line)
+        ("M-n" default-indent-new-line)
 
         ("(" paredit-open-round)
         (")" paredit-close-round)
@@ -190,11 +241,28 @@
 
         ("SPC ;" dhnam/paredit-comment-dwim)
 
-        (comment ("SPC e" dhnam-ijkl-paredit-struct/body  :exit t))
+        ;; ("SPC e" dhnam-ijkl-paredit-struct/body  :exit t)
         ("c" dhnam-ijkl-paredit-struct/body  :exit t))
 
       (hydra-set-property 'dhnam-ijkl-paredit-move :verbosity 0) ; disable any hint message
-      (define-key paredit-mode-map (kbd ,dhnam-ijkl/activation-key) 'dhnam-ijkl-paredit-move/body)))) 
+      (define-key paredit-mode-map (kbd ,dhnam-ijkl/activation-key) 'dhnam-ijkl-paredit-move/body))
 
+    (with-eval-after-load 'vterm-seamless
+      (clone-hydra dhnam-ijkl-vterm dhnam-ijkl
+        ,dhnam-ijkl/plist-1
+
+        "ijkl"
+
+        (,dhnam-ijkl/quit-key vtsl/copy-mode-exit :exit t))
+
+      (let ((map vterm-seamless-mode-map))
+        (define-key map (kbd ,dhnam-ijkl/activation-key) (vtsl/copy-mode-then 'dhnam-ijkl-vterm/body)))
+
+      (let ((map vterm-seamless-copy-mode-map))
+        (comment))
+
+      ;; disable any hint message
+      (hydra-set-property 'dhnam-ijkl-vterm :verbosity 0))))
+ 
 
 (provide 'dhnam-ijkl)
