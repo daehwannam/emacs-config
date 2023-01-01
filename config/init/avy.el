@@ -12,7 +12,7 @@
 
   (progn
     ;; <FFrancSign> = ₣
-    (global-set-key (kbd "₣") 'avy-goto-char)
+    (global-set-key (kbd "₣") 'avy-goto-char-timer)
     (comment (global-set-key (kbd "<FFrancSign>") 'avy-goto-char)))
 
   :config
