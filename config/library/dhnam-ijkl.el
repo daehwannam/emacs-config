@@ -85,7 +85,7 @@
         ("M-n" default-indent-new-line)
         ("M-SPC" dhnam/just-one-space-conditionally)
         ("M-\\" delete-horizontal-space)
-        ("b" indent-for-tab-command)
+        ("M-b" indent-for-tab-command)
 
         ("\\" indent-region)
 
@@ -100,15 +100,21 @@
         ("R" dhnam/reverse-recenter-top-bottom)
 
         ("v" set-mark-command)
+        ("C-SPC" set-mark-command)
+        ("C-@" set-mark-command)
         ("'" exchange-point-and-mark)
         ("<f7>" pop-to-mark-command)
         ("<f8>" dhnam/unpop-to-mark-command)
+
+        ("b k" kill-buffer)
+        ("b j" counsel-switch-buffer)
 
         ("SPC s s" dhnam/swiper-within-region)
         ("SPC s f" ctrlf-forward-default)
         ("SPC s r" rgrep)
         ("SPC s d" consult-grep-on-default-directory)
         ("SPC s g" consult-git-grep)
+
         ("." xref-find-definitions)
         ("," xref-pop-marker-stack)
 
@@ -134,6 +140,7 @@
         ;; ("P" tab-previous)
 
         ("t" dhnam-ijkl-window-tab/body :exit t)
+        ("p" dhnam-ijkl-paredit-struct/body  :exit t)
 
         ("C-h k" describe-key)
         (,dhnam-ijkl/quit-key nil "quit")
