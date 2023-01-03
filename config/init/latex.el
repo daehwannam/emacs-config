@@ -159,6 +159,41 @@
           (interactive "p")
           (dhnam/pdf-view-next-page-in-multiple-columns-command n t))
 
+        (progn
+          (eval
+           `(defhydra dhnam-ijkl-pdf-view ()
+
+              "ijkl"
+
+              ("C-i" pdf-view-previous-line-or-previous-page)
+              ("C-k" pdf-view-next-line-or-next-page)
+              ("C-j" image-backward-hscroll)
+              ("C-l" image-forward-hscroll)
+
+              ("i" pdf-view-previous-page-command)
+              ("k" pdf-view-next-page-command)
+              ("j" pdf-view-previous-page-command)
+              ("l" pdf-view-next-page-command)
+
+              ("M-i" dhnam/pdf-view-previous-non-overlapping-page-in-multiple-columns-command)
+              ("M-k" dhnam/pdf-view-next-non-overlapping-page-in-multiple-columns-command)
+              ("M-j" dhnam/pdf-view-previous-page-in-multiple-columns-command)
+              ("M-l" dhnam/pdf-view-next-page-in-multiple-columns-command)
+
+              (,dhnam-ijkl/quit-key nil "quit")
+              ("q" dhnam/none-command)
+              ("w" dhnam/none-command)))
+
+          (progn
+            ;; disable any hint message
+            (hydra-set-property 'dhnam-ijkl-pdf-view :verbosity 0))
+
+          (defun dhnam/none-command () (interactive))
+
+          (let ((k (if (boundp 'dhnam-ijkl/activation-key) dhnam-ijkl/activation-key "₢")))
+            (define-key pdf-view-mode-map (kbd dhnam-ijkl/activation-key) 'dhnam-ijkl-pdf-view/body)
+            (define-key pdf-view-mode-map (kbd dhnam-ijkl/quit-key) 'dhnam/none-command)))
+
 
         (progn
           ;; (define-key pdf-view-mode-map (kbd "<prior>") 'dhnam/pdf-view-previous-page-in-multiple-columns-command)
