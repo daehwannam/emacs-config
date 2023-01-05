@@ -68,7 +68,7 @@
         ("m" back-to-indentation)
 
         ("w w" kill-ring-save)
-        ("w ." dhnam/kill-ring-save-at-point)
+        ("w ." dhnam/kill-ring-save-thing-at-point)
         ("w p" dhnam/kill-path-to-clipboard)
         ("w l" dhnam/org-kill-link-to-clipboard)
         ("W" kill-region)

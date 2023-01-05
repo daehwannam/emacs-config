@@ -36,7 +36,7 @@
 
 (global-set-key (kbd "M-_") 'dhnam/toggle-camelcase-underscores)
 
-(defun dhnam/kill-ring-save-at-point ()
+(defun dhnam/kill-ring-save-symbol-at-point ()
   "Copy the symbol at point."
   (interactive)
   (save-excursion
@@ -48,9 +48,18 @@
       (kill-ring-save start end)
       )))
 
-(comment (global-set-key (kbd "C-x M-w") 'dhnam/kill-ring-save-at-point))
-(comment (global-set-key (kbd "M-W") 'dhnam/kill-ring-save-at-point))
-(key-chord-define-global "w." 'dhnam/kill-ring-save-at-point)
+(defun dhnamm/kill-ring-save-thing-at-point ()
+  "Copy a thing at point"
+  (interactive)
+  (let ((thing (or (thing-at-point 'url)
+                   (thing-at-point 'filename)
+                   (thing-at-point 'symbol))))
+    (when thing
+      (kill-new (substring-no-properties thing)))))
+
+(comment (global-set-key (kbd "C-x M-w") 'dhnam/kill-ring-save-symbol-at-point))
+(comment (global-set-key (kbd "M-W") 'dhnam/kill-ring-save-symbol-at-point))
+(key-chord-define-global "w." 'dhnamm/kill-ring-save-thing-at-point)
 
 (defun dhnam/just-one-space-in-region (beg end)
   "replace all whitespace in the region with single spaces"

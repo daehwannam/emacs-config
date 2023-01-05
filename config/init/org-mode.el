@@ -367,7 +367,7 @@ When nil, use the default face background."
       (when (eq type 'link)
         (copy-region-as-kill beg end))))
 
-  (key-chord-define-global "wl" 'dhnam/org-kill-link-to-clipboard)
+  (key-chord-define org-mode-map "wl" 'dhnam/org-kill-link-to-clipboard)
 
   (progn
     (defun dhnam/insert-inline-math ()
