@@ -317,40 +317,43 @@ the PDFGrep job before it finishes, type \\[kill-compilation]."
              (ref-id-str-valid nil))
          (when (and start-pos end-pos)
            (setq ref-id-str (dhnam/string-trim (buffer-substring-no-properties start-pos end-pos)))
-           (message ref-id-str)
            (setq ref-id-str-valid (not (or (string-match-p "[{}]" ref-id-str)
                                            (string-empty-p ref-id-str))))
+           (comment
+             (unless ref-id-str-valid
+               (comment (xref-find-definitions (xref-backend-identifier-at-point (xref-find-backend))))
+               (call-interactively 'xref-find-definitions)))
            (when ref-id-str-valid
              (let ((ref-pos nil))
                (funcall (if opening-in-other-window #'find-file-other-window #'find-file)
                         dhnam/bibliography-file-as-source-of-reference)
                (save-excursion
                  (beginning-of-buffer)
-                 (re-search-forward (format "@.*\\(article\\)\\|\\(inproceedings\\).*%s" ref-id-str))
+                 (re-search-forward (format "@.*\\(article\\|inproceedings\\).*%s" ref-id-str))
                  (setq ref-pos (point)))
                (when ref-pos
                  (goto-char ref-pos)
-                 (recenter-top-bottom)))))
-         (comment
-           (unless ref-id-str-valid
-             (comment (xref-find-definitions (xref-backend-identifier-at-point (xref-find-backend))))
-             (call-interactively 'xref-find-definitions)))))))
+                 (recenter-top-bottom)
+
+                 ;; return position
+                 ref-pos))))))))
 
   (defun dhnam/open-pdfurl-of-reference-in-bibliography-file ()
     (interactive)
-    (dhnam/find-reference-in-bibliography-file)
-    (let ((new-point
-           (save-excursion
-             (re-search-forward "\\(pdfurl\\|@\\)")
-             (re-search-forward "{")
-             (re-search-forward "[^ ]")
-             (point))))
-      (goto-char new-point)
-      (let ((original-kill-ring kill-ring))
-        (my-org-kill-link-to-clipboard)
-        (unless (eq original-kill-ring kill-ring)
-          (let ((url (pop kill-ring)))
-            (dhnam/exwm-command-open-web-browser url))))))
+    (when (dhnam/find-reference-in-bibliography-file)
+      (save-excursion
+        (let ((new-point
+               (save-restriction
+                 (narrow-to-region (save-excursion (move-beginning-of-line 1) (point))
+                                   (save-excursion (move-beginning-of-line 1) (forward-list) (point)))
+                 (re-search-forward "\\(pdfurl\\|@\\)")
+                 (re-search-forward "{")
+                 (re-search-forward "[^ ]")
+                 (point))))
+          (goto-char new-point)
+          (let ((url-thing (thing-at-point 'url)))
+            (when url-thing
+              (dhnam/exwm-command-open-web-browser (substring-no-properties url-thing))))))))
 
 
   (defvar dhnam/pdf-file-dir-as-source-of-reference nil
