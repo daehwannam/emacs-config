@@ -380,6 +380,11 @@ When nil, use the default face background."
      'LaTeX-mode-hook
      (lambda ()
        (local-set-key (kbd "()") 'dhnam/insert-inline-math))))
+
+  (progn
+    ;; hide chracters to emphasize text
+    ;; https://www.reddit.com/r/emacs/comments/6pxh92/comment/dksxo09/?utm_source=share&utm_medium=web2x&context=3
+    (setq org-hide-emphasis-markers t))
   )
 
 (provide 'dhnam-org-mode)

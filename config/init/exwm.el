@@ -906,8 +906,10 @@ When INITIAL-INPUT is non-nil, use it in the minibuffer during completion."
                   ([?\M-o] . [?\M-q?\M-O])
 
                   ;; open back/forward history in a new tab
-                  ([?\C-\M-9] . [?\M-q?\C-\M-b])
-                  ([?\C-\M-0] . [?\M-q?\C-\M-f])
+                  ([?\C-\M-9] . [?\M-q?\C-\M-\[])
+                  ([?\C-\M-0] . [?\M-q?\C-\M-\]])
+                  ;; ([?\C-\M-9] . [?\M-q?\C-\M-b])
+                  ;; ([?\C-\M-0] . [?\M-q?\C-\M-f])
 
                   ;; copy links
                   ([?\C-i] . [\q \u])

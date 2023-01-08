@@ -176,6 +176,7 @@
         ("e 9" tab-close-other)
         ("e 8" tab-new)
 
+        (,dhnam-ijkl/quit-key nil "quit")
         ;; (,dhnam-ijkl/quit-key dhnam-ijkl/body :exit t)
         )
 
@@ -184,7 +185,7 @@
     (when (package-installed-p 'paredit)
       (require 'dhnam-paredit)
 
-      (defhydra dhnam-ijkl-pparedit-struct
+      (defhydra dhnam-ijkl-paredit-struct
         ,dhnam-ijkl/plist-2
 
         "paredit structure editing"
@@ -204,6 +205,7 @@
 
         ("/" undo)
 
+        (,dhnam-ijkl/quit-key nil "quit")
         ;; (,dhnam-ijkl/quit-key dhnam-ijkl-paredit-move/body :exit t)
         ("q" nil "quit"))
 

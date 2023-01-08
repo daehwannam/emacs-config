@@ -209,6 +209,11 @@
           (define-key pdf-view-mode-map (kbd "M-f") 'dhnam/pdf-view-next-page-in-multiple-columns-command)))
 
       (progn
+        ;; dark theme
+        ;; https://www.reddit.com/r/emacs/comments/6905nl/comment/dh2qvw1/?utm_source=share&utm_medium=web2x&context=3
+        (define-key pdf-view-mode-map (kbd "M") 'pdf-view-midnight-minor-mode))
+
+      (progn
         (defun dhnam/pdfgrep-with-current-file (command-args)
           "This function is modified from `pdfgrep'. 
 Run pdfgrep with user-specified COMMAND-ARGS, collect output in a buffer.
@@ -232,7 +237,12 @@ the PDFGrep job before it finishes, type \\[kill-compilation]."
 
         (key-chord-define pdf-view-mode-map "sj" 'dhnam/pdfgrep-with-current-file))))
 
-  (add-hook 'doc-view-mode-hook 'dhnam/initialize-pdf-tools))
+  (progn
+    ;; dark theme color
+    (setq pdf-view-midnight-colors '("gray" . "#002b36" )))
+
+  (add-hook 'doc-view-mode-hook 'dhnam/initialize-pdf-tools)
+  (add-hook 'pdf-tools-enabled-hook 'pdf-view-midnight-minor-mode))
 
 (when (progn
         ;; to update `TeX-view-program-selection' with setcar,
