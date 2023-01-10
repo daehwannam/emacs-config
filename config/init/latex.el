@@ -239,7 +239,10 @@ the PDFGrep job before it finishes, type \\[kill-compilation]."
 
   (progn
     ;; dark theme color
-    (setq pdf-view-midnight-colors '("gray" . "#002b36" )))
+    (comment (setq pdf-view-midnight-colors '("light gray" . "#002b36" )))
+    (comment (setq pdf-view-midnight-colors '("light gray" . "#002420")))
+    (comment (setq pdf-view-midnight-colors '("light gray" . "#001d1d")))
+    (setq pdf-view-midnight-colors '("light gray" . "#002824")))
 
   (add-hook 'doc-view-mode-hook 'dhnam/initialize-pdf-tools)
   (add-hook 'pdf-tools-enabled-hook 'pdf-view-midnight-minor-mode))
