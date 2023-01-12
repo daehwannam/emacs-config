@@ -178,7 +178,7 @@ The term buffer is named based on `name' "
                (termbuf (apply 'term-ansi-make-term name "/bin/sh" nil (list "-c" cd-str-local))))
           (funcall start-term termbuf)))))
 
-  (key-chord-define-global "o2" 'dhnam/ansi-term))
+  (comment (key-chord-define-global "o2" 'dhnam/ansi-term)))
 
 (progn
   ;; char mode binding
@@ -258,7 +258,7 @@ The term buffer is named based on `name' "
 
     :init
     (progn
-      (key-chord-define-global "o3" 'dhnam/vterm-new-instance)
+      (key-chord-define-global "o2" 'dhnam/vterm-new-instance)
 
       (defun dhnam/vterm-new-instance ()
         (interactive)
@@ -268,7 +268,24 @@ The term buffer is named based on `name' "
     (progn
       (progn
         (require 'vterm-seamless)
-        (add-hook 'vterm-mode-hook 'vtsl/activate))
+        (comment (add-hook 'vterm-mode-hook 'vtsl/activate))
+
+        (progn
+          (defun dhnam/vterm-new-instance-advice (orig-fun &rest args)
+            (let ((buf (apply orig-fun args)))
+              (with-current-buffer buf
+                (vtsl/activate))
+              buf))
+
+          (advice-add 'dhnam/vterm-new-instance
+                      :around 'dhnam/vterm-new-instance-advice))
+
+        (progn
+          (key-chord-define-global "o3" 'dhnam/vterm-new-instance-without-vtsl)
+
+          (defun dhnam/vterm-new-instance-without-vtsl ()
+            (interactive)
+            (vterm t))))
 
       ;; Interactive functions
       (defun dhnam/vterm-insert-tty-fix-template ()

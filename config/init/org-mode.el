@@ -385,6 +385,14 @@ When nil, use the default face background."
     ;; hide chracters to emphasize text
     ;; https://www.reddit.com/r/emacs/comments/6pxh92/comment/dksxo09/?utm_source=share&utm_medium=web2x&context=3
     (setq org-hide-emphasis-markers t))
-  )
+
+  (progn
+    (defun dhnam/org-open-at-point (&optional arg)
+      "Modified version of `org-open-at-point'"
+      (interactive "P")
+
+      (let ((browse-url-browser-function 'dhnam/eww-new))
+        (org-open-at-point arg)))
+    (define-key org-mode-map (kbd "C-C O") 'dhnam/org-open-at-point)))
 
 (provide 'dhnam-org-mode)
