@@ -43,7 +43,7 @@
 
   (progn
     ;; (key-chord-define-global "" #'ctrlf-forward-symbol)
-    (key-chord-define-global "f." #'ctrlf-forward-symbol-at-point)
+    ;; (key-chord-define-global "f." #'ctrlf-forward-symbol-at-point)
     (key-chord-define-global "fj" #'ctrlf-forward-default))
 
   (progn

@@ -159,6 +159,41 @@
           (interactive "p")
           (dhnam/pdf-view-next-page-in-multiple-columns-command n t))
 
+        (progn
+          (eval
+           `(defhydra dhnam-ijkl-pdf-view ()
+
+              "ijkl"
+
+              ("C-i" pdf-view-previous-line-or-previous-page)
+              ("C-k" pdf-view-next-line-or-next-page)
+              ("C-j" image-backward-hscroll)
+              ("C-l" image-forward-hscroll)
+
+              ("i" pdf-view-previous-page-command)
+              ("k" pdf-view-next-page-command)
+              ("j" pdf-view-previous-page-command)
+              ("l" pdf-view-next-page-command)
+
+              ("M-i" dhnam/pdf-view-previous-non-overlapping-page-in-multiple-columns-command)
+              ("M-k" dhnam/pdf-view-next-non-overlapping-page-in-multiple-columns-command)
+              ("M-j" dhnam/pdf-view-previous-page-in-multiple-columns-command)
+              ("M-l" dhnam/pdf-view-next-page-in-multiple-columns-command)
+
+              (,dhnam-ijkl/quit-key nil "quit")
+              ("q" dhnam/none-command)
+              ("w" dhnam/none-command)))
+
+          (progn
+            ;; disable any hint message
+            (hydra-set-property 'dhnam-ijkl-pdf-view :verbosity 0))
+
+          (defun dhnam/none-command () (interactive))
+
+          (let ((k (if (boundp 'dhnam-ijkl/activation-key) dhnam-ijkl/activation-key "₢")))
+            (define-key pdf-view-mode-map (kbd dhnam-ijkl/activation-key) 'dhnam-ijkl-pdf-view/body)
+            (define-key pdf-view-mode-map (kbd dhnam-ijkl/quit-key) 'dhnam/none-command)))
+
 
         (progn
           ;; (define-key pdf-view-mode-map (kbd "<prior>") 'dhnam/pdf-view-previous-page-in-multiple-columns-command)
@@ -172,6 +207,11 @@
           (define-key pdf-view-mode-map (kbd "M-n") 'dhnam/pdf-view-next-non-overlapping-page-in-multiple-columns-command)
           (define-key pdf-view-mode-map (kbd "M-b") 'dhnam/pdf-view-previous-page-in-multiple-columns-command)
           (define-key pdf-view-mode-map (kbd "M-f") 'dhnam/pdf-view-next-page-in-multiple-columns-command)))
+
+      (progn
+        ;; dark theme
+        ;; https://www.reddit.com/r/emacs/comments/6905nl/comment/dh2qvw1/?utm_source=share&utm_medium=web2x&context=3
+        (define-key pdf-view-mode-map (kbd "M") 'pdf-view-midnight-minor-mode))
 
       (progn
         (defun dhnam/pdfgrep-with-current-file (command-args)
@@ -197,7 +237,15 @@ the PDFGrep job before it finishes, type \\[kill-compilation]."
 
         (key-chord-define pdf-view-mode-map "sj" 'dhnam/pdfgrep-with-current-file))))
 
-  (add-hook 'doc-view-mode-hook 'dhnam/initialize-pdf-tools))
+  (progn
+    ;; dark theme color
+    (comment (setq pdf-view-midnight-colors '("light gray" . "#002b36" )))
+    (comment (setq pdf-view-midnight-colors '("light gray" . "#002420")))
+    (comment (setq pdf-view-midnight-colors '("light gray" . "#001d1d")))
+    (setq pdf-view-midnight-colors '("light gray" . "#002824")))
+
+  (add-hook 'doc-view-mode-hook 'dhnam/initialize-pdf-tools)
+  (add-hook 'pdf-tools-enabled-hook 'pdf-view-midnight-minor-mode))
 
 (when (progn
         ;; to update `TeX-view-program-selection' with setcar,
@@ -282,40 +330,43 @@ the PDFGrep job before it finishes, type \\[kill-compilation]."
              (ref-id-str-valid nil))
          (when (and start-pos end-pos)
            (setq ref-id-str (dhnam/string-trim (buffer-substring-no-properties start-pos end-pos)))
-           (message ref-id-str)
            (setq ref-id-str-valid (not (or (string-match-p "[{}]" ref-id-str)
                                            (string-empty-p ref-id-str))))
+           (comment
+             (unless ref-id-str-valid
+               (comment (xref-find-definitions (xref-backend-identifier-at-point (xref-find-backend))))
+               (call-interactively 'xref-find-definitions)))
            (when ref-id-str-valid
              (let ((ref-pos nil))
                (funcall (if opening-in-other-window #'find-file-other-window #'find-file)
                         dhnam/bibliography-file-as-source-of-reference)
                (save-excursion
                  (beginning-of-buffer)
-                 (re-search-forward (format "@.*\\(article\\)\\|\\(inproceedings\\).*%s" ref-id-str))
+                 (re-search-forward (format "@.*\\(article\\|inproceedings\\).*%s" ref-id-str))
                  (setq ref-pos (point)))
                (when ref-pos
                  (goto-char ref-pos)
-                 (recenter-top-bottom)))))
-         (comment
-           (unless ref-id-str-valid
-             (comment (xref-find-definitions (xref-backend-identifier-at-point (xref-find-backend))))
-             (call-interactively 'xref-find-definitions)))))))
+                 (recenter-top-bottom)
+
+                 ;; return position
+                 ref-pos))))))))
 
   (defun dhnam/open-pdfurl-of-reference-in-bibliography-file ()
     (interactive)
-    (dhnam/find-reference-in-bibliography-file)
-    (let ((new-point
-           (save-excursion
-             (re-search-forward "\\(pdfurl\\|@\\)")
-             (re-search-forward "{")
-             (re-search-forward "[^ ]")
-             (point))))
-      (goto-char new-point)
-      (let ((original-kill-ring kill-ring))
-        (my-org-kill-link-to-clipboard)
-        (unless (eq original-kill-ring kill-ring)
-          (let ((url (pop kill-ring)))
-            (dhnam/exwm-command-open-web-browser url))))))
+    (when (dhnam/find-reference-in-bibliography-file)
+      (save-excursion
+        (let ((new-point
+               (save-restriction
+                 (narrow-to-region (save-excursion (move-beginning-of-line 1) (point))
+                                   (save-excursion (move-beginning-of-line 1) (forward-list) (point)))
+                 (re-search-forward "\\(pdfurl\\|@\\)")
+                 (re-search-forward "{")
+                 (re-search-forward "[^ ]")
+                 (point))))
+          (goto-char new-point)
+          (let ((url-thing (thing-at-point 'url)))
+            (when url-thing
+              (dhnam/exwm-command-open-web-browser (substring-no-properties url-thing))))))))
 
 
   (defvar dhnam/pdf-file-dir-as-source-of-reference nil

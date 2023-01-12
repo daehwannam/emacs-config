@@ -367,7 +367,7 @@ When nil, use the default face background."
       (when (eq type 'link)
         (copy-region-as-kill beg end))))
 
-  (key-chord-define-global "wl" 'dhnam/org-kill-link-to-clipboard)
+  (key-chord-define org-mode-map "wl" 'dhnam/org-kill-link-to-clipboard)
 
   (progn
     (defun dhnam/insert-inline-math ()
@@ -380,6 +380,19 @@ When nil, use the default face background."
      'LaTeX-mode-hook
      (lambda ()
        (local-set-key (kbd "()") 'dhnam/insert-inline-math))))
-  )
+
+  (progn
+    ;; hide chracters to emphasize text
+    ;; https://www.reddit.com/r/emacs/comments/6pxh92/comment/dksxo09/?utm_source=share&utm_medium=web2x&context=3
+    (setq org-hide-emphasis-markers t))
+
+  (progn
+    (defun dhnam/org-open-at-point (&optional arg)
+      "Modified version of `org-open-at-point'"
+      (interactive "P")
+
+      (let ((browse-url-browser-function 'dhnam/eww-new))
+        (org-open-at-point arg)))
+    (define-key org-mode-map (kbd "C-C O") 'dhnam/org-open-at-point)))
 
 (provide 'dhnam-org-mode)

@@ -572,9 +572,10 @@ When INITIAL-INPUT is non-nil, use it in the minibuffer during completion."
       (progn
         (let ((map (make-sparse-keymap)))
           (define-key map (kbd "d") 'dhnam/counsel-find-file-in-downloads)
-          (define-key map (kbd "w") 'dhnam/kill-gc)
+          (define-key map (kbd "e") 'dhnam/kill-gc)
           (define-key map (kbd "k") 'dhnam/ivy-kill-marked)
           (define-key map (kbd "s") 'dhnam/switch-to-scratch-buffer)
+          (define-key map (kbd "w") 'dhnam/eww-new)
 
           (defvar dhnam/exwm-extended-emacs-command-prefix-map map
 	        "Keymap for emacs related commands."))
@@ -906,8 +907,10 @@ When INITIAL-INPUT is non-nil, use it in the minibuffer during completion."
                   ([?\M-o] . [?\M-q?\M-O])
 
                   ;; open back/forward history in a new tab
-                  ([?\C-\M-9] . [?\M-q?\C-\M-b])
-                  ([?\C-\M-0] . [?\M-q?\C-\M-f])
+                  ([?\C-\M-9] . [?\M-q?\C-\M-\[])
+                  ([?\C-\M-0] . [?\M-q?\C-\M-\]])
+                  ;; ([?\C-\M-9] . [?\M-q?\C-\M-b])
+                  ;; ([?\C-\M-0] . [?\M-q?\C-\M-f])
 
                   ;; copy links
                   ([?\C-i] . [\q \u])

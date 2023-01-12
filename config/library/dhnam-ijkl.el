@@ -68,7 +68,7 @@
         ("m" back-to-indentation)
 
         ("w w" kill-ring-save)
-        ("w ." dhnam/kill-ring-save-at-point)
+        ("w ." dhnam/kill-ring-save-thing-at-point)
         ("w p" dhnam/kill-path-to-clipboard)
         ("w l" dhnam/org-kill-link-to-clipboard)
         ("W" kill-region)
@@ -176,6 +176,7 @@
         ("e 9" tab-close-other)
         ("e 8" tab-new)
 
+        (,dhnam-ijkl/quit-key nil "quit")
         ;; (,dhnam-ijkl/quit-key dhnam-ijkl/body :exit t)
         )
 
@@ -204,6 +205,7 @@
 
         ("/" undo)
 
+        (,dhnam-ijkl/quit-key nil "quit")
         ;; (,dhnam-ijkl/quit-key dhnam-ijkl-paredit-move/body :exit t)
         ("q" nil "quit"))
 
