@@ -184,7 +184,7 @@
     (when (package-installed-p 'paredit)
       (require 'dhnam-paredit)
 
-      (defhydra dhnam-ijkl-pparedit-struct
+      (defhydra dhnam-ijkl-paredit-struct
         ,dhnam-ijkl/plist-2
 
         "paredit structure editing"
@@ -256,8 +256,13 @@
 
         (,dhnam-ijkl/quit-key vtsl/copy-mode-exit :exit t))
 
+      (defun dhnam-ijkl-vterm/body-after-previous-line ()
+        (interactive)
+        (previous-line)
+        (dhnam-ijkl-vterm/body))
+
       (let ((map vterm-seamless-mode-map))
-        (define-key map (kbd ,dhnam-ijkl/activation-key) (vtsl/copy-mode-then 'dhnam-ijkl-vterm/body)))
+        (define-key map (kbd ,dhnam-ijkl/activation-key) (vtsl/copy-mode-then 'dhnam-ijkl-vterm/body-after-previous-line)))
 
       (let ((map vterm-seamless-copy-mode-map))
         (comment))
