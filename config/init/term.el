@@ -256,16 +256,18 @@ The term buffer is named based on `name' "
      ;; ("C-c C-k" . vterm-copy-mode-done)
      )
 
+    :commands (dhnam/vterm-new-instance dhnam/vterm-new-instance-without-vtsl)
     :init
     (progn
       (key-chord-define-global "o2" 'dhnam/vterm-new-instance)
-
-      (defun dhnam/vterm-new-instance ()
-        (interactive)
-        (vterm t)))
+      (key-chord-define-global "o3" 'dhnam/vterm-new-instance-without-vtsl))
 
     :config
     (progn
+      (defun dhnam/vterm-new-instance ()
+        (interactive)
+        (vterm t))
+
       (progn
         (require 'vterm-seamless)
         (comment (add-hook 'vterm-mode-hook 'vtsl/activate))
@@ -281,7 +283,7 @@ The term buffer is named based on `name' "
                       :around 'dhnam/vterm-new-instance-advice))
 
         (progn
-          (key-chord-define-global "o3" 'dhnam/vterm-new-instance-without-vtsl)
+
 
           (defun dhnam/vterm-new-instance-without-vtsl ()
             (interactive)
