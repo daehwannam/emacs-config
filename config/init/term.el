@@ -406,13 +406,25 @@ the value of `default-directory'. PATH may be a tramp remote path."
     (insert "conda activate " env-name)
     (comint-send-input))
 
+  (defun dhnam/shell-send-conda-deactivate ()
+    (interactive)
+    (insert "conda deactivate")
+    (comint-send-input))
+
   (defun dhnam/term-send-conda-activate-env (env-name)
     (interactive (list (dhnam/get-conda-activate-env)))
     (insert "conda activate " env-name)
     (term-send-input))
 
+  (defun dhnam/term-send-conda-deactivate ()
+    (interactive)
+    (insert "conda deactivate")
+    (term-send-input))
+
 
   (define-key shell-mode-map (kbd "C-c c") 'dhnam/shell-send-conda-activate-env)
-  (define-key term-mode-map (kbd "C-c c") 'dhnam/term-send-conda-activate-env))
+  (define-key shell-mode-map (kbd "C-c C") 'dhnam/shell-send-conda-deactivate)
+  (define-key term-mode-map (kbd "C-c c") 'dhnam/term-send-conda-activate-env)
+  (define-key term-mode-map (kbd "C-c C") 'dhnam/term-send-conda-deactivate))
 
 (provide 'dhnam-term)
