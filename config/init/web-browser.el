@@ -53,7 +53,9 @@
     ;; disable making new tab when `eww-open-in-new-buffer' is called
     (setq eww-browse-url-new-window-is-tab nil)))
 
-(progn
+(use-existing-pkg eww
+  :commands (dhnam/eww-new)
+  :config
   (defun dhnam/eww-new (url &optional arg)
     "Make new eww buffer"
     (interactive
@@ -66,6 +68,7 @@
     (let ((default-prefix-arg 4))
       (eww url default-prefix-arg)))
 
+  :init
   (key-chord-define-global "i1" 'dhnam/eww-new))
 
 (provide 'dhnam-web-browser)
