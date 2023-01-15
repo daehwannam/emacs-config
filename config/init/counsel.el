@@ -1,5 +1,5 @@
 (use-existing-pkg ivy
-  :init
+  :config
   ;; (ivy-mode 1)
   (defun dhnam/ivy-toggle-mark ()
     ;; https://www.reddit.com/r/emacs/comments/b6zh91/comment/ejpujuq/?utm_source=share&utm_medium=web2x&context=3
@@ -33,14 +33,40 @@
         (dolist (c marked-candidates)
           (let ((default-directory (ivy-state-directory ivy-last)))
             (funcall action (ivy--call-cand c)))))))
-  :bind
-  (nil
-   ;; ("C-c C-M-k" . dhnam/ivy-kill-marked)
-   ;; :map ivy-minibuffer-map
-   :map ivy-switch-buffer-map
-   ("C-SPC" . dhnam/ivy-toggle-mark)
-   ;; ("C-k" . dhnam/ivy-kill-marked)
-   ))
+
+  (defun dhnam/ivy-next-history-element (arg)
+    "Forward to `next-history-element' with ARG. It's modified from `ivy-next-history-element' not to check (derived-mode-p 'prog-mode)"
+    (interactive "p")
+    (if (and (= minibuffer-history-position 0)
+             (equal ivy-text ""))
+        (progn
+          (when minibuffer-default
+            (setq ivy--default (car minibuffer-default)))
+          (insert ivy--default)
+          (when (and
+                 ;; (with-ivy-window (derived-mode-p 'prog-mode))
+                 (eq (ivy-state-caller ivy-last) 'swiper)
+                 (not (file-exists-p ivy--default))
+                 (not (ivy-ffap-url-p ivy--default))
+                 (not (ivy-state-dynamic-collection ivy-last))
+                 (> (point) (minibuffer-prompt-end)))
+            (ivy--insert-symbol-boundaries)))
+      (next-history-element arg))
+    (ivy--cd-maybe)
+    (move-end-of-line 1)
+    (ivy--maybe-scroll-history))
+
+  (ivy-define-key ivy-switch-buffer-map (kbd "C-SPC") 'dhnam/ivy-toggle-mark)
+  (ivy-define-key ivy-minibuffer-map (kbd "M-n") 'dhnam/ivy-next-history-element)
+
+  ;; :bind
+  ;; (nil
+  ;;  ;; ("C-c C-M-k" . dhnam/ivy-kill-marked)
+  ;;  ;; :map ivy-minibuffer-map
+  ;;  ;; ("C-k" . dhnam/ivy-kill-marked)
+  ;;  )
+  )
+
 (comment
   ;; `ivy--call-marked' take an action, such as `ivy--kill-buffer-action' over marked items.
   )
