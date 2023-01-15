@@ -254,18 +254,21 @@ The term buffer is named based on `name' "
 
      ;; :map vterm-copy-mode-map
      ;; ("C-c C-k" . vterm-copy-mode-done)
-     )
+     ("C-c C-k" . vtsl/deactivate)
+     ("C-c C-j" . vtsl/activate))
 
+    :commands (dhnam/vterm-new-instance dhnam/vterm-new-instance-without-vtsl)
     :init
     (progn
       (key-chord-define-global "o2" 'dhnam/vterm-new-instance)
-
-      (defun dhnam/vterm-new-instance ()
-        (interactive)
-        (vterm t)))
+      (comment (key-chord-define-global "o3" 'dhnam/vterm-new-instance-without-vtsl)))
 
     :config
     (progn
+      (defun dhnam/vterm-new-instance ()
+        (interactive)
+        (vterm t))
+
       (progn
         (require 'vterm-seamless)
         (comment (add-hook 'vterm-mode-hook 'vtsl/activate))
@@ -280,9 +283,7 @@ The term buffer is named based on `name' "
           (advice-add 'dhnam/vterm-new-instance
                       :around 'dhnam/vterm-new-instance-advice))
 
-        (progn
-          (key-chord-define-global "o3" 'dhnam/vterm-new-instance-without-vtsl)
-
+        (comment
           (defun dhnam/vterm-new-instance-without-vtsl ()
             (interactive)
             (vterm t))))
@@ -320,7 +321,7 @@ The term buffer is named based on `name' "
       (let ((map vterm-seamless-mode-map))
         (define-key map (kbd "C-z")           #'vterm-send-next-key)
         (define-key map (kbd "C-;")           #'vterm-send-next-key)
-        (define-key map (kbd "C-c C-j")       #'vterm-copy-mode)
+        (comment (define-key map (kbd "C-c C-j")       #'vterm-copy-mode))
         (define-key map (kbd "C-t")           #'dhnam/vterm-insert-tty-fix-template)
         (define-key map (kbd "C-c c")         #'dhnam/vterm-send-conda-activate-env)
         (define-key map (kbd "M-9")           #'previous-buffer)
@@ -390,7 +391,8 @@ the value of `default-directory'. PATH may be a tramp remote path."
 		             (tramp-file-name-method tstruct)))))
       (start-process "terminal" nil dhnam/gui-terminal-command)))
 
-  (key-chord-define-global "o4" 'dhnam/gui-terminal))
+  (when (display-graphic-p)
+    (key-chord-define-global "o3" 'dhnam/gui-terminal)))
 
 (progn
   (defun dhnam/get-conda-activate-env ()
