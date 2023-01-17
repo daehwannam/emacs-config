@@ -271,12 +271,13 @@
 
     (progn
       ;; application commands
+
+      (defun dhnam/exwm-command-execute-shell (command)
+        (interactive (list (read-shell-command "$ ")))
+        (start-process-shell-command command nil command))
+
       (progn
         ;; web browser commands
-        (defun dhnam/exwm-command-execute-shell (command)
-          (interactive (list (read-shell-command "$ ")))
-          (start-process-shell-command command nil command))
-
         (defun dhnam/url-string-p (s)
           (string-match "[^[:blank:][:space:]]*://[^[:blank:][:space:]]*"
                         s))
