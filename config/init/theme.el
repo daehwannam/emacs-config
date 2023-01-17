@@ -35,6 +35,7 @@
     (custom-set-faces
      '(mlinum-highlight-face ((t (:inherit default :foreground "purple" :background "white"))))
      ))
+
    (t ;; (eq theme-style 'dark)
     (comment (dhnam/load-and-set-current-theme 'my-doom-material-dark t))
     (comment (dhnam/load-and-set-current-theme 'tsdh-dark t))
@@ -155,7 +156,10 @@
        ;; '(consult-preview-line ((t (:inherit highlight :background "royal blue"))))
        '(vertico-current ((t (:inherit nil :underline t))))
        '(consult-preview-line ((t (:inherit nil :underline t))))))
-    )
+
+    (custom-set-faces
+     ;; makefile comment indentation color
+     '(makefile-space ((t (:background "gray25"))))))
 
    (when (package-installed-p 'highlight-parentheses)
      (custom-set-faces
