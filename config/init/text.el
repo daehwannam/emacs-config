@@ -119,7 +119,7 @@
     (if (and arg (not (= 1 arg))) (message "%d lines copied" arg)))
 
   (comment (key-chord-define (current-global-map) "kk" (make-repeatable-command #'dhnam/copy-and-next-line)))
-  (global-set-key (kbd "M-k") (make-repeatable-command #'dhnam/copy-and-next-line)))
+  (global-set-key (kbd "M-k") 'dhnam/copy-and-next-line))
 
 (progn
   ;; add new keybindings for kitty terminal

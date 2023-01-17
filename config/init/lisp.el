@@ -159,8 +159,11 @@
 
     (define-key paredit-mode-map (kbd "{") 'paredit-open-curly)
     (define-key paredit-mode-map (kbd "M-)") 'paredit-splice-sexp)
-    (define-key paredit-mode-map (kbd "M-[") 'paredit-wrap-square)
-    (define-key paredit-mode-map (kbd "M-]") 'paredit-splice-sexp)
+    (comment
+      ;; when "M-[" is bound to a command, paste "some-text" in terminal emacs insert "[200~some-text [201~]]"
+      ;; https://emacs.stackexchange.com/a/28864
+      (define-key paredit-mode-map (kbd "M-[") 'paredit-wrap-square)
+      (define-key paredit-mode-map (kbd "M-]") 'paredit-splice-sexp))
     (define-key paredit-mode-map (kbd "M-{") 'paredit-wrap-curly)
     (define-key paredit-mode-map (kbd "M-}") 'paredit-splice-sexp)
 
@@ -185,7 +188,7 @@
       (require 'dhnam-paredit)
 
       (comment (key-chord-define paredit-mode-map "kk" (make-repeatable-command #'dhnam/copy-and-forward-sexp)))
-      (define-key paredit-mode-map (kbd "M-k") (make-repeatable-command #'dhnam/copy-and-forward-sexp))
+      (define-key paredit-mode-map (kbd "M-k") 'dhnam/copy-and-forward-sexp)
       (define-key paredit-mode-map (kbd "M-w") #'dhnam/paredit-kill-ring-save)
       (define-key paredit-mode-map (kbd "M-;") #'dhnam/paredit-comment-dwim)
       (comment
