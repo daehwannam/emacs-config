@@ -579,4 +579,13 @@ Similarly for Soar, Scheme, etc."
   (interactive)
   (insert "source $(dirname $(which conda))/../etc/profile.d/conda.sh"))
 
+(defun dhnam/dired-conda-env-activate (env-name)
+  (interactive (list (dhnam/get-conda-activate-env)))
+  (let ((dir-path (dhnam/string-trim
+                   (shell-command-to-string
+                    (format "echo $(conda info --base)/envs/%s/etc/conda/activate.d" env-name)))))
+    ;; conda environment doesn't have the directory "$(conda info --base)/envs/%s/etc" by default
+    (make-directory dir-path t)
+    (dired dir-path)))
+
 (provide 'dhnam-python)
