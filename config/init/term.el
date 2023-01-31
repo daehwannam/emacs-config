@@ -308,6 +308,13 @@ The term buffer is named based on `name' "
         (vterm-insert "conda deactivate")
         (vterm-send-return))
 
+      (comment
+        (defun dhnam/vterm-send-conda-env-remove (env-name)
+          (interactive (list (dhnam/get-conda-activate-env)))
+          (when (y-or-n-p (format "Are you sure you want to remove \"%s\"" env-name))
+            (vterm-insert "conda env remove -n " env-name)
+            (vterm-send-return))))
+
       (defun vtsl/vterm-send-ctrl-r ()
         "Send `C-r' to the libvterm."
         (interactive)
@@ -429,6 +436,12 @@ the value of `default-directory'. PATH may be a tramp remote path."
     (insert "conda deactivate")
     (term-send-input))
 
+  (defun dhnam/conda-env-remove (env-name)
+    (interactive (list (dhnam/get-conda-activate-env)))
+    (when (y-or-n-p (format "Are you sure you want to remove \"%s\"" env-name))
+      (let ((command (format "conda env remove -n %s" env-name)))
+        (comment (start-process-shell-command command nil command))
+        (shell-command command))))
 
   (define-key shell-mode-map (kbd "C-c c") 'dhnam/shell-send-conda-activate-env)
   (define-key shell-mode-map (kbd "C-c C") 'dhnam/shell-send-conda-deactivate)
