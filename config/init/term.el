@@ -303,6 +303,11 @@ The term buffer is named based on `name' "
         (vterm-insert "conda activate " env-name)
         (vterm-send-return))
 
+      (defun dhnam/vterm-send-conda-deactivate ()
+        (interactive)
+        (vterm-insert "conda deactivate")
+        (vterm-send-return))
+
       (defun vtsl/vterm-send-ctrl-r ()
         "Send `C-r' to the libvterm."
         (interactive)
@@ -324,6 +329,7 @@ The term buffer is named based on `name' "
         (comment (define-key map (kbd "C-c C-j")       #'vterm-copy-mode))
         (define-key map (kbd "C-t")           #'dhnam/vterm-insert-tty-fix-template)
         (define-key map (kbd "C-c c")         #'dhnam/vterm-send-conda-activate-env)
+        (define-key map (kbd "C-c C")         #'dhnam/vterm-send-conda-deactivate)
         (define-key map (kbd "M-9")           #'previous-buffer)
         (define-key map (kbd "M-0")           #'next-buffer)
         (define-key map (kbd "M-L")           #'dhnam/reverse-recenter-top-bottom)
