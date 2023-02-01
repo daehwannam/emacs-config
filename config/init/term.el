@@ -265,6 +265,10 @@ The term buffer is named based on `name' "
 
     :config
     (progn
+      ;; https://github.com/akermu/emacs-libvterm/issues/352#issuecomment-647913789
+      (setq vterm-max-scrollback 100000))
+
+    (progn
       (defun dhnam/vterm-new-instance ()
         (interactive)
         (vterm t))
@@ -298,23 +302,6 @@ The term buffer is named based on `name' "
         (vterm-insert "( exec </dev/tty; exec <&1; )")
         (vterm-send-left))
 
-      (defun dhnam/vterm-send-conda-activate-env (env-name)
-        (interactive (list (dhnam/get-conda-activate-env)))
-        (vterm-insert "conda activate " env-name)
-        (vterm-send-return))
-
-      (defun dhnam/vterm-send-conda-deactivate ()
-        (interactive)
-        (vterm-insert "conda deactivate")
-        (vterm-send-return))
-
-      (comment
-        (defun dhnam/vterm-send-conda-env-remove (env-name)
-          (interactive (list (dhnam/get-conda-activate-env)))
-          (when (y-or-n-p (format "Are you sure you want to remove \"%s\"" env-name))
-            (vterm-insert "conda env remove -n " env-name)
-            (vterm-send-return))))
-
       (defun vtsl/vterm-send-ctrl-r ()
         "Send `C-r' to the libvterm."
         (interactive)
@@ -330,13 +317,50 @@ The term buffer is named based on `name' "
         (interactive)
         (vterm-send-key "c" nil nil t))
 
+      (progn
+        (defun dhnam/vterm-send-conda-activate (env-name)
+          (interactive (list (dhnam/get-conda-activate-env)))
+          (vterm-insert "conda activate " env-name)
+          (vterm-send-return))
+
+        (defun dhnam/vterm-send-conda-deactivate ()
+          (interactive)
+          (vterm-insert "conda deactivate")
+          (vterm-send-return))
+
+        (defvar dhnam/conda-new-env-name-history nil)
+        (defvar dhnam/python-version-history nil)
+
+        (defun dhnam/vterm-send-conda-env-create (env-name python-version)
+          (interactive (list (read-string "Environment name: " nil 'dhnam/conda-new-env-name-history)
+                             (read-string "Python version: " "3" 'dhnam/python-version-history)))
+          (vterm-insert (format "conda create -y -n %s python=%s" env-name python-version))
+          (vterm-send-return))
+
+        (defun dhnam/vterm-send-conda-env-remove (env-name)
+          (interactive (list (dhnam/get-conda-activate-env)))
+          (when (y-or-n-p (format "Are you sure you want to remove \"%s\"" env-name))
+            (vterm-insert "conda env remove -n " env-name)
+            (vterm-send-return)))
+
+        (let ((map (make-sparse-keymap)))
+          (define-key map (kbd "a") 'dhnam/vterm-send-conda-activate)
+          (define-key map (kbd "d") 'dhnam/vterm-send-conda-deactivate)
+          (define-key map (kbd "c") 'dhnam/vterm-send-conda-env-create)
+          (define-key map (kbd "r") 'dhnam/vterm-send-conda-env-remove)
+
+	      (defvar dhnam/vterm-send-conda-prefix-map map
+	        "Keymap for conda in vterm.")
+
+          (fset 'dhnam/vterm-send-conda-prefix-map dhnam/vterm-send-conda-prefix-map)))
+
       (let ((map vterm-seamless-mode-map))
         (define-key map (kbd "C-z")           #'vterm-send-next-key)
         (define-key map (kbd "C-;")           #'vterm-send-next-key)
         (comment (define-key map (kbd "C-c C-j")       #'vterm-copy-mode))
         (define-key map (kbd "C-t")           #'dhnam/vterm-insert-tty-fix-template)
-        (define-key map (kbd "C-c c")         #'dhnam/vterm-send-conda-activate-env)
-        (define-key map (kbd "C-c C")         #'dhnam/vterm-send-conda-deactivate)
+        ;; (define-key map (kbd "C-c c")         #'dhnam/vterm-send-conda-activate-env)
+        ;; (define-key map (kbd "C-c C")         #'dhnam/vterm-send-conda-deactivate)
         (define-key map (kbd "M-9")           #'previous-buffer)
         (define-key map (kbd "M-0")           #'next-buffer)
         (define-key map (kbd "M-L")           #'dhnam/reverse-recenter-top-bottom)
@@ -356,6 +380,7 @@ The term buffer is named based on `name' "
         (define-key map (kbd "C-c C-d")       #'pdb-tracking-mode)
 
         ;; key-chords
+        (key-chord-define map "qn" 'dhnam/vterm-send-conda-prefix-map)
         (key-chord-define map "wj" 'vterm-copy-mode)
         (key-chord-define map "w;" 'vterm-send-next-key)
         (key-chord-define map "sj" (vtsl/copy-mode-then 'dhnam/swiper-within-region))
