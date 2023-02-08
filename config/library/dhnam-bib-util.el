@@ -96,26 +96,26 @@
 
 (defun dhnam/find-reference-in-bibliography-file-with-curly-brackets () ;; (&optional opening-in-other-window)
   (interactive)
-  (let ((opening-in-other-window t))
+  (let ((opening-in-other-window nil))
     (let ((ref-id-str (dhnam/get-ref-id-str-from-curly-brackets)))
       (when ref-id-str
         (dhnam/goto-ref-id ref-id-str opening-in-other-window)))))
 
 (defun dhnam/find-reference-in-bibliography-file-with-raw-link () ;; (&optional opening-in-other-window)
   (interactive)
-  (let ((opening-in-other-window t))
+  (let ((opening-in-other-window nil))
     (let ((ref-id-str (plist-get (cadr (org-element-context)) :raw-link)))
       (dhnam/goto-ref-id ref-id-str opening-in-other-window))))
 
 (defun dhnam/find-reference-in-bibliography-file-with-raw-link-at-end ()
   (interactive)
-  (let ((opening-in-other-window t))
+  (let ((opening-in-other-window nil))
     (let ((ref-id-str (dhnam/get-ref-id-str-from-raw-link-at-end)))
       (dhnam/goto-ref-id ref-id-str opening-in-other-window))))
 
 (defun dhnam/find-reference-in-bibliography-file-with-curly-brackets-or-raw-link-at-end ()
   (interactive)
-  (let ((opening-in-other-window t))
+  (let ((opening-in-other-window nil))
     (let ((ref-id-str (dhnam/get-ref-id-str-from-curly-brackets-or-raw-link-at-end)))
       (dhnam/goto-ref-id ref-id-str opening-in-other-window))))
 
@@ -143,7 +143,7 @@
   (make-local-variable 'dhnam/pdf-file-dir-as-source-of-reference)
   (setq-default dhnam/pdf-file-dir-as-source-of-reference "some-pdf-directory-path"))
 
-(defun dhnam/goto-pdf-file-of-reference (ref-id-str)
+(defun dhnam/goto-pdf-file-of-reference (ref-id-str &optional opening-in-other-window)
   (if ref-id-str
       (let* ((file-name (concat
                          (replace-regexp-in-string
@@ -153,7 +153,8 @@
              (file-path (dhnam/join-dirs dhnam/pdf-file-dir-as-source-of-reference file-name)))
 
         (if (file-exists-p file-path)
-            (find-file-other-window file-path)
+            (funcall (if opening-in-other-window #'find-file-other-window #'find-file)
+                     file-path)
           (message (format "The file %s doesn't exist" file-path))))
     (message "Invalid cursor position")))
 
