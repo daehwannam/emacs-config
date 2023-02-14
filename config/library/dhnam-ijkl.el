@@ -107,8 +107,8 @@
         ("<f7>" pop-to-mark-command)
         ("<f8>" dhnam/unpop-to-mark-command)
 
-        ("b k" kill-buffer)
-        ("b j" counsel-switch-buffer)
+        ;; ("b k" kill-buffer)
+        ;; ("b j" counsel-switch-buffer)
 
         ("TAB" self-insert-command)
         ("SPC" self-insert-command)
@@ -149,7 +149,8 @@
         (,dhnam-ijkl/quit-key nil "quit")
         (,dhnam-avy-key avy-goto-char-timer)
         ;; ("RET" nil "quit")
-        ("q" nil "quit"))
+        ("SPC" nil "quit")
+        )
 
       (progn
         ;; Disable any hint message
