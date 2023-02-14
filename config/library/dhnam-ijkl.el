@@ -76,6 +76,7 @@
         ("d" delete-char)
         ("D" kill-word)
         ("f" kill-line)
+        ("M-f" dhnam/copy-and-next-line)
         ("F" kill-sexp)
         ("DEL" delete-backward-char)
         ("M-DEL" baqckward-kill-word)
@@ -221,11 +222,12 @@
         "ijkl"
 
         ;; ("w w" dhnam/paredit-kill-ring-save)
-	("w" dhnam/paredit-kill-ring-save)
+	    ("w" dhnam/paredit-kill-ring-save)
         ("W" paredit-kill-region)
         ("d" paredit-forward-delete)
         ("D" paredit-forward-kill-word)
         ("f" paredit-kill)
+        ("M-f" dhnam/copy-and-forward-sexp)
         ("F" kill-sexp)
         ("DEL" dhnam/paredit-backward-delete)
         ("M-DEL" paredit-backward-kill-word)
@@ -261,6 +263,7 @@
 
         "ijkl"
 
+        ("S" vtsl/end-of-buffer)
         (,dhnam-ijkl/quit-key vtsl/copy-mode-exit :exit t))
 
       (defun dhnam-ijkl-vterm/body-after-previous-line ()
