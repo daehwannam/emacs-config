@@ -31,17 +31,17 @@ Line number is expected in the second parenthesized expression."
     :safe 'stringp))
 
 (progn
-  ;; replace `python-shell-prompt-pdb-regexp' to recognize (Pdb++)
-  (defvar pdb-tracking/python-shell-prompt-pdb-regexp "[(<]*[Ii]?[Pp]db\\(\\+\\+\\)?[>)]+ ")
+  (defvar pdb-tracking/python-shell-prompt-pdb-regexp "[(<]*[Ii]?[Pp]db\\(\\+\\+\\)?[>)]+ "
+    "It replaces `python-shell-prompt-pdb-regexp' to recognize (Pdb++)")
 
   (defvar pdb-tracking/check-python-shell-prompt-pdb-regexp nil)
 
   (defvar pdb-tracking/search-from-end-of-the-current-line t)
-
-  ;; replace `python-pdbtrack-stacktrace-info-regexp'
-  ;; to recognize of Pdb++'s "sticky" mode and "where" command
+  
   (defvar pdb-tracking/python-pdbtrack-stacktrace-info-regexp
-    "\\(>\\|\\[[0-9]+\\]\\) \\([^\"(]+\\)(\\([0-9]+\\))\\([?a-zA-Z0-9_<>]*\\)\\(()\\)?")
+    "\\(>\\|\\[[0-9]+\\]\\) \\([^\"(]+\\)(\\([0-9]+\\))\\([?a-zA-Z0-9_<>]*\\)\\(()\\)?"
+    "It replaces `python-pdbtrack-stacktrace-info-regexp' to recognize of Pdb++'s 'sticky' mode and 'where' command.
+The expression uses mached parentheses of index 2 and 3 while `python-pdbtrack-stacktrace-info-regexp' uses those of index 1 and 2")
 
   (defvar pdb-tracking/file-name-match-idx 2))
 

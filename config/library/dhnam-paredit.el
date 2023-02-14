@@ -11,8 +11,7 @@ ARG has the same meaning as for `kill-sexp'."
 	  (if (eq last-command 'dhnam/copy-and-forward-sexp)
 		  (kill-append (buffer-substring orig-point (point)) nil)
 	    (kill-ring-save orig-point (point)))))
-  (forward-sexp arg)
-  (setq last-command 'dhnam/copy-and-forward-sexp))
+  (forward-sexp arg))
 
 (defun dhnam/paredit-backward-up-or-down (&optional arg)
   (interactive "^p")

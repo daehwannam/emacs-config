@@ -317,43 +317,6 @@ The term buffer is named based on `name' "
         (interactive)
         (vterm-send-key "c" nil nil t))
 
-      (progn
-        (defun dhnam/vterm-send-conda-activate (env-name)
-          (interactive (list (dhnam/get-conda-activate-env)))
-          (vterm-insert "conda activate " env-name)
-          (vterm-send-return))
-
-        (defun dhnam/vterm-send-conda-deactivate ()
-          (interactive)
-          (vterm-insert "conda deactivate")
-          (vterm-send-return))
-
-        (defvar dhnam/conda-new-env-name-history nil)
-        (defvar dhnam/python-version-history nil)
-
-        (defun dhnam/vterm-send-conda-env-create (env-name python-version)
-          (interactive (list (read-string "Environment name: " nil 'dhnam/conda-new-env-name-history)
-                             (read-string "Python version: " "3" 'dhnam/python-version-history)))
-          (vterm-insert (format "conda create -y -n %s python=%s" env-name python-version))
-          (vterm-send-return))
-
-        (defun dhnam/vterm-send-conda-env-remove (env-name)
-          (interactive (list (dhnam/get-conda-activate-env)))
-          (when (y-or-n-p (format "Are you sure you want to remove \"%s\"" env-name))
-            (vterm-insert "conda env remove -n " env-name)
-            (vterm-send-return)))
-
-        (let ((map (make-sparse-keymap)))
-          (define-key map (kbd "a") 'dhnam/vterm-send-conda-activate)
-          (define-key map (kbd "d") 'dhnam/vterm-send-conda-deactivate)
-          (define-key map (kbd "c") 'dhnam/vterm-send-conda-env-create)
-          (define-key map (kbd "r") 'dhnam/vterm-send-conda-env-remove)
-
-	      (defvar dhnam/vterm-send-conda-prefix-map map
-	        "Keymap for conda in vterm.")
-
-          (fset 'dhnam/vterm-send-conda-prefix-map dhnam/vterm-send-conda-prefix-map)))
-
       (let ((map vterm-seamless-mode-map))
         (define-key map (kbd "C-z")           #'vterm-send-next-key)
         (define-key map (kbd "C-;")           #'vterm-send-next-key)
@@ -380,7 +343,6 @@ The term buffer is named based on `name' "
         (define-key map (kbd "C-c C-d")       #'pdb-tracking-mode)
 
         ;; key-chords
-        (key-chord-define map "qn" 'dhnam/vterm-send-conda-prefix-map)
         (key-chord-define map "wj" 'vterm-copy-mode)
         (key-chord-define map "w;" 'vterm-send-next-key)
         (key-chord-define map "sj" (vtsl/copy-mode-then 'dhnam/swiper-within-region))
@@ -432,45 +394,5 @@ the value of `default-directory'. PATH may be a tramp remote path."
   (when (display-graphic-p)
     (key-chord-define-global "o3" 'dhnam/gui-terminal)))
 
-(progn
-  (defun dhnam/get-conda-activate-env ()
-    (completing-read "Environment name: " (pyvenv-virtualenv-list)
-                     nil t nil 'pyvenv-workon-history nil nil))
-
-  (defun dhnam/insert-conda-activate-env (env-name)
-    (interactive (list (dhnam/get-conda-activate-env)))
-    (insert "conda activate " env-name))
-
-  (defun dhnam/shell-send-conda-activate-env (env-name)
-    (interactive (list (dhnam/get-conda-activate-env)))
-    (insert "conda activate " env-name)
-    (comint-send-input))
-
-  (defun dhnam/shell-send-conda-deactivate ()
-    (interactive)
-    (insert "conda deactivate")
-    (comint-send-input))
-
-  (defun dhnam/term-send-conda-activate-env (env-name)
-    (interactive (list (dhnam/get-conda-activate-env)))
-    (insert "conda activate " env-name)
-    (term-send-input))
-
-  (defun dhnam/term-send-conda-deactivate ()
-    (interactive)
-    (insert "conda deactivate")
-    (term-send-input))
-
-  (defun dhnam/conda-env-remove (env-name)
-    (interactive (list (dhnam/get-conda-activate-env)))
-    (when (y-or-n-p (format "Are you sure you want to remove \"%s\"" env-name))
-      (let ((command (format "conda env remove -n %s" env-name)))
-        (comment (start-process-shell-command command nil command))
-        (shell-command command))))
-
-  (define-key shell-mode-map (kbd "C-c c") 'dhnam/shell-send-conda-activate-env)
-  (define-key shell-mode-map (kbd "C-c C") 'dhnam/shell-send-conda-deactivate)
-  (define-key term-mode-map (kbd "C-c c") 'dhnam/term-send-conda-activate-env)
-  (define-key term-mode-map (kbd "C-c C") 'dhnam/term-send-conda-deactivate))
 
 (provide 'dhnam-term)

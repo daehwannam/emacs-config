@@ -6,7 +6,7 @@
 
 (progn
   ;; Functions
-  (defun vtsl/copy-mode-then (cmd)
+  (defun vtsl/copy-mode-then (cmd &optional this-command-as-original)
     (let ((func-symbol (intern (concat "vtsl/copy-mode-then-" (symbol-name cmd)))))
       (fset func-symbol
             `(lambda
@@ -15,7 +15,9 @@
                ,(format "Switch to `vterm-copy-mode' then call `%s'." (symbol-name cmd)) ;; doc string
                ,(interactive-form cmd) ;; interactive form
                (vterm-copy-mode 1)
-               (apply #',cmd args)))
+               (apply #',cmd args)
+               (when ,this-command-as-original
+                 (setq this-command ',cmd))))
       func-symbol))
 
   (defun vtsl/copy-mode-exit-then (cmd)
@@ -68,13 +70,16 @@
 
   (defun vtsl/end-of-buffer ()
     (interactive)
-    (push-mark)
-    (goto-char
-     (save-excursion
-       (vterm-reset-cursor-point)
-       (previous-line)
-       (move-end-of-line 1)
-       (point))))
+    (if (region-active-p)
+        (progn
+          (push-mark)
+          (goto-char
+           (save-excursion
+             (vterm-reset-cursor-point)
+             (previous-line)
+             (move-end-of-line 1)
+             (point))))
+      (vtsl/copy-mode-exit)))
 
   (defun vtsl/vterm-send-meta-d ()
     "Send `M-d' to the libvterm."
@@ -184,7 +189,7 @@
     (define-key map (kbd "C-c C-n") (vtsl/copy-mode-then 'vtsl/next-prompt))
     (define-key map (kbd "M-<")     (vtsl/copy-mode-then 'beginning-of-buffer))
     (define-key map (kbd "C-l")     #'recenter-top-bottom)
-    (define-key map (kbd "M-r")     (vtsl/copy-mode-then 'move-to-window-line-top-bottom))
+    (define-key map (kbd "M-r")     (vtsl/copy-mode-then 'move-to-window-line-top-bottom t))
     (define-key map (kbd "M-/")     #'vtsl/dabbrev-expand)
 
     map)
@@ -205,8 +210,8 @@
     (define-key map (kbd "<return>")            #'vtsl/copy-mode-exit)
     (define-key map (kbd "C-j")                 #'vtsl/copy-mode-exit)
     (define-key map (kbd "M-j")                 #'vtsl/copy-mode-exit)
-    (define-key map (kbd "M->")                 #'vtsl/copy-mode-exit)
-    (comment (define-key map (kbd "M->")        #'vtsl/end-of-buffer))
+    (comment (define-key map (kbd "M->")        #'vtsl/copy-mode-exit))
+    (define-key map (kbd "M->")                 #'vtsl/end-of-buffer)
     (define-key map (kbd "C-a")                 #'vtsl/beginning-of-command-line)
     (define-key map (kbd "C-c C-p")             #'vtsl/previous-prompt)
     (define-key map (kbd "C-c C-n")             #'vtsl/next-prompt)

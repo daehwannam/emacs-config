@@ -219,7 +219,8 @@
 
         "ijkl"
 
-        ("w w" dhnam/paredit-kill-ring-save)
+        ;; ("w w" dhnam/paredit-kill-ring-save)
+	("w" dhnam/paredit-kill-ring-save)
         ("W" paredit-kill-region)
         ("d" paredit-forward-delete)
         ("D" paredit-forward-kill-word)
@@ -245,7 +246,7 @@
         ("M-{" paredit-wrap-curly)
         ("M-}" paredit-splice-sexp)
 
-        ("SPC ;" dhnam/paredit-comment-dwim)
+        (";" dhnam/paredit-comment-dwim)
 
         ;; ("SPC e" dhnam-ijkl-paredit-struct/body  :exit t)
         ("p" dhnam-ijkl-paredit-struct/body  :exit t))
