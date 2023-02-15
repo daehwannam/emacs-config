@@ -96,27 +96,33 @@
   (add-hook 'python-mode-hook 'dhnam/init-python-prettify-symbols-alist)
   )
 
-(progn
-  ;; pdbtrace
-  ;; https://stackoverflow.com/questions/26285046/how-do-i-enable-pdbtrack-python-debugging-in-emacs-24-x-shell
-  ;;
-  ;; This trick doesn't work when the path to the source code includes parenthesis ("(" and ")"):
-  ;; e.g. "(env) user@computer:~/path/to/some(source)dir$"
-  (require 'python)
-  
-  (defun dhnam/pdbtrace-shell-mode-hook ()
-    (add-hook 'comint-output-filter-functions 'python-pdbtrack-comint-output-filter-function nil t))
+(if (package-installed-p 'realgud)
+    (progn
+      (load-library "realgud")
+      (comment (add-hook 'shell-mode-hook 'realgud-track-mode))
+      (comment (remove-hook 'shell-mode-hook 'dhnam/pdbtrace-shell-mode-hook))
+      (key-chord-define shell-mode-map "qp" 'realgud-track-mode))
+  (progn
+    ;; pdbtrace
+    ;; https://stackoverflow.com/questions/26285046/how-do-i-enable-pdbtrack-python-debugging-in-emacs-24-x-shell
+    ;;
+    ;; This trick doesn't work when the path to the source code includes parenthesis ("(" and ")"):
+    ;; e.g. "(env) user@computer:~/path/to/some(source)dir$"
+    (require 'python)
 
-  (defun dhnam/enable-pdbtrace-shell-mode ()
-    (interactive)
-    (add-hook 'shell-mode-hook 'dhnam/pdbtrace-shell-mode-hook))
+    (defun dhnam/pdbtrace-shell-mode-hook ()
+      (add-hook 'comint-output-filter-functions 'python-pdbtrack-comint-output-filter-function nil t))
 
-  (comment
-    (defun dhnam/disable-pdbtrace-shell-mode ()
+    (defun dhnam/enable-pdbtrace-shell-mode ()
       (interactive)
-      (remove-hook 'shell-mode-hook 'dhnam/pdbtrace-shell-mode-hook t)))
+      (add-hook 'shell-mode-hook 'dhnam/pdbtrace-shell-mode-hook))
 
-  (dhnam/enable-pdbtrace-shell-mode))
+    (comment
+      (defun dhnam/disable-pdbtrace-shell-mode ()
+        (interactive)
+        (remove-hook 'shell-mode-hook 'dhnam/pdbtrace-shell-mode-hook t)))
+
+    (dhnam/enable-pdbtrace-shell-mode)))
 
 (progn
   (defun dhnam/convert-path-to-package ()

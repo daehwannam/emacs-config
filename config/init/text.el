@@ -95,9 +95,9 @@
 	             (t (error "No key for 'just-one-space is found")))))
       (global-set-key k 'dhnam/just-one-space-conditionally))))
 
-(progn
-  ;; https://www.emacswiki.org/emacs/CopyingWholeLines
+(comment
   (defun dhnam/copy-and-next-line (arg)
+    ;; https://www.emacswiki.org/emacs/CopyingWholeLines
     "Copy lines (as many as prefix argument) in the kill ring.
       Ease of use features:
       - Move to start of next line.
@@ -120,6 +120,22 @@
 
   (comment (key-chord-define (current-global-map) "kk" (make-repeatable-command #'dhnam/copy-and-next-line)))
   (global-set-key (kbd "M-k") 'dhnam/copy-and-next-line))
+
+(progn
+  (defun dhnam/copy-line (&optional arg)
+    "Do a kill-line but copy rather than kill.  This function directly calls
+    kill-line, so see documentation of kill-line for how to use it including prefix
+    argument and relevant variables.  This function works by temporarily making the
+    buffer read-only."
+    (interactive "P")
+    (let ((buffer-read-only t)
+          (kill-read-only-ok t))
+      (cl-letf (((symbol-function 'message)
+                 (lambda (&rest args))))
+        ;; `message' is temporarily disabled
+        (kill-line arg))))
+
+  (global-set-key (kbd "M-k") 'dhnam/copy-line))
 
 (progn
   ;; add new keybindings for kitty terminal

@@ -83,7 +83,7 @@
          ;; (engels (vlf magit key-chord modalka evil dash elpy flycheck py-autopep8 blacken wgrep which-key projectile flx-ido))
          (engels (vlf magit key-chord modalka evil dash  multi-term elpy flycheck py-autopep8 blacken sphinx-doc wgrep which-key counsel counsel-projectile markdown-mode hy-mode))
          ;; (engels (vlf magit key-chord modalka evil dash elpy py-autopep8 blacken))
-         (programming (markdown-mode sphinx-doc ein hy-mode jsonnet-mode csv-mode lice))
+         (programming (realgud markdown-mode sphinx-doc ein hy-mode jsonnet-mode csv-mode lice))
          (python-setup (pyvenv highlight-indentation (yaml-mode :fetcher github :repo "yoshiki/yaml-mode")))
          (elpy-setup (elpy flycheck py-autopep8 blacken))
          (min-elpy-setup (elpy))
