@@ -72,13 +72,11 @@
   ;; https://stackoverflow.com/a/57251655
   (org-link-set-parameters "bib-id"
                            :face '(:foreground "green")
-                           :follow #'dhnam/goto-ref-id
-                           :store #'org-man-store-link)
+                           :follow #'dhnam/goto-ref-id)
 
   (org-link-set-parameters "code-url"
                            :face '(:foreground "yellow")
-                           :follow #'org-link-open-from-string
-                           :store #'org-man-store-link))
+                           :follow #'org-link-open-from-string))
 
 (defun dhnam/get-ref-id-str-from-raw-link-at-end ()
   (save-excursion
