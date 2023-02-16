@@ -18,6 +18,7 @@
 *~
 *[#]*
 config/options.txt
+config/packages.txt
 config/custom/custom.el
 
 # ignore temporary files
