@@ -101,7 +101,15 @@
       (load-library "realgud")
       (comment (add-hook 'shell-mode-hook 'realgud-track-mode))
       (comment (remove-hook 'shell-mode-hook 'dhnam/pdbtrace-shell-mode-hook))
-      (key-chord-define shell-mode-map "qp" 'realgud-track-mode))
+      (key-chord-define shell-mode-map "qp" 'realgud-track-mode)
+
+      (progn
+        (defun dhnam/realgud-populate-common-keys-advice (orig-fun &rest args)
+          (cl-destructuring-bind (map) args
+            (key-chord-define map "qp" 'realgud-short-key-mode))
+          (apply orig-fun args))
+
+        (advice-add 'realgud-populate-common-keys :around #'dhnam/realgud-populate-common-keys-advice)))
   (progn
     ;; pdbtrace
     ;; https://stackoverflow.com/questions/26285046/how-do-i-enable-pdbtrack-python-debugging-in-emacs-24-x-shell
