@@ -101,7 +101,9 @@
       (load-library "realgud")
       (comment (add-hook 'shell-mode-hook 'realgud-track-mode))
       (comment (remove-hook 'shell-mode-hook 'dhnam/pdbtrace-shell-mode-hook))
-      (key-chord-define shell-mode-map "qp" 'realgud-track-mode)
+      (setq realgud-safe-mode nil)
+      (with-eval-after-load 'comint
+        (key-chord-define comint-mode-map "qp" 'realgud-track-mode))
 
       (progn
         (defun dhnam/realgud-populate-common-keys-advice (orig-fun &rest args)
@@ -109,7 +111,38 @@
             (key-chord-define map "qp" 'realgud-short-key-mode))
           (apply orig-fun args))
 
-        (advice-add 'realgud-populate-common-keys :around #'dhnam/realgud-populate-common-keys-advice)))
+        (advice-add 'realgud-populate-common-keys :around #'dhnam/realgud-populate-common-keys-advice))
+
+      (progn
+        (defun dhnam/realgud:cmd-eval-region-advice (orig-fun &rest args)
+          (apply orig-fun args)
+          (deactivate-mark))
+
+        (advice-add 'realgud:cmd-eval-region :around #'dhnam/realgud:cmd-eval-region-advice)
+        (comment (advice-add 'realgud:cmd-eval-dwim :around #'dhnam/realgud:cmd-eval-region-advice)))
+
+      (progn
+        (defun dhnam/realgud:cmd-eval-at-point-advice (orig-fun &rest args)
+          (apply orig-fun args)
+          (deactivate-mark))
+
+        (advice-add 'realgud:cmd-eval-at-point :around #'dhnam/realgud:cmd-eval-at-point-advice))
+
+      (progn
+        (defun dhnam/realgud:cmd-eval-dwim()
+          "Eval the current region if active; otherwise, eval the symbol at point."
+          (interactive)
+          (call-interactively (if (region-active-p)
+                                  #'realgud:cmd-eval-region
+                                #'dhnam/realgud:cmd-eval-at-point-directly)))
+
+        (defun dhnam/realgud:cmd-eval-at-point-directly()
+          "Eval symbol under point."
+          (interactive)
+          (realgud:cmd-run-command (thing-at-point 'symbol) "eval"))
+
+        (define-key realgud:shortkey-mode-map "e" 'dhnam/realgud:cmd-eval-dwim)
+        (define-key realgud:shortkey-mode-map "E" 'realgud:cmd-eval)))
   (progn
     ;; pdbtrace
     ;; https://stackoverflow.com/questions/26285046/how-do-i-enable-pdbtrack-python-debugging-in-emacs-24-x-shell
@@ -131,6 +164,36 @@
         (remove-hook 'shell-mode-hook 'dhnam/pdbtrace-shell-mode-hook t)))
 
     (dhnam/enable-pdbtrace-shell-mode)))
+
+(with-eval-after-load 'python
+  (defun dhnam/elpy-occur-definitions ()
+    "Display an occur buffer of all definitions in the current buffer,
+then go to the closest uppser location. Also, switch to that buffer.
+This function is modified from `elpy-occur-definitions'"
+
+    (interactive)
+    (let* ((regexp "^\s*\\(\\(async\s\\|\\)def\\|class\\)\s")
+           (closest-upper-point
+            (save-excursion
+              (move-end-of-line 1)
+              (re-search-backward regexp nil t)
+              (line-number-at-pos))))
+      (let ((list-matching-lines-face nil))
+        (occur regexp))
+      (let ((window (get-buffer-window "*Occur*")))
+        (if window
+            (select-window window)
+          (switch-to-buffer "*Occur*"))
+        (when closest-upper-point
+          (re-search-forward (format "%d:" closest-upper-point))))))
+
+  (defun dhnam/bind-additional-python-commands (map)
+    (define-key map (kbd "C-c C-o") 'dhnam/elpy-occur-definitions))
+
+  (dhnam/bind-additional-python-commands python-mode-map)
+
+  (with-eval-after-load 'realgud
+    (dhnam/bind-additional-python-commands realgud:shortkey-mode-map)))
 
 (progn
   (defun dhnam/convert-path-to-package ()
@@ -194,7 +257,7 @@
 
   (progn
 	(custom-set-variables
-	 '(ein:polymode t)		; enable other modes such as Elpy
+	 '(ein:polymode t)  ; enable other modes such as Elpy
 	 ;; '(ein:cell-input-area ((t (:background "black"))))
 	 '(ein:cell-input-area ((t (:background "gray10"))))
 	 )
