@@ -30,7 +30,7 @@
   (progn
     ;; Lisp indentation fix for plist
     ;; https://emacs.stackexchange.com/a/34757
-    (require 'lisp-indentation-fix))
+    (require 'dhnam-lisp-indentation-fix))
 
   (progn
     (comment
