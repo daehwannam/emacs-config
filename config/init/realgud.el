@@ -53,8 +53,16 @@
 	       "Continue until the function returns?")
           (realgud:cmd-run-command nil "return")))
 
+    (defun dhnam/realgud:cmd-where()
+      "Continue execution until the current function returns"
+      (interactive)
+      (realgud:cmd-run-command nil "where"))
 
     (let ((hash realgud-cmd:default-hash))
-      (puthash "return" "return" hash))))
+      (puthash "return" "return" hash)
+      (puthash "where" "where" hash))
+
+    (define-key realgud:shortkey-mode-map "r" 'dhnam/realgud:cmd-return)
+    (define-key realgud:shortkey-mode-map "w" 'dhnam/realgud:cmd-where)))
 
 (provide 'dhnam-realgud)
