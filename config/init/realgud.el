@@ -30,6 +30,15 @@
     (advice-add 'realgud:cmd-eval-at-point :around #'dhnam/realgud:cmd-eval-at-point-advice))
 
   (progn
+    (defvar dhnam/realgud:debugger-history nil)
+    (defun dhnam/realgud:track-set-debugger-advice (orig-fun &rest args)
+      (interactive
+       (list (completing-read "Debugger name: " realgud-pat-hash nil t nil 'dhnam/realgud:debugger-history)))
+      (apply orig-fun args))
+
+    (advice-add 'realgud:track-set-debugger :around #'dhnam/realgud:track-set-debugger-advice))
+
+  (progn
     (defun dhnam/realgud:cmd-eval-dwim()
       "Eval the current region if active; otherwise, eval the symbol at point."
       (interactive)
