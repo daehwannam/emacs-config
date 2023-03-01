@@ -97,11 +97,7 @@
   )
 
 (if (package-installed-p 'realgud)
-    (progn
-      (load-library "realgud")
-      (comment (add-hook 'shell-mode-hook 'realgud-track-mode))
-      (comment (remove-hook 'shell-mode-hook 'dhnam/pdbtrace-shell-mode-hook))
-      (key-chord-define shell-mode-map "qp" 'realgud-track-mode))
+    (dhnam/require-from-init "realgud")
   (progn
     ;; pdbtrace
     ;; https://stackoverflow.com/questions/26285046/how-do-i-enable-pdbtrack-python-debugging-in-emacs-24-x-shell
@@ -123,6 +119,36 @@
         (remove-hook 'shell-mode-hook 'dhnam/pdbtrace-shell-mode-hook t)))
 
     (dhnam/enable-pdbtrace-shell-mode)))
+
+(with-eval-after-load 'python
+  (defun dhnam/elpy-occur-definitions ()
+    "Display an occur buffer of all definitions in the current buffer,
+then go to the closest uppser location. Also, switch to that buffer.
+This function is modified from `elpy-occur-definitions'"
+
+    (interactive)
+    (let* ((regexp "^\s*\\(\\(async\s\\|\\)def\\|class\\)\s")
+           (closest-upper-point
+            (save-excursion
+              (move-end-of-line 1)
+              (re-search-backward regexp nil t)
+              (line-number-at-pos))))
+      (let ((list-matching-lines-face nil))
+        (occur regexp))
+      (let ((window (get-buffer-window "*Occur*")))
+        (if window
+            (select-window window)
+          (switch-to-buffer "*Occur*"))
+        (when closest-upper-point
+          (re-search-forward (format "%d:" closest-upper-point))))))
+
+  (defun dhnam/bind-additional-python-commands (map)
+    (define-key map (kbd "C-c C-o") 'dhnam/elpy-occur-definitions))
+
+  (dhnam/bind-additional-python-commands python-mode-map)
+
+  (with-eval-after-load 'realgud
+    (dhnam/bind-additional-python-commands realgud:shortkey-mode-map)))
 
 (progn
   (defun dhnam/convert-path-to-package ()
@@ -186,7 +212,7 @@
 
   (progn
 	(custom-set-variables
-	 '(ein:polymode t)		; enable other modes such as Elpy
+	 '(ein:polymode t)  ; enable other modes such as Elpy
 	 ;; '(ein:cell-input-area ((t (:background "black"))))
 	 '(ein:cell-input-area ((t (:background "gray10"))))
 	 )

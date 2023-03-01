@@ -83,4 +83,4 @@ Lisp function does not specify a special indentation."
          (t $else))))))
 
 
-(provide 'lisp-indentation-fix)
+(provide 'dhnam-lisp-indentation-fix)
