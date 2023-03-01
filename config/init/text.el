@@ -52,7 +52,10 @@
   "Copy a thing at point"
   (interactive)
   (let ((thing (or (thing-at-point 'url)
-                   (thing-at-point 'filename)
+                   (let ((path (thing-at-point 'filename)))
+                     (when (string-match-p "/" path)
+                       ;; only when "/" exists in the path
+                       path))
                    (thing-at-point 'symbol))))
     (when thing
       (kill-new (substring-no-properties thing)))))
