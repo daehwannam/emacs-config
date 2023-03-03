@@ -206,7 +206,12 @@
 
     (progn
       (define-key paredit-mode-map (kbd "C-M-b") 'backward-sexp)
-      (define-key paredit-mode-map (kbd "C-M-f") 'forward-sexp)))
+      (define-key paredit-mode-map (kbd "C-M-f") 'forward-sexp))
+
+    (comment
+      ;; instead of `backward-sexp' and `forward-sexp'
+      (define-key global-map (kbd "C-M-b") 'paredit-backward)
+      (define-key global-map (kbd "C-M-f") 'paredit-forward)))
 
   (comment
     (when (fboundp 'dhnam/highlight-map)
