@@ -46,146 +46,45 @@
         ("u" backward-word)
         ("o" forward-word)
 
-        ("M-i" backward-up-list)
+        ("I" backward-up-list)
         ("M-I" paredit-backward-down)
         ("M-k" paredit-forward-up)
-        ("M-K" down-list)
+        ("K" down-list)
 
-        ("M-j" backward-sexp)
-        ("M-l" forward-sexp)
-        ("M-u" backward-list)
-        ("M-o" forward-list)
+        ("J" backward-sexp)
+        ("L" forward-sexp)
+        ("U" backward-list)
+        ("O" forward-list)
 
-        ("M-h"  dhnam/scroll-down-small)
-        ("h"  dhnam/scroll-up-small)
-        ("M-H"  scroll-down)
-        ("H"  scroll-up)
+        ("w"  dhnam/scroll-down-small)
+        ("s"  dhnam/scroll-up-small)
+        ("W"  scroll-down)
+        ("S"  scroll-up)
 
         ("a" move-beginning-of-line)
-        ("s" move-end-of-line)
+        ("d" move-end-of-line)
         ("A" beginning-of-buffer)
-        ("S" end-of-buffer)
-        ("m" back-to-indentation)
+        ("D" end-of-buffer)
+        ("z" back-to-indentation)
 
-        ("w" kill-ring-save)
-        ;; ("w w" kill-ring-save)
-        ;; ("w ." dhnam/kill-ring-save-thing-at-point)
-        ;; ("w p" dhnam/kill-path-to-clipboard)
-        ;; ("w l" dhnam/org-kill-link-to-clipboard)
-        ("W" kill-region)
-        ("d" delete-char)
-        ("D" kill-word)
-        ("F" kill-line)
-        ("f" dhnam/copy-line)
-        ("M-f" kill-sexp)
-        ("DEL" delete-backward-char)
-        ("M-DEL" baqckward-kill-word)
+        ("h" move-to-window-line-top-bottom)
+        ("H" dhnam/reverse-move-to-window-line-top-bottom)
+        ("f" recenter-top-bottom)
+        ("F" dhnam/reverse-recenter-top-bottom)
 
-
-        ("RET" newline)
-        ("n" electric-newline-and-maybe-indent)
-        ("M-n" default-indent-new-line)
-        ("M-SPC" dhnam/just-one-space-conditionally)
-        ("M-\\" delete-horizontal-space)
-        ("M-b" indent-for-tab-command)
-
-        ("\\" indent-region)
-
-        ("y" yank)
-        ("M-y" yank-pop)
-        ("M-Y" dhnam/yank-pop-forwards)
-        ("C-M-y" counsel-yank-pop)
-
-        ("e" move-to-window-line-top-bottom)
-        ("E" dhnam/reverse-move-to-window-line-top-bottom)
-        ("r" recenter-top-bottom)
-        ("R" dhnam/reverse-recenter-top-bottom)
-
-        ("v" set-mark-command)
         ("C-SPC" set-mark-command)
         ("C-@" set-mark-command)
         ("'" exchange-point-and-mark)
-        ("<f7>" pop-to-mark-command)
-        ("<f8>" dhnam/unpop-to-mark-command)
 
-        ;; ("b k" kill-buffer)
-        ;; ("b j" counsel-switch-buffer)
-
-        ("TAB" self-insert-command)
-        ("SPC" self-insert-command)
-        ;; ("SPC s s" dhnam/swiper-within-region)
-        ;; ("SPC s f" ctrlf-forward-default)
-        ;; ("SPC s r" rgrep)
-        ;; ("SPC s d" consult-grep-on-default-directory)
-        ;; ("SPC s g" consult-git-grep)
-
-        ("." xref-find-definitions)
-        ("," xref-pop-marker-stack)
-
-        ("g" keyboard-quit)
-        ("/" undo)
-
-        ("#" eval-last-sexp)
-        ("M-#" eval-print-last-sexp)
-
-        (";" comment-dwim)
-        (":" eval-expression)
-        ;; ("SPC ;" comment-dwim)
-        ;; ("SPC :" eval-expression)
-
-        ("M-9" previous-buffer)
-        ("M-0" next-buffer)
-
-        ;; ("SPC 2" split-window-below)
-        ;; ("SPC 3" split-window-right)
-        ;; (";" other-window)
-        ;; (":" dhnam/other-window-backwards)
-        ;; ("p" tab-next)
-        ;; ("P" tab-previous)
-
-        ("t" dhnam-ijkl-window-tab/body :exit t)
-        ("p" dhnam-ijkl-paredit-struct/body  :exit t)
-
-        ("C-h k" describe-key)
-        (,dhnam-ijkl/quit-key nil "quit")
-        (,dhnam-avy-key avy-goto-char-timer)
-        ;; ("RET" nil "quit")
-        ("SPC" nil "quit")
-        )
+        ;; ("/" undo)
+        ("C-/" undo)
+        ("SPC" nil "quit"))
 
       (progn
         ;; Disable any hint message
         (hydra-set-property 'dhnam-ijkl :verbosity 0))
 
       (define-key global-map (kbd ,dhnam-ijkl/activation-key) 'dhnam-ijkl/body))
-
-    (progn
-      (defhydra dhnam-ijkl-window-tab
-        ,dhnam-ijkl/plist-2
-
-        "ijkl"
-
-        ("j" dhnam/other-window-backwards)
-        ("l" other-window)
-        ("i" tab-previous)
-        ("k" tab-next)
-
-        ("w 0" delete-window)
-        ("w 9" delete-other-windows)
-        ("w 8" split-window-below)
-        ("w 7" split-window-right)
-
-        ("W" hydra-buffer-move/body :exit t)
-
-        ("e 0" tab-close)
-        ("e 9" tab-close-other)
-        ("e 8" tab-new)
-
-        (,dhnam-ijkl/quit-key nil "quit")
-        ;; (,dhnam-ijkl/quit-key dhnam-ijkl/body :exit t)
-        )
-
-      (hydra-set-property 'dhnam-ijkl-window-tab :verbosity 0))
 
     (when (package-installed-p 'paredit)
       (require 'dhnam-paredit)
@@ -197,63 +96,32 @@
 
         ("i" paredit-split-sexp)
         ("k" paredit-join-sexps)
-        ("M-i" paredit-raise-sexp)
-        ("M-k" paredit-convolute-sexp)
+        ("I" paredit-raise-sexp)
+        ("K" paredit-convolute-sexp)
 
         ("j" paredit-backward-slurp-sexp)
-        ("M-j" paredit-backward-barf-sexp)
+        ("J" paredit-backward-barf-sexp)
         ("l" paredit-forward-slurp-sexp)
-        ("M-l" paredit-forward-barf-sexp)
+        ("L" paredit-forward-barf-sexp)
 
         ("u" paredit-splice-sexp-killing-backward)
         ("o" paredit-splice-sexp-killing-forward)
 
-        ("/" undo)
+        ;; ("/" undo)
+        ("C-/" undo)
 
         (,dhnam-ijkl/quit-key nil "quit")
         ;; (,dhnam-ijkl/quit-key dhnam-ijkl-paredit-move/body :exit t)
         ("q" nil "quit"))
-
-      (hydra-set-property 'dhnam-ijkl-paredit-struct :verbosity 0) ; disable any hint message
 
       (clone-hydra dhnam-ijkl-paredit-move dhnam-ijkl
         ,dhnam-ijkl/plist-1
 
         "ijkl"
 
-        ;; ("w w" dhnam/paredit-kill-ring-save)
-	    ("w" dhnam/paredit-kill-ring-save)
-        ("W" paredit-kill-region)
-        ("d" paredit-forward-delete)
-        ("D" paredit-forward-kill-word)
-        ("M-f" paredit-kill)
-        ("f" dhnam/copy-and-forward-sexp)
-        ("F" kill-sexp)
-        ("DEL" dhnam/paredit-backward-delete)
-        ("M-DEL" paredit-backward-kill-word)
+        ("r" dhnam-ijkl-paredit-struct/body  :exit t))
 
-        ("n" paredit-newline)
-        ("M-n" default-indent-new-line)
-
-        ("(" paredit-open-round)
-        (")" paredit-close-round)
-        ("[" paredit-open-square)
-        ("[" paredit-close-square)
-        ("{" paredit-open-curly)
-        ("}" paredit-close-curly)
-
-        ("M-(" paredit-wrap-round)
-        ("M-)" paredit-splice-sexp)
-        ("M-[" paredit-wrap-square)
-        ("M-]" paredit-splice-sexp)
-        ("M-{" paredit-wrap-curly)
-        ("M-}" paredit-splice-sexp)
-
-        (";" dhnam/paredit-comment-dwim)
-
-        ;; ("SPC e" dhnam-ijkl-paredit-struct/body  :exit t)
-        ("p" dhnam-ijkl-paredit-struct/body  :exit t))
-
+      (hydra-set-property 'dhnam-ijkl-paredit-struct :verbosity 0) ; disable any hint message
       (hydra-set-property 'dhnam-ijkl-paredit-move :verbosity 0) ; disable any hint message
       (define-key paredit-mode-map (kbd ,dhnam-ijkl/activation-key) 'dhnam-ijkl-paredit-move/body))
 

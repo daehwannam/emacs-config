@@ -157,15 +157,18 @@
     (define-key paredit-mode-map (kbd "C-M-p") 'backward-list)
     (define-key paredit-mode-map (kbd "C-M-n") 'forward-list)
 
+    (define-key paredit-mode-map (kbd "M-r") 'move-to-window-line-top-bottom)
+    (define-key paredit-mode-map (kbd "M-a") 'paredit-raise-sexp)
+
     (define-key paredit-mode-map (kbd "{") 'paredit-open-curly)
-    (define-key paredit-mode-map (kbd "M-)") 'paredit-splice-sexp)
+    (define-key paredit-mode-map (kbd "M-)") 'paredit-split-sexp)
     (comment
       ;; when "M-[" is bound to a command, paste "some-text" in terminal emacs insert "[200~some-text [201~]]"
       ;; https://emacs.stackexchange.com/a/28864
       (define-key paredit-mode-map (kbd "M-[") 'paredit-wrap-square)
-      (define-key paredit-mode-map (kbd "M-]") 'paredit-splice-sexp))
+      (define-key paredit-mode-map (kbd "M-]") 'paredit-split-sexp))
     (define-key paredit-mode-map (kbd "M-{") 'paredit-wrap-curly)
-    (define-key paredit-mode-map (kbd "M-}") 'paredit-splice-sexp)
+    (define-key paredit-mode-map (kbd "M-}") 'paredit-split-sexp)
 
     (progn
       (defhydra paredit-slurp-barf-sexp ()

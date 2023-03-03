@@ -1,9 +1,9 @@
 #!/usr/bin/sh
 
 # ₣
-xmodmap  -e 'keycode 255 = FFrancSign'
-xcape -t 200 -e 'Shift_R=FFrancSign'
-# xcape -t 200 -e 'Shift_L=FFrancSign'
+# xmodmap  -e 'keycode 255 = FFrancSign'
+# xcape -t 200 -e 'Shift_R=FFrancSign'
+# # xcape -t 200 -e 'Shift_L=FFrancSign'
 
 # ₢
 xmodmap  -e 'keycode 254 = CruzeiroSign'
