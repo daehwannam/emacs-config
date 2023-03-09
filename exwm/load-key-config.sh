@@ -7,8 +7,8 @@
 
 # ₢
 xmodmap  -e 'keycode 254 = CruzeiroSign'
-xcape -t 200 -e 'Control_L=CruzeiroSign'
-# xcape -t 200 -e 'Alt_L=CruzeiroSign'
+# xcape -t 200 -e 'Control_L=CruzeiroSign'
+xcape -t 200 -e 'Alt_L=CruzeiroSign'
 
 # ₫
 # xmodmap  -e 'keycode 253 = DongSign'
