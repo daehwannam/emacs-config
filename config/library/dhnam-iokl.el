@@ -131,7 +131,21 @@
         "iokl"
 
         ("S" vtsl/end-of-buffer)
-        (,dhnam-iokl/quit-key vtsl/copy-mode-exit :exit t))
+        ("SPC" (vterm-copy-mode 1) :exit t)
+        ;; (,dhnam-iokl/quit-key vtsl/copy-mode-exit :exit t)
+        (,dhnam-iokl/quit-key nil "quit")  ; it defines `dhnam-iokl-vterm/nil'
+        ("RET" vtsl/copy-mode-exit :exit t)
+        ("<return>" vtsl/copy-mode-exit :exit t))
+
+      (progn
+        (defun dhnam-iokl-vterm/copy-mode-exit ()
+          (interactive)
+          (when (and vterm-copy-mode
+                     (= (line-number-at-pos (point)) vtsl/last-cursor-line-num))
+            (dhnam-iokl-vterm/nil)
+            (dhnam-iokl/set-cursor-color dhnam-iokl/default-cursor-color)))
+
+        (advice-add 'vtsl/trigger-copy-mode-exit :before 'dhnam-iokl-vterm/copy-mode-exit))
 
       (defun dhnam-iokl-vterm/body-after-previous-line ()
         (interactive)
