@@ -242,9 +242,33 @@ The term buffer is named based on `name' "
   ;; $ sudo apt install cmake libtool-bin
   ;;
   ;; Install with conda:
-  ;; $ conda install -c anaconda cmake
-  ;; $ conda install -c conda-forge libtool
-  ;; $ conda install gxx_linux-64
+  ;; $ conda install -y -c anaconda cmake
+  ;; $ conda install -y -c conda-forge libtool
+  ;; $ conda install -y gxx_linux-64
+
+  (progn
+    ;; async-shell-command and signal example:
+    ;; https://emacs.stackexchange.com/a/42174
+
+    (defun dhnam/run-vterm-when-signal (process signal)
+      (when (memq (process-status process) '(exit signal))
+        (vterm)
+        (shell-command-sentinel process signal)))
+
+
+    (defun dhnam/vterm-setup ()
+      (interactive)
+      (let* ((output-buffer (generate-new-buffer "*Async shell command*"))
+             (proc (progn
+                     (dhnam/display-async-shell-command
+                      (async-shell-command (concat "conda install -y -c anaconda cmake" " && "
+                                                   "conda install -y -c conda-forge libtool" " && "
+                                                   "conda install -y gxx_linux-64")
+                                           output-buffer))
+                     (get-buffer-process output-buffer))))
+        (if (process-live-p proc)
+            (set-process-sentinel proc #'dhnam/run-vterm-when-signal)
+          (vterm)))))
 
   (use-existing-pkg vterm
     :bind

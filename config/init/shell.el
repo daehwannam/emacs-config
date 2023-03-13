@@ -25,7 +25,12 @@
 (progn
   ;; hide output of 'async-shell-command
   ;; https://emacs.stackexchange.com/a/58341
-  (add-to-list 'display-buffer-alist '("*Async Shell Command*" display-buffer-no-window (nil))))
+  (add-to-list 'display-buffer-alist '("*Async Shell Command*" display-buffer-no-window (nil)))
+
+  (defmacro dhnam/display-async-shell-command (&rest args)
+    `(let ((display-buffer-alist (cons '("*Async Shell Command*" display-buffer-same-window)
+                                       display-buffer-alist)))
+       (progn ,@args))))
 
 (global-set-key (kbd "C-c M-!") 'dhnam/sudo-shell-command)
 
