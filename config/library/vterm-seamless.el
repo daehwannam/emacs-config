@@ -64,7 +64,13 @@
     (interactive)
     ;; https://www.emacswiki.org/emacs/CopyingWholeLines
     (let ((beg (point))
-          (end (line-end-position)))
+          (end (save-excursion
+                 ;; this `save-excursion' is used instead of
+                 ;; `line-end-position' function, which only copy the
+                 ;; first line when the text in the vterm prompt is
+                 ;; very long and so split into multiple lines.
+                 (vterm-end-of-line)
+                 (point))))
       (kill-ring-save beg end))
     (vterm--self-insert))
 
