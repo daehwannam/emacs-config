@@ -62,9 +62,10 @@
 
         ("a" move-beginning-of-line)
         ("s" move-end-of-line)
-        ("A" beginning-of-buffer)
-        ("S" end-of-buffer)
-        ("z" back-to-indentation)
+        ("A" back-to-indentation)
+
+        ("z" beginning-of-buffer)
+        ("x" end-of-buffer)
 
         ("e" move-to-window-line-top-bottom)
         ("E" dhnam/reverse-move-to-window-line-top-bottom)
