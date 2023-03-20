@@ -69,6 +69,7 @@
   (defvar dhnam/pdf-tools-initialized nil)
   (defun dhnam/initialize-pdf-tools ()
     (unless dhnam/pdf-tools-initialized
+      (setq dhnam/pdf-tools-initialized t)
       (progn
         ;; install pdf-tools if didin't yet
         (pdf-tools-install))
@@ -159,7 +160,7 @@
           (interactive "p")
           (dhnam/pdf-view-next-page-in-multiple-columns-command n t))
 
-        (progn
+        (comment
           (eval
            `(defhydra dhnam-ijkl-pdf-view ()
 
@@ -180,7 +181,8 @@
               ("M-j" dhnam/pdf-view-previous-page-in-multiple-columns-command)
               ("M-l" dhnam/pdf-view-next-page-in-multiple-columns-command)
 
-              (,dhnam-ijkl/quit-key nil "quit")
+              (comment (,dhnam-ijkl/quit-key nil "quit"))
+              ("q" "quit")
               ("q" dhnam/none-command)
               ("w" dhnam/none-command)))
 
@@ -192,7 +194,7 @@
 
           (let ((k (if (boundp 'dhnam-ijkl/activation-key) dhnam-ijkl/activation-key "₢")))
             (define-key pdf-view-mode-map (kbd dhnam-ijkl/activation-key) 'dhnam-ijkl-pdf-view/body)
-            (define-key pdf-view-mode-map (kbd dhnam-ijkl/quit-key) 'dhnam/none-command)))
+            (comment (define-key pdf-view-mode-map (kbd dhnam-ijkl/quit-key) 'dhnam/none-command))))
 
 
         (progn
