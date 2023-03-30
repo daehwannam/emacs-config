@@ -9,6 +9,10 @@
       (key-chord-define comint-mode-map "fp" 'dhnam/hydra-comint-previous-next-matching-input-from-input/comint-previous-matching-input-from-input)
       (key-chord-define comint-mode-map "fn" 'dhnam/hydra-comint-previous-next-matching-input-from-input/comint-next-matching-input-from-input)))
 
+  (progn
+    (define-key comint-mode-map (kbd "M-P") 'comint-previous-matching-input-from-input)
+    (define-key comint-mode-map (kbd "M-N") 'comint-next-matching-input-from-input))
+
   (comment
     (define-key comint-mode-map (kbd "M-P") 'dhnam/comint-previous-matching-input-from-input-or-backward-list)
     (define-key comint-mode-map (kbd "M-N") 'dhnam/comint-next-matching-input-from-input-or-forward-list))
