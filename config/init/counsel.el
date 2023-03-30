@@ -261,4 +261,4 @@ When non-nil, INITIAL-INPUT is the initial search pattern."
   :init
   (counsel-projectile-mode))
 
-(provide 'dhnam-counsel)
+(provide 'init-counsel)

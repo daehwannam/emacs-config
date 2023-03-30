@@ -26,4 +26,4 @@
 
     (advice-add 'avy-handler-default :around #'dhnam/avy-handler-default-advice)))
 
-(provide 'dhnam-avy)
+(provide 'init-avy)

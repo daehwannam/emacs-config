@@ -18,20 +18,13 @@
   (dhnam/add-to-load-path-recursively "~/.emacs.d/config/bin/")
 
   ;; archived packages
-  (dhnam/add-to-load-path-recursively "~/.emacs.d/config/package/")
+  (dhnam/add-to-load-path-recursively "~/.emacs.d/config/archive/")
 
-  ;; some functions used to initialize emacs
-  (dhnam/add-to-load-path-recursively "~/.emacs.d/config/script/")
+  ;; my personal library
+  (dhnam/add-to-load-path-recursively "~/.emacs.d/config/dhnamlib/")
 
-  ;; utility
-  (dhnam/add-to-load-path-recursively "~/.emacs.d/config/utility/")
-
-  ;; my library
+  ;; other libraries
   (dhnam/add-to-load-path-recursively "~/.emacs.d/config/library/")
-
-  ;; initialization
-  ;; (dhnam/add-to-load-path "~/.emacs.d/config/init/")
-  ;; (dhnam/add-to-load-path "~/.emacs.d/config/init/last/")
 
   ;; non-archived packages
   (dhnam/add-to-load-path-recursively "~/.emacs.d/package/"))
@@ -40,8 +33,12 @@
 (require 'dhnam-file-loading)
 
 (progn
-  ;; utility
-  (dhnam/require-directory "~/.emacs.d/config/utility"))
+  ;; define a function to load features in the "init" directory
+  (define-localized-require dhnam/require-from-init "init-" "~/.emacs.d/config/init/"))
+
+(progn
+  ;; common utility
+  (dhnam/require-directory "~/.emacs.d/config/dhnamlib/utility"))
 
 (progn
   ;; load machine-config-setting.el
@@ -59,9 +56,7 @@
   (load "~/.emacs.d/base/cmd-line-arg.el")
   (load "~/.emacs.d/base/package-init.el")
   (load "~/.emacs.d/base/key-chord-setup.el")
-  (progn
-    ;; hydra is not compatible with key-chord
-    (load "~/.emacs.d/base/hydra-setup.el"))
+  (load "~/.emacs.d/base/hydra-setup.el")
   (load "~/.emacs.d/base/key-config.el")
   (comment (load "~/.emacs.d/base/modalka-setup.el"))
   (comment (load "~/.emacs.d/base/modalka-simple-setup.el")))
@@ -69,10 +64,6 @@
 (progn
   ;; bug fix
   (load "~/.emacs.d/bug-fix/emacs-28-bug-fix.el"))
-
-(progn
-  ;; common utility
-  (dhnam/load-directory "~/.emacs.d/config/utility"))
 
 (progn
   ;; install packages
@@ -95,16 +86,3 @@
     (setq inhibit-splash-screen t))
 
   (switch-to-buffer "*scratch*"))
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages
-   '(org cmake-mode yaml-mode which-key-posframe wgrep vterm volume vlf vertico-posframe valign use-package sphinx-doc realgud quelpa pyvenv poporg pdfgrep pdf-tools paredit org-fragtog orderless multi-term mini-frame markdown-mode marginalia magit lice latex-preview-pane langtool key-chord jsonnet-mode ivy-posframe hydra hy-mode highlight-indentation hide-mode-line exwm expand-region embark-consult ein eglot define-word ctrlf csv-mode counsel company clipetty biblio auctex async)))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )

@@ -11,4 +11,4 @@ directory DIRNAME."
   (desktop-clear)
   (desktop-read dirname))
 
-(provide 'dhnam-desktop)
+(provide 'init-desktop)

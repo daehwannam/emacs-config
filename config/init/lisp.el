@@ -235,4 +235,4 @@
     (setq show-paren-delay 0)
     (add-hook 'paredit-mode-hook 'show-paren-mode)))
 
-(provide 'dhnam-lisp)
+(provide 'init-lisp)

@@ -116,4 +116,4 @@
   :hook (XXX-mode . lsp-deferred)
   :commands (lsp lsp-deferred))
 
-(provide 'dhnam-lsp-mode)
+(provide 'init-lsp-mode)

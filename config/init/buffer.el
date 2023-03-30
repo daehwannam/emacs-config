@@ -198,4 +198,4 @@
 
   (key-chord-define-global "s;" 'dhnam/switch-to-scratch-buffer))
 
-(provide 'dhnam-buffer)
+(provide 'init-buffer)

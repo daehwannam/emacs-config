@@ -52,4 +52,4 @@
     (define-key ctrlf-mode-map (kbd "C-v") #'ctrlf-next-page)
     (define-key ctrlf-mode-map (kbd "M-v")  #'ctrlf-previous-page)))
 
-(provide 'dhnam-isearch)
+(provide 'init-isearch)

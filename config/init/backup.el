@@ -17,4 +17,4 @@
   (customize-set-variable
    'tramp-backup-directory-alist backup-directory-alist))
 
-(provide 'dhnam-backup)
+(provide 'init-backup)

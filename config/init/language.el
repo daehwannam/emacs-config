@@ -81,4 +81,4 @@
   (interactive)
   (start-process-shell-command "xte" nil "xte 'key Caps_Lock'"))
 
-(provide 'dhnam-language)
+(provide 'init-language)

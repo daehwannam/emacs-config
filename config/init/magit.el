@@ -19,4 +19,4 @@
        '((stashes . hide) (unpushed . hide)))
 ;; (untracked . hide)
 
-(provide 'dhnam-magit)
+(provide 'init-magit)

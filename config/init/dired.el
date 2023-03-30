@@ -299,4 +299,4 @@ Version 2019-11-04"
     (define-key dired-mode-map (kbd "<C-return>") 'dhnam/dired-find-file-following-symlink)
     (define-key dired-mode-map (kbd "C-c RET") 'dhnam/dired-find-file-following-symlink)))
 
-(provide 'dhnam-dired)
+(provide 'init-dired)

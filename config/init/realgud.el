@@ -74,4 +74,4 @@
     (define-key realgud:shortkey-mode-map "r" 'dhnam/realgud:cmd-return)
     (define-key realgud:shortkey-mode-map "w" 'dhnam/realgud:cmd-where)))
 
-(provide 'dhnam-realgud)
+(provide 'init-realgud)

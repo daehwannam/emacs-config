@@ -187,4 +187,4 @@ Similarly for Soar, Scheme, etc."
     (interactive)
     (local-set-key (kbd "M-j") #'dhnam/comint-send-input-for-hy)))
 
-(provide 'dhnam-comint-for-hy)
+(provide 'init-comint-for-hy)

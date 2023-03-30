@@ -70,4 +70,4 @@
 
   (define-key occur-mode-map "o" 'dhnam/occur-mode-goto-occurrence-current-window))
 
-(provide 'dhnam-miscellaneous)
+(provide 'init-miscellaneous)

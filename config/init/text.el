@@ -170,4 +170,4 @@
     (insert "\n")
     (insert (format "(provide '%s)" feature-name))))
 
-(provide 'dhnam-text)
+(provide 'init-text)

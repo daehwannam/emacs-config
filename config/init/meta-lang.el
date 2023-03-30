@@ -11,4 +11,4 @@
     (comment (setq exec-path (append exec-path (list bin-path))))
     (add-to-list 'exec-path bin-path)))
 
-(provide 'dhnam-meta-lang)
+(provide 'init-meta-lang)

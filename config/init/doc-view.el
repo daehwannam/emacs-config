@@ -49,4 +49,4 @@ at the top edge of the page moves to the previous page."
       (define-key doc-view-mode-map (kbd "C-v") 'dhnam/doc-view-next-line-or-next-page-small)
       (define-key doc-view-mode-map (kbd "M-v") 'dhnam/doc-view-previous-line-or-previous-page-small))))
 
-(provide 'dhnam-doc-view)
+(provide 'init-doc-view)

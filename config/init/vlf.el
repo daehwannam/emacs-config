@@ -15,4 +15,4 @@
 
 (require 'vlf-setup nil t)
 
-(provide 'dhnam-vlf)
+(provide 'init-vlf)

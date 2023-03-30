@@ -1077,4 +1077,4 @@ When INITIAL-INPUT is non-nil, use it in the minibuffer during completion."
       (which-key-posframe-mode)
       (setq which-key-posframe-poshandler 'posframe-poshandler-frame-center))))
 
-(provide 'dhnam-exwm)
+(provide 'init-exwm)

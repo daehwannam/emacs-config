@@ -7,4 +7,4 @@
       (require 'csv-mode)
       (define-key csv-mode-map [(control ?c) (control ?l)] 'csv-align-mode))))
 
-(provide 'dhnam-spreadsheet)
+(provide 'init-spreadsheet)

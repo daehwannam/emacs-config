@@ -48,4 +48,4 @@ of the buffer text to be displayed in the popup"
            :override-parameters which-key-posframe-parameters
            :refposhandler #'dhnam/which-key-posframe-refposhandler-default))))))
 
-(provide 'dhnam-which-key)
+(provide 'init-which-key)

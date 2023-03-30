@@ -49,4 +49,4 @@
   (setq window-divider-default-right-width 1)
   (window-divider-mode 1))
 
-(provide 'dhnam-gui)
+(provide 'init-gui)

@@ -32,4 +32,4 @@
  ;; project list is saved into "~/.emacs.d/projectile-bookmarks.eld"
  )
 
-(provide 'dhnam-projectile)
+(provide 'init-projectile)

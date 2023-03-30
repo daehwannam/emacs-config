@@ -71,4 +71,4 @@
   :init
   (key-chord-define-global "i1" 'dhnam/eww-new))
 
-(provide 'dhnam-web-browser)
+(provide 'init-web-browser)

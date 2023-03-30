@@ -112,4 +112,4 @@
     (when (boundp 'global-so-long-mode)
       (global-so-long-mode 1))))
 
-(provide 'dhnam-scroll)
+(provide 'init-scroll)

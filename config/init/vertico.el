@@ -175,4 +175,4 @@
   ;; https://github.com/minad/vertico/issues/190
   (set-face-attribute 'completions-common-part nil :height 'unspecified))
 
-(provide 'dhnam-vertico)
+(provide 'init-vertico)

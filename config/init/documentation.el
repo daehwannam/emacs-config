@@ -36,4 +36,4 @@
     (global-set-key (kbd "C-c / r") 'dhnam/pop-rst-dwim)))
   
 
-(provide 'dhnam-documentation)
+(provide 'init-documentation)

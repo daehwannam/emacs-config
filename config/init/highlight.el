@@ -13,4 +13,4 @@
   
   (key-chord-define global-map "qh" dhnam/highlight-map))
 
-(provide 'dhnam-highlight)
+(provide 'init-highlight)

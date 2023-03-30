@@ -10,4 +10,4 @@
 
 (load custom-file)
 
-(provide 'dhnam-custom-setting)
+(provide 'init-custom-setting)

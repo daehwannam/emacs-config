@@ -17,4 +17,4 @@
   (comment (define-key global-map (kbd "C-x r") 'dhnam/rectangle-map))
   (key-chord-define-global "rl" dhnam/rectangle-map))
 
-(provide 'dhnam-rectangle)
+(provide 'init-rectangle)

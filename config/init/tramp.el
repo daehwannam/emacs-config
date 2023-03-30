@@ -15,4 +15,4 @@
     ;; the value should be one of nil, t, or 'ask
     (customize-save-variable 'auth-source-save-behavior nil)))
 
-(provide 'dhnam-tramp)
+(provide 'init-tramp)

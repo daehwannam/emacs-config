@@ -15,4 +15,4 @@
 (define-key winner-mode-map (kbd "C-c w") 'hydra-winner/body)
   
 
-(provide 'dhnam-winner)
+(provide 'init-winner)

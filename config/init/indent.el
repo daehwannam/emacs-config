@@ -40,4 +40,4 @@
   (add-hook 'makefile-mode-hook 'dhnam/enable-indent-tabs-mode))
 
 
-(provide 'dhnam-indent)
+(provide 'init-indent)

@@ -7,4 +7,4 @@
       (setq-default save-place t))
   (save-place-mode 1))
 
-(provide 'dhnam-cursor-save)
+(provide 'init-cursor-save)

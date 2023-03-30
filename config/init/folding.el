@@ -29,4 +29,4 @@
 ;;   (global-set-key (kbd "C-c i p") #'vimish-fold-previous-fold)
 ;;   )
 
-(provide 'dhnam-folding)
+(provide 'init-folding)

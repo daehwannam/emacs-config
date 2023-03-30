@@ -56,4 +56,4 @@
     (comment
       (key-chord-define-global "qd" 'dhnam/ctl-c-map))))
 
-(provide 'dhnam-load-last)
+(provide 'init-load-last)

@@ -27,4 +27,4 @@
   (require 'pdfgrep)
   (pdfgrep-mode))
 
-(provide 'dhnam-grep)
+(provide 'init-grep)

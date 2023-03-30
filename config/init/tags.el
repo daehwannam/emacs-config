@@ -12,4 +12,4 @@
 (when (dhnam/machine-config-get-first 'etags-list)
   (setq tags-table-list (dhnam/machine-config-get-first 'etags-list)))
 
-(provide 'dhnam-tags)
+(provide 'init-tags)

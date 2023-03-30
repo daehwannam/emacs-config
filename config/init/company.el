@@ -23,4 +23,4 @@
     (setq company-idle-delay nil))
   (comment (global-set-key (kbd "C-M-i") 'company-complete)))
 
-(provide 'dhnam-company)
+(provide 'init-company)

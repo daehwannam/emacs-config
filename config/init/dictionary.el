@@ -160,4 +160,4 @@ In a non-interactive call SERVICE can be passed."
 
     (key-chord-define-global "d;" 'dhnam/lookup-word-prefix-map)))
 
-(provide 'dhnam-dictionary)
+(provide 'init-dictionary)

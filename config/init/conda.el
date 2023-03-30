@@ -116,4 +116,4 @@
    dhnam/term-send-conda-prefix-map
    term-mode-map))
 
-(provide 'dhnam-conda)
+(provide 'init-conda)

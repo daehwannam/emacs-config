@@ -44,4 +44,4 @@
 	  (start-process "open" "*open*" "open" fpath)))
   )
 
-(provide 'dhnam-org-ref)
+(provide 'init-org-ref)

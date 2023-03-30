@@ -35,4 +35,4 @@
     ;; https://www.reddit.com/r/emacs/comments/5j89xn/comment/dbfvi21/?utm_source=share&utm_medium=web2x&context=3
     (xterm-mouse-mode t)))
 
-(provide 'dhnam-tui)
+(provide 'init-tui)

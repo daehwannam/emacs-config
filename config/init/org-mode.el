@@ -395,4 +395,4 @@ When nil, use the default face background."
         (org-open-at-point arg)))
     (define-key org-mode-map (kbd "C-C O") 'dhnam/org-open-at-point)))
 
-(provide 'dhnam-org-mode)
+(provide 'init-org-mode)

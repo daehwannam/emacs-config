@@ -30,4 +30,4 @@
   (global-set-key (kbd "C-c S") 'dhnam/emacs-save-layout)
   (global-set-key (kbd "C-c F") 'dhnam/emacs-load-layout))
 
-(provide 'dhnam-revive-config)
+(provide 'init-revive-config)

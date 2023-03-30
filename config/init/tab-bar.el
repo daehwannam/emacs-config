@@ -91,4 +91,4 @@
 
   (comment (tab-bar-mode)))
 
-(provide 'dhnam-tab-bar)
+(provide 'init-tab-bar)

@@ -114,4 +114,4 @@
   (add-hook 'hy-mode-hook (lambda () (local-set-key (kbd "C-c C-x C-f") 'dhnam/find-python-package-at-point))))
 
 
-(provide 'dhnam-hylang)
+(provide 'init-hylang)

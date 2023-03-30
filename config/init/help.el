@@ -38,4 +38,4 @@
 
     (switch-to-buffer-other-window buf)))
 
-(provide 'dhnam-help)
+(provide 'init-help)

@@ -62,4 +62,4 @@
 ;;       (define-key input-decode-map "\e[v" [C-f12])
 ;;       (define-key input-decode-map "\e\e[X" [M-f12])))
 
-(provide 'dhnam-ssh-client)
+(provide 'init-ssh-client)

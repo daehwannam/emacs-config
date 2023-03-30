@@ -10,4 +10,4 @@
   ;; https://stackoverflow.com/a/27044941
   (setq ispell-dictionary "english"))
 
-(provide 'dhnam-spell)
+(provide 'init-spell)

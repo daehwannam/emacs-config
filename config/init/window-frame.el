@@ -429,4 +429,4 @@ i.e. windows tiled side-by-side."
   (comment (setq split-width-threshold 40))
   (setq split-window-preferred-function 'split-window-really-sensibly))
 
-(provide 'dhnam-window-frame)
+(provide 'init-window-frame)

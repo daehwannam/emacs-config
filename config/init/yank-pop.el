@@ -7,4 +7,4 @@
 (when (fboundp 'counsel-yank-pop)
   (global-set-key (kbd "C-M-y") 'counsel-yank-pop))
 
-(provide 'dhnam-yank-pop)
+(provide 'init-yank-pop)

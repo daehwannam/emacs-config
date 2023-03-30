@@ -20,4 +20,4 @@
   (define-key undo-tree-map (kbd "C-_") 'dhnam/emacs-default-undo)
   (define-key undo-tree-map (kbd "C-/") 'dhnam/emacs-default-undo)))
 
-(provide 'dhnam-undo-tree)
+(provide 'init-undo-tree)

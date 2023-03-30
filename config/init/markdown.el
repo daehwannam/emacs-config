@@ -38,4 +38,4 @@
 
 ;;     ))
 
-(provide 'dhnam-markdown)
+(provide 'init-markdown)

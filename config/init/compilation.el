@@ -14,4 +14,4 @@
 
 (add-hook 'compilation-mode-hook #'dhnam/compilation-mode-hook)
 
-(provide 'dhnam-compilation)
+(provide 'init-compilation)

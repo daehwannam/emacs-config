@@ -226,4 +226,4 @@ This function is modified from `elpy-occur-definitions'"
   (interactive)
   (insert (dhnam/get-string-from-file "~/.emacs.d/config/init/dependent/ipdb-config-example.sh")))
 
-(provide 'dhnam-python)
+(provide 'init-python)

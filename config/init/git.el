@@ -26,4 +26,4 @@
     ;; to always edit the file as if it's at the symlink itself 
     (setq vc-follow-symlinks nil)))
 
-(provide 'dhnam-git)
+(provide 'init-git)

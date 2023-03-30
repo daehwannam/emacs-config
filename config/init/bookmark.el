@@ -16,4 +16,4 @@
   ;; bookmark location
   (setq bookmark-default-file  (concat user-emacs-directory "bookmarks"))) ; location: ~/.emacs.d/bookmarks
 
-(provide 'dhnam-bookmark)
+(provide 'init-bookmark)

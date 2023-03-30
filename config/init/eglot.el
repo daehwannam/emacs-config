@@ -25,4 +25,4 @@
  ;; eldoc-doc-buffer: C-h .
  )
 
-(provide 'dhnam-eglot)
+(provide 'init-eglot)

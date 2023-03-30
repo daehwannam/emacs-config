@@ -49,4 +49,4 @@
 (global-set-key (kbd "<f7>") 'pop-to-mark-command)
 (global-set-key (kbd "<f8>") 'dhnam/unpop-to-mark-command)
 
-(provide 'dhnam-mark-ring)
+(provide 'init-mark-ring)

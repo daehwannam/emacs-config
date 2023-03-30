@@ -8,5 +8,6 @@
 
 (with-eval-after-load 'hydra
   ;; Allow using key-chord
+  ;; (hydra is not compatible with key-chord by default)
   ;; https://github.com/abo-abo/hydra/issues/292#issuecomment-408130658
   (defun hydra-default-pre ()))

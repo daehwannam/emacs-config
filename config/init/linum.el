@@ -38,4 +38,4 @@
   (message (concat "line number: " numstr)))
   
 
-(provide 'dhnam-linum)
+(provide 'init-linum)

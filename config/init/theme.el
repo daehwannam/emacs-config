@@ -165,4 +165,4 @@
      (custom-set-faces
       '(show-paren-match ((t (:background "black" :foreground "magenta"))))))))
 
-(provide 'dhnam-theme)
+(provide 'init-theme)

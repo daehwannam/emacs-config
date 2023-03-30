@@ -75,4 +75,4 @@
     ;; https://unix.stackexchange.com/a/15633
     (add-to-list 'interpreter-mode-alist '("sbatch" . sh-mode))))
 
-(provide 'dhnam-shell)
+(provide 'init-shell)

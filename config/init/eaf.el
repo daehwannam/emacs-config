@@ -44,4 +44,4 @@
 ;;; You may
 ;;; ModuleNotFoundError: No module named 'epc'
 
-(provide 'dhnam-eaf)
+(provide 'init-eaf)

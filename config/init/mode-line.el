@@ -89,4 +89,4 @@
 
 (require 'hide-mode-line nil t)
 
-(provide 'dhnam-mode-line)
+(provide 'init-mode-line)

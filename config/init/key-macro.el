@@ -15,4 +15,4 @@
    (add-hook 'python-mode-hook
 	     (lambda () (local-set-key (kbd "C-c _") 'find-and-region-_x_))))
 
-(provide 'dhnam-key-macro)
+(provide 'init-key-macro)

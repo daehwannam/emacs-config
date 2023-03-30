@@ -6,4 +6,4 @@
 ;; 	  (local-set-key (kbd "C-c C-s") (make-repeatable-command 'reb-next-match)))
 ;; it don't work
 
-(provide 'dhnam-regex)
+(provide 'init-regex)

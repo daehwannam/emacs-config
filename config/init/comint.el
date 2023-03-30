@@ -9,7 +9,7 @@
       (key-chord-define comint-mode-map "fp" 'dhnam/hydra-comint-previous-next-matching-input-from-input/comint-previous-matching-input-from-input)
       (key-chord-define comint-mode-map "fn" 'dhnam/hydra-comint-previous-next-matching-input-from-input/comint-next-matching-input-from-input)))
 
-  (progn
+  (comment
     (define-key comint-mode-map (kbd "M-P") 'dhnam/comint-previous-matching-input-from-input-or-backward-list)
     (define-key comint-mode-map (kbd "M-N") 'dhnam/comint-next-matching-input-from-input-or-forward-list))
 
@@ -108,4 +108,4 @@ forward across one balanced group of parentheses."
         (comint-next-matching-input-from-input arg)
       (forward-list arg))))
 
-(provide 'dhnam-comint)
+(provide 'init-comint)

@@ -19,4 +19,4 @@
 ;;
 ;; C-M-% -> [0-9]+\.[0-9]+ -> RET -> \,(format "%0.2f" \#&) -> RET
 
-(provide 'dhnam-string)
+(provide 'init-string)

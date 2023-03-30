@@ -20,4 +20,4 @@
    (ido-mode t)                         ;  (comment (ido-mode nil))
    ))
 
-(provide 'dhnam-ido)
+(provide 'init-ido)

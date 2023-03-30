@@ -292,7 +292,7 @@ the PDFGrep job before it finishes, type \\[kill-compilation]."
     )
   )
 
-(require 'dhnam-bib-util)
+(require 'dhnam-bib-tool)
 
 (when (require 'biblio nil t)
   (defvar dhnam/langtool-initialized nil)
@@ -427,4 +427,4 @@ the PDFGrep job before it finishes, type \\[kill-compilation]."
 
   (add-hook 'TeX-mode-hook 'dhnam/initialize-langtool))
 
-(provide 'dhnam-latex)
+(provide 'init-latex)
