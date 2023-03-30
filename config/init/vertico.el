@@ -147,7 +147,7 @@
          (cond
           ((fboundp 'consult--grep-make-builder) #'consult--grep-make-builder)
           ;; `consult--grep-builder' is used in old version of vertico
-          ((fboundp 'consult--grep-builder #'consult--grep-builder)))
+          ((fboundp 'consult--grep-builder) #'consult--grep-builder))
          dir
          initial))
 
