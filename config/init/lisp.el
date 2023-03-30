@@ -126,7 +126,11 @@
 
 (progn
   ;; hissp & lissp
-  (add-to-list 'auto-mode-alist '("\\.lissp\\'" . lisp-mode)))
+  (add-to-list 'auto-mode-alist '("\\.lissp\\'" . lisp-mode))
+
+  (defun dhnam/insert-lissp-prelude ()
+    (interactive)
+    (insert "(hissp.basic.._macro_.prelude)")))
 
 (progn
   ;; global keys
