@@ -75,8 +75,8 @@
 
   (unless dhnam/no-config-init-cmd-line-arg-passed
     ;; load all init files
-    (dhnam/require-directory-with-prefix "~/.emacs.d/config/init" "dhnam-")
-    (dhnam/require-directory-with-prefix "~/.emacs.d/config/init/last" "dhnam-")))
+    (dhnam/require-directory-with-prefix "~/.emacs.d/config/init" "init-")
+    (dhnam/require-directory-with-prefix "~/.emacs.d/config/init/last" "init-")))
 
 (progn
   ;; starting page
