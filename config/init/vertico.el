@@ -2,6 +2,8 @@
 (when (package-installed-p 'vertico)
   (vertico-mode -1))
 
+(require 'dhnam-vertico)
+
 (use-existing-pkg vertico
   ;; Enable vertico
   :init
@@ -138,18 +140,6 @@
         ;; for consult-line, consult-grep, ...
         (apply #'dhnam/add-advice-for-vertico (append '(consult--line consult--line-multi-candidates)
                                                 '(consult--grep consult--read))))
-
-      (defun consult-grep-on-default-directory (&optional dir initial)
-        (interactive "P")
-        (setq dir (or dir default-directory))
-        (consult--grep
-         "Grep"
-         (cond
-          ((fboundp 'consult--grep-make-builder) #'consult--grep-make-builder)
-          ;; `consult--grep-builder' is used in old version of vertico
-          ((fboundp 'consult--grep-builder) #'consult--grep-builder))
-         dir
-         initial))
 
       (progn
         (comment (key-chord-define-global "js" 'consult-line))

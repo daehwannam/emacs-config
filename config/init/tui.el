@@ -1,20 +1,11 @@
 (when (eq window-system nil)  ; when it's in terminal mode
   (comment
-    ;; processing a custom command line argument
-    (defvar dhnam/tui-cmd-arg-passed nil)
+    (let ((cmd-line-arg-key "--tui"))
+      (let ((cmd-line-arg-passed-p (cmd-line-arg/register-then-get cmd-line-arg-key nil)))
+        (when cmd-line-arg-passed-p
+          (comment)))))
 
-    (let ((remaining-cmd-args (cdr command-line-args)))
-      ;; originally '(cdr command-line-args) is passed into `command-line-1'
-      (setq dhnam/tui-cmd-arg-passed (member "--tui" remaining-cmd-args)))
-
-    ;; tui setup
-    (defun tui-cmd-arg-handler (switch)
-      ;; do nothing
-      )
-
-    (add-to-list 'command-switch-alist '("--tui" . tui-cmd-arg-handler)))
-
- (use-existing-pkg clipetty
+  (use-existing-pkg clipetty
     ;; https://github.com/spudlyo/clipetty
     ;;
     ;; - clipetty is available in some terminal emulators such as xterm, kitty or alacritty

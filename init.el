@@ -1,18 +1,10 @@
 
 (progn
+  ;; use functions to load files and require features
+  (require 'dhnam-file-loading "~/.emacs.d/config/dhnamlib/base/dhnam-file-loading.el"))
+
+(progn
   (package-initialize)
-
-  (defun dhnam/add-to-load-path (path)
-    (add-to-list 'load-path path))
-
-  (defun dhnam/add-to-load-path-recursively (path)
-    ;; adding to load-path recursively
-    (add-to-list 'load-path path)
-
-    (let ((default-directory path))
-      ;; recursively add packages from a directory to load-path
-      ;; https://stackoverflow.com/a/7322812
-      (normal-top-level-add-subdirs-to-load-path)))
 
   ;; large files
   (dhnam/add-to-load-path-recursively "~/.emacs.d/config/bin/")
@@ -28,9 +20,6 @@
 
   ;; non-archived packages
   (dhnam/add-to-load-path-recursively "~/.emacs.d/package/"))
-
-;; use functions to load files and require features
-(require 'dhnam-file-loading)
 
 (progn
   ;; define a function to load features in the "init" directory
@@ -53,7 +42,7 @@
 
 (progn
   ;; base setup
-  (load "~/.emacs.d/base/cmd-line-arg.el")
+  (require 'dhnam-cmd-line-arg)
   (load "~/.emacs.d/base/package-init.el")
   (load "~/.emacs.d/base/key-chord-setup.el")
   (load "~/.emacs.d/base/hydra-setup.el")

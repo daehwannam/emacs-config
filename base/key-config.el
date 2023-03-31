@@ -66,7 +66,7 @@
 
       (let ((cmd-line-arg-key "--key-binding-style"))
         (let ((cmd-line-arg-value (cmd-line-arg/register-then-get cmd-line-arg-key t)))
-          (or (and cmd-line-arg-value(car (read-from-string cmd-line-arg-value)))
+          (or (and cmd-line-arg-value (car (read-from-string cmd-line-arg-value)))
               (car (read-from-string (dhnam/get-string-from-file key-binding-style-file-name))))))))
 
   (let ((key-binding-style-file-path (format "~/.emacs.d/base/key-binding/%s.el"
