@@ -9,7 +9,7 @@
 
   (progn
     (defvar dhnam/installable-machine-specific-packages nil)
-    (let ((package-file-name (concat dhnam/emacs-root-path "config/packages.txt")))
+    (let ((package-file-name (concat dhnam/emacs-root-dir "config/packages.txt")))
       (unless (file-exists-p package-file-name)
         (write-region "(vlf magit)" nil package-file-name))
       (setq dhnam/installable-machine-specific-packages

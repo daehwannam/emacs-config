@@ -1,9 +1,9 @@
 
-(comment (load (concat dhnam/emacs-root-path "config/init/theme.el")))
+(comment (load (concat dhnam/emacs-root-dir "config/init/theme.el")))
 
 (comment
-  (when (file-exists-p (concat dhnam/emacs-root-path "config/init/eyebrowse.el"))
-    (load (concat dhnam/emacs-root-path "config/init/eyebrowse.el"))))
+  (when (file-exists-p (concat dhnam/emacs-root-dir "config/init/eyebrowse.el"))
+    (load (concat dhnam/emacs-root-dir "config/init/eyebrowse.el"))))
 
 (when (and dhnam/exwm-cmd-line-arg-passed
            (let ((physical-monitor-names (dhnam/machine-config-get-first 'exwm-physical-monitor-names)))

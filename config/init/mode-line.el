@@ -1,6 +1,6 @@
 
 (when (or t (comment (member 'exwm-setup dhnam/machine-options)))
-  (comment (add-to-list `load-path (expand-file-name (concat dhnam/emacs-root-path "config/package/awesome-tray/"))))
+  (comment (add-to-list `load-path (expand-file-name (concat dhnam/emacs-root-dir "config/package/awesome-tray/"))))
   (require 'awesome-tray)
 
   (progn

@@ -323,7 +323,7 @@
 
       (defun dhnam/exwm-reload-key-config ()
         (interactive)
-        (call-process-shell-command (format "bash %s" (concat dhnam/emacs-root-path "reload-key-config.sh")))))
+        (call-process-shell-command (format "bash %s" (concat dhnam/emacs-root-dir "reload-key-config.sh")))))
 
     ;; (progn
     ;;   ;; run machine-specific config
