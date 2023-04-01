@@ -2,7 +2,7 @@
 ;; http://stackoverflow.com/questions/5052088/what-is-custom-set-variables-and-faces-in-my-emacs
 
 ;; http://ergoemacs.org/emacs/elisp_determine_OS_version.html
-(setq custom-file "~/.emacs.d/config/custom/custom.el")
+(setq custom-file (concat dhnam/emacs-root-path "config/custom/custom.el"))
 (unless (file-exists-p custom-file)
   ;; https://stackoverflow.com/questions/17376706/in-emacs-lisp-how-can-i-append-a-string-to-a-file-that-i-dont-like-to-open
   ;; https://stackoverflow.com/questions/14071991/how-to-create-an-empty-file-by-elisp/14072295

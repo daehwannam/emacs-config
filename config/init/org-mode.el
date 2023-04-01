@@ -96,17 +96,6 @@
     (define-key global-map (kbd "C-c a") 'org-agenda))
   (setq org-log-done t)
 
-
-  ;; read file contents
-  ;; http://ergoemacs.org/emacs/elisp_read_file_content.html
-  (defun dhnam/get-string-from-file (filePath)
-    "Return filePath's file content."
-    (with-temp-buffer
-      (insert-file-contents filePath)
-      (buffer-string)))
-
-
-
   ;; check OS type
   ;; http://ergoemacs.org/emacs/elisp_determine_OS_version.html
 

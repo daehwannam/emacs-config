@@ -5,7 +5,7 @@
   (setq
    backup-by-copying t                   ; don't clobber symlinks
    backup-directory-alist
-   '(("." . "~/.emacs.d/backup/"))       ; don't litter my fs tree
+   `(("." . ,(concat dhnam/emacs-root-path "backup/")))       ; don't litter my fs tree
    delete-old-versions t
    kept-new-versions 6
    kept-old-versions 2

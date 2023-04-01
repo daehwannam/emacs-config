@@ -61,32 +61,41 @@
     (dhnam/exwm-simple-frame-init)
     (dhnam/exwm-config-base)
 
-    (progn
-      ;; interactive functions
+    (comment
+      (defun efs/exwm-update-title ()
+        (pcase exwm-class-name
+          ("Firefox" (exwm-workspace-rename-buffer (format "Firefox: %s" exwm-title)))
+          ("Google-chrome" (exwm-workspace-rename-buffer (format "Google-chrome: %s" exwm-title)))))
 
-      (defun dhnam/exwm-get-pid-of-buffer (buffer-or-name)
-        (interactive "bBuffer name: ")
-        (let* ((buf (or buffer-or-name (current-buffer)))
-               (id (exwm--buffer->id (get-buffer buf)))) ; ID of X window being displayed
-          (message
-           (if id
-               (slot-value (xcb:+request-unchecked+reply
-                               exwm--connection
-                               (make-instance 'xcb:ewmh:get-_NET_WM_PID :window id))
-                           'value)
-             (user-error "Target buffer %S is not an X window managed by EXWM!"
-                         buf))))))
+      ;; When window title updates, use it to set the buffer name
+      (add-hook 'exwm-update-title-hook #'efs/exwm-update-title))
+
+    (progn
+      ;; Application title update
+      ;; https://github.com/ch11ng/exwm/issues/198#issuecomment-249723369
+      ;;
+      ;; similar methods:
+      ;; https://github.com/daviwil/emacs-from-scratch/blob/39f63fe133cd4c41e13bbd1551c6517162851411/show-notes/Emacs-Desktop-03.org#customizing-buffer-name-based-on-window-title
+      ;; https://www.youtube.com/watch?v=HGGU5Zvljj8
+
+      (defvar dhnam/exwm-buffer-name-joint ": ")
+
+      (defun dhnam/exwm-rename-buffer ()
+        (interactive)
+        (exwm-workspace-rename-buffer
+         (concat exwm-class-name dhnam/exwm-buffer-name-joint
+                 (if (<= (length exwm-title) 50) exwm-title
+                   (concat (substring exwm-title 0 49) "...")))))
+
+      ;; Add these hooks in a suitable place (e.g., as done in exwm-config-default)
+      (add-hook 'exwm-update-class-hook 'dhnam/exwm-rename-buffer)
+      (add-hook 'exwm-update-title-hook 'dhnam/exwm-rename-buffer))
+
+    (require 'dhnam-exwm)
 
     (progn
       ;; workspace switching functions
       (progn
-        (defun dhnam/exwm-other-workspace (count)
-          (interactive "p")
-          (exwm-workspace-switch (% (+ exwm-workspace-current-index 1)
-                                    (exwm-workspace--count))))
-
-        (defun dhnam/exwm-other-workspace-backwards () (interactive) (dhnam/exwm-other-workspace -1))
-
         (let ((map (make-sparse-keymap)))
           (define-key map (kbd "r") 'exwm-reset)
           (define-key map (kbd "t") 'exwm-floating-toggle-floating)
@@ -135,17 +144,6 @@
       ;; volume
       (require 'volume nil t))
 
-    (progn
-      ;; brightness
-      (defun dhnam/xrandr-set-brightness (brightness)
-        (interactive "NEnter brightness percentage: ")
-        (if (<= 0 brightness 100)
-            (start-process-shell-command
-             "dhnam/xrandr-set-brightness" nil
-             "~/.emacs.d/config/init/dependent/xrandr-set-brightness.sh"
-             (number-to-string (/ brightness 100.0)))
-          (user-error "Out of range"))))
-
     (comment
       ;; system tray
       ;; https://github.com/ch11ng/exwm/wiki#system-tray
@@ -180,40 +178,6 @@
 
       ;; Start the Polybar panel
       (efs/start-panel))
-
-    (comment
-      ;; custom-minibuffer
-      (load "~/.emacs.d/config/init/dependent/awesome-tray.el"))
-
-    (progn
-      (comment
-        (defun efs/exwm-update-title ()
-          (pcase exwm-class-name
-            ("Firefox" (exwm-workspace-rename-buffer (format "Firefox: %s" exwm-title)))
-            ("Google-chrome" (exwm-workspace-rename-buffer (format "Google-chrome: %s" exwm-title)))))
-
-        ;; When window title updates, use it to set the buffer name
-        (add-hook 'exwm-update-title-hook #'efs/exwm-update-title))
-
-      (progn
-        ;; https://github.com/ch11ng/exwm/issues/198#issuecomment-249723369
-        ;;
-        ;; similar methods:
-        ;; https://github.com/daviwil/emacs-from-scratch/blob/39f63fe133cd4c41e13bbd1551c6517162851411/show-notes/Emacs-Desktop-03.org#customizing-buffer-name-based-on-window-title
-        ;; https://www.youtube.com/watch?v=HGGU5Zvljj8
-
-        (defvar dhnam/exwm-buffer-name-joint ": ")
-
-        (defun dhnam/exwm-rename-buffer ()
-          (interactive)
-          (exwm-workspace-rename-buffer
-           (concat exwm-class-name dhnam/exwm-buffer-name-joint
-                   (if (<= (length exwm-title) 50) exwm-title
-                     (concat (substring exwm-title 0 49) "...")))))
-
-        ;; Add these hooks in a suitable place (e.g., as done in exwm-config-default)
-        (add-hook 'exwm-update-class-hook 'dhnam/exwm-rename-buffer)
-        (add-hook 'exwm-update-title-hook 'dhnam/exwm-rename-buffer)))
 
     (progn
       ;; enable switching betwen buffers in other workspaces
@@ -269,148 +233,23 @@
         (define-key dhnam/exwm-workspace-prefix-map (kbd "v") 'hydra-volume/body))
       (define-key dhnam/exwm-workspace-prefix-map (kbd "v") 'volume-set))
 
+    (require 'dhnam-application)
+    (require 'dhnam-web-browser)
+
     (progn
       ;; application commands
-
-      (defun dhnam/exwm-command-execute-shell (command)
-        (interactive (list (read-shell-command "$ ")))
-        (start-process-shell-command command nil command))
-
-      (progn
-        ;; web browser commands
-        (defun dhnam/url-string-p (s)
-          (string-match "[^[:blank:][:space:]]*://[^[:blank:][:space:]]*"
-                        s))
-
-        (defun dhnam/get-web-search-query-url-string (query-string)
-          (cond
-           ((string-empty-p query-string)
-            "https://www.google.com/")
-           ((dhnam/url-string-p query-string) ; when query is an URL
-            query-string)
-           (t
-            (format "\"https://www.google.com/search?q=%s\"" query-string))))
-
-        (defun dhnan/open-web-browser (browser-command &optional url)
-          (let ((web-search-query-url-string
-                 (cond
-                  (url url)
-                  ((use-region-p)
-                   (deactivate-mark)
-                   (dhnam/get-web-search-query-url-string
-                    (buffer-substring-no-properties (region-beginning) (region-end))))
-                  (t ""))))
-            (start-process-shell-command "web-browser" nil
-                                         (concat browser-command " " web-search-query-url-string))))
-
-        (defun old-dhnam/exwm-command-open-web-browser ()
-          (interactive)
-          (start-process-shell-command "web-browser" nil "nyxt")
-          (comment (start-process-shell-command "web-browser" nil "qutebrowser"))
-          (comment (start-process-shell-command "web-browser" nil "firefox -new-window"))
-          (comment (start-process-shell-command "web-browser" nil "google-chrome --app=https://www.google.com/"))
-          (comment (start-process-shell-command "web-browser" nil "firefox -new-window https://www.google.com/"))
-          (comment (start-process-shell-command "web-browser" nil "google-chrome --app=https://www.google.com/ --start-fullscreen"))
-          (comment (start-process-shell-command "web-browser" nil "google-chrome --new-window"))
-          (comment (start-process-shell-command "web-browser" nil "xdg-open https://")))
-
-        (comment
-          (defun old-dhnam/exwm-command-open-web-browser-incognito ()
-            (interactive)
-            (start-process-shell-command "web-browser" nil "qutebrowser ':open -p'")
-            (comment (start-process-shell-command "web-browser" nil "firefox --private-window"))
-            (comment (start-process-shell-command "web-browser" nil "firefox --private-window https://www.google.com/"))
-            (comment (start-process-shell-command "web-browser" nil "google-chrome --new-window google.com --incognito"))
-            (comment (start-process-shell-command "web-browser" nil "google-chrome --new-window google.com --incognito --start-fullscreen"))
-            (comment (start-process-shell-command "web-browser" nil "google-chrome --new-window --incognito"))
-            (comment (start-process-shell-command "web-browser" nil "xdg-open https://"))))
-
-        (comment (fset 'dhnam/exwm-command-open-web-browser 'dhnam/exwm-command-open-nyxt))
-        (comment (fset 'dhnam/exwm-command-open-web-browser 'dhnam/exwm-command-open-firefox-private))
-        (fset 'dhnam/exwm-command-open-web-browser 'dhnam/exwm-command-open-firefox)
-        (fset 'dhnam/exwm-command-open-web-browser-private 'dhnam/exwm-command-open-firefox-private)
-
-        (defun dhnam/exwm-command-open-nyxt (&optional url)
-          (interactive)
-          (dhnan/open-web-browser "nyxt" url))
-
-        (progn
-          (defvar dhnam/web-search-engine-list-file-path
-            "~/.emacs.d/config/init/dependent/search-engines.lisp")
-
-          (defvar dhnam/web-search-engines
-            (car (read-from-string (dhnam/get-string-from-file dhnam/web-search-engine-list-file-path))))
-
-          (defun dhnam/update-web-search-engines ()
-            (interactive)
-            (setq dhnam/web-search-engines
-                  (car (read-from-string (dhnam/get-string-from-file dhnam/web-search-engine-list-file-path)))))
-
-          (defun dhnam/exwm-query-to-browser (&optional query open-web-browser)
-            (interactive "sSearch query: ")
-            (let* ((splits (s-split " " query))
-                   (search-engine-entry
-                    (assoc (car splits) dhnam/web-search-engines))
-                   (query-string nil)
-                   (url nil))
-              (cond
-               (search-engine-entry
-                (setq query-string (s-join " " (cdr splits))))
-               ((and (= (length splits) 1) (dhnam/url-string-p query))
-                (setq url query))
-               (t
-                (progn
-                  (setq search-engine-entry (assoc "gg" dhnam/web-search-engines))
-                  (setq query-string query))))
-
-              (unless url
-                (setq url (if (string-empty-p query-string)
-                              (caddr search-engine-entry)
-                            (concat "\"" (s-replace "~a" query-string (cadr search-engine-entry)) "\""))))
-              (funcall open-web-browser url)))
-
-          (defun dhnam/exwm-command-query-to-browser (&optional query)
-            (interactive "sSearch query: ")
-            (dhnam/exwm-query-to-browser query #'dhnam/exwm-command-open-web-browser)))
-
-        (defun dhnam/exwm-command-open-google-chrome (&optional url)
-          (interactive)
-          (dhnan/open-web-browser "google-chrome" url)
-          (comment (dhnan/open-web-browser "google-chrome --app=https://www.google.com/")))
-
-        (defun dhnam/exwm-command-open-google-chrome-incognito (&optional url)
-          (interactive)
-          (dhnan/open-web-browser "google-chrome --incognito" url)
-          (comment (dhnan/open-web-browser "google-chrome --new-window google.com --incognito")))
-
-        (defun dhnam/exwm-command-open-firefox (&optional url)
-          (interactive)
-          (dhnan/open-web-browser "firefox --new-window" url))
-
-        (defun dhnam/exwm-command-open-firefox-private (&optional url)
-          (interactive)
-          (dhnan/open-web-browser "firefox --private-window" url)))
-
-      (defun dhnam/exwm-command-open-terminal-emulator ()
-        (interactive)
-        (start-process-shell-command "terminal" nil "kitty"))
-
-      (defun dhnam/exwm-command-open-flameshot-gui ()
-        (interactive)
-        (start-process-shell-command "screenshot" nil "flameshot gui"))
-
       (let ((map (make-sparse-keymap)))
-        (define-key map (kbd "w") 'dhnam/exwm-command-open-web-browser)
-        (define-key map (kbd "W") 'dhnam/exwm-command-open-web-browser-private)
-        (define-key map (kbd "q") 'dhnam/exwm-command-query-to-browser)
-        ;; (define-key map (kbd "W") 'dhnam/exwm-command-open-web-browser-incognito)
-        (define-key map (kbd "c") 'dhnam/exwm-command-open-google-chrome)
-        (define-key map (kbd "C") 'dhnam/exwm-command-open-google-chrome-incognito)
-        (comment (define-key map (kbd "f") 'dhnam/exwm-command-open-firefox))
-        (comment (define-key map (kbd "F") 'dhnam/exwm-command-open-firefox-private))
-        (define-key map (kbd "e") 'dhnam/exwm-command-open-terminal-emulator)
+        (define-key map (kbd "w") 'dhnam/app-command-open-web-browser)
+        (define-key map (kbd "W") 'dhnam/app-command-open-web-browser-private)
+        (define-key map (kbd "q") 'dhnam/app-command-query-to-browser)
+        ;; (define-key map (kbd "W") 'dhnam/app-command-open-web-browser-incognito)
+        (define-key map (kbd "c") 'dhnam/app-command-open-google-chrome)
+        (define-key map (kbd "C") 'dhnam/app-command-open-google-chrome-incognito)
+        (comment (define-key map (kbd "f") 'dhnam/app-command-open-firefox))
+        (comment (define-key map (kbd "F") 'dhnam/app-command-open-firefox-private))
+        (define-key map (kbd "e") 'dhnam/app-command-open-terminal-emulator)
         (comment (define-key map (kbd "e") 'dhnam/gui-terminal))
-        (define-key map (kbd "<print>") 'dhnam/exwm-command-open-flameshot-gui)
+        (define-key map (kbd "<print>") 'dhnam/app-command-open-flameshot-gui)
 
 	    (defvar dhnam/exwm-command-prefix-map map
 	      "Keymap for application related commands."))
@@ -457,131 +296,7 @@
           (setq fw/ivy-last-buffer nil
                 fw/ivy-last-window nil))))
 
-    (progn
-      ;; additional functions for convenience
-      (defun dhnam/counsel-switch-buffer-within-app ()
-        "Switch to another buffer within application.
-Display a preview of the selected ivy completion candidate buffer
-in the current window."
-        (interactive)
-        (let ((ivy-update-fns-alist
-               '((ivy-switch-buffer . counsel--switch-buffer-update-fn)))
-              (ivy-unwind-fns-alist
-               '((ivy-switch-buffer . counsel--switch-buffer-unwind))))
-          (dhnam/ivy-switch-buffer-within-app)))
-
-      (defun dhnam/ivy-switch-buffer-within-app ()
-        "Switch to another buffer within application.."
-        (interactive)
-        (let ((ivy-ignore-buffers
-               (if exwm-class-name  ; (string-match-p dhnam/exwm-buffer-name-joint (buffer-name (current-buffer)))
-                   ivy-ignore-buffers
-                 (cons dhnam/exwm-buffer-name-joint ivy-ignore-buffers))))
-          (ivy-read "Switch to buffer: " #'internal-complete-buffer
-                    :keymap ivy-switch-buffer-map
-                    :preselect (unless exwm-class-name (buffer-name (other-buffer (current-buffer))))
-                    :action #'ivy--switch-buffer-action
-                    :matcher #'ivy--switch-buffer-matcher
-                    :caller 'ivy-switch-buffer
-                    :initial-input (when exwm-class-name
-                                     (concat (downcase exwm-class-name) dhnam/exwm-buffer-name-joint))))))
-
-    (progn
-      ;; additional functions for convenience
-      (defun dhnam/counsel-switch-buffer-from-current ()
-        "Switch to another buffer within application.
-Display a preview of the selected ivy completion candidate buffer
-in the current window."
-        (interactive)
-        (let ((ivy-update-fns-alist
-               '((ivy-switch-buffer . counsel--switch-buffer-update-fn)))
-              (ivy-unwind-fns-alist
-               '((ivy-switch-buffer . counsel--switch-buffer-unwind))))
-          (dhnam/ivy-switch-buffer-from-current)))
-
-      (defun dhnam/ivy-switch-buffer-from-current ()
-        "Switch to another buffer within application.."
-        (interactive)
-        (let ((ivy-ignore-buffers
-               (if exwm-class-name  ; (string-match-p dhnam/exwm-buffer-name-joint (buffer-name (current-buffer)))
-                   ivy-ignore-buffers
-                 (cons dhnam/exwm-buffer-name-joint ivy-ignore-buffers))))
-          (ivy-read "Switch to buffer: " #'internal-complete-buffer
-                    :keymap ivy-switch-buffer-map
-                    ;; :preselect (buffer-name (current-buffer))
-                    :action #'ivy--switch-buffer-action
-                    :matcher #'ivy--switch-buffer-matcher
-                    :caller 'ivy-switch-buffer))))
-
-    (progn
-      ;; additional functions for convenience
-      (defun dhnam/counsel-switch-buffer-excluding-exwm ()
-        "Switch to another buffer within application.
-Display a preview of the selected ivy completion candidate buffer
-in the current window."
-        (interactive)
-        (let ((ivy-update-fns-alist
-               '((ivy-switch-buffer . counsel--switch-buffer-update-fn)))
-              (ivy-unwind-fns-alist
-               '((ivy-switch-buffer . counsel--switch-buffer-unwind))))
-          (dhnam/ivy-switch-buffer-excluding-exwm)))
-
-      (defun dhnam/ivy-switch-buffer-excluding-exwm ()
-        "Switch to another buffer within application.."
-        (interactive)
-        (let ((ivy-ignore-buffers
-               (cons (buffer-name (current-buffer))
-                     (cons dhnam/exwm-buffer-name-joint ivy-ignore-buffers))))
-          (ivy-read "Switch to buffer: " #'internal-complete-buffer
-                    :keymap ivy-switch-buffer-map
-                    ;; :preselect (buffer-name (current-buffer))
-                    :action #'ivy--switch-buffer-action
-                    :matcher #'ivy--switch-buffer-matcher
-                    :caller 'ivy-switch-buffer))))
-
-    (with-eval-after-load 'ivy
-      (defun dhnam/ivy-insert-current-exwm-class-name ()
-        "Insert `exwm-class-name'"
-        (interactive)
-        (when dhnam/ivy-original-exwm-class-name
-          (delete-minibuffer-contents)
-          (insert (concat (downcase dhnam/ivy-original-exwm-class-name) dhnam/exwm-buffer-name-joint))))
-
-      (progn
-        (defun dhnam/ivy-switch-buffer-advice-for-exwm (orig-fun &rest args)
-          (let ((dhnam/ivy-original-exwm-class-name exwm-class-name))
-            (apply orig-fun args)))
-
-        (advice-add 'ivy-switch-buffer :around #'dhnam/ivy-switch-buffer-advice-for-exwm)
-        (advice-add 'dhnam/ivy-switch-buffer-within-app :around #'dhnam/ivy-switch-buffer-advice-for-exwm)
-        (advice-add 'dhnam/ivy-switch-buffer-from-current :around #'dhnam/ivy-switch-buffer-advice-for-exwm)
-        (advice-add 'dhnam/ivy-switch-buffer-excluding-exwm :around #'dhnam/ivy-switch-buffer-advice-for-exwm))
-
-      (ivy-define-key ivy-minibuffer-map (kbd "s-j") 'dhnam/ivy-insert-current-exwm-class-name)
-      (ivy-define-key ivy-minibuffer-map (kbd "C-s-j") 'dhnam/ivy-insert-current-exwm-class-name))
-
-    (progn
-      ;; extended emacs commands for exwm
-
-      (defun dhnam/counsel-find-file-in-downloads (&optional initial-input initial-directory)
-        "Forward to `find-file'.
-When INITIAL-INPUT is non-nil, use it in the minibuffer during completion."
-        (interactive)
-        (let ((default-directory "~/Downloads/"))
-          (counsel-find-file initial-input initial-directory)))
-
-      (progn
-        (let ((map (make-sparse-keymap)))
-          (define-key map (kbd "d") 'dhnam/counsel-find-file-in-downloads)
-          (define-key map (kbd "w") 'dhnam/kill-gc)
-          (define-key map (kbd "k") 'dhnam/ivy-kill-marked)
-          (define-key map (kbd "s") 'dhnam/switch-to-scratch-buffer)
-          (define-key map (kbd "q") 'dhnam/eww-new)
-
-          (defvar dhnam/exwm-extended-emacs-command-prefix-map map
-	        "Keymap for emacs related commands."))
-
-        (fset 'dhnam/exwm-extended-emacs-command-prefix-map dhnam/exwm-extended-emacs-command-prefix-map)))
+    (require 'dhnam-counsel-for-exwm)
 
     (progn
       (setq exwm-manage-configurations nil)
@@ -604,46 +319,11 @@ When INITIAL-INPUT is non-nil, use it in the minibuffer during completion."
                '((t char-mode t))))))
 
     (progn
-      (defvar dhnam/exwm-split-defined t)
-
-      (defun dhnam/exwm-split-window-below (&optional size)
-        ;; https://github.com/ch11ng/exwm/issues/685#issuecomment-879903947
-        (interactive "P")
-        (split-window-below size)
-        (comment (buf-move-down))
-        (windmove-down)
-        (redisplay)
-        (windmove-up))
-
-      (defun dhnam/exwm-split-window-right (&optional size)
-        ;; https://github.com/ch11ng/exwm/issues/685#issuecomment-879903947
-        (interactive "P")
-        (split-window-right size)
-        (comment (buf-move-right))
-        (windmove-right)
-        (redisplay)
-        (windmove-left))
-
-      (defun dhnam/exwm-split-move-window-below (&optional size)
-        ;; https://github.com/ch11ng/exwm/issues/685#issuecomment-879903947
-        (interactive "P")
-        (split-window-below size)
-        (redisplay)
-        (windmove-down))
-
-      (defun dhnam/exwm-split-move-window-right (&optional size)
-        ;; https://github.com/ch11ng/exwm/issues/685#issuecomment-879903947
-        (interactive "P")
-        (split-window-right size)
-        (redisplay)
-        (windmove-right)))
-
-    (progn
       ;; miscellaneous commands
 
       (defun dhnam/exwm-reload-key-config ()
         (interactive)
-        (call-process-shell-command "bash ~/.emacs.d/exwm/reload-key-config.sh")))
+        (call-process-shell-command (format "bash %s" (concat dhnam/emacs-root-path "reload-key-config.sh")))))
 
     ;; (progn
     ;;   ;; run machine-specific config
@@ -718,9 +398,9 @@ When INITIAL-INPUT is non-nil, use it in the minibuffer during completion."
         (comment
           (dotimes (workspace-num 9)
             (lexical-let ((idx (% (+ workspace-num 10 (- dhnam/exwm-workspace-start-number)) 10)))
-                         (define-key dhnam/exwm-workspapce-prefix-map (kbd (format "%d" workspace-num))
-                           #'(lambda () (interactive)
-                               (funcall exwm-environment-switch-create idx))))))
+              (define-key dhnam/exwm-workspapce-prefix-map (kbd (format "%d" workspace-num))
+                #'(lambda () (interactive)
+                    (funcall exwm-environment-switch-create idx))))))
 
         (progn
           (assert (not (get 'exwm-input-global-keys 'saved-value)))
@@ -732,7 +412,7 @@ When INITIAL-INPUT is non-nil, use it in the minibuffer during completion."
                    ;; ([?\s-t] . exwm-floating-toggle-floating)
                    ([?\s-\;] . exwm-input-send-next-key)
 
-                   ([?\s-&] . dhnam/exwm-command-execute-shell)
+                   ([?\s-&] . dhnam/app-command-execute-shell)
                    ([?\s-m] . dhnam/exwm-command-prefix-map)
                    ([?\s-d] . dhnam/exwm-workspace-prefix-map)
                    ([?\s-'] . dhnam/exwm-extended-emacs-command-prefix-map)

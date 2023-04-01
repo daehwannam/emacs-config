@@ -1,5 +1,5 @@
 
-(let ((option-file-name "~/.emacs.d/config/options.txt"))
+(let ((option-file-name (concat dhnam/emacs-root-path "config/options.txt")))
   (unless (file-exists-p option-file-name)
     ;; initialize machine options if it's not exist.
     ;; https://stackoverflow.com/questions/17376706/in-emacs-lisp-how-can-i-append-a-string-to-a-file-that-i-dont-like-to-open

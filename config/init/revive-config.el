@@ -3,13 +3,13 @@
   (autoload 'resume "revive" "Resume Emacs" t)
   (autoload 'wipe "revive" "Wipe Emacs" t)
 
-  (unless (file-exists-p "~/.emacs.d/layout/")
+  (unless (file-exists-p (concat dhnam/emacs-root-path "layout/"))
     ;; https://stackoverflow.com/questions/17376706/in-emacs-lisp-how-can-i-append-a-string-to-a-file-that-i-dont-like-to-open
     ;; https://stackoverflow.com/questions/14071991/how-to-create-an-empty-file-by-elisp/14072295
-    (make-directory "~/.emacs.d/layout/"))
+    (make-directory (concat dhnam/emacs-root-path "layout/")))
 
   (defun dhnam/revive-layout-read-args (prompt mustmatch)
-    (list (read-file-name prompt "~/.emacs.d/layout/" nil mustmatch)))
+    (list (read-file-name prompt (concat dhnam/emacs-root-path "layout/") nil mustmatch)))
 
   (defun dhnam/emacs-save-layout (out-name)
     "save the frame and window layout to ~/.layout. Requires revive.el."

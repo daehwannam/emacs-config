@@ -60,7 +60,7 @@
 (progn
   (defvar dhnam/default-key-binding-style 'iokl)
   (defvar dhnam/key-binding-style
-    (let ((key-binding-style-file-name "~/.emacs.d/key-binding-style.txt"))
+    (let ((key-binding-style-file-name (concat dhnam/emacs-root-path "key-binding-style.txt")))
       (unless (file-exists-p key-binding-style-file-name)
         (write-region (symbol-name dhnam/default-key-binding-style) nil key-binding-style-file-name))
 
@@ -69,7 +69,7 @@
           (or (and cmd-line-arg-value (car (read-from-string cmd-line-arg-value)))
               (car (read-from-string (dhnam/get-string-from-file key-binding-style-file-name))))))))
 
-  (let ((key-binding-style-file-path (format "~/.emacs.d/base/key-binding/%s.el"
+  (let ((key-binding-style-file-path (format (concat dhnam/emacs-root-path "base/key-binding/%s.el")
                                                (symbol-name dhnam/key-binding-style))))
       (if (file-exists-p key-binding-style-file-path)
           (load key-binding-style-file-path)

@@ -56,17 +56,7 @@
 (use-existing-pkg eww
   :commands (dhnam/eww-new)
   :config
-  (defun dhnam/eww-new (url &optional arg)
-    "Make new eww buffer"
-    (interactive
-     (let* ((uris (eww-suggested-uris))
-	        (prompt (concat "Enter URL or keywords"
-			                (if uris (format " (default %s)" (car uris)) "")
-			                ": ")))
-       (list (read-string prompt nil 'eww-prompt-history uris))))
-
-    (let ((default-prefix-arg 4))
-      (eww url default-prefix-arg)))
+  (require 'dhnam-web-browser)
 
   :init
   (key-chord-define-global "i1" 'dhnam/eww-new))
