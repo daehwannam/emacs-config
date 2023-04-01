@@ -32,7 +32,7 @@
 
 (progn
   ;; theme
-  (add-to-list 'custom-theme-load-path (concat dhnam/emacs-root-dir "config/init/theme-collection"))
+  (add-to-list 'custom-theme-load-path (concat dhnam/lib-root-dir "theme"))
   (let ((theme-style (dhnam/machine-config-get-first 'theme-style)))
     (when (or (eq theme-style 'dark) (eq theme-style nil))
       (load-theme 'my-manoj-dark t))))

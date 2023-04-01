@@ -1,6 +1,6 @@
 
 ;;; https://stackoverflow.com/a/12843877
-(add-to-list 'custom-theme-load-path (concat dhnam/emacs-root-dir "config/init/theme-collection"))
+(add-to-list 'custom-theme-load-path (concat dhnam/lib-root-dir "theme"))
 
 ;;; highlight current line with keeping syntax coloring
 (comment (global-hl-line-mode 1))
