@@ -1,6 +1,6 @@
 [submodule "config/package/exwm-workspace-group"]
 	path = config/library/exwm-workspace-group
 	url = https://github.com/daehwannam/exwm-workspace-group.git
-[submodule "config/dhnamlib"]
-	path = config/dhnamlib
+[submodule "dhnamlib"]
+	path = dhnamlib
 	url = https://github.com/daehwannam/emacs-library.git
