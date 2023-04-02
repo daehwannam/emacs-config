@@ -14,9 +14,15 @@
 !/LICENSE
 !/bug-fix/
 
-# ignore some patterns or files
+# ignore some patterns
+# emacs temporary files
 *~
 *[#]*
+
+# python temporary files
+*.pyc
+
+# ignore some files
 /config/options.txt
 /config/packages.txt
 /config/custom/custom.el
