@@ -223,7 +223,7 @@ the PDFGrep job before it finishes, type \\[kill-compilation]."
     )
   )
 
-(require 'bibtex-summary)
+(comment (require 'bibtex-summary))
 
 (when (require 'biblio nil t)
   (defvar dhnam/langtool-initialized nil)
