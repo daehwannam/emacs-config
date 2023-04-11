@@ -49,6 +49,10 @@
       (define-key key-translation-map (kbd "<key-chord> dq")  (kbd "C-c"))))
 
   (progn
+    ;; special keys defined by "xmodmap" and "xcape" from "~/.emacs.d/exwm/load-key-config.sh"
+    (defconst dhnam/xcape-left-alt "₢"))
+
+  (progn
     ;; <CruzeiroSign> = ₫
     (comment
       (keyboard-translate ?\₫ ?\C-g)
@@ -58,7 +62,7 @@
       (define-key isearch-mode-map (kbd "₫") 'isearch-abort))))
 
 (progn
-  (defvar dhnam/default-key-binding-style 'iokl)
+  (defvar dhnam/default-key-binding-style 'fbnp)
   (defvar dhnam/key-binding-style
     (let ((key-binding-style-file-name (concat dhnam/emacs-root-dir "key-binding-style.txt")))
       (unless (file-exists-p key-binding-style-file-name)

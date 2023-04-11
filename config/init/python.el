@@ -116,7 +116,6 @@
   (add-to-list 'auto-mode-alist '("\\.yaml\\'" . yaml-mode))
   (add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode)))
 
-
 (when (fboundp 'ein:run)
   ;; EIN: Emacs IPython Notebook
   ;; https://github.com/millejoh/emacs-ipython-notebook

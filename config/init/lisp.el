@@ -133,6 +133,36 @@
     (insert "(hissp.basic.._macro_.prelude)")))
 
 (progn
+  ;; Parenthesis-related modes for global activations
+  (progn
+    ;; `show-paren-mode' as a local-mode
+    ;; https://stackoverflow.com/a/10268394
+    (defun show-paren-local-mode ()
+      (interactive)
+      (make-local-variable 'show-paren-mode) ;; The value of shom-paren-mode will be local to this buffer.
+      (setq show-paren-mode t))
+
+    (setq show-paren-delay 0)
+
+    (comment
+      (add-hook 'prog-mode-hook 'show-paren-local-mode)))
+
+  (progn
+    ;; electric-pair-mode
+    (add-hook 'prog-mode-hook
+              (dhnam/hook-except-modes 'electric-pair-local-mode '(emacs-lisp-mode lisp-mode)))
+    )
+  
+  (comment
+    (when (package-installed-p 'highlight-parentheses)
+      (require 'highlight-parentheses)
+
+      (define-globalized-minor-mode global-highlight-parentheses-mode highlight-parentheses-mode
+        (lambda nil (highlight-parentheses-mode t)))
+
+      (global-highlight-parentheses-mode t))))
+
+(progn
   ;; global keys
   (global-set-key (kbd "M-P") 'backward-list)
   (global-set-key (kbd "M-N") 'forward-list)
@@ -201,7 +231,9 @@
       (comment
         (define-key paredit-mode-map (kbd "C-M-u") #'dhnam/paredit-backward-up-or-down)
         (define-key paredit-mode-map (kbd "C-M-d") #'dhnam/paredit-forward-up-or-down))
-      (define-key paredit-mode-map (kbd "DEL") #'dhnam/paredit-backward-delete))
+      (define-key paredit-mode-map (kbd "DEL") #'dhnam/paredit-backward-delete)
+
+      (define-key paredit-mode-map (kbd dhnam/xcape-left-alt) 'dhnam-paredit-iokl/body))
 
     (progn
       (define-key paredit-mode-map (kbd "M-D") (make-repeatable-command #'paredit-backward-down))
@@ -224,19 +256,5 @@
     (when (fboundp 'dhnam/highlight-map)
       ;; paredit overwrites M-s and M-S bindings
       (define-key paredit-mode-map (kbd "C-c h") 'dhnam/highlight-map))))
-
-(comment
-  (when (package-installed-p 'highlight-parentheses)
-    (require 'highlight-parentheses)
-
-    (define-globalized-minor-mode global-highlight-parentheses-mode highlight-parentheses-mode
-      (lambda nil (highlight-parentheses-mode t)))
-
-    (global-highlight-parentheses-mode t)))
-
-(comment
-  (when (fboundp 'show-paren-mode)
-    (setq show-paren-delay 0)
-    (add-hook 'paredit-mode-hook 'show-paren-mode)))
 
 (provide 'init-lisp)
