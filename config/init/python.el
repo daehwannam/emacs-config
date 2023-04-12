@@ -141,4 +141,13 @@
 	(add-hook 'ein:notebook-mode-hook 'display-line-numbers-mode)
 	(setq ein:worksheet-enable-undo t)))
 
+(comment
+  (when (package-installed-p 'anaconda-mode)
+    (add-hook 'python-mode-hook 'anaconda-mode)
+    (add-hook 'python-mode-hook 'anaconda-eldoc-mode)
+
+    (when (package-installed-p 'company-anaconda)
+      (eval-after-load 'company
+        '(add-to-list 'company-backends 'company-anaconda)))))
+
 (provide 'init-python)
