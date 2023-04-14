@@ -8,7 +8,7 @@ if [ -e ~/.emacs.d ]; then
 else
     git clone https://github.com/daehwannam/emacs-config.git ~/.emacs.d
     cd ~/.emacs.d
-    ./setup.sh
+    ./update.sh
 fi
 #+end_src
 
