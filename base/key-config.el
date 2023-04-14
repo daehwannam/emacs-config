@@ -62,7 +62,7 @@
       (define-key isearch-mode-map (kbd "₫") 'isearch-abort))))
 
 (progn
-  (defvar dhnam/default-key-binding-style 'dhnam-jkl-sc-simple)
+  (defvar dhnam/default-key-binding-style 'dhnam-iokl)
   (defvar dhnam/key-binding-style
     (let ((key-binding-style-file-name (concat dhnam/emacs-root-dir "key-binding-style.el")))
       (unless (file-exists-p key-binding-style-file-name)

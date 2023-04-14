@@ -214,6 +214,9 @@
 	    ("0" paredit-forward-barf-sexp)
 	    ("9" paredit-backward-barf-sexp))
 
+      ;; disable any hint message
+      (hydra-set-property 'paredit-slurp-barf-sexp :verbosity 0)
+
       (key-chord-define paredit-mode-map "()" #'paredit-slurp-barf-sexp/body)
       (key-chord-define paredit-mode-map "{}" #'paredit-slurp-barf-sexp/body))
 
