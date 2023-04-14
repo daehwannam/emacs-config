@@ -9,7 +9,9 @@
 
   (progn
     ;; (define-key puni-mode-map (kbd "M-k") 'dhnam/puni-copy/puni-forward-sexp)
-    (define-key puni-mode-map (kbd dhnam/xcape-left-alt) 'dhnam-puni-iokl/body)
+    (comment
+      (define-key puni-mode-map (kbd dhnam/xcape-left-alt) 'dhnam-puni-iokl/body)
+      (define-key global-map (kbd dhnam/xcape-left-alt) 'dhnam-puni-iokl/body))
     (define-key puni-mode-map (kbd "C-k") 'dhnam/puni-kill-line)
     (define-key puni-mode-map (kbd "M-k") 'dhnam/puni-copy-line)
     (define-key puni-mode-map (kbd "M-(") 'puni-wrap-round))
