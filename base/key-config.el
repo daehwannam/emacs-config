@@ -50,7 +50,8 @@
 
   (progn
     ;; special keys defined by "xmodmap" and "xcape" from "~/.emacs.d/exwm/load-key-config.sh"
-    (defconst dhnam/xcape-left-alt "₢"))
+    (defconst dhnam/xcape-left-alt (or (dhnam/machine-config-get-first 'xcape-left-alt)
+                                       "₢")))
 
   (progn
     ;; <CruzeiroSign> = ₫
