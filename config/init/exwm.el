@@ -594,8 +594,8 @@
                   ;; ([?\C-\M-0] . [?\M-q?\C-\M-f])
 
                   ;; copy links
-                  ([?\C-i] . [\q \u])
-                  ([?\M-i] . [\q \U])
+                  ([?\C-i] . [\T \u])
+                  ([?\M-i] . [\T \U])
 
                   ;; select/copy text
                   ([?\M-s] . [?\M-q?s])
