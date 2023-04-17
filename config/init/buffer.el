@@ -89,13 +89,18 @@
      ("q" nil "quit"))
    )
 
-  (defhydra hydra-buffer-move (global-map "C-c m")
-    "buffer-move"
-    ("q" nil "quit")
-    ("j" buf-move-left)
-    ("l" buf-move-right)
-    ("i" buf-move-up)
-    ("k" buf-move-down)))
+  (progn
+    (defhydra hydra-buffer-move (global-map "C-c m")
+      "buffer-move"
+      ("q" nil "quit")
+      ("j" buf-move-left)
+      ("l" buf-move-right)
+      ("i" buf-move-up)
+      ("k" buf-move-down))
+
+    (progn
+      ;; Disable any hint message
+      (hydra-set-property 'hydra-buffer-move :verbosity 0))))
 
 (comment
   (key-chord-define-global "kk" 'kill-buffer)
