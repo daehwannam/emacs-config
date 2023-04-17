@@ -80,7 +80,7 @@
 
         (installable-packages
          ;; (base (vlf magit key-chord modalka evil avy hydra dash counsel multi-term))
-         (base (vlf magit dash multi-term counsel async wgrep which-key paredit poporg ctrlf expand-region company vterm clipetty el-patch avy puni))
+         (base (vlf magit dash multi-term counsel async wgrep which-key paredit poporg ctrlf expand-region company vterm clipetty el-patch avy puni smartparens))
          (documentation (org-contrib valign org-fragtog auctex latex-preview-pane pdf-tools define-word pdfgrep biblio))
          (vbox (vlf magit key-chord modalka evil dash  multi-term auctex latex-preview-pane material-theme elpy flycheck py-autopep8 blacken sphinx-doc workgroups2 perspective counsel iedit wgrep which-key counsel-projectile persp-projectile paredit markdown-mode tuareg ein hy-mode)) ; removed: highlight
          ;; (engels (vlf magit key-chord modalka evil dash elpy flycheck py-autopep8 blacken wgrep which-key projectile flx-ido))
