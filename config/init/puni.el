@@ -32,15 +32,23 @@
     (define-key global-map (kbd "M-i") 'puni-syntactic-backward-punct)
     (define-key global-map (kbd "M-o") 'puni-syntactic-forward-punct))
 
-  (with-eval-after-load 'comint
-    (let ((map comint-mode-map))
-      (comment
-        (define-key map (kbd "C-M-f") 'puni-syntactic-forward-punct)
-        (define-key map (kbd "C-M-b") 'puni-syntactic-backward-punct))
-      (comment
-        (define-key map (kbd "C-M-f") 'sp-forward-sexp)
-        (define-key map (kbd "C-M-b") 'sp-backward-sexp))
-      (comment (define-key map (kbd "C-M-k") 'sp-kill-sexp))
+  (comment
+    (with-eval-after-load 'comint
+      (let ((map comint-mode-map))
+        (comment
+          (define-key map (kbd "C-M-f") 'puni-syntactic-forward-punct)
+          (define-key map (kbd "C-M-b") 'puni-syntactic-backward-punct))
+        (comment
+          (define-key map (kbd "C-M-f") 'sp-forward-sexp)
+          (define-key map (kbd "C-M-b") 'sp-backward-sexp))
+        (comment (define-key map (kbd "C-M-k") 'sp-kill-sexp))
+        (progn
+          (define-key map (kbd "C-M-f") 'puni-forward-sexp)
+          (define-key map (kbd "C-M-b") 'puni-backward-sexp))
+        (define-key map (kbd "C-M-k") 'dhnam/puni-kill-sexp))))
+
+  (progn
+    (let ((map global-map))
       (progn
         (define-key map (kbd "C-M-f") 'puni-forward-sexp)
         (define-key map (kbd "C-M-b") 'puni-backward-sexp))
