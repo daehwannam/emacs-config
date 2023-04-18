@@ -52,6 +52,7 @@
       (progn
         (define-key map (kbd "C-M-f") 'puni-forward-sexp)
         (define-key map (kbd "C-M-b") 'puni-backward-sexp))
-      (define-key map (kbd "C-M-k") 'dhnam/puni-kill-sexp))))
+      (define-key map (kbd "C-M-k") 'dhnam/puni-kill-sexp)
+      (define-key map (kbd "M-(") 'puni-wrap-round))))
 
 (provide 'init-puni)

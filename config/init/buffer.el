@@ -78,7 +78,7 @@
       (global-set-key (kbd "C-x M-n") #'hydra-prev-next-buffer/next-buffer))))
 
 (progn
-  (require 'buffer-move)
+  (require 'buffer-move nil t)
   (comment
    (defhydra hydra-buffer-move ()
      "buffer-move"

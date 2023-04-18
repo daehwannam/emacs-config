@@ -107,10 +107,14 @@
     ;; if you want auto-activation (see below for details), include:
     (conda-env-autoactivate-mode t)))
 
-(progn
+(comment
   (require 'dhnam-make-repeatable-command)
   (define-key python-mode-map (kbd "C-c >") (make-repeatable-command 'python-indent-shift-right))
   (define-key python-mode-map (kbd "C-c <") (make-repeatable-command 'python-indent-shift-left)))
+
+(progn
+  (define-key python-mode-map (kbd "C-c <") 'dhnam/python-indent/python-indent-shift-left)
+  (define-key python-mode-map (kbd "C-c >") 'dhnam/python-indent/python-indent-shift-right))
 
 (when (package-installed-p 'yaml-mode)
   ;; https://github.com/yoshiki/yaml-mode

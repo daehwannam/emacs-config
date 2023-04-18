@@ -144,8 +144,14 @@
       (progn
         (comment (key-chord-define-global "js" 'consult-line))
         (key-chord-define-global "jt" 'consult-line-multi)
-        ;; (key-chord-define-global "g;" 'consult-grep) ; use C-u prefix to set directory
-        (key-chord-define-global "g;" 'consult-grep-on-default-directory) ; use C-u prefix to set directory
+
+        ;; use C-u prefix to set directory for git-related commands
+        (comment
+          ;; search over the current git project
+          (key-chord-define-global "g;" 'consult-grep))
+        (progn
+          ;; search over the current directory
+          (key-chord-define-global "g;" 'dhnam/consult-grep-on-default-directory))
         (key-chord-define-global "gj" 'consult-git-grep)))
     :after (vertico orderless)))
 
