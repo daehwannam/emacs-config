@@ -32,29 +32,35 @@
       (define-key comint-mode-map (kbd "C-c C-n") (make-repeatable-command 'comint-next-prompt)))))
 
 (with-eval-after-load 'compile
-  (comment
-    (if (and nil (package-installed-p 'hydra))
-        (progn
-	      (defhydra dhnam/hydra-compilation-previous-next-error ()
-	        "compilation previous/next error"
-	        ("p" compilation-previous-error)
-	        ("n" compilation-next-error))
-	      (define-key compilation-shell-minor-mode-map
-	        (kbd "C-c M-p") #'dhnam/hydra-compilation-previous-next-error/compilation-previous-error)
-	      (define-key compilation-shell-minor-mode-map
-	        (kbd "C-c M-n") #'dhnam/hydra-compilation-previous-next-error/compilation-next-error))
-      (progn
-        (define-key compilation-shell-minor-mode-map (kbd "C-c M-p")
-	      (make-repeatable-command 'compilation-previous-error))
-        (define-key compilation-shell-minor-mode-map (kbd "C-c M-n")
-	      (make-repeatable-command 'compilation-next-error)))))
+  (add-hook 'comint-mode-hook 'compilation-shell-minor-mode)
+  (define-key compilation-shell-minor-mode-map (kbd "C-M-n") nil)
+  (define-key compilation-shell-minor-mode-map (kbd "C-M-p") nil))
 
-  (define-key compilation-shell-minor-mode-map (kbd "C-c ]")
-    (make-repeatable-command 'compilation-next-error))
-  (define-key compilation-shell-minor-mode-map (kbd "C-c [")
-    (make-repeatable-command 'compilation-previous-error))
-  (define-key compilation-shell-minor-mode-map (kbd "C-M-n") 'forward-list)
-  (define-key compilation-shell-minor-mode-map (kbd "C-M-p") 'backward-list))
+(comment
+  (with-eval-after-load 'compile
+    (comment
+      (if (and nil (package-installed-p 'hydra))
+          (progn
+	        (defhydra dhnam/hydra-compilation-previous-next-error ()
+	          "compilation previous/next error"
+	          ("p" compilation-previous-error)
+	          ("n" compilation-next-error))
+	        (define-key compilation-shell-minor-mode-map
+	          (kbd "C-c M-p") #'dhnam/hydra-compilation-previous-next-error/compilation-previous-error)
+	        (define-key compilation-shell-minor-mode-map
+	          (kbd "C-c M-n") #'dhnam/hydra-compilation-previous-next-error/compilation-next-error))
+        (progn
+          (define-key compilation-shell-minor-mode-map (kbd "C-c M-p")
+	        (make-repeatable-command 'compilation-previous-error))
+          (define-key compilation-shell-minor-mode-map (kbd "C-c M-n")
+	        (make-repeatable-command 'compilation-next-error)))))
+
+    (define-key compilation-shell-minor-mode-map (kbd "C-c ]")
+      (make-repeatable-command 'compilation-next-error))
+    (define-key compilation-shell-minor-mode-map (kbd "C-c [")
+      (make-repeatable-command 'compilation-previous-error))
+    (define-key compilation-shell-minor-mode-map (kbd "C-M-n") 'forward-list)
+    (define-key compilation-shell-minor-mode-map (kbd "C-M-p") 'backward-list)))
 
 (comment
   (defun dhnam/comint-previous-input-or-compilation-previous-error (arg)
