@@ -31,7 +31,8 @@
     (add-hook 'python-mode-hook 'highlight-indent-guides-mode)))
 
 (with-eval-after-load 'python
-  (define-key python-mode-map (kbd "C-c M-w") 'dhnam/py-repl-kill-ring-save-without-empty-lines))
+  (define-key python-mode-map (kbd "C-c M-w") 'dhnam/py-repl-kill-ring-save-without-empty-lines)
+  (define-key python-mode-map (kbd "C-c p") 'dhnam/copy-full-package-name))
 
 (when (fboundp 'sphinx-doc-mode)
   ;; python docstring
@@ -81,6 +82,7 @@
     ;; e.g. "(env) user@computer:~/path/to/some(source)dir$"
     (require 'python)
 
+
     (defun dhnam/pdbtrace-shell-mode-hook ()
       (add-hook 'comint-output-filter-functions 'python-pdbtrack-comint-output-filter-function nil t))
 
@@ -105,10 +107,14 @@
     ;; if you want auto-activation (see below for details), include:
     (conda-env-autoactivate-mode t)))
 
-(progn
+(comment
   (require 'dhnam-make-repeatable-command)
   (define-key python-mode-map (kbd "C-c >") (make-repeatable-command 'python-indent-shift-right))
   (define-key python-mode-map (kbd "C-c <") (make-repeatable-command 'python-indent-shift-left)))
+
+(progn
+  (define-key python-mode-map (kbd "C-c <") 'dhnam/python-indent/python-indent-shift-left)
+  (define-key python-mode-map (kbd "C-c >") 'dhnam/python-indent/python-indent-shift-right))
 
 (when (package-installed-p 'yaml-mode)
   ;; https://github.com/yoshiki/yaml-mode

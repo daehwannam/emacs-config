@@ -80,7 +80,7 @@
 
         (installable-packages
          ;; (base (vlf magit key-chord modalka evil avy hydra dash counsel multi-term))
-         (base (vlf magit dash multi-term counsel async wgrep which-key paredit poporg ctrlf expand-region company vterm clipetty el-patch avy puni))
+         (base (vlf magit dash multi-term counsel async wgrep which-key paredit poporg ctrlf expand-region company vterm clipetty el-patch avy puni buffer-move))
          (org-setup (org-contrib valign org-fragtog ob-async))
          (documentation (auctex latex-preview-pane pdf-tools define-word pdfgrep biblio))
          (programming (realgud markdown-mode sphinx-doc ein hy-mode jsonnet-mode csv-mode lice))

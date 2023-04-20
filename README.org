@@ -26,8 +26,8 @@ By default, =~/.emacs.d/config/options.txt= includes only ~base~.
 
 *** Key-binding style (experimental)
 **** Key binding styles
-- ~fbnp~: emacs's default key-binding style
-- ~ijkl~: my custom hydra bindings for cursor movements
+# - ~fbnp~: emacs's default key-binding style
+# - ~ijkl~: my custom hydra bindings for cursor movements
 - ~boon~: https://github.com/jyp/boon
 - ~ergoemacs~: https://github.com/ergoemacs/ergoemacs-mode
 - ~evil~: https://github.com/emacs-evil/evil
@@ -35,7 +35,7 @@ By default, =~/.emacs.d/config/options.txt= includes only ~base~.
 **** Set a key-binding style
 #+begin_src sh
 STYLE="fbnp"  # or "ergoemacs"
-echo $STYLE > ~/.emacs.d/key-binding-style.txt
+echo $STYLE > ~/.emacs.d/key-binding-style.el
 #+end_src
 
 ** EXWM
