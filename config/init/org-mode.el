@@ -382,6 +382,10 @@ When nil, use the default face background."
 
       (let ((browse-url-browser-function 'dhnam/eww-new))
         (org-open-at-point arg)))
-    (define-key org-mode-map (kbd "C-C O") 'dhnam/org-open-at-point)))
+    (define-key org-mode-map (kbd "C-C O") 'dhnam/org-open-at-point))
+
+  (progn
+    ;; https://github.com/astahlman/ob-async
+    (require 'ob-async nil t)))
 
 (provide 'init-org-mode)
