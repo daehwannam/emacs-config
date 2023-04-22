@@ -1,6 +1,7 @@
 
 (when (package-installed-p 'eglot)
   (require 'eglot)
+
   (progn
     (add-hook 'python-mode-hook 'eglot-ensure)
     (add-hook 'python-mode-hook 'company-mode))
@@ -19,7 +20,9 @@
 					                      ;; :documentHighlightProvider
 					                      :hoverProvider
 					                      ;; :signatureHelpProvider
-					                      )))))
+					                      ))))
+
+  (define-key eglot-mode-map (kbd "C-c R") 'eglot-reconnect))
 
 (comment
  ;; eldoc-doc-buffer: C-h .
