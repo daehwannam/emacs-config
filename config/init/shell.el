@@ -1,9 +1,12 @@
 
 (require 'dhnam-make-repeatable-command)
 
-(defun dhnam/shell-new-instance ()
-  (interactive)
-  (shell (get-buffer-create (generate-new-buffer-name "*shell*"))))
+(defun dhnam/shell-new-instance (arg)
+  (interactive "P")
+  (let ((default-directory (if arg
+                               (read-directory-name "Directory: ")
+                             default-directory)))
+    (shell (get-buffer-create (generate-new-buffer-name "*shell*")))))
 
 (key-chord-define-global "o1" 'dhnam/shell-new-instance)
 

@@ -143,21 +143,24 @@ The term buffer is named based on `name' "
      ("C-c C-k" . vtsl/deactivate)
      ("C-c C-j" . vtsl/activate))
 
-    :commands (dhnam/vterm-new-instance dhnam/vterm-new-instance-without-vtsl)
+    :commands (dhnam/vterm-new-instance)
     :init
     (progn
-      (key-chord-define-global "o2" 'dhnam/vterm-new-instance)
-      (comment (key-chord-define-global "o3" 'dhnam/vterm-new-instance-without-vtsl)))
+      (key-chord-define-global "o2" 'dhnam/vterm-new-instance))
 
     :config
     (progn
       ;; https://github.com/akermu/emacs-libvterm/issues/352#issuecomment-647913789
       (setq vterm-max-scrollback 100000))
 
+
     (progn
-      (defun dhnam/vterm-new-instance ()
-        (interactive)
-        (vterm t))
+      (defun dhnam/vterm-new-instance (arg)
+        (interactive "P")
+        (let ((default-directory (if arg
+                                     (read-directory-name "Directory: ")
+                                   default-directory)))
+          (vterm t)))
 
       (progn
         (require 'vterm-seamless)
@@ -171,12 +174,7 @@ The term buffer is named based on `name' "
               buf))
 
           (advice-add 'dhnam/vterm-new-instance
-                      :around 'dhnam/vterm-new-instance-advice))
-
-        (comment
-          (defun dhnam/vterm-new-instance-without-vtsl ()
-            (interactive)
-            (vterm t))))
+                      :around 'dhnam/vterm-new-instance-advice)))
 
       ;; Interactive functions
       (defun dhnam/vterm-insert-tty-fix-template ()
