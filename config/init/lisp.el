@@ -150,8 +150,7 @@
   (progn
     ;; electric-pair-mode
     (add-hook 'prog-mode-hook
-              (dhnam/hook-except-modes 'electric-pair-local-mode '(emacs-lisp-mode lisp-mode)))
-    )
+              (dhnam/hook-except-modes 'electric-pair-local-mode '(emacs-lisp-mode lisp-mode))))
   
   (comment
     (when (package-installed-p 'highlight-parentheses)

@@ -14,6 +14,10 @@
   ;; https://tex.stackexchange.com/a/967
   (add-hook 'LaTeX-mode-hook #'turn-on-flyspell))
 
+(progn
+  ;; electric-pair-mode
+  (add-hook 'LaTeX-mode-hook 'electric-pair-local-mode))
+
 (comment
   ;; Ignore crossref
   ;;

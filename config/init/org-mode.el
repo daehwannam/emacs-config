@@ -15,6 +15,7 @@
   (require 'org-loaddefs)  ; No org-loaddefs.el file could be found from where org.el is loaded.
 
   (require 'dhnam-directory-files-recursively)
+  (require 'dhnam-org-mode)
 
   (when (package-installed-p 'valign)
     ;; Fix for table alignment with CJK characters
@@ -292,8 +293,15 @@ Add this function to `org-mode-hook'."
       (define-key org-mode-map (kbd "C-c C-b") (make-repeatable-command 'org-backward-heading-same-level))))
 
   (when (fboundp 'org-fragtog-mode)
-    (add-hook 'org-mode-hook (lambda () (org-latex-preview '(16)))) ; preview all formulas in the buffer
+    ;; https://github.com/io12/org-fragtog
+    ;; `org-fragtog-mode' automatically toggles a preview for each latex formula
+    (add-hook 'org-mode-hook (lambda () (org-latex-preview '(16))))
     (add-hook 'org-mode-hook 'org-fragtog-mode))
+
+  (comment
+    ;; https://github.com/gaoDean/org-imgtog
+    ;; `org-imgtog' automatically toggles a preview for each image
+    )
 
   (defun dhnam/org-format-latex-change-scale (scale)
     (interactive "nScale: " )
