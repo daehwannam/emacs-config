@@ -31,6 +31,8 @@
     (add-hook 'python-mode-hook 'highlight-indent-guides-mode)))
 
 (with-eval-after-load 'python
+  (define-key python-mode-map (kbd "C-c C-p") 'dhnam/run-python)
+  (define-key python-mode-map (kbd "C-c C-c") 'dhnam/python-shell-send-region-or-buffer)
   (define-key python-mode-map (kbd "C-c M-w") 'dhnam/py-repl-kill-ring-save-without-empty-lines)
   (define-key python-mode-map (kbd "C-c p") 'dhnam/copy-full-package-name))
 
@@ -155,5 +157,6 @@
     (when (package-installed-p 'company-anaconda)
       (eval-after-load 'company
         '(add-to-list 'company-backends 'company-anaconda)))))
+
 
 (provide 'init-python)

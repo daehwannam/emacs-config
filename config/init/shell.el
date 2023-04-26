@@ -1,21 +1,9 @@
 
 (require 'dhnam-make-repeatable-command)
 
-(defun dhnam/shell-new-instance (arg)
-  (interactive "P")
-  (let ((default-directory (if arg
-                               (read-directory-name "Directory: ")
-                             default-directory)))
-    (shell (get-buffer-create (generate-new-buffer-name "*shell*")))))
+(require 'dhnam-shell)
 
 (key-chord-define-global "o1" 'dhnam/shell-new-instance)
-
-(defun dhnam/shell-new-instance-other-window (count)
-  (interactive "p")
-  (split-window-sensibly)
-  (other-window count)
-  (dhnam/shell-new-instance))
-
 (comment (key-chord-define-global "o3" 'dhnam/shell-new-instance-other-window))
 
 ;; http://stackoverflow.com/questions/2472273/how-do-i-run-a-sudo-command-in-emacs
