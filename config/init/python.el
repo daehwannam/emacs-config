@@ -34,6 +34,7 @@
   (define-key python-mode-map (kbd "C-c C-p") 'dhnam/run-python)
   (define-key python-mode-map (kbd "C-c C-c") 'dhnam/python-shell-send-region-or-buffer)
   (define-key python-mode-map (kbd "C-c M-w") 'dhnam/py-repl-kill-ring-save-without-empty-lines)
+  (define-key python-mode-map (kbd "C-c M-W") 'dhnam/python-copy-code-from-docstring)
   (define-key python-mode-map (kbd "C-c p") 'dhnam/copy-full-package-name))
 
 (when (fboundp 'sphinx-doc-mode)
