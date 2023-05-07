@@ -21,6 +21,7 @@
   :bind
   (:map vterm-mode-map
    ("C-_" . vterm-undo)
+   ("C-y" . dhnam/vterm-yank)
 
    ;; :map vterm-copy-mode-map
    ;; ("C-c C-k" . vterm-copy-mode-done)
