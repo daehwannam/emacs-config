@@ -5,7 +5,7 @@
   ;; https://github.com/abo-abo/hydra/issues/79#issuecomment-83056585
 
   "Winner"
-  ("j" (progn
+  ("k" (progn
          (winner-undo)
          (setq this-command 'winner-undo))
    "undo")
