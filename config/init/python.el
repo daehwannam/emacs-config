@@ -35,12 +35,21 @@
   (define-key python-mode-map (kbd "C-c C-c") 'dhnam/python-shell-send-region-or-buffer)
   (define-key python-mode-map (kbd "C-c M-w") 'dhnam/py-repl-kill-ring-save-without-empty-lines)
   (define-key python-mode-map (kbd "C-c M-W") 'dhnam/python-copy-code-from-docstring)
-  (define-key python-mode-map (kbd "C-c p") 'dhnam/copy-full-package-name))
+  (define-key python-mode-map (kbd "C-c p") 'dhnam/copy-full-package-name)
+  (define-key python-mode-map (kbd "C-c f") 'dhnam/run-python-module-function))
+
+(progn
+  ;; `comment-dwim' update for python
+  ;; https://stackoverflow.com/a/27073434
+  ;;
+  ;; At least two space character between code and #
+  (add-hook 'python-mode-hook
+            (lambda () (set (make-local-variable 'comment-inline-offset) 2))))
 
 (when (fboundp 'sphinx-doc-mode)
   ;; python docstring
   ;; https://github.com/naiquevin/sphinx-doc.el
-  ;; 
+  ;;
   ;; The command is mapped to "C-c M-d"
   (add-hook 'python-mode-hook (lambda ()
 				                (require 'sphinx-doc)
@@ -74,6 +83,13 @@
   (add-hook 'python-mode-hook 'prettify-symbols-mode)
   (add-hook 'python-mode-hook 'dhnam/init-python-prettify-symbols-alist)
   )
+
+(progn
+  ;; config for `dhnam/elpy-occur-definitions'
+  ;;
+  ;; extended regex
+  ;; - "with block:" is added
+  (defvar dhnam/python-definition-regex "^\s*\\(\\(\\(async\s\\|\\)def\\|class\\)\s\\)\\|with block:"))
 
 (if (package-installed-p 'realgud)
     (require 'dhnam-realgud)
