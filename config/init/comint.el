@@ -1,4 +1,5 @@
 (require 'comint)
+(require 'dhnam-comint)
 
 (with-eval-after-load 'compile
   (add-hook 'comint-mode-hook 'compilation-shell-minor-mode)
@@ -10,5 +11,8 @@
   (progn
     (define-key compilation-shell-minor-mode-map (kbd "C-M-n") nil)
     (define-key compilation-shell-minor-mode-map (kbd "C-M-p") nil)))
+
+(defun dhnam/after-comint-with-command ()
+  (local-set-key (kbd "C-c r") #'dhnam/comint-with-command-again))
 
 (provide 'init-comint)
