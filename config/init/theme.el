@@ -24,7 +24,14 @@
 
   (cond
    ((eq theme-style 'white)
-    (dhnam/load-and-set-current-theme 'leuven t))
+    (comment (dhnam/load-and-set-current-theme 'leuven t))
+    (progn
+      (dhnam/load-and-set-current-theme 'whiteboard t)
+      (custom-set-faces
+       ;; mode-line config
+       '(mode-line ((t (:background "gray20" :foreground "gray80" :box nil))))
+       '(mode-line-inactive ((t (:background "gray10" :foreground "gray50" :box nil :weight light))))
+       '(mode-line-buffer-id ((t (:foreground "white")))))))
    (t ;; (eq theme-style 'dark)
     (comment (dhnam/load-and-set-current-theme 'my-doom-material-dark t))
     (comment (dhnam/load-and-set-current-theme 'tsdh-dark t))
