@@ -38,4 +38,11 @@
 
     (switch-to-buffer-other-window buf)))
 
+
+(require 'dhnam-miscellaneous)
+
+(define-key help-mode-map (kbd "o") 'dhnam/push-button-same-window)
+(define-key xref--xref-buffer-mode-map (kbd "o") 'dhnam/xref-goto-xref-same-window)
+
+
 (provide 'init-help)

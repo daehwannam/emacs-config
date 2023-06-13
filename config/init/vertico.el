@@ -153,6 +153,9 @@
           ;; search over the current directory
           (key-chord-define-global "g;" 'dhnam/consult-grep-on-default-directory))
         (key-chord-define-global "gj" 'consult-git-grep)))
+    :config
+    (progn
+      (define-key minibuffer-local-map (kbd "M-m") 'dhnam/minibuffer-toggle-symbol-boundaries))
     :after (vertico orderless)))
 
 (comment

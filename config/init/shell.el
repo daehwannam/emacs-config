@@ -30,31 +30,6 @@
   (add-to-list 'display-buffer-alist
 		       '("\\*shell\\*" . (display-buffer-same-window))))
 
-(defun dhnam/shell-with-command (command)
-  "Run shell with COMMAND. It makes a temporary script to run the command."
-  (interactive
-   (list
-    (read-shell-command (if shell-command-prompt-show-cwd
-                            (format-message "Shell command in `%s': "
-                                            (abbreviate-file-name
-                                             default-directory))
-                          "Shell command: ")
-                        nil nil
-			            (let ((filename
-			                   (cond
-				                (buffer-file-name)
-				                ((eq major-mode 'dired-mode)
-				                 (dired-get-filename nil t)))))
-			              (and filename (file-relative-name filename))))))
-
-  (let ((script-path (dhnam/string-trim (shell-command-to-string "mktemp /tmp/cmd-XXXXX"))))
-    (with-temp-file script-path
-      (dhnam/insert-line "#!/usr/bin/sh")
-      (dhnam/insert-line (format "trap 'rm -f %s' EXIT" script-path))
-      (dhnam/insert-line command))
-    (shell-command (format "chmod +x %s" script-path))
-    (let ((explicit-shell-file-name script-path))
-      (dhnam/shell-new-instance))))
 
 (comment
   (progn
