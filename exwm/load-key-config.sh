@@ -22,7 +22,7 @@ if [ -f $OPTION_PATH ]; then
         # xcape -t 200 -e 'Control_L=CruzeiroSign'
         xcape -t 200 -e 'Alt_L=CruzeiroSign'
         # :  # pass
-    elif [ $OPTION_VALUE = "something-other" ]; then
+    else
         # Left Alt = ₢
         xmodmap  -e 'keycode 254 = CruzeiroSign'
         # xcape -t 200 -e 'Control_L=CruzeiroSign'

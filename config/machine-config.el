@@ -75,8 +75,7 @@
         (languagetool-dir-path
          (descartes "~/program/LanguageTool/")
          (ubuntu-laptop "~/program/LanguageTool/"))
-        (xcape-left-alt
-         (ubuntu-laptop "<XF86WWAN>"))
+        ;; (xcape-left-alt (ubuntu-laptop "<XF86WWAN>"))
 
         (installable-packages
          ;; (base (vlf magit key-chord modalka evil avy hydra dash counsel multi-term))
