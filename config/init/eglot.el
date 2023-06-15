@@ -6,12 +6,24 @@
     (add-hook 'python-mode-hook 'eglot-ensure)
     (add-hook 'python-mode-hook 'company-mode))
 
-  (progn
+  (unless (string= (shell-command-to-string "command -v digestif") "")
+    ;; Digestif setup (https://github.com/astoff/digestif)
+    ;; https://github.com/astoff/digestif#luatex-with-the-self-installing-script-
+    ;;
+    ;; #+begin_src sh
+    ;; LOCAL_BIN=~/.local/bin/  # Assume that $LOCAL_BIN is in $PATH
+    ;; mkdir -p $LOCAL_BIN
+    ;; cd $LOCAL_BIN
+    ;; wget https://raw.githubusercontent.com/astoff/digestif/master/scripts/digestif
+    ;; chmod +x digestif
+    ;; #+end_src
+    ;;
+    ;; The first run of digestif makes "~/.digestif".
+
     (add-hook 'LaTeX-mode-hook 'eglot-ensure)
     (add-hook 'LaTeX-mode-hook 'company-mode)
-    ;; (add-hook 'tex-mode-hook 'eglot-ensure)
-    ;; (add-hook 'tex-mode-hook 'company-mode)
-    )
+    (comment (add-hook 'tex-mode-hook 'eglot-ensure))
+    (comment (add-hook 'tex-mode-hook 'company-mode)))
 
   (progn
     ;; https://github.com/joaotavora/eglot/issues/607

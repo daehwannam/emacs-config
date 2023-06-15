@@ -372,11 +372,7 @@ When nil, use the default face background."
       (insert "\\\(\\\)")
       (backward-char 2))
 
-    (key-chord-define org-mode-map "()" 'dhnam/insert-inline-math)
-    (add-hook
-     'LaTeX-mode-hook
-     (lambda ()
-       (local-set-key (kbd "()") 'dhnam/insert-inline-math))))
+    (key-chord-define org-mode-map "()" 'dhnam/insert-inline-math))
 
   (progn
     ;; hide chracters to emphasize text
