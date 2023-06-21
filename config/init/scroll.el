@@ -15,12 +15,13 @@
   (interactive)                    
   (scroll-down (dhnam/window-half-height)))
 
-(global-set-key [next] 'dhnam/scroll-up-half)
-(global-set-key [prior] 'dhnam/scroll-down-half)
+(comment
+  (global-set-key [next] 'dhnam/scroll-up-half)
+  (global-set-key [prior] 'dhnam/scroll-down-half))
 
 ;;; scroll small
 (defun dhnam/window-small-height ()
-                                        ;  (max 1 (/ (1- (window-height (selected-window))) 10)))
+  ;;  (max 1 (/ (1- (window-height (selected-window))) 10)))
   3)
 
 (defun dhnam/scroll-up-small ()

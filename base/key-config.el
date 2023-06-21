@@ -25,6 +25,15 @@
     (global-set-key (kbd "M-N") 'forward-sexp))
 
   (progn
+    ;; M-i is originall mapped to `tab-to-tab-stop'
+    ;; M-o is originall mapped to `facemenu-keymap'
+    (global-set-key (kbd "M-i") 'dhnam/scroll-down-small)
+    (global-set-key (kbd "M-o") 'dhnam/scroll-up-small)
+
+    (global-set-key (kbd "M-I") 'dhnam/scroll-down-half)
+    (global-set-key (kbd "M-O") 'dhnam/scroll-up-half))
+
+  (progn
     ;; use "qw" as prefix key instead of "C-x"
     (fset 'ctl-x-map ctl-x-map)
     (key-chord-define-global "qw" 'ctl-x-map)
