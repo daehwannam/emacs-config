@@ -13,6 +13,7 @@
 !/update.sh
 !/LICENSE
 !/bug-fix/
+!/clear.sh
 
 # ignore some patterns
 # emacs temporary files
