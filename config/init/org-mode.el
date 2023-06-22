@@ -366,7 +366,7 @@ When nil, use the default face background."
 
   (key-chord-define org-mode-map "wl" 'dhnam/org-kill-link-to-clipboard)
 
-  (progn
+  (comment
     (defun dhnam/insert-inline-math ()
       (interactive)
       (insert "\\\(\\\)")

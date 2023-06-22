@@ -8,7 +8,7 @@
 
   (mapc (lambda (hook)
           (add-hook hook 'electric-pair-local-mode))
-        '(inferior-python-mode-hook LaTeX-mode-hook))
+        '(inferior-python-mode-hook LaTeX-mode-hook org-mode-hook))
 
   (mapc (lambda (hook)
           (add-hook hook 'dhnam/python-add-electric-pairs))
