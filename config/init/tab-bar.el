@@ -9,12 +9,29 @@
     (tab-bar-move-tab (- (or arg 1))))
 
   (progn
+    (defhydra dhnam/tab-bar-navigation ()
+      "Tab-Bar navigation"
+
+      ("o" tab-next)
+      ("i" tab-previous)
+      ;; ("RET" nil "quit")
+      ;; ("q" nil "quit")
+      ;; ("SPC" nil "quit")
+      )
+
+    (hydra-set-property 'dhnam/tab-bar-navigation :verbosity 0))
+
+  (progn
     (require 'dhnam-make-repeatable-command)
     ;; (dhnam/define-self-insert-commands-unless-bound tab-prefix-map "ii")
     (define-key tab-prefix-map "8" 'tab-new)
     (define-key tab-prefix-map "9" 'tab-close-other)
-    (define-key tab-prefix-map "o" (make-repeatable-command 'tab-next))
-    (define-key tab-prefix-map "O" (make-repeatable-command 'tab-previous))
+    (comment
+      (define-key tab-prefix-map "o" (make-repeatable-command 'tab-next))
+      (define-key tab-prefix-map "O" (make-repeatable-command 'tab-previous)))
+    (progn
+      (define-key tab-prefix-map "o" 'dhnam/tab-bar-navigation/tab-next)
+      (define-key tab-prefix-map "O" 'dhnam/tab-bar-navigation/tab-previous))
     (define-key tab-prefix-map "m" (make-repeatable-command 'tab-bar-move-tab))
     (define-key tab-prefix-map "M" (make-repeatable-command 'dhnam/tab-bar-move-tab-reverse))
     (define-key tab-prefix-map "a" 'self-insert-command)

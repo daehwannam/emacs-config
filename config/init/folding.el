@@ -1,9 +1,9 @@
 ;; HideShow mode
 (add-hook 'prog-mode-hook #'hs-minor-mode)
-(global-set-key (kbd "C-c i h") #'hs-hide-all)
-(global-set-key (kbd "C-c i u") #'hs-show-all)
-(global-set-key (kbd "C-c i i") #'hs-toggle-hiding)
-(global-set-key (kbd "C-c i j") #'hs-hide-level)
+(global-set-key (kbd "C-c h h") #'hs-hide-all)
+(global-set-key (kbd "C-c h u") #'hs-show-all)
+(global-set-key (kbd "C-c h i") #'hs-toggle-hiding)
+(global-set-key (kbd "C-c h j") #'hs-hide-level)
 
 
 ;; (hs-minor-mode 1) ;; enable current buffer only...

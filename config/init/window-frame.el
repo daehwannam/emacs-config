@@ -30,15 +30,37 @@
   ;; (load "make-repeatable-command") ;(load "~/.emacs.d/package/make-repeatable-command.el")
   (require 'dhnam-make-repeatable-command)
   (progn
-    (progn
+    (comment
       (global-set-key (kbd "C-x o") (make-repeatable-command 'other-window))
       (global-set-key (kbd "C-x O") (make-repeatable-command 'dhnam/other-window-backwards))
       (global-set-key (kbd "C-x 5 o") (make-repeatable-command 'other-frame))
       (global-set-key (kbd "C-x 5 O") (make-repeatable-command 'dhnam/other-frame-backwards))
 
-      (global-set-key (kbd "C-x ㅐ") (make-repeatable-command 'other-window))
+      (global-set-key (kbd "C-x ㅐ") (make-repeatable-command 'other-window)))
 
+    (progn
       (global-set-key (kbd "C-x 9") 'delete-other-windows))
+
+    (progn
+      (defhydra dhnam/window-navigation ()
+        "Window navigation"
+
+        ("o" other-window)
+        ("i" dhnam/other-window-backwards)
+        ;; ("RET" nil "quit")
+        ;; ("q" nil "quit")
+        ;; ("SPC" nil "quit")
+        )
+
+      (hydra-set-property 'dhnam/window-navigation :verbosity 0)
+
+      (global-set-key (kbd "C-x o") 'dhnam/window-navigation/other-window)
+      ;; "C-x i" is originally mapped to `insert-file'
+      (global-set-key (kbd "C-x i") 'dhnam/window-navigation/dhnam/other-window-backwards)
+      (global-set-key (kbd "C-x I") 'insert-file)
+
+      (global-set-key (kbd "C-x ㅐ") 'dhnam/window-navigation/other-window)
+      (global-set-key (kbd "C-x ㅑ") 'dhnam/window-navigation/dhnam/other-window-backwards))
 
     (comment
       (unless (and (boundp 'exwm-split-defined) exwm-split-defined)
@@ -52,13 +74,33 @@
       (global-set-key (kbd "C-x 8") 'split-window-below)
       (global-set-key (kbd "C-x 7") 'split-window-right))
 
-    (progn
+    (comment
       ;; other-frame key setting
       (global-set-key (kbd "C-c o") (make-repeatable-command 'other-frame))
       (global-set-key (kbd "C-c O") (make-repeatable-command 'dhnam/other-frame-backwards))
 
-      (global-set-key (kbd "C-c ㅐ") (make-repeatable-command 'other-frame))
+      (global-set-key (kbd "C-c ㅐ") (make-repeatable-command 'other-frame)))
 
+    (progn
+      (defhydra dhnam/frame-navigation ()
+        "Frame navigation"
+
+        ("o" other-frame)
+        ("i" dhnam/other-frame-backwards)
+        ;; ("RET" nil "quit")
+        ;; ("q" nil "quit")
+        ;; ("SPC" nil "quit")
+        )
+
+      (hydra-set-property 'dhnam/frame-navigation :verbosity 0)
+
+      (global-set-key (kbd "C-c o") 'dhnam/frame-navigation/other-frame)
+      (global-set-key (kbd "C-c i") 'dhnam/frame-navigation/dhnam/other-frame-backwards)
+
+      (global-set-key (kbd "C-c ㅐ") 'dhnam/frame-navigation/other-frame)
+      (global-set-key (kbd "C-c ㅑ") 'dhnam/frame-navigation/dhnam/other-frame-backwards))
+
+    (progn
       ;; make-frame-command & delete-frame key setting
       (global-set-key (kbd "C-c 0") 'delete-frame)
       (global-set-key (kbd "C-c 1") 'delete-other-frames)
@@ -70,50 +112,50 @@
   (progn
     (comment
       (let ((map (make-sparse-keymap)))
-	(define-key map (kbd "o") (make-repeatable-command 'other-window))
-	(define-key map (kbd "O") (make-repeatable-command 'dhnam/other-window-backwards))
-	(define-key map (kbd "5 o") (make-repeatable-command 'other-frame))
-	(define-key map (kbd "5 O") (make-repeatable-command 'dhnam/other-frame-backwards))
+	    (define-key map (kbd "o") (make-repeatable-command 'other-window))
+	    (define-key map (kbd "O") (make-repeatable-command 'dhnam/other-window-backwards))
+	    (define-key map (kbd "5 o") (make-repeatable-command 'other-frame))
+	    (define-key map (kbd "5 O") (make-repeatable-command 'dhnam/other-frame-backwards))
 
-	(define-key map (kbd "ㅐ") (make-repeatable-command 'other-window))
+	    (define-key map (kbd "ㅐ") (make-repeatable-command 'other-window))
 
-	(define-key map (kbd "9") 'delete-other-windows)
-	(define-key map (kbd "8") 'split-window-below)
-	(define-key map (kbd "7") 'split-window-right)
+	    (define-key map (kbd "9") 'delete-other-windows)
+	    (define-key map (kbd "8") 'split-window-below)
+	    (define-key map (kbd "7") 'split-window-right)
 
-	(define-key map (kbd "0") 'delete-window)
+	    (define-key map (kbd "0") 'delete-window)
 
-	(defvar window-modification-prefix-map map
-	  "Keymap for window related commands."))
+	    (defvar window-modification-prefix-map map
+	      "Keymap for window related commands."))
       (fset 'window-modification-prefix-map window-modification-prefix-map)
       (key-chord-define-global "ff" 'window-modification-prefix-map))
 
     (comment
       (let ((map (make-sparse-keymap)))
-	;; other-frame key setting
-	(define-key map (kbd "o") (make-repeatable-command 'other-frame))
-	(define-key map (kbd "O") (make-repeatable-command 'dhnam/other-frame-backwards))
+	    ;; other-frame key setting
+	    (define-key map (kbd "o") (make-repeatable-command 'other-frame))
+	    (define-key map (kbd "O") (make-repeatable-command 'dhnam/other-frame-backwards))
 
-	(define-key map (kbd "ㅐ") (make-repeatable-command 'other-frame))
+	    (define-key map (kbd "ㅐ") (make-repeatable-command 'other-frame))
 
-	;; make-frame-command & delete-frame key setting
-	(define-key map (kbd "0") 'delete-frame)
-	(define-key map (kbd "1") 'delete-other-frames)
-	(define-key map (kbd "2") 'make-frame-command)
+	    ;; make-frame-command & delete-frame key setting
+	    (define-key map (kbd "0") 'delete-frame)
+	    (define-key map (kbd "1") 'delete-other-frames)
+	    (define-key map (kbd "2") 'make-frame-command)
 
-	(define-key map (kbd "9") 'delete-other-frames)
-	(define-key map (kbd "8") 'make-frame-command)
+	    (define-key map (kbd "9") 'delete-other-frames)
+	    (define-key map (kbd "8") 'make-frame-command)
 
-	(defvar frame-modification-prefix-map map
-	  "Keymap for frame related commands."))
+	    (defvar frame-modification-prefix-map map
+	      "Keymap for frame related commands."))
       (fset 'frame-modification-prefix-map frame-modification-prefix-map)
       (key-chord-define-global "rr" 'frame-modification-prefix-map)))
 
   (comment
-   (when (and (boundp 'dhnam/exwm-cmd-line-arg-passed) dhnam/exwm-cmd-line-arg-passed)
-     (global-set-key (kbd "C-c o") (make-repeatable-command 'dhnam/exwm-other-workspace-in-group))
-     (global-set-key (kbd "C-c O") (make-repeatable-command 'dhnam/exwm-other-workspace-in-group-backwards))
-     (global-set-key (kbd "C-c ㅐ") (make-repeatable-command 'dhnam/exwm-other-workspace-in-group))))
+    (when (and (boundp 'dhnam/exwm-cmd-line-arg-passed) dhnam/exwm-cmd-line-arg-passed)
+      (global-set-key (kbd "C-c o") (make-repeatable-command 'dhnam/exwm-other-workspace-in-group))
+      (global-set-key (kbd "C-c O") (make-repeatable-command 'dhnam/exwm-other-workspace-in-group-backwards))
+      (global-set-key (kbd "C-c ㅐ") (make-repeatable-command 'dhnam/exwm-other-workspace-in-group))))
 
   (progn
     ;; window size adjust
@@ -144,26 +186,26 @@
     (key-chord-define-global "jx" 'other-window)
     (key-chord-define-global "jc" 'dhnam/other-window-backwards))
   (comment
-   (key-chord-define-global "jf" 'other-window)
-   (key-chord-define-global "jd" 'dhnam/other-window-backwards))
+    (key-chord-define-global "jf" 'other-window)
+    (key-chord-define-global "jd" 'dhnam/other-window-backwards))
 
   (key-chord-define-global "k4" 'delete-frame)
   (key-chord-define-global "k1" 'delete-other-frames)
   (key-chord-define-global "k2" 'make-frame-command)
   (progn
-   (key-chord-define-global "kx" 'other-frame)
-   (key-chord-define-global "kc" 'dhnam/other-frame-backwards))
+    (key-chord-define-global "kx" 'other-frame)
+    (key-chord-define-global "kc" 'dhnam/other-frame-backwards))
   (comment
     (key-chord-define-global "kf" 'other-frame)
     (key-chord-define-global "kd" 'dhnam/other-frame-backwards)))
 
 (comment
- (global-unset-key (kbd "C-x 1"))
- (global-unset-key (kbd "C-x 2"))
- (global-unset-key (kbd "C-x 3"))
+  (global-unset-key (kbd "C-x 1"))
+  (global-unset-key (kbd "C-x 2"))
+  (global-unset-key (kbd "C-x 3"))
 
- (global-unset-key (kbd "C-c 1"))
- (global-unset-key (kbd "C-c 2")))
+  (global-unset-key (kbd "C-c 1"))
+  (global-unset-key (kbd "C-c 2")))
 
 ;; kill buffer and delete window
 (defun dhnam/kill-buffer-and-delete-window ()
@@ -179,7 +221,7 @@
   (kill-buffer)
   (delete-frame))
 
-;(global-set-key (kbd "C-c K") 'dhnam/kill-buffer-and-delete-frame)
+                                        ;(global-set-key (kbd "C-c K") 'dhnam/kill-buffer-and-delete-frame)
 
 ;; kill other window buffer
 (defun dhnam/kill-other-window-buffer ()
@@ -199,7 +241,7 @@
   (delete-window))
 
 (comment
- (global-set-key (kbd "C-x 9") 'dhnam/delete-other-window))
+  (global-set-key (kbd "C-x 9") 'dhnam/delete-other-window))
 
 ;; split windows below or right
 (defun dhnam/split-window-below-or-right-and-find-file (filename &optional wildcards)
@@ -239,8 +281,8 @@ give to the command you invoke, if it asks for an argument."
                            (read-extended-command))))
   (let* ((function (and (stringp command-name) (intern-soft command-name)))
          (binding (and suggest-key-bindings
-		       (not executing-kbd-macro)
-		       (where-is-internal function overriding-local-map t))))
+		               (not executing-kbd-macro)
+		               (where-is-internal function overriding-local-map t))))
     (unless (commandp function)
       (error "`%s' is not a valid command name" command-name))
     (setq this-command function)
@@ -331,17 +373,17 @@ Return the buffer switched to."
         (pop-to-buffer buffer norecord)))
      (t
       (let* ((entry (assq buffer (window-prev-buffers)))
-	     (displayed (and (eq switch-to-buffer-preserve-window-point
-				 'already-displayed)
-			     (get-buffer-window buffer 0))))
-	(set-window-buffer nil buffer)
-	(when (and entry
-		   (or (eq switch-to-buffer-preserve-window-point t)
-		       displayed))
-	  ;; Try to restore start and point of buffer in the selected
-	  ;; window (Bug#4041).
-	  (set-window-start (selected-window) (nth 1 entry) t)
-	  (set-window-point nil (nth 2 entry))))))
+	         (displayed (and (eq switch-to-buffer-preserve-window-point
+				                 'already-displayed)
+			                 (get-buffer-window buffer 0))))
+	    (set-window-buffer nil buffer)
+	    (when (and entry
+		           (or (eq switch-to-buffer-preserve-window-point t)
+		               displayed))
+	      ;; Try to restore start and point of buffer in the selected
+	      ;; window (Bug#4041).
+	      (set-window-start (selected-window) (nth 1 entry) t)
+	      (set-window-point nil (nth 2 entry))))))
 
     (unless norecord
       (select-window (selected-window)))
@@ -351,27 +393,27 @@ Return the buffer switched to."
 
 
 (comment
- (when (fboundp 'god-mode)
-   ;; (global-set-key (kbd "C-x C-o") (make-repeatable-command 'other-window))
-   ;; (global-set-key (kbd "C-x C-5 C-o") (make-repeatable-command 'other-frame))
+  (when (fboundp 'god-mode)
+    ;; (global-set-key (kbd "C-x C-o") (make-repeatable-command 'other-window))
+    ;; (global-set-key (kbd "C-x C-5 C-o") (make-repeatable-command 'other-frame))
 
-   ;; (global-set-key (kbd "C-x C-ㅐ") (make-repeatable-command 'other-window))
+    ;; (global-set-key (kbd "C-x C-ㅐ") (make-repeatable-command 'other-window))
 
-   ;; ;; other-frame key setting
-   ;; (global-set-key (kbd "C-c C-o") (make-repeatable-command 'other-frame))
+    ;; ;; other-frame key setting
+    ;; (global-set-key (kbd "C-c C-o") (make-repeatable-command 'other-frame))
 
-   ;; (global-set-key (kbd "C-c C-ㅐ") (make-repeatable-command 'other-frame))
+    ;; (global-set-key (kbd "C-c C-ㅐ") (make-repeatable-command 'other-frame))
 
-   ;; ;; make-frame-command & delete-frame key setting
-   ;; (global-set-key (kbd "C-c C-0") 'delete-frame)
-   ;; (global-set-key (kbd "C-c C-1") 'delete-other-frames)
-   ;; (global-set-key (kbd "C-c C-2") 'make-frame-command)
+    ;; ;; make-frame-command & delete-frame key setting
+    ;; (global-set-key (kbd "C-c C-0") 'delete-frame)
+    ;; (global-set-key (kbd "C-c C-1") 'delete-other-frames)
+    ;; (global-set-key (kbd "C-c C-2") 'make-frame-command)
 
-   ;; window size adjust (NOT WORK)
-   (global-set-key (kbd "C-x C-^") (make-repeatable-command 'enlarge-window))
-   (global-set-key (kbd "C-x C-%") (make-repeatable-command 'shrink-window))
-   (global-set-key (kbd "C-x C-}") (make-repeatable-command 'enlarge-window-horizontally))
-   (global-set-key (kbd "C-x C-{") (make-repeatable-command 'shrink-window-horizontally))))
+    ;; window size adjust (NOT WORK)
+    (global-set-key (kbd "C-x C-^") (make-repeatable-command 'enlarge-window))
+    (global-set-key (kbd "C-x C-%") (make-repeatable-command 'shrink-window))
+    (global-set-key (kbd "C-x C-}") (make-repeatable-command 'enlarge-window-horizontally))
+    (global-set-key (kbd "C-x C-{") (make-repeatable-command 'shrink-window-horizontally))))
 
 (progn
   ;; Disable `pop-to-buffe' to resize widnows
