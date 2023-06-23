@@ -31,7 +31,7 @@
       (define-key tab-prefix-map "O" (make-repeatable-command 'tab-previous)))
     (progn
       (define-key tab-prefix-map "o" 'dhnam/tab-bar-navigation/tab-next)
-      (define-key tab-prefix-map "O" 'dhnam/tab-bar-navigation/tab-previous))
+      (define-key tab-prefix-map "i" 'dhnam/tab-bar-navigation/tab-previous))
     (define-key tab-prefix-map "m" (make-repeatable-command 'tab-bar-move-tab))
     (define-key tab-prefix-map "M" (make-repeatable-command 'dhnam/tab-bar-move-tab-reverse))
     (define-key tab-prefix-map "a" 'self-insert-command)
