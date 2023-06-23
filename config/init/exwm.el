@@ -508,11 +508,14 @@
                   ([?\C-e] . [end])
                   ([?\M-v] . [prior])
                   ([?\C-v] . [next])
+                  ([?\M-i] . [prior])
+                  ([?\M-o] . [next])
                   ([?\M->] . [C-end])
                   ([?\M-<] . [C-home])
                   ([?\M-v] . [prior])
                   ([?\C-d] . [delete])
                   ([?\C-k] . [S-end C-c delete]) ; updated
+                  ([?\M-k] . [S-end C-c right]) ; updated
 
                   ([?\₫] . [escape])    ; CruzeiroSign
 
@@ -582,10 +585,13 @@
                   ))
 
           (setq exwm-vimium-input-simulation-keys
-                '(([?\C-j] . [?\M-q?\M-j])
+                '(;; open links
+                  ([?\C-j] . [?\M-q?\M-j])
                   ([?\M-j] . [?\M-q?\M-l])
-                  ([?\C-o] . [?\M-q?\M-o])
-                  ([?\M-o] . [?\M-q?\M-O])
+
+                  ;; opne link
+                  ;; ([?\C-o] . [?\M-q?\M-o])  ;; LinkHints.activateOpenInNewTab
+                  ;; ([?\M-o] . [?\M-q?\M-O])  ;; LinkHints.activateWithQueue
 
                   ;; open back/forward history in a new tab
                   ([?\C-\M-9] . [?\M-q?\C-\M-\[])
@@ -594,8 +600,13 @@
                   ;; ([?\C-\M-0] . [?\M-q?\C-\M-f])
 
                   ;; copy links
-                  ([?\C-i] . [\T \u])
-                  ([?\M-i] . [\T \U])
+                  ([?\C-u] . [\T \u])
+                  ([?\M-u] . [\T \U])
+                  ;; ([?\C-i] . [\T \u])
+                  ;; ([?\M-i] . [\T \U])
+
+                  ;; visual mode
+                  ([?\C-\ ] . [?\M-q?v])
 
                   ;; select/copy text
                   ([?\M-s] . [?\M-q?s])
