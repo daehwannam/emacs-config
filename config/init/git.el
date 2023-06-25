@@ -11,4 +11,9 @@
     ;; to always edit the file as if it's at the symlink itself 
     (setq vc-follow-symlinks nil)))
 
+(comment
+  ;; `git-modes' provides `gitattributes-mode', `gitattributes-mode' and `gitattributes-mode'.
+  ;; https://github.com/magit/git-modes
+  )
+
 (provide 'init-git)
