@@ -41,6 +41,7 @@
   ;; base setup
   (require 'dhnam-cmd-line-arg)
   (load (concat dhnam/emacs-root-dir "base/package-init.el"))
+  (load (concat dhnam/emacs-root-dir "base/package-install.el"))
   (load (concat dhnam/emacs-root-dir "base/key-chord-setup.el"))
   (load (concat dhnam/emacs-root-dir "base/hydra-setup.el"))
   (load (concat dhnam/emacs-root-dir "base/key-config.el"))
@@ -50,10 +51,6 @@
 (progn
   ;; bug fix
   (load (concat dhnam/emacs-root-dir "bug-fix/emacs-28-bug-fix.el")))
-
-(progn
-  ;; install packages
-  (load (concat dhnam/emacs-root-dir "base/package-install.el")))
 
 (progn
   (defvar dhnam/no-config-init-cmd-line-arg-passed
