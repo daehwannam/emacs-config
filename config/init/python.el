@@ -33,11 +33,14 @@
 (with-eval-after-load 'python
   (define-key python-mode-map (kbd "C-c C-p") 'dhnam/run-python)
   (define-key python-mode-map (kbd "C-c C-c") 'dhnam/python-shell-send-region-or-buffer)
+  (define-key python-mode-map (kbd "C-c C-f") 'dhnam/python-shell-send-from-package-import-all)
   (define-key python-mode-map (kbd "C-c M-w") 'dhnam/py-repl-kill-ring-save-without-empty-lines)
   (define-key python-mode-map (kbd "C-c M-W") 'dhnam/python-copy-code-from-docstring)
   (define-key python-mode-map (kbd "C-c p") 'dhnam/copy-full-module-name)
   (define-key python-mode-map (kbd "C-c I") 'dhnam/copy-statement-of-importing-symbol-at-point)
-  (define-key python-mode-map (kbd "C-c f") 'dhnam/run-python-module-function))
+  (define-key python-mode-map (kbd "C-c f") 'dhnam/run-python-module-function)
+
+  (define-key inferior-python-mode-map (kbd "C-c M-W") 'dhnam/python-copy-code-from-docstring))
 
 (progn
   ;; `comment-dwim' update for python

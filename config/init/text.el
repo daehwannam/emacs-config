@@ -29,8 +29,10 @@
 
 (when (package-installed-p 'expand-region)
   (require 'expand-region)
-  (comment (global-set-key (kbd "C-=") 'er/expand-region))
-  (global-set-key (kbd "C-c .") (make-repeatable-command #'er/expand-region)))
+  (comment (global-set-key (kbd "C-c .") (make-repeatable-command #'er/expand-region)))
+  (global-set-key (kbd "C-c .") 'er/expand-region)
+
+  (setq expand-region-contract-fast-key ","))
 
 (progn
   ;; enable `narrow-to-region'
