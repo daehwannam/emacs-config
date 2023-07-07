@@ -12,7 +12,9 @@
     ;; - clipetty doesn't requrie X11 forwarding when interacting with remote terminal emacs via ssh
     :hook (after-init . global-clipetty-mode)
     :config
-    (comment (setq clipetty--max-cut 5000)))
+    (progn
+      (setq clipetty--max-cut 5000)
+      (comment (setq clipetty--max-cut 74994))))
 
   (comment
     ;; In some ssh connections, xclip-mode is not working a few mins after xclip-mode is enabled.
