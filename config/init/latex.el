@@ -223,6 +223,11 @@ the PDFGrep job before it finishes, type \\[kill-compilation]."
     )
   )
 
+(with-eval-after-load 'bibtex
+  ;; `bibtex-next-field' is originally mapped to "C-j"
+  (define-key bibtex-mode-map (kbd "M-RET") 'bibtex-next-field)
+  (define-key bibtex-mode-map (kbd "C-j") 'electric-newline-and-maybe-indent))
+
 (comment (require 'bibtex-summary))
 
 (when (require 'biblio nil t)
