@@ -38,4 +38,11 @@
   ;; enable `narrow-to-region'
   (put 'narrow-to-region 'disabled nil))
 
+(progn
+  ;; Change the line length for `fill-paragraph'.
+  ;; https://stackoverflow.com/a/3567111
+  ;;
+  ;; The default value of `fill-column' is 70.
+  (setq fill-column 110))
+
 (provide 'init-text)
