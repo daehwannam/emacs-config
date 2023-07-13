@@ -15,4 +15,13 @@
     ;; the value should be one of nil, t, or 'ask
     (customize-save-variable 'auth-source-save-behavior nil)))
 
+(progn
+ ;; default shell setting
+ ;; withotu setting `explicit-shell-file-name', the default shell is "/usr/bin/sh"
+ (setq explicit-shell-file-name "/usr/bin/bash"))
+
+(progn
+  ;; Enable directory local variables in remote environments (via trmap ssh)
+  (setq enable-remote-dir-locals t))
+
 (provide 'init-tramp)
