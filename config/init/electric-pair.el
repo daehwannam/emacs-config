@@ -11,8 +11,10 @@
         '(inferior-python-mode-hook LaTeX-mode-hook org-mode-hook))
 
   (mapc (lambda (hook)
-          (add-hook hook 'dhnam/python-add-electric-pairs))
-        '(python-mode-hook inferior-python-mode-hook)))
+          (add-hook hook 'dhnam/set-python-electric-pairs))
+        '(python-mode-hook inferior-python-mode-hook))
+
+  (add-hook 'org-mode-hook 'dhnam/set-org-electric-pair-inhibit-predicate))
 
 
 (provide 'init-electric-pair)

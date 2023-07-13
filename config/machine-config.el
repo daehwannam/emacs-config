@@ -88,6 +88,7 @@
          (min-elpy-setup (elpy))
          (lsp-setup (dash lsp-mode lsp-ui flycheck company lsp-treemacs lsp-ivy dap-mode))
          (eglot-setup (eglot company))
+         (anaconda-setup (anaconda-mode company-anaconda))
          (ms-laptop (vlf magit key-chord modalka evil dash))
          (ms-desktop (vlf magit key-chord modalka evil dash))
          (semparse (jsonnet-mode))

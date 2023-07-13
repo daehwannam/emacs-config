@@ -1,10 +1,17 @@
 
 (when (package-installed-p 'eglot)
-  (require 'eglot)
+  ;; (require 'eglot)
 
   (progn
     (add-hook 'python-mode-hook 'eglot-ensure)
     (add-hook 'python-mode-hook 'company-mode))
+
+  (comment
+    (with-eval-after-load 'eglot
+      ;; python language-server configuration
+      ;; https://joaotavora.github.io/eglot/#Setting-Up-LSP-Servers
+      (add-to-list 'eglot-server-programs
+                   `(python-mode . ,(eglot-alternatives '(("pylsp") ("pyls") ("pyright" "--stdio")))))))
 
   (unless (string= (shell-command-to-string "command -v digestif") "")
     ;; Digestif setup (https://github.com/astoff/digestif)
@@ -34,10 +41,11 @@
 					                      ;; :signatureHelpProvider
 					                      ))))
 
-  (define-key eglot-mode-map (kbd "C-c R") 'eglot-reconnect))
+  (with-eval-after-load 'eglot
+    (define-key eglot-mode-map (kbd "C-c R") 'eglot-reconnect)))
 
 (comment
- ;; eldoc-doc-buffer: C-h .
- )
+  ;; eldoc-doc-buffer: C-h .
+  )
 
 (provide 'init-eglot)

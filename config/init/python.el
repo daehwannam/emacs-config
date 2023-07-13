@@ -172,12 +172,18 @@
 
 (comment
   (when (package-installed-p 'anaconda-mode)
-    (add-hook 'python-mode-hook 'anaconda-mode)
-    (add-hook 'python-mode-hook 'anaconda-eldoc-mode)
+    (comment
+      (add-hook 'python-mode-hook 'anaconda-mode)
+      (add-hook 'python-mode-hook 'anaconda-eldoc-mode)
 
-    (when (package-installed-p 'company-anaconda)
-      (eval-after-load 'company
-        '(add-to-list 'company-backends 'company-anaconda)))))
+      (when (package-installed-p 'company-anaconda)
+        (eval-after-load 'company
+          '(add-to-list 'company-backends 'company-anaconda))))
 
+    (progn
+      ;; replace `xref-find-definitions' with `anaconda-mode-find-definitions'
+      (autoload 'anaconda-mode-find-definitions "anaconda-mode" "Find definitions for thing at point." t nil)
+      ;; (add-hook 'python-mode-hook (lambda () (require 'anaconda-mode)))
+      (define-key python-mode-map (kbd "M-.") 'anaconda-mode-find-definitions))))
 
 (provide 'init-python)
