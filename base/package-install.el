@@ -17,8 +17,16 @@
 
   (mapc (lambda (package)
           (if (consp package)
-              (unless (package-installed-p (car package))
-                (quelpa package))
+              (let ((package-type (car package))
+                    (package-args (cdr package)))
+                (cond
+                 ((eq package-type 'quelpa)
+                  (let ((package-name (car package-args)))
+                    (unless (package-installed-p package-name)
+                      (quelpa package-args))))
+                 ((eq package-type 'refresh)
+                  (let ((package-name (car package-args)))
+                    (dhnam/install-package-unless-installed package-name t)))))
             (dhnam/install-package-unless-installed package)))
 	    (append dhnam/installable-domain-specific-packages
                 dhnam/installable-machine-specific-packages)))
