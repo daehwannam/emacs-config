@@ -223,7 +223,8 @@
       (require 'dhnam-paredit)
 
       (comment (key-chord-define paredit-mode-map "kk" (make-repeatable-command #'dhnam/copy-and-forward-sexp)))
-      (define-key paredit-mode-map (kbd "M-k") 'dhnam/copy-and-forward-sexp)
+      (comment (define-key paredit-mode-map (kbd "M-k") 'dhnam/copy-and-forward-sexp))
+      (define-key paredit-mode-map (kbd "M-k") 'dhnam/paredit-copy)
       (define-key paredit-mode-map (kbd "M-w") #'dhnam/paredit-kill-ring-save)
       (define-key paredit-mode-map (kbd "M-;") #'dhnam/paredit-comment-dwim)
       (comment
