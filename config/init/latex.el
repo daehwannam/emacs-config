@@ -47,16 +47,21 @@
   ;; LaTeX-mode-map is used for AUCTeX.
   ;; ===========================================================
 
-  (comment
-    (eval-after-load "latex"
-      (define-key LaTeX-mode-map (kbd "M-p") 'dhnam/pdf-view-previous-page-command-in-other-window)
-      (define-key LaTeX-mode-map (kbd "M-n") 'dhnam/pdf-view-next-page-command-in-other-window)))
 
-  (add-hook
-   'LaTeX-mode-hook
-   (lambda ()
-     (local-set-key (kbd "M-p") 'dhnam/pdf-view-previous-page-command-in-other-window)
-     (local-set-key (kbd "M-n") 'dhnam/pdf-view-next-page-command-in-other-window))))
+  (comment
+    (add-hook
+     'LaTeX-mode-hook
+     (lambda ()
+       (local-set-key (kbd "M-p") 'dhnam/pdf-view-previous-page-command-in-other-window)
+       (local-set-key (kbd "M-n") 'dhnam/pdf-view-next-page-command-in-other-window))))
+
+  (with-eval-after-load 'latex
+    (define-key LaTeX-mode-map (kbd "M-p") 'dhnam/pdf-view-previous-page-command-in-other-window)
+    (define-key LaTeX-mode-map (kbd "M-n") 'dhnam/pdf-view-next-page-command-in-other-window)
+    (define-key LaTeX-mode-map (kbd "C-M-7") 'dhnam/align-ampersands)))
+
+(with-eval-after-load 'latex
+  (require 'dhnam-latex-indentation-fix))
 
 (when (package-installed-p 'pdf-tools)
   (defvar dhnam/pdf-tools-initialized nil)
