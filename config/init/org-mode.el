@@ -337,6 +337,9 @@ When nil, use the default face background."
     (require 'ob-async nil t))
 
   (progn
-    (define-key org-mode-map (kbd "C-C r") 'dhnam/org-display-remaining-days)))
+    (define-key org-mode-map (kbd "C-C r") 'dhnam/org-display-remaining-days)
+
+    (with-eval-after-load 'org-agenda
+      (define-key org-agenda-mode-map (kbd "C-C r") 'dhnam/agend-display-remaining-days))))
 
 (provide 'init-org-mode)
