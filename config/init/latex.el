@@ -184,7 +184,8 @@ the PDFGrep job before it finishes, type \\[kill-compilation]."
     (setq pdf-view-midnight-colors '("light gray" . "#000000")))
 
   (add-hook 'doc-view-mode-hook 'dhnam/initialize-pdf-tools)
-  (add-hook 'pdf-tools-enabled-hook 'pdf-view-midnight-minor-mode))
+  (comment
+    (add-hook 'pdf-tools-enabled-hook 'pdf-view-midnight-minor-mode)))
 
 (when (progn
         ;; to update `TeX-view-program-selection' with setcar,

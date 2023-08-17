@@ -1,7 +1,7 @@
 
 (require 'dhnam-electric-pair)
 
-(progn
+(with-eval-after-load 'elec-pair
   ;; electric-pair-mode
   (add-hook 'prog-mode-hook
             (dhnam/hook-except-modes 'electric-pair-local-mode '(emacs-lisp-mode lisp-mode)))

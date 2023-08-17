@@ -296,7 +296,21 @@
           (setq fw/ivy-last-buffer nil
                 fw/ivy-last-window nil))))
 
-    (require 'dhnam-counsel-for-exwm)
+    (progn
+      (require 'dhnam-counsel-for-exwm)
+
+      (progn
+        (let ((map (make-sparse-keymap)))
+          (define-key map (kbd "d") 'dhnam/counsel-find-file-in-downloads)
+          (define-key map (kbd "w") 'dhnam/kill-gc)
+          (define-key map (kbd "k") 'dhnam/ivy-kill-marked)
+          (define-key map (kbd "s") 'dhnam/switch-to-scratch-buffer)
+          (define-key map (kbd "q") 'dhnam/eww-new)
+
+          (defvar dhnam/exwm-extended-emacs-command-prefix-map map
+	        "Keymap for emacs related commands."))
+
+        (fset 'dhnam/exwm-extended-emacs-command-prefix-map dhnam/exwm-extended-emacs-command-prefix-map)))
 
     (progn
       (setq exwm-manage-configurations nil)

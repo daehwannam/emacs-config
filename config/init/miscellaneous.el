@@ -57,6 +57,11 @@
   (let ((path-file "~/gc-path.txt"))
     (kill-new (dhnam/string-trim (dhnam/get-string-from-file (dhnam/string-trim (dhnam/get-string-from-file path-file)))))))
 
+(defun dhnam/insert-gc ()
+  (interactive)
+  (let ((path-file "~/gc-path.txt"))
+    (insert (dhnam/string-trim (dhnam/get-string-from-file (dhnam/string-trim (dhnam/get-string-from-file path-file)))))))
+
 (progn
   (defun dhnam/occur-mode-goto-occurrence-current-window ()
     "Go to the occurrence the current line describes, in the current window."
