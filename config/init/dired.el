@@ -228,7 +228,7 @@ Version 2019-11-04"
 (require 'dhnam-dired)
 
 (progn
-  (define-key dired-mode-map (kbd "C-c y") 'dhnam/dired-rsync))
+  (define-key dired-mode-map (kbd "C-c y") 'dhnam/dired-rsync/do))
 
 (comment
   ;; It's not working well with ssh dired (cannot use a tramp path).
