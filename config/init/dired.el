@@ -221,44 +221,22 @@ Version 2019-11-04"
 	  (lambda () (local-set-key (kbd "C-c C-o") 'xah-open-in-external-app)))
 
 (progn
-  ;; Copy files asynchronously
-  ;;
-  ;; https://stackoverflow.com/questions/379940/dired-copy-asynchronously
-  ;; https://oremacs.com/2016/02/24/dired-rsync/
+  ;; `dired-x' has functions like `dired-do-relsymlink'.
+  ;; `dired-do-relsymlink' is mapped to "Y" in `dired-mode-map'.
+  (require 'dired-x))
 
-  (require 'dired-x)
+(require 'dhnam-dired)
 
-;;;###autoload
-  (defun ora-dired-rsync (dest)
-    (interactive
-     (list
-      (expand-file-name
-       (read-file-name
-	"Rsync to:"
-	(dired-dwim-target-directory)))))
-    ;; store all selected files into "files" list
-    (let ((files (dired-get-marked-files
-                  nil current-prefix-arg))
-          ;; the rsync command
-          (tmtxt/rsync-command
-           "rsync -arvz --progress "))
-      ;; add all selected file names as arguments
-      ;; to the rsync command
-      (dolist (file files)
-	(setq tmtxt/rsync-command
-              (concat tmtxt/rsync-command
-                      (shell-quote-argument file)
-                      " ")))
-      ;; append the destination
-      (setq tmtxt/rsync-command
-            (concat tmtxt/rsync-command
-                    (shell-quote-argument dest)))
-      ;; run the async shell command
-      (async-shell-command tmtxt/rsync-command "*rsync*")
-      ;; finally, switch to that window
-      (other-window 1)))
+(progn
+  (define-key dired-mode-map (kbd "C-c y") 'dhnam/dired-rsync))
 
-  (define-key dired-mode-map "Y" 'ora-dired-rsync))
+(comment
+  ;; It's not working well with ssh dired (cannot use a tramp path).
+  ;; It doesn't show the progress and cannot cancel rsync
+  (when (fboundp 'dired-rsync)
+    ;; https://github.com/stsquad/dired-rsync
+    (define-key dired-mode-map (kbd "Y") 'dired-rsync)
+    (autoload 'dired-rsync "dired-rsync" "Asynchronously copy files in dired to `DEST' using rsync." t nil)))
 
 (progn
   ;; Deletion with Trash
