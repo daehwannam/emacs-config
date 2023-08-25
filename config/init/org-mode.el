@@ -341,7 +341,9 @@ When nil, use the default face background."
 
     (with-eval-after-load 'org-agenda
       (define-key org-agenda-mode-map (kbd "C-C r") 'dhnam/agenda-display-remaining-days)
-      (key-chord-define org-agenda-mode-map "rm" 'dhnam/agenda-display-remaining-days))))
+      (key-chord-define org-agenda-mode-map "rm" 'dhnam/agenda-display-remaining-days)
+      (define-key org-agenda-mode-map (kbd "M-p") 'dhnam/agenda-move-to-prev-span)
+      (define-key org-agenda-mode-map (kbd "M-n") 'dhnam/agenda-move-to-next-span))))
 
 
 (provide 'init-org-mode)
