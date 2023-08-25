@@ -1,4 +1,5 @@
 
+(require 'dhnam-miscellaneous)
 
 ;; highlight setting
 ;; (require 'highlight nil t)
@@ -63,17 +64,14 @@
     (insert (dhnam/string-trim (dhnam/get-string-from-file (dhnam/string-trim (dhnam/get-string-from-file path-file)))))))
 
 (progn
-  (defun dhnam/occur-mode-goto-occurrence-current-window ()
-    "Go to the occurrence the current line describes, in the current window."
-    (interactive)
-    (let ((buffer (current-buffer))
-          (pos (occur-mode-find-occurrence)))
-      (switch-to-buffer (marker-buffer pos))
-      (goto-char pos)
-      (next-error-found buffer (current-buffer))
-      (run-hooks 'occur-mode-find-occurrence-hook)))
-
   (define-key occur-mode-map "o" 'dhnam/occur-mode-goto-occurrence-current-window))
 
+(with-eval-after-load 'diff-mode
+  ;; M-o is originally mapped to `diff-goto-source'
+  (define-key diff-mode-map (kbd "M-o") nil)
+
+  (define-key diff-mode-shared-map (kbd "RET") 'dhnam/diff-goto-conditionally)
+  (define-key diff-mode-shared-map (kbd "i") 'dhnam/diff-goto-old-source)
+  (define-key diff-mode-shared-map (kbd "o") 'diff-goto-source))
 
 (provide 'init-miscellaneous)
