@@ -24,7 +24,7 @@
                   (let ((package-name (car package-args)))
                     (unless (package-installed-p package-name)
                       (quelpa package-args))))
-                 ((eq package-type 'refresh)
+                 ((eq package-type 'refreshing)
                   (let ((package-name (car package-args)))
                     (dhnam/install-package-unless-installed package-name t)))))
             (dhnam/install-package-unless-installed package)))
