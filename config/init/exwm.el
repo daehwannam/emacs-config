@@ -234,6 +234,7 @@
       (define-key dhnam/exwm-workspace-prefix-map (kbd "v") 'volume-set))
 
     (require 'dhnam-application)
+    (require 'dhnam-screenshot)
     (require 'dhnam-web-browser)
 
     (progn
