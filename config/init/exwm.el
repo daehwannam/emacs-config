@@ -251,6 +251,8 @@
         (define-key map (kbd "e") 'dhnam/app-command-open-terminal-emulator)
         (comment (define-key map (kbd "e") 'dhnam/gui-terminal))
         (define-key map (kbd "<print>") 'dhnam/app-command-open-flameshot-gui)
+        (define-key map (kbd "<S-print> b") 'dhnam/screenshot-video-selection-start)
+        (define-key map (kbd "<S-print> e") 'dhnam/screenshot-video-stop)
 
 	    (defvar dhnam/exwm-command-prefix-map map
 	      "Keymap for application related commands."))
