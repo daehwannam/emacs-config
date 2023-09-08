@@ -1,7 +1,7 @@
 
 (progn
   ;; path of emacs config
-  (defconst dhnam/emacs-root-dir (file-name-directory (file-name-directory load-file-name))))
+  (defconst dhnam/emacs-root-dir (file-name-directory load-file-name)))
 
 (progn
   ;; initialize dhnamlib
