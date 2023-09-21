@@ -20,27 +20,37 @@
   (global-set-key [prior] 'dhnam/scroll-down-half))
 
 ;;; scroll small
-(defun dhnam/window-small-height ()
-  ;;  (max 1 (/ (1- (window-height (selected-window))) 10)))
-  3)
+(comment
+  (defun dhnam/window-small-height ()
+    ;;  (max 1 (/ (1- (window-height (selected-window))) 10)))
+    3))
+(defvar dhnam/window-small-height 3)
 
 (defun dhnam/scroll-up-small ()
   (interactive)
-  (scroll-up (dhnam/window-small-height)))
+  (scroll-up dhnam/window-small-height))
 
 (defun dhnam/scroll-down-small ()
   (interactive)                    
-  (scroll-down (dhnam/window-small-height)))
+  (scroll-down dhnam/window-small-height))
+
+(defun dhnam/scroll-up-small-2 ()
+  (interactive)
+  (scroll-up (* 2 dhnam/window-small-height)))
+
+(defun dhnam/scroll-down-small-2 ()
+  (interactive)
+  (scroll-down (* 2 dhnam/window-small-height)))
 
 (defun dhnam/scroll-up-small-with-cursor ()
   (interactive)
-  (scroll-up (dhnam/window-small-height))
-  (next-line (dhnam/window-small-height)))
+  (scroll-up dhnam/window-small-height)
+  (next-line dhnam/window-small-height))
 
 (defun dhnam/scroll-down-small-with-cursor ()         
   (interactive)                    
-  (scroll-down (dhnam/window-small-height))
-  (previous-line (dhnam/window-small-height)))
+  (scroll-down dhnam/window-small-height)
+  (previous-line dhnam/window-small-height))
 
 (global-set-key (kbd "C-v") 'dhnam/scroll-up-small)
 (global-set-key (kbd "M-v") 'dhnam/scroll-down-small)
@@ -67,11 +77,11 @@
 ;;; scrolling other window
 (defun dhnam/scroll-other-up-small ()
   (interactive)
-  (scroll-other-window (dhnam/window-small-height)))
+  (scroll-other-window dhnam/window-small-height))
 
 (defun dhnam/scroll-other-down-small ()         
   (interactive)                    
-  (scroll-other-window-down (dhnam/window-small-height)))
+  (scroll-other-window-down dhnam/window-small-height))
 
 (global-set-key (kbd "<ESC> <next>") 'dhnam/scroll-other-up-small) ; page down
 (global-set-key (kbd "<ESC> <prior>") 'dhnam/scroll-other-down-small) ; page up

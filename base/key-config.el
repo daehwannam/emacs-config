@@ -30,10 +30,10 @@
     (global-set-key (kbd "M-i") 'dhnam/scroll-down-small)
     (global-set-key (kbd "M-o") 'dhnam/scroll-up-small)
 
-    (comment
+    (progn
       ;; "M-O" key conflicts with arrow keys in terminal
-      (global-set-key (kbd "M-I") 'dhnam/scroll-down-half)
-      (global-set-key (kbd "M-O") 'dhnam/scroll-up-half)))
+      (global-set-key (kbd "M-I") 'dhnam/scroll-down-small-2)
+      (global-set-key (kbd "M-O") 'dhnam/scroll-up-small-2)))
 
   (progn
     ;; use "qw" as prefix key instead of "C-x"
