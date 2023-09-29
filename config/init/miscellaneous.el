@@ -68,6 +68,7 @@
 
 (with-eval-after-load 'diff-mode
   ;; M-o is originally mapped to `diff-goto-source'
+  (define-key diff-mode-map (kbd "M-i") nil)
   (define-key diff-mode-map (kbd "M-o") nil)
 
   (define-key diff-mode-shared-map (kbd "RET") 'dhnam/diff-goto-conditionally)
