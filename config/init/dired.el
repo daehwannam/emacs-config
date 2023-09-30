@@ -188,7 +188,9 @@ Version 2019-11-04"
 
 (progn
   ;; `dhnam/dired-find-file-following-symlink' is mapped instead of `dired-find-file-other-window'
-  (define-key dired-mode-map (kbd "<C-return>") 'dhnam/dired-find-file-following-symlink)
-  (define-key dired-mode-map (kbd "C-c RET") 'dhnam/dired-find-file-following-symlink))
+  (progn
+    (define-key dired-mode-map (kbd "<C-return>") 'dhnam/dired-find-actual-file)
+    (define-key dired-mode-map (kbd "C-c RET") 'dhnam/dired-find-actual-file))
+  (define-key dired-mode-map (kbd "M-RET") 'dhnam/dired-find-actual-file))
 
 (provide 'init-dired)
