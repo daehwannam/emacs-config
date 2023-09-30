@@ -25,6 +25,7 @@
 
 # ignore some files
 /config/options.txt
+/config/options-extra.txt
 /config/packages.txt
 /config/custom/custom.el
 
