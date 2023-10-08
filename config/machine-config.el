@@ -1,14 +1,19 @@
 
-(let ((option-file-name (concat dhnam/emacs-root-dir "config/options.txt")))
-  (unless (file-exists-p option-file-name)
+(let ((default-option-file-name (concat dhnam/emacs-root-dir "config/options.txt"))
+      (extra-option-file-name (concat dhnam/emacs-root-dir "config/options-extra.txt")))
+  (unless (file-exists-p default-option-file-name)
     ;; initialize machine options if it's not exist.
     ;; https://stackoverflow.com/questions/17376706/in-emacs-lisp-how-can-i-append-a-string-to-a-file-that-i-dont-like-to-open
     ;; https://stackoverflow.com/questions/14071991/how-to-create-an-empty-file-by-elisp/14072295
     ;;
     ;; options are sorted in descending order of priority
-    (write-region "(base other-machine option1 option2)" nil option-file-name))
-  (defvar dhnam/machine-options (car (read-from-string (dhnam/get-string-from-file option-file-name)))
-    "Configuration options"))
+    (write-region "(base other-machine option1 option2)" nil default-option-file-name))
+  (let ((default-options (car (read-from-string (dhnam/get-string-from-file default-option-file-name))))
+        (extra-options (when (file-exists-p extra-option-file-name)
+                         (car (read-from-string (dhnam/get-string-from-file extra-option-file-name))))))
+    (defvar dhnam/machine-options
+      (append extra-options default-options)
+      "Configuration options")))
 
 (defvar dhnam/machine-config-list)
 (setq dhnam/machine-config-list
@@ -23,7 +28,7 @@
          (slime-setup "/usr/bin/sbcl")
          (descartes "/usr/bin/sbcl")
          (vbox "/usr/bin/sbcl")
-         (ubuntu-laptop-home "/home/dhnam/program/miniconda3/envs/default/bin/sbcl"))
+         (ubuntu-laptop-sbcl "/home/dhnam/program/miniconda3/envs/default/bin/sbcl"))
         (etags-list (vbox ("/usr/share/emacs/25.3/lisp" "~/.emacs.d")))
         (org-agenda-directory-pattern
          (ms-desktop ("e:/data/Dropbox/org/schedule/" ".*\\.org\\(\\.txt\\)?$"))
@@ -59,7 +64,7 @@
          (descartes-dual ("HDMI-1-1" "DVI-I-1"))
          (descartes-dual-2 ("DVI-I-1" "HDMI-0"))
          (descartes ("HDMI-1-1" "DVI-I-1" "HDMI-0"))
-         (ubuntu-laptop ("HDMI-1" "eDP-1")))
+         (ubuntu-laptop-dual ("HDMI-1" "eDP-1")))
         ;; (exwm-multiple-physical-monitor-layout
         ;;  (descartes descartes-triple))
         ;; (exwm-multiple-monitor-layout-type
@@ -75,7 +80,7 @@
         (languagetool-dir-path
          (descartes "~/program/LanguageTool/")
          (ubuntu-laptop "~/program/LanguageTool/"))
-        ;; (xcape-left-alt (ubuntu-laptop "<XF86WWAN>"))
+        (xcape-left-alt (ubuntu-laptop-left-alt-as-XF86WWAN "<XF86WWAN>"))
 
         (installable-packages
          ;; (base (vlf magit key-chord modalka evil avy hydra dash counsel multi-term))
