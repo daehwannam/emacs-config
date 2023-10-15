@@ -58,7 +58,6 @@
         (elpy-autopep8-activate
          (engels nil)
          )
-        ;; (eaf-path (eaf-setup "~/.emacs.d/package/emacs-application-framework/"))
         (eaf-enabled (eaf-setup t))
         (exwm-physical-monitor-names
          (descartes-dual ("HDMI-1-1" "DVI-I-1"))

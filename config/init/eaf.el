@@ -1,17 +1,39 @@
 
-(let (;; (eaf-path (dhnam/machine-config-get-first 'eaf-path))
-      (eaf-enabled (dhnam/machine-config-get-first 'eaf-enabled)))
-  (when eaf-enabled  ; eaf-path
-    (comment (add-to-list 'load-path eaf-path))
+;;; * EAF
+;;; - web site: https://github.com/emacs-eaf/emacs-application-framework
+;;; - location: ~/.emacs.d/package/emacs-application-framework/
+;;;
+;;; ** Setup
+;;; 1. M-x dhnam/eaf-clone-project
+;;; 2. Install dependencies
+;;; #+begin_src sh
+;;; cd ~/.emacs.d/package/emacs-application-framework/
+;;; ./install-eaf.py --install-core-deps
+;;; #+end_src
+;;;
+
+(defun dhnam/eaf-clone-project ()
+  (interactive)
+  (let ((url "https://github.com/emacs-eaf/emacs-application-framework.git")
+        (path "~/.emacs.d/package/emacs-application-framework/"))
+    (if (file-exists-p path)
+        (message "The EAF project already exists.")
+      (let ((cmd (format "git clone --depth=1 -b master %s %s" url path)))
+        (dhnam/comint-with-command-in-same-window cmd "*eaf project clone*")))))
+
+(let ((eaf-enabled (dhnam/machine-config-get-first 'eaf-enabled)))
+  (when eaf-enabled
+    ;; (comment (add-to-list 'load-path "~/.emacs.d/package/emacs-application-framework/"))
+
     (require 'eaf)
     (require 'eaf-browser)
     (require 'eaf-pdf-viewer)
 
-    (setq eaf-python-command "/usr/bin/python3")
+    (comment (setq eaf-python-command "/usr/bin/python3"))
 
     (progn
-       (eaf-bind-key scroll_right "C-b" eaf-browser-keybinding)
-       (eaf-bind-key scroll_left "C-f" eaf-browser-keybinding))
+      (eaf-bind-key scroll_right "C-b" eaf-browser-keybinding)
+      (eaf-bind-key scroll_left "C-f" eaf-browser-keybinding))
 
     (progn
       (setq eaf-mindmap-dark-mode "follow")
