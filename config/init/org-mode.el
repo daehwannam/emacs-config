@@ -179,6 +179,10 @@
           ;; e.g. <S + TAB
           ;;      <py + TAB
           (add-to-list 'org-structure-template-alist '("S" . "src <language> :results output drawer"))
+          (add-to-list 'org-structure-template-alist '("ba" . "src bash"))
+          (add-to-list 'org-structure-template-alist '("Ba" . "src bash :results output drawer"))
+          (add-to-list 'org-structure-template-alist '("sh" . "src bash"))
+          (add-to-list 'org-structure-template-alist '("Sh" . "src bash :results output drawer"))
           (add-to-list 'org-structure-template-alist '("py" . "src python"))
           (add-to-list 'org-structure-template-alist '("Py" . "src python :results output drawer")))))
 
