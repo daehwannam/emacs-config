@@ -638,6 +638,8 @@
                  exwm-base-input-simulation-keys
                  exwm-advanced-input-simulation-keys
                  (list
+                  (cons (kbd "C-x C-s") (kbd "C-s"))
+                  (cons (kbd "C-q C-s") (kbd "C-s"))
                   (cons (kbd "<C-return>") (kbd "<f2>"))))))
 
         (progn
