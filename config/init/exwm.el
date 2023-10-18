@@ -199,7 +199,7 @@
             (assert (= (length ewg/monitor-names) 2))
             (start-process-shell-command
              "xrandr" nil
-             (format "$ xrandr --output %s --mode 2560x1440 --scale 1x1 
+             (format "$ xrandr --output %s --mode 2560x1440 --scale 1x1
                                --output %s --same-as %s --mode 1920x1080 --scale 1.333x1.333"
                      (nth 0 ewg/monitor-names)))
             (progn
@@ -651,54 +651,99 @@
         (progn
           ;; local bindings and customizations
 
-          (comment
-            (add-hook 'exwm-manage-finish-hook
-                      (lambda ()
-                        (when (and exwm-class-name
-                                   (string= exwm-class-name "Nyxt"))
-                          (exwm-input-set-local-simulation-keys
-                           '(([?\C-p] . [up])
-                             ([?\C-n] . [down])
-                             ([?\C-g] . [escape])
-                             ))))))
+          (defun dhnam/exwm-match-any-buffer-name (&rest names)
+            (when exwm-class-name
+              (member (downcase exwm-class-name) (mapcar 'downcase names))))
 
-          (add-hook 'exwm-manage-finish-hook
-                    (lambda ()
-                      (when (and exwm-class-name
-                                 (string= (downcase exwm-class-name) (downcase "Firefox")))
-                        (exwm-input-set-local-simulation-keys
-                         (append
-                          exwm-base-input-simulation-keys
-                          exwm-browser-input-simulation-keys
-                          exwm-vimium-input-simulation-keys
-                          exwm-browser-app-input-simulation-keys
-                          )))))
+          (cl-macrolet ((register-simulation-keys
+                         (buffer-name-or-names simulation-keys)
+                         `(add-hook 'exwm-manage-finish-hook
+                                    (lambda ()
+                                      (when (and exwm-class-name
+                                                 (let* ((buffer-name-or-names ,buffer-name-or-names)
+                                                        (buffer-names (if (listp buffer-name-or-names)
+                                                                          buffer-name-or-names
+                                                                        (list buffer-name-or-names))))
+                                                   (member (downcase exwm-class-name) (mapcar 'downcase buffer-names))))
+                                        (exwm-input-set-local-simulation-keys
+                                         ,simulation-keys))))))
+            (comment
+              (register-simulation-keys
+               "Nyxt"
+               '(([?\C-p] . [up])
+                 ([?\C-n] . [down])
+                 ([?\C-g] . [escape]))))
 
-          (add-hook 'exwm-manage-finish-hook
-                    (lambda ()
-                      (when (and exwm-class-name
-                                 (string= (downcase exwm-class-name) (downcase "Google-chrome")))
-                        (exwm-input-set-local-simulation-keys
-                         (append
-                          exwm-base-input-simulation-keys
-                          exwm-browser-input-simulation-keys
-                          exwm-vimium-input-simulation-keys
-                          exwm-browser-app-input-simulation-keys)))))
+            (register-simulation-keys
+             "Firefox"
+             (append
+              exwm-base-input-simulation-keys
+              exwm-browser-input-simulation-keys
+              exwm-vimium-input-simulation-keys
+              exwm-browser-app-input-simulation-keys
+              ))
 
-          (add-hook 'exwm-manage-finish-hook
-                    (lambda ()
-                      (when (and exwm-class-name
-                                 (or (string= (downcase exwm-class-name) (downcase "kitty"))
-                                     (string= (downcase exwm-class-name) (downcase "emacs"))))
-                        (exwm-input-set-local-simulation-keys
-                         '(([?\s-k] . [?\C-x?\C-c]))))))
+            (register-simulation-keys
+             "Google-chrome"
+             (append
+              exwm-base-input-simulation-keys
+              exwm-browser-input-simulation-keys
+              exwm-vimium-input-simulation-keys
+              exwm-browser-app-input-simulation-keys))
 
-          (comment
-            (add-hook 'exwm-manage-finish-hook
-                      (lambda ()
-                        (when (and exwm-class-name
-                                   (string= exwm-class-name "kitty"))
-                          (exwm-input-set-local-simulation-keys nil)))))))
+            (register-simulation-keys
+             '("kitty" "emacs")
+             ;; '(([?\s-k] . [?\C-x?\C-c]))
+             (list (cons (kbd "s-k") (kbd "C-x C-c"))))
+            (comment
+              (register-simulation-keys
+               "kitty"
+               nil)))
+
+          ;; (comment
+          ;;   (add-hook 'exwm-manage-finish-hook
+          ;;             (lambda ()
+          ;;               (when (dhnam/exwm-match-any-buffer-name "Nyxt")
+          ;;                 (exwm-input-set-local-simulation-keys
+          ;;                  '(([?\C-p] . [up])
+          ;;                    ([?\C-n] . [down])
+          ;;                    ([?\C-g] . [escape])
+          ;;                    ))))))
+
+          ;; (add-hook 'exwm-manage-finish-hook
+          ;;           (lambda ()
+          ;;             (when (dhnam/exwm-match-any-buffer-name "Firefox")
+          ;;               (exwm-input-set-local-simulation-keys
+          ;;                (append
+          ;;                 exwm-base-input-simulation-keys
+          ;;                 exwm-browser-input-simulation-keys
+          ;;                 exwm-vimium-input-simulation-keys
+          ;;                 exwm-browser-app-input-simulation-keys
+          ;;                 )))))
+
+          ;; (add-hook 'exwm-manage-finish-hook
+          ;;           (lambda ()
+          ;;             (when (dhnam/exwm-match-any-buffer-name "Google-chrome")
+          ;;               (exwm-input-set-local-simulation-keys
+          ;;                (append
+          ;;                 exwm-base-input-simulation-keys
+          ;;                 exwm-browser-input-simulation-keys
+          ;;                 exwm-vimium-input-simulation-keys
+          ;;                 exwm-browser-app-input-simulation-keys)))))
+
+          ;; (add-hook 'exwm-manage-finish-hook
+          ;;           (lambda ()
+          ;;             (when (dhnam/exwm-match-any-buffer-name "kitty" "emacs")
+          ;;               (exwm-input-set-local-simulation-keys
+          ;;                '(([?\s-k] . [?\C-x?\C-c]))))))
+
+          ;; (comment
+          ;;   (add-hook 'exwm-manage-finish-hook
+          ;;             (lambda ()
+          ;;               (when (and exwm-class-name
+          ;;                          (string= exwm-class-name "kitty"))
+          ;;                 (exwm-input-set-local-simulation-keys nil)))))
+          ))
 
       (progn
         ;; prefix keys for line-mode are defined in `exwm-input-prefix-keys'
