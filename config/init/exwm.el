@@ -328,7 +328,11 @@
              (progn
                ;; enable line-mode for specific applications
                ;; https://www.reddit.com/r/emacs/comments/o6vzxz/comment/h2v5rn0/?utm_source=share&utm_medium=web2x&context=3
-               '(((member exwm-class-name '("Firefox" "firefox" "Google-chrome" "google-chrome"))
+               '(((member exwm-class-name
+                          '(;; Browsers
+                            "Firefox" "firefox" "Google-chrome" "google-chrome"
+                            ;; Libreoffice
+                            "Soffice" "libreoffice-calc"))
 	              line-mode t)))
              (progn
                ;; start applications in char-mode by default
@@ -405,6 +409,8 @@
           (setq exwm-workspace-index-map
                 (lambda (index) (number-to-string (+ dhnam/exwm-workspace-start-number index)))))
 
+        (defvar exwm-environment-switch-create)
+
         (let ((physical-monitor-names
                (dhnam/machine-config-get-first 'exwm-physical-monitor-names)))
           (setq exwm-environment-switch-create
@@ -415,9 +421,27 @@
         (comment
           (dotimes (workspace-num 9)
             (lexical-let ((idx (% (+ workspace-num 10 (- dhnam/exwm-workspace-start-number)) 10)))
-              (define-key dhnam/exwm-workspapce-prefix-map (kbd (format "%d" workspace-num))
-                #'(lambda () (interactive)
-                    (funcall exwm-environment-switch-create idx))))))
+                         (define-key dhnam/exwm-workspapce-prefix-map (kbd (format "%d" workspace-num))
+                           #'(lambda () (interactive)
+                               (funcall exwm-environment-switch-create idx))))))
+
+        (progn
+          (progn
+            (defun dhnam/exwm-make-environment-switch-create-specific (i)
+              `(lambda () (interactive)
+                 (funcall exwm-environment-switch-create
+                          (% (+ ,i 10 (- dhnam/exwm-workspace-start-number)) 10)))))
+
+          (comment
+            ;; `lexical-let' is defined in `cl'
+            (require 'cl)
+
+            (defun dhnam/exwm-make-environment-switch-create-specific (i)
+              (lexical-let ((i i))
+                           (lambda ()
+                             (interactive)
+                             (funcall exwm-environment-switch-create
+                                      (% (+ i 10 (- dhnam/exwm-workspace-start-number)) 10)))))))
 
         (progn
           (assert (not (get 'exwm-input-global-keys 'saved-value)))
@@ -425,82 +449,64 @@
 
           (setq exwm-input-global-keys
                 (append
-                 '(;; ([?\s-r] . exwm-reset)
-                   ;; ([?\s-t] . exwm-floating-toggle-floating)
-                   ([?\s-\;] . exwm-input-send-next-key)
+                 (list
+                  ;; (cons (kbd "s-r") 'exwm-reset)
+                  ;; (cons (kbd "s-t") 'exwm-floating-toggle-floating)
 
-                   ([?\s-&] . dhnam/app-command-execute-shell)
-                   ([?\s-m] . dhnam/exwm-command-prefix-map)
-                   ([?\s-d] . dhnam/exwm-workspace-prefix-map)
-                   ([?\s-'] . dhnam/exwm-extended-emacs-command-prefix-map)
+                  (cons (kbd "s-;") 'exwm-input-send-next-key)
 
-                   ([?\s-q] . ctl-x-map)
-                   ([?\s-x] . (lambda () (interactive) (funcall (key-binding (kbd "M-x")))))
-                   ([?\s-X] . (lambda () (interactive) (funcall (key-binding (kbd "M-x")))))
-                   ([?\s-w] . tab-prefix-map)
-                   ;; ([?\s-e] . null) ; Use "s-e" as prefix key instead of "C-c" | https://emacs.stackexchange.com/a/64130
-                   ([?\s-e] . dhnam/ctl-c-map) ; Use "s-e" as prefix key instead of "C-c" | https://emacs.stackexchange.com/a/64130
-                   ([?\s-h] . help-map)
-                   ([?\s-u] . universal-argument)
+                  (cons (kbd "s-&") 'dhnam/app-command-execute-shell)
+                  (cons (kbd "s-m") 'dhnam/exwm-command-prefix-map)
+                  (cons (kbd "s-d") 'dhnam/exwm-workspace-prefix-map)
+                  (cons (kbd "s-'") 'dhnam/exwm-extended-emacs-command-prefix-map)
 
-                   ([?\s-l] . counsel-find-file)
-                   ;; ([?\s-l] . find-file)
-                   ([?\s-k] . kill-buffer)
+                  (cons (kbd "s-q") 'ctl-x-map)
+                  (cons (kbd "s-x") '(lambda () (interactive) (funcall (key-binding (kbd "M-x")))))
+                  (cons (kbd "s-X") '(lambda () (interactive) (funcall (key-binding (kbd "M-x")))))
+                  (cons (kbd "s-w") 'tab-prefix-map)
+                  (cons (kbd "s-e") 'dhnam/ctl-c-map) ; Use "s-e" as prefix key instead of "C-c" | https://emacs.stackexchange.com/a/64130
+                  (cons (kbd "s-h") 'help-map)
+                  (cons (kbd "s-u") 'universal-argument)
 
-                   ([?\s-j] . dhnam/counsel-switch-buffer-excluding-exwm)
-                   ([?\C-\s-j] . ivy-switch-buffer)
-                   ;; ([?\C-\s-j] . counsel-switch-buffer)
-                   ;; ([?\C-\s-j] . dhnam/ivy-switch-buffer-within-app)
-                   ;; ([?\C-\s-b] . dhnam/ivy-switch-buffer-within-app)
-                   ;; ([?\s-B] . dhnam/counsel-switch-buffer-within-app)
-                   ;; ([?\C-\s-b] . dhnam/counsel-switch-buffer-within-app)
-                   ;; ([?\C-\s-j] . dhnam/counsel-switch-buffer-within-app)
+                  (cons (kbd "s-l") 'counsel-find-file)
+                  (cons (kbd "s-k") 'kill-buffer)
 
-                   ([?\s-!] . shell-command)
+                  (cons (kbd "s-j") 'dhnam/counsel-switch-buffer-excluding-exwm)
+                  (cons (kbd "C-s-j") 'ivy-switch-buffer)
+                  (cons (kbd "s-!") 'shell-command)
 
-                   ([?\s-9] . previous-buffer)
-                   ([?\s-0] . next-buffer)
+                  (cons (kbd "s-9") 'previous-buffer)
+                  (cons (kbd "s-0") 'next-buffer)
 
-                   ([?\s-i] . dhnam/other-window-backwards)
-                   ([?\s-o] . other-window)
-                   ([?\s-p] . tab-previous)
-                   ([?\s-n] . tab-next))
+                  (cons (kbd "s-i") 'dhnam/other-window-backwards)
+                  (cons (kbd "s-o") 'other-window)
+                  (cons (kbd "s-p") 'tab-previous)
+                  (cons (kbd "s-n") 'tab-next))
 
-                 '(([S-s-up] . volume-raise-10)
-                   ([S-s-down] . volume-lower-10))
+                 (list
+                  (cons (kbd "<S-s-up>") 'volume-raise-10)
+                  (cons (kbd "<S-s-down>") 'volume-lower-10))
 
                  (let ((physical-monitor-names
                         (dhnam/machine-config-get-first 'exwm-physical-monitor-names)))
                    (if (and physical-monitor-names (> (length physical-monitor-names) 1))
-                       '(([?\C-\s-i] . ewg/other-workspace-in-group-backwards)
-                         ([?\C-\s-o] . ewg/other-workspace-in-group)
-                         ([?\C-\s-p] . ewg/switch-previous-group)
-                         ([?\C-\s-n] . ewg/switch-next-group))
-                     '(([?\C-\s-i] . dhnam/exwm-other-workspace-backwards)
-                       ([?\C-\s-o] . dhnam/exwm-other-workspace)
-                       ([?\C-\s-p] . dhnam/exwm-other-workspace-backwards)
-                       ([?\C-\s-n] . dhnam/exwm-other-workspace))))
+                       (list
+                        (cons (kbd "C-s-i") 'ewg/other-workspace-in-group-backwards)
+                        (cons (kbd "C-s-o") 'ewg/other-workspace-in-group)
+                        (cons (kbd "C-s-p") 'ewg/switch-previous-group)
+                        (cons (kbd "C-s-n") 'ewg/switch-next-group))
+                     (list
+                      (cons (kbd "C-s-i") 'dhnam/exwm-other-workspace-backwards)
+                      (cons (kbd "C-s-o") 'dhnam/exwm-other-workspace)
+                      (cons (kbd "C-s-p") 'dhnam/exwm-other-workspace-backwards)
+                      (cons (kbd "C-s-n") 'dhnam/exwm-other-workspace))))
 
-                 `(;; 's-N': Switch to certain workspace.
-                   ,@(mapcar (lambda (i)
-                               `(,(kbd (format "s-%d" i)) .
-                                 (lambda ()
-                                   (interactive)
-                                   (,exwm-environment-switch-create
-                                    ,(% (+ i 10 (- dhnam/exwm-workspace-start-number)) 10)))))
-                                        ; using number key 1 to 7
-                             (number-sequence 1 7)))
-
-                 (comment
-                   `(;; 's-N': Switch to certain workspace.
-                     ,@(mapcar (lambda (i)
-                                 `(,(kbd (format "s-%d" i)) .
-                                   (lambda ()
-                                     (interactive)
-                                     (,exwm-environment-switch-create
-                                      ,(% (+ i 10 (- dhnam/exwm-workspace-start-number)) 10)))))
-                                        ; using number key 0 to 9
-                               (number-sequence 0 9))))))
+                 (cl-letf (((symbol-function 'make-key-func-pair)
+                            (lambda (i)
+                              (cons (kbd (format "s-%d" i))
+                                    (dhnam/exwm-make-environment-switch-create-specific i)))))
+                   ;; 's-i': Switch to certain workspace group i.
+                   (mapcar 'make-key-func-pair (number-sequence 1 7)))))
 
           (comment
             ;; Use "s-e" as prefix key instead of "C-c"
@@ -517,136 +523,129 @@
           ;;
           ;; many bindings would cause wrong deployment for multiple monitor setting
           (setq exwm-base-input-simulation-keys
-                '(([?\C-b] . [left])
-                  ([?\C-f] . [right])
-                  ([?\C-p] . [up])
-                  ([?\C-n] . [down])
-                  ([?\C-a] . [home])
-                  ([?\C-e] . [end])
-                  ([?\M-v] . [prior])
-                  ([?\C-v] . [next])
-                  ([?\M-i] . [prior])
-                  ([?\M-o] . [next])
-                  ([?\M->] . [C-end])
-                  ([?\M-<] . [C-home])
-                  ([?\M-v] . [prior])
-                  ([?\C-d] . [delete])
-                  ([?\C-k] . [S-end C-c delete]) ; updated
-                  ([?\M-k] . [S-end C-c right]) ; updated
+                (list
+                 (cons (kbd "C-b") (kbd "<left>"))
+                 (cons (kbd "C-f") (kbd "<right>"))
+                 (cons (kbd "C-p") (kbd "<up>"))
+                 (cons (kbd "C-n") (kbd "<down>"))
+                 (cons (kbd "C-a") (kbd "<home>"))
+                 (cons (kbd "C-e") (kbd "<end>"))
+                 (cons (kbd "M-v") (kbd "<prior>"))
+                 (cons (kbd "C-v") (kbd "<next>"))
+                 (cons (kbd "M-i") (kbd "<prior>"))
+                 (cons (kbd "M-o") (kbd "<next>"))
+                 (cons (kbd "M->") (kbd "<C-end>"))
+                 (cons (kbd "M-<") (kbd "<C-home>"))
+                 (cons (kbd "M-v") (kbd "<prior>"))
+                 (cons (kbd "C-d") (kbd "<delete>"))
+                 (cons (kbd "C-k") (kbd "<S-end> C-c <delete>")) ; updated
+                 (cons (kbd "M-k") (kbd "<S-end> C-c <right>")) ; updated
 
-                  ([?\₫] . [escape])    ; CruzeiroSign
+                 (cons (kbd "₫") (kbd "<escape>")) ; CruzeiroSign
 
-                  ;; the below is newly added
-                  ([?\C-w] . [?\C-x])
-                  ([?\C-y] . [?\C-v])
-                  ([?\M-w] . [?\C-c])
-                  ;; ([C-S-f] . [S-right])
-                  ;; ([C-S-b] . [S-left])
-                  ;; ([C-F] . [S-right])
-                  ;; ([C-B] . [S-left])
-                  ([?\M-f] . [C-right])
-                  ([?\M-b] . [C-left])
-                  ;; ([M-S-f] . [C-S-right])
-                  ;; ([M-S-b] . [C-S-left])
-                  ;; ([M-F] . [C-S-right])
-                  ;; ([M-B] . [C-S-left])
-                  ([M-backspace] . [C-backspace])
-                  ([?\M-d] . [C-delete])
+                 (cons (kbd "C-w") (kbd "C-x"))
+                 (cons (kbd "C-y") (kbd "C-v"))
+                 (cons (kbd "M-w") (kbd "C-c"))
+                 (cons (kbd "M-f") (kbd "<C-right>"))
+                 (cons (kbd "M-b") (kbd "<C-left>"))
 
-                  ([?\C-/] . [?\C-z])
-                  ([?\C-?] . [?\C-y])
-                  ([?\M-/] . [?\C-y])))
+                 (cons (kbd "<M-backspace>") (kbd "<C-backspace>"))
+                 (cons (kbd "M-d") (kbd "<C-delete>"))
+
+                 (cons (kbd "C-/") (kbd "C-z"))
+                 (cons (kbd "C-?") (kbd "C-y"))
+                 (cons (kbd "M-/") (kbd "C-y"))))
+
+          (setq exwm-advanced-input-simulation-keys
+                (list
+                 ;; expanding a region
+                 (cons (kbd "C-M-p") (kbd "<S-up>"))
+                 (cons (kbd "C-M-n") (kbd "<S-down>"))
+
+                 (cons (kbd "C-M-b") (kbd "<C-S-left>"))
+                 (cons (kbd "C-M-f") (kbd "<C-S-right>"))
+                 (cons (kbd "C-M-a") (kbd "<S-home>"))
+                 (cons (kbd "C-M-e") (kbd "<S-end>"))
+
+                 ;; search
+                 (cons (kbd "C-s") (kbd "C-f"))
+                 (cons (kbd "C-g") (kbd "<escape>"))
+                 (cons (kbd "M-p") (kbd "<S-f3>"))
+                 (cons (kbd "M-n") (kbd "<f3>"))
+                 (cons (kbd "<M-return>") (kbd "<escape>"))
+
+                 ;; quit
+                 (cons (kbd "C-x C-c") (kbd "C-q"))))
 
           (setq exwm-browser-input-simulation-keys
-                '(([?\C-\M-p] . [S-up])
-                  ([?\C-\M-n] . [S-down])
-                  ;; ([?\C-\M-b] . [S-left])
-                  ;; ([?\C-\M-f] . [S-right])
-                  ;; ([?\C-\M-i] . [C-S-left])
-                  ;; ([?\C-\M-o] . [C-S-right])
-                  ([?\C-\M-b] . [C-S-left])
-                  ([?\C-\M-f] . [C-S-right])
-                  ([?\C-\M-a] . [S-home])
-                  ([?\C-\M-e] . [S-end])
+                (append
+                 exwm-advanced-input-simulation-keys
+                 (list
+                  (cons (kbd "M-[") (kbd "<M-left>"))
+                  (cons (kbd "M-]") (kbd "<M-right>"))
 
-                  ([?\C-s] . [?\C-f])
-                  ([?\C-g] . [escape])
-                  ([?\M-p] . [S-f3])
-                  ([?\M-n] . [f3])
-                  ([\M-return] . [escape]) ;; <M-return> or M-RET
-                  ;; ([\C-return] . [escape]) ;; <C-return>
-                  ;; ([\C-\M-return] . [escape]) ;; <C-M-return>
+                  (cons (kbd "C-9") (kbd "<M-left>"))
+                  (cons (kbd "C-0") (kbd "<M-right>"))
+                  (cons (kbd "M-9") (kbd "<C-prior>"))
+                  (cons (kbd "M-0") (kbd "<C-next>"))
 
-                  ;; ([?\M-p] . [C-prior])
-                  ;; ([?\M-n] . [C-next])
-                  ([?\M-\[] . [M-left])
-                  ([?\M-\]] . [M-right])
+                  (cons (kbd "C-l") (kbd "<f6>"))
+                  (cons (kbd "M-l") (kbd "C-t"))
 
-                  ([?\C-9] . [M-left])
-                  ([?\C-0] . [M-right])
-                  ([?\M-9] . [C-prior])
-                  ([?\M-0] . [C-next])
-
-                  ([?\C-l] . [f6])
-                  ([?\M-l] . [?\C-t])
-
-                  ([?\C-q?\C-k] . [?\C-w])
-                  ([?\C-x?\C-c] . [?\C-q])
+                  (cons (kbd "C-q C-k") (kbd "C-w"))
 
                   ;; caret browsing
-                  ;; ([?\C-\M-\ ] . [f7])
-                  ;; ([?\C-\] . [f7]) ; <C-return> --> not working
-                  ([\C-return] . [f7])
-                  ;; ([\M-space] . [f7]) ; not working
-                  ;; ([\M-space] . [f7]) ; not working
-                  ))
+                  (cons (kbd "<C-return>") (kbd "<f7>")))))
 
           (setq exwm-vimium-input-simulation-keys
-                '(;; open links
-                  ([?\C-j] . [?\M-q?\M-j])
-                  ([?\M-j] . [?\M-q?\M-l])
+                (list
+                 ;; open links
+                 (cons (kbd "C-j") (kbd "M-q M-j"))
+                 (cons (kbd "M-j") (kbd "M-q M-l"))
 
-                  ;; opne link
-                  ;; ([?\C-o] . [?\M-q?\M-o])  ;; LinkHints.activateOpenInNewTab
-                  ;; ([?\M-o] . [?\M-q?\M-O])  ;; LinkHints.activateWithQueue
+                 ;; opne link
+                 ;; (cons (kbd "C-o") (kbd "M-q M-o"))  ;; LinkHints.activateOpenInNewTab
+                 ;; (cons (kbd "M-o") (kbd "M-q M-O"))  ;; LinkHints.activateWithQueue
 
-                  ;; open back/forward history in a new tab
-                  ([?\C-\M-9] . [?\M-q?\C-\M-\[])
-                  ([?\C-\M-0] . [?\M-q?\C-\M-\]])
-                  ;; ([?\C-\M-9] . [?\M-q?\C-\M-b])
-                  ;; ([?\C-\M-0] . [?\M-q?\C-\M-f])
+                 ;; open back/forward history in a new tab
+                 (cons (kbd "C-M-9") (kbd "M-q C-M-["))
+                 (cons (kbd "C-M-0") (kbd "M-q C-M-]"))
 
-                  ;; copy links
-                  ([?\C-u] . [\T \u])
-                  ([?\M-u] . [\T \U])
-                  ;; ([?\C-i] . [\T \u])
-                  ;; ([?\M-i] . [\T \U])
+                 ;; copy links
+                 (cons (kbd "C-u") (kbd "T u"))
+                 (cons (kbd "M-u") (kbd "T U"))
 
-                  ;; visual mode
-                  ([?\C-\ ] . [?\M-q?v])
+                 ;; visual mode
+                 (cons (kbd "C- ") (kbd "M-q v"))
 
-                  ;; select/copy text
-                  ([?\M-s] . [?\M-q?s])
-                  ;; ([?\M-e] . [?\M-q?e])
+                 ;; select/copy text
+                 (cons (kbd "M-s") (kbd "M-q s"))
 
-                  ;; Tab deletion commands
-                  ([?\C-q?\C-/] . [?\M-q?\/])
-                  ([?\C-q?\C-o] . [?\M-q?*])
-                  ([?\C-q?\C-9] . [?\M-q?\(])
-                  ([?\C-q?\C-0] . [?\M-q?\)])))
+                 ;; Tab deletion commands
+                 (cons (kbd "C-q C-/") (kbd "M-q /"))
+                 (cons (kbd "C-q C-o") (kbd "M-q *"))
+                 (cons (kbd "C-q C-9") (kbd "M-q ("))
+                 (cons (kbd "C-q C-0") (kbd "M-q )"))))
 
           (setq exwm-browser-app-input-simulation-keys
-                '(;; for fuzzy search
-                  ;; https://github.com/Fannon/search-bookmarks-history-and-tabs#readme
-                  ([?\C-m] . [\C-S-.])))
-          )
+                (list
+                 ;; for fuzzy search
+                 ;; https://github.com/Fannon/search-bookmarks-history-and-tabs#readme
+                 (cons (kbd "C-m") (kbd "C-S-."))))
+
+          (setq exwm-libreoffice-input-simulation-keys
+                (append
+                 exwm-base-input-simulation-keys
+                 exwm-advanced-input-simulation-keys
+                 (list
+                  (cons (kbd "<C-return>") (kbd "<f2>"))))))
 
         (progn
           ;; global bindings
           (comment (setq exwm-input-simulation-keys exwm-base-input-simulation-keys))
           (progn
             ;; disable 'C-c' prefix
-            (setq exwm-input-simulation-keys '(([?\C-c] . [?\C-c])))))
+            (setq exwm-input-simulation-keys (list (cons (kbd "C-c") (kbd "C-c"))))))
 
         (progn
           ;; local bindings and customizations
@@ -659,6 +658,7 @@
                          (buffer-name-or-names simulation-keys)
                          `(add-hook 'exwm-manage-finish-hook
                                     (lambda ()
+                                      (message (format "=============== %s" exwm-class-name))
                                       (when (and exwm-class-name
                                                  (let* ((buffer-name-or-names ,buffer-name-or-names)
                                                         (buffer-names (if (listp buffer-name-or-names)
@@ -670,9 +670,10 @@
             (comment
               (register-simulation-keys
                "Nyxt"
-               '(([?\C-p] . [up])
-                 ([?\C-n] . [down])
-                 ([?\C-g] . [escape]))))
+               (list
+                (cons (kbd "C-p") (kbd "<up>"))
+                (cons (kbd "C-n") (kbd "<down>"))
+                (cons (kbd "C-g") (kbd "<escape>")))))
 
             (register-simulation-keys
              "Firefox"
@@ -693,57 +694,16 @@
 
             (register-simulation-keys
              '("kitty" "emacs")
-             ;; '(([?\s-k] . [?\C-x?\C-c]))
              (list (cons (kbd "s-k") (kbd "C-x C-c"))))
+
             (comment
               (register-simulation-keys
                "kitty"
-               nil)))
-
-          ;; (comment
-          ;;   (add-hook 'exwm-manage-finish-hook
-          ;;             (lambda ()
-          ;;               (when (dhnam/exwm-match-any-buffer-name "Nyxt")
-          ;;                 (exwm-input-set-local-simulation-keys
-          ;;                  '(([?\C-p] . [up])
-          ;;                    ([?\C-n] . [down])
-          ;;                    ([?\C-g] . [escape])
-          ;;                    ))))))
-
-          ;; (add-hook 'exwm-manage-finish-hook
-          ;;           (lambda ()
-          ;;             (when (dhnam/exwm-match-any-buffer-name "Firefox")
-          ;;               (exwm-input-set-local-simulation-keys
-          ;;                (append
-          ;;                 exwm-base-input-simulation-keys
-          ;;                 exwm-browser-input-simulation-keys
-          ;;                 exwm-vimium-input-simulation-keys
-          ;;                 exwm-browser-app-input-simulation-keys
-          ;;                 )))))
-
-          ;; (add-hook 'exwm-manage-finish-hook
-          ;;           (lambda ()
-          ;;             (when (dhnam/exwm-match-any-buffer-name "Google-chrome")
-          ;;               (exwm-input-set-local-simulation-keys
-          ;;                (append
-          ;;                 exwm-base-input-simulation-keys
-          ;;                 exwm-browser-input-simulation-keys
-          ;;                 exwm-vimium-input-simulation-keys
-          ;;                 exwm-browser-app-input-simulation-keys)))))
-
-          ;; (add-hook 'exwm-manage-finish-hook
-          ;;           (lambda ()
-          ;;             (when (dhnam/exwm-match-any-buffer-name "kitty" "emacs")
-          ;;               (exwm-input-set-local-simulation-keys
-          ;;                '(([?\s-k] . [?\C-x?\C-c]))))))
-
-          ;; (comment
-          ;;   (add-hook 'exwm-manage-finish-hook
-          ;;             (lambda ()
-          ;;               (when (and exwm-class-name
-          ;;                          (string= exwm-class-name "kitty"))
-          ;;                 (exwm-input-set-local-simulation-keys nil)))))
-          ))
+               nil))
+            
+            (register-simulation-keys
+             '("Soffice" "libreoffice-calc")
+             exwm-libreoffice-input-simulation-keys))))
 
       (progn
         ;; prefix keys for line-mode are defined in `exwm-input-prefix-keys'
