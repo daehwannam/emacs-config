@@ -660,7 +660,6 @@
                          (buffer-name-or-names simulation-keys)
                          `(add-hook 'exwm-manage-finish-hook
                                     (lambda ()
-                                      (message (format "=============== %s" exwm-class-name))
                                       (when (and exwm-class-name
                                                  (let* ((buffer-name-or-names ,buffer-name-or-names)
                                                         (buffer-names (if (listp buffer-name-or-names)
