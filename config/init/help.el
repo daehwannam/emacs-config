@@ -1,4 +1,11 @@
 
+(progn
+  ;; Display *Help* in the current window
+  ;; https://emacs.stackexchange.com/a/22502
+
+  (add-to-list 'display-buffer-alist
+               '("*Help*" display-buffer-same-window)))
+
 (defun dhnam/describe-key-map (keymap)
   (interactive
    ;; This `interactive' is copied from `describe-variable'
