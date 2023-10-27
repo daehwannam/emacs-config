@@ -616,7 +616,7 @@
                  (cons (kbd "M-u") (kbd "T U"))
 
                  ;; visual mode
-                 (cons (kbd "C- ") (kbd "M-q v"))
+                 (cons (kbd "C-SPC") (kbd "M-q v"))
 
                  ;; select/copy text
                  (cons (kbd "M-s") (kbd "M-q s"))
