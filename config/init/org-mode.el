@@ -312,7 +312,15 @@ When nil, use the default face background."
       (when (eq type 'link)
         (copy-region-as-kill beg end))))
 
-  (key-chord-define org-mode-map "wl" 'dhnam/org-kill-link-to-clipboard)
+  (defun dhnam/org-kill-raw-link-to-clipboard ()
+    ;; https://emacs.stackexchange.com/a/63051
+    (interactive)
+    (let* ((context (org-element-context))
+           (type (org-element-type context)))
+      (when (eq type 'link)
+        (kill-new (org-element-property :raw-link context)))))
+
+  (key-chord-define org-mode-map "wl" 'dhnam/org-kill-raw-link-to-clipboard)
 
   (comment
     (defun dhnam/insert-inline-math ()
