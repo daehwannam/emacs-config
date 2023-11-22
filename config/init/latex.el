@@ -61,7 +61,11 @@
     (define-key LaTeX-mode-map (kbd "C-M-7") 'dhnam/align-ampersands)))
 
 (with-eval-after-load 'latex
-  (require 'dhnam-latex-indentation-fix))
+  (require 'dhnam-latex-indentation-fix)
+  (comment
+    ;; disable auto indentation for algorithmic environment
+    ;; https://emacs.stackexchange.com/a/35911
+    (add-to-list 'LaTeX-indent-environment-list '("algorithmic" current-indentation))))
 
 (when (package-installed-p 'pdf-tools)
   (defvar dhnam/pdf-tools-initialized nil)
