@@ -50,32 +50,35 @@
   ;; Installing Inconsolata font for Ubuntu:
   ;; $ sudo apt-get install fonts-inconsolata
 
-  (when (find-font (font-spec :name "Inconsolata-12"))
-    (progn
-      ;; https://emacs.stackexchange.com/a/16314
-      (set-face-font 'default "Inconsolata-12")
+  (comment
+    ;; This has a problem with window splits for a large monitor
 
-      (when (and (boundp 'dhnam/exwm-cmd-line-arg-passed) dhnam/exwm-cmd-line-arg-passed)
-        (let ((font-height (dhnam/machine-config-get-first 'exwm-font-height)))
-          (when font-height
-            ;; font size
-            (set-face-attribute 'default nil :height font-height)
-            (progn
-              ;; some themes, such as manoj-dark, changes font-height to a fixed value
-              (comment (set-face-attribute 'completions-common-part nil :height (round (* font-height 1.0))))
-              (set-face-attribute 'completions-common-part nil :height 'unspecified))))))
-    (comment
-     ;; this make non full-sized frames for exwm
-     (defun dhnam/make-frame-command-font-advice (&rest args)
-       (set-frame-font "Inconsolata-12"))
-     (advice-add 
-      'make-frame-command
-      :after
-      'dhnam/make-frame-command-font-advice
-      '((name . "dhnam/make-frame-command-font-advice")))
-     (progn
-       ;; for thee fist frame
-       (dhnam/make-frame-command-font-advice)))))
+    (when (find-font (font-spec :name "Inconsolata-12"))
+      (progn
+        ;; https://emacs.stackexchange.com/a/16314
+        (set-face-font 'default "Inconsolata-12")
+
+        (when (and (boundp 'dhnam/exwm-cmd-line-arg-passed) dhnam/exwm-cmd-line-arg-passed)
+          (let ((font-height (dhnam/machine-config-get-first 'exwm-font-height)))
+            (when font-height
+              ;; font size
+              (set-face-attribute 'default nil :height font-height)
+              (progn
+                ;; some themes, such as manoj-dark, changes font-height to a fixed value
+                (comment (set-face-attribute 'completions-common-part nil :height (round (* font-height 1.0))))
+                (set-face-attribute 'completions-common-part nil :height 'unspecified))))))
+      (comment
+        ;; this make non full-sized frames for exwm
+        (defun dhnam/make-frame-command-font-advice (&rest args)
+          (set-frame-font "Inconsolata-12"))
+        (advice-add
+         'make-frame-command
+         :after
+         'dhnam/make-frame-command-font-advice
+         '((name . "dhnam/make-frame-command-font-advice")))
+        (progn
+          ;; for thee fist frame
+          (dhnam/make-frame-command-font-advice))))))
 
 (defun dhnam/toggle-caps-lock-key ()
   (interactive)
