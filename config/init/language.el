@@ -80,7 +80,9 @@
            '((name . "dhnam/make-frame-command-font-advice")))
           (progn
             ;; for thee fist frame
-            (dhnam/make-frame-command-font-advice))))))))
+            (dhnam/make-frame-command-font-advice)))))
+     ((eq face-font 'default)
+      (comment)))))
 
 (defun dhnam/toggle-caps-lock-key ()
   (interactive)
