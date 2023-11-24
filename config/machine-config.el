@@ -59,6 +59,7 @@
          (engels nil)
          )
         (eaf-enabled (eaf-setup t))
+        (face-font (inconsolata-12 "Inconsolata-12"))
         (exwm-physical-monitor-names
          (descartes-dual ("HDMI-1-1" "DVI-I-1"))
          (descartes-dual-2 ("DVI-I-1" "HDMI-0"))
