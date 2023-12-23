@@ -493,6 +493,10 @@
                        (list
                         (cons (kbd "C-s-i") 'ewg/other-workspace-in-group-backwards)
                         (cons (kbd "C-s-o") 'ewg/other-workspace-in-group)
+                        (cons (kbd "C-s-k") 'ewg/swap-with-other-workspace-in-group-backwards)
+                        (cons (kbd "C-s-l") 'ewg/swap-with-other-workspace-in-group)
+                        ;; (cons (kbd "s-I") 'ewg/swap-with-other-workspace-in-group-backwards)
+                        ;; (cons (kbd "s-O") 'ewg/swap-with-other-workspace-in-group)
                         (cons (kbd "C-s-p") 'ewg/switch-previous-group)
                         (cons (kbd "C-s-n") 'ewg/switch-next-group))
                      (list
