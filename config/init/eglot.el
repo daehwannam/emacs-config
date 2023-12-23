@@ -42,7 +42,13 @@
 					                      ))))
 
   (with-eval-after-load 'eglot
-    (define-key eglot-mode-map (kbd "C-c R") 'eglot-reconnect)))
+    (define-key eglot-mode-map (kbd "C-c R") 'eglot-reconnect)
+
+    (progn
+      ;; Adding filters
+      ;; e.g. "*EGLOT (some-project/(python-mode python-ts-mode)) events*"
+      (add-to-list 'consult-buffer-filter "\\`\\*EGLOT .* events\\*\\'")
+      (add-to-list 'consult-buffer-filter "\\`\\*Python\\*\\'"))))
 
 (comment
   ;; eldoc-doc-buffer: C-h .
