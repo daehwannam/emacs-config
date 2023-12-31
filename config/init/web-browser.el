@@ -61,4 +61,8 @@
   :init
   (key-chord-define-global "i1" 'dhnam/eww-new))
 
+(with-eval-after-load 'dhnam-web-browser
+  (add-to-list 'dhnam/web-search-engine-list-file-paths
+               (concat dhnam/emacs-root-dir "config/init/dependent/search-engines.lisp")))
+
 (provide 'init-web-browser)
