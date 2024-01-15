@@ -37,6 +37,7 @@
   (define-key python-mode-map (kbd "C-c M-w") 'dhnam/py-repl-kill-ring-save-without-empty-lines)
   (define-key python-mode-map (kbd "C-c M-W") 'dhnam/python-copy-code-from-docstring)
   (define-key python-mode-map (kbd "C-c p") 'dhnam/copy-full-module-name)
+  (define-key python-mode-map (kbd "C-c P") 'dhnam/copy-statement-of-importing-all-from-full-module-name)
   (define-key python-mode-map (kbd "C-c I") 'dhnam/copy-statement-of-importing-symbol-at-point)
   (define-key python-mode-map (kbd "C-c f") 'dhnam/run-python-module-function)
 
