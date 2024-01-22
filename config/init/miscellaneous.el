@@ -72,7 +72,6 @@
   (define-key diff-mode-map (kbd "M-o") nil)
 
   (define-key diff-mode-shared-map (kbd "RET") 'dhnam/diff-goto-conditionally)
-  (define-key diff-mode-shared-map (kbd "i") 'dhnam/diff-goto-old-source)
-  (define-key diff-mode-shared-map (kbd "o") 'diff-goto-source))
+  (define-key diff-mode-shared-map (kbd "o") 'dhnam/diff-goto-conditionally-in-same-window))
 
 (provide 'init-miscellaneous)
