@@ -211,10 +211,15 @@
       ;; https://emacs.stackexchange.com/a/52209
       (add-hook 'org-mode-hook #'dhnam/org-setup-<>-syntax-fix)))
 
-  ;;; table
-  (add-hook 'org-mode-hook (lambda () (local-set-key (kbd "C-c C-x M-c") 'org-table-insert-column)))
-  (add-hook 'org-mode-hook (lambda () (local-set-key (kbd "C-c C-x M-r") 'org-table-insert-row)))
+  (progn
+    ;; table
+    (add-hook 'org-mode-hook (lambda () (local-set-key (kbd "C-c C-x M-c") 'org-table-insert-column)))
+    (add-hook 'org-mode-hook (lambda () (local-set-key (kbd "C-c C-x M-r") 'org-table-insert-row))))
 
+  (progn
+    ;; `org-time-stamp' is original "C-C ." of `org-mode-map'
+    (define-key org-mode-map (kbd "C-C .") nil)
+    (define-key org-mode-map (kbd "C-C t") 'org-time-stamp))
 
   (require 'dhnam-make-repeatable-command)
 
