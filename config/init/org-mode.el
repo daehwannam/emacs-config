@@ -360,7 +360,27 @@ When nil, use the default face background."
       (define-key org-agenda-mode-map (kbd "C-C r") 'dhnam/agenda-display-remaining-days)
       (key-chord-define org-agenda-mode-map "rm" 'dhnam/agenda-display-remaining-days)
       (define-key org-agenda-mode-map (kbd "M-p") 'dhnam/agenda-move-to-prev-span)
-      (define-key org-agenda-mode-map (kbd "M-n") 'dhnam/agenda-move-to-next-span))))
+      (define-key org-agenda-mode-map (kbd "M-n") 'dhnam/agenda-move-to-next-span)))
+
+  (progn
+    ;; Disable to make a "Validate" link at bottom when exporting to HTML
+    ;; https://stackoverflow.com/a/15145594
+    ;; https://stackoverflow.com/a/65730497
+    (setq org-html-validation-link nil))
+
+  (progn
+    ;; Disable to make a postamble at bottom when exporting to HTML
+    ;; The postamble includes "Author", "Created" and "Validate".
+    ;; https://stackoverflow.com/a/32761956
+    (setq org-html-postamble nil))
+
+  (when (= emacs-major-version 27)
+    ;; Temporary command that is used for emacs 27 where an error occurs.
+    ;; When exporting an org-mode file that has a citation,
+    ;; then copy the citation more than once,
+    ;; the following error occurs:
+    ;; <org-fold-core--buffer-substring-filter: Invalid read syntax: "#">
+    (require 'dhnam-cmd-line-eval)))
 
 
 (provide 'init-org-mode)

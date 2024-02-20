@@ -26,7 +26,9 @@
                       (quelpa package-args))))
                  ((eq package-type 'refreshing)
                   (let ((package-name (car package-args)))
-                    (dhnam/install-package-unless-installed package-name t)))))
+                    (dhnam/install-package-unless-installed package-name t)))
+                 ((eq package-type 'comment)
+                  (comment))))
             (dhnam/install-package-unless-installed package)))
 	    (append dhnam/installable-domain-specific-packages
                 dhnam/installable-machine-specific-packages)))

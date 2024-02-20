@@ -58,7 +58,8 @@
   (with-eval-after-load 'latex
     (define-key LaTeX-mode-map (kbd "M-p") 'dhnam/pdf-view-previous-page-command-in-other-window)
     (define-key LaTeX-mode-map (kbd "M-n") 'dhnam/pdf-view-next-page-command-in-other-window)
-    (define-key LaTeX-mode-map (kbd "C-M-7") 'dhnam/align-ampersands)))
+    (define-key LaTeX-mode-map (kbd "C-M-7") 'dhnam/align-ampersands)
+    (define-key LaTeX-mode-map (kbd "C-c e") 'dhnam/TeX-error-navigation/body)))
 
 (with-eval-after-load 'latex
   (require 'dhnam-latex-indentation-fix)
