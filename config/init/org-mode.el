@@ -113,7 +113,8 @@
       (org-babel-do-load-languages
        'org-babel-load-languages `((python . t)
                                    (,shell-symbol . t)
-                                   (latex . t))))
+                                   (latex . t)
+                                   (lisp . t))))
 
     (progn
       ;; https://www.reddit.com/r/orgmode/comments/64tiq9/syntax_highlighting_in_code_blocks/dg548nx/
