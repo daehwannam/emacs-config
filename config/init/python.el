@@ -97,7 +97,11 @@
   (defvar dhnam/python-definition-regex "^\s*\\(\\(\\(async\s\\|\\)def\\|class\\)\s\\)\\|with block:"))
 
 (if (package-installed-p 'realgud)
-    (require 'dhnam-realgud)
+    (progn
+      (require 'dhnam-realgud)
+      (progn
+        ;; Disable the default gud pdb when a breakpoint is activated in a *Python* buffer.
+        (add-hook 'inferior-python-mode-hook 'dhnam/unset-python-pdbtrack-setup-tracking)))
   (progn
     ;; pdbtrace
     ;; https://stackoverflow.com/questions/26285046/how-do-i-enable-pdbtrack-python-debugging-in-emacs-24-x-shell
