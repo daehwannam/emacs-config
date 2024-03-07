@@ -207,10 +207,14 @@
       (setq-default indent-tabs-mode nil))
 
 
-    (progn
+    (comment
+      ;; Deprecated: this fix slows down loading a large org-mode file.
+      ;;
       ;; fix the problem of unbalanced parentheses by "<" and ">"
       ;; https://emacs.stackexchange.com/a/52209
-      (add-hook 'org-mode-hook #'dhnam/org-setup-<>-syntax-fix)))
+      (add-hook 'org-mode-hook #'dhnam/org-setup-<>-syntax-fix))
+
+    (add-hook 'org-mode-hook #'dhnam/org-syntax-table-modify))
 
   (progn
     ;; table
@@ -249,8 +253,10 @@
   (when (fboundp 'org-fragtog-mode)
     ;; https://github.com/io12/org-fragtog
     ;; `org-fragtog-mode' automatically toggles a preview for each latex formula
-    (add-hook 'org-mode-hook (lambda () (org-latex-preview '(16))))
-    (add-hook 'org-mode-hook 'org-fragtog-mode))
+    (defvar dhnam/org-latex-preview-enabled t)
+    (add-hook 'org-mode-hook (lambda () (when dhnam/org-latex-preview-enabled (org-latex-preview '(16)))))
+    ;; (add-hook 'org-mode-hook 'org-fragtog-mode)
+    )
 
   (comment
     ;; https://github.com/gaoDean/org-imgtog
