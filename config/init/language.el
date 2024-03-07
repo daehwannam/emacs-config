@@ -49,11 +49,17 @@
   ;;
   ;; Installing Inconsolata font for Ubuntu:
   ;; $ sudo apt-get install fonts-inconsolata
+  ;;
+  ;; However, with the "Inconsolata-12" font, org-mode cannot uses italic fonts
+  ;; https://stackoverflow.com/a/22983631
+
+  (comment (defvar dhnam/default-face-font "Inconsolata-12"))
+  (defvar dhnam/default-face-font "DejaVu Sans Mono-11")
 
   (let ((face-font (or (dhnam/machine-config-get-first 'face-font)
-                       "Inconsolata-12")))
+                       dhnam/default-face-font)))
     (cond
-     ((string= face-font "Inconsolata-12")
+     ((string= face-font dhnam/default-face-font)
       (when (find-font (font-spec :name face-font))
         ;; This has a problem with window splits for a large monitor
         (progn

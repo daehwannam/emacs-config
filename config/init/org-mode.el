@@ -179,7 +179,10 @@
           ;; Code block template: <[code] + TAB
           ;; e.g. <S + TAB
           ;;      <py + TAB
-          (add-to-list 'org-structure-template-alist '("S" . "src <language> :results output drawer"))
+          (comment
+            ;; These are replaced as yasnippet
+            (add-to-list 'org-structure-template-alist '("S" . "src <language> :results drawer"))
+            (add-to-list 'org-structure-template-alist '("So" . "src <language> :results drawer output")))
           (add-to-list 'org-structure-template-alist '("ba" . "src bash"))
           (add-to-list 'org-structure-template-alist '("Ba" . "src bash :results output drawer"))
           (add-to-list 'org-structure-template-alist '("sh" . "src bash"))
