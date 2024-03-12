@@ -45,7 +45,8 @@
     ;; (key-chord-define-global "" #'ctrlf-forward-symbol)
     ;; (key-chord-define-global "f." #'ctrlf-forward-symbol-at-point)
     ;; (key-chord-define-global "fj" #'ctrlf-forward-default)
-    (key-chord-define-global "fj" #'ctrlf-forward-symbol-at-point)))
+    ;; (key-chord-define-global "fj" #'ctrlf-forward-symbol-at-point)
+    )
 
   (progn
     (define-key ctrlf-mode-map (kbd "C-n") 'ctrlf-forward-default)
