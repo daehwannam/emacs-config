@@ -193,4 +193,8 @@ Version 2019-11-04"
     (define-key dired-mode-map (kbd "C-c RET") 'dhnam/dired-find-actual-file))
   (define-key dired-mode-map (kbd "M-RET") 'dhnam/dired-find-actual-file))
 
+(progn
+  (comment (define-key global-map (kbd "C-x F") 'find-grep-dired))
+  (define-key global-map (kbd "C-x F") 'find-name-dired))
+
 (provide 'init-dired)

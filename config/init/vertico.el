@@ -157,7 +157,8 @@
         (progn
           ;; Find a file recursively
           ;; https://www.reddit.com/r/emacs/comments/skd03i/comment/hvksm0r/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button
-          (key-chord-define-global "F:" 'dhnam/consult-find-from-current-dir))))
+          (comment (key-chord-define-global "F:" 'dhnam/consult-find-from-current-dir))
+          (key-chord-define-global "r;" 'dhnam/consult-find-from-current-dir))))
     :config
     (progn
       (define-key minibuffer-local-map (kbd "M-m") 'dhnam/minibuffer-toggle-symbol-boundaries))
