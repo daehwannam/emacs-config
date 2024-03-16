@@ -139,7 +139,7 @@
       (progn
         ;; for consult-line, consult-grep, ...
         (apply #'dhnam/add-advice-for-vertico (append '(consult--line consult--line-multi-candidates)
-                                                '(consult--grep consult--read))))
+                                                      '(consult--grep consult--read))))
 
       (progn
         (comment (key-chord-define-global "js" 'consult-line))
@@ -152,7 +152,12 @@
         (progn
           ;; search over the current directory
           (key-chord-define-global "g;" 'dhnam/consult-grep-on-default-directory))
-        (key-chord-define-global "gj" 'consult-git-grep)))
+        (key-chord-define-global "gj" 'consult-git-grep)
+
+        (progn
+          ;; Find a file recursively
+          ;; https://www.reddit.com/r/emacs/comments/skd03i/comment/hvksm0r/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button
+          (key-chord-define-global "F:" 'dhnam/consult-find-from-current-dir))))
     :config
     (progn
       (define-key minibuffer-local-map (kbd "M-m") 'dhnam/minibuffer-toggle-symbol-boundaries))
