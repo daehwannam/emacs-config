@@ -6,6 +6,7 @@
   (ivy-define-key ivy-switch-buffer-map (kbd "C-SPC") 'dhnam/ivy-toggle-mark)
   (ivy-define-key ivy-minibuffer-map (kbd "M-n") 'dhnam/ivy-next-history-element)
   (ivy-define-key ivy-minibuffer-map (kbd "M-m") 'dhnam/ivy-toggle-symbol-boundaries)
+  (ivy-define-key ivy-minibuffer-map (kbd "C-y") 'dhnam/swiper-yank)
 
   ;; :bind
   ;; (nil
