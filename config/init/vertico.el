@@ -48,7 +48,13 @@
 
     (define-key vertico-map (kbd "C-j") #'vertico-exit-input)
     (define-key vertico-map (kbd "M-v") #'vertico-scroll-down)
-    (define-key vertico-map (kbd "C-v") #'vertico-scroll-up)))
+    (define-key vertico-map (kbd "C-v") #'vertico-scroll-up)
+    (define-key vertico-map (kbd "M-i") #'vertico-scroll-down)
+    (define-key vertico-map (kbd "M-o") #'vertico-scroll-up)
+    (comment (define-key vertico-map (kbd "M-9") #'vertico-previous-group))
+    (comment (define-key vertico-map (kbd "M-0") #'vertico-next-group))
+    (define-key vertico-map (kbd "M-9") #'dhnam/vertico-goto-previous-group)
+    (define-key vertico-map (kbd "M-0") #'dhnam/vertico-goto-next-group)))
 
 (when (display-graphic-p)
   (use-existing-pkg vertico-posframe

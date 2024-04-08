@@ -5,6 +5,8 @@
         (when cmd-line-arg-passed-p
           (comment)))))
 
+  (require 'dhnam-tui)
+
   (use-existing-pkg clipetty
     ;; https://github.com/spudlyo/clipetty
     ;;
@@ -14,7 +16,9 @@
     :config
     (progn
       (setq clipetty--max-cut 5000)
-      (comment (setq clipetty--max-cut 74994))))
+      (comment (setq clipetty--max-cut 74994))
+      (advice-add 'clipetty--emit :around 'dhnam/clipetty--emit-advice)
+      ))
 
   (comment
     ;; In some ssh connections, xclip-mode is not working a few mins after xclip-mode is enabled.
@@ -29,8 +33,6 @@
     ;; Enable mouse in terminal mode
     ;; https://www.reddit.com/r/emacs/comments/5j89xn/comment/dbfvi21/?utm_source=share&utm_medium=web2x&context=3
     (xterm-mouse-mode t))
-
-  (require 'dhnam-tui)
 
   (progn
     ;; "<C-insert>" is originally mapped to `kill-ring-save'
