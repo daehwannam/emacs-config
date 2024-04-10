@@ -1,3 +1,5 @@
+(require 'dhnam-tui-application)
+
 (when (eq window-system nil)  ; when it's in terminal mode
   (comment
     (let ((cmd-line-arg-key "--tui"))
