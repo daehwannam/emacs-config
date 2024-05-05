@@ -118,11 +118,17 @@
       (progn
         ;; Bindings
 
-        (add-hook 'slime-mode-hook (lambda () (local-set-key (kbd "C-q C-e") #'slime-eval-last-expression)))
-        (add-hook 'slime-repl-mode-hook (lambda () (local-set-key (kbd "C-q C-e") #'slime-eval-last-expression)))
-        ;; (add-hook 'slime-mode-hook (lambda () (local-set-key (kbd "C-j") #'slime-eval-print-last-expression)))
-        (add-hook 'slime-mode-hook (lambda () (local-set-key (kbd "C-c C-d H") #'slime-documentation)))
-        (add-hook 'slime-repl-mode-hook (lambda () (local-set-key (kbd "C-c C-d H") #'slime-documentation)))))))
+        (defun dhnam/slime-define-keys (map)
+          (define-key map (kbd "C-q C-e") #'slime-eval-last-expression)
+          (comment (define-key map (kbd "C-q C-j") #'slime-eval-last-expression-in-repl)) ; it's already mapped
+          (comment (define-key map (kbd "C-q J") #'slime-eval-print-last-expression))
+          (define-key map (kbd "C-c C-d H") #'slime-documentation)
+          (define-key map (kbd "C-c H") #'slime-hyperspec-lookup))
+
+        (with-eval-after-load 'slime
+          (dhnam/slime-define-keys slime-mode-map))
+        (with-eval-after-load 'slime-repl
+          (dhnam/slime-define-keys slime-repl-mode-map))))))
 
 (progn
   ;; hissp & lissp

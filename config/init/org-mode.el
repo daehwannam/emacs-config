@@ -373,6 +373,10 @@ When nil, use the default face background."
       (define-key org-agenda-mode-map (kbd "M-n") 'dhnam/agenda-move-to-next-span)))
 
   (progn
+    ;; disable `org-cycle-agenda-files' which is mapped to "C-," by default.
+    (define-key org-mode-map (kbd "C-,") nil))
+
+  (progn
     ;; Disable to make a "Validate" link at bottom when exporting to HTML
     ;; https://stackoverflow.com/a/15145594
     ;; https://stackoverflow.com/a/65730497
