@@ -40,6 +40,7 @@
   (define-key python-mode-map (kbd "C-c P") 'dhnam/copy-statement-of-importing-all-from-full-module-name)
   (define-key python-mode-map (kbd "C-c I") 'dhnam/copy-statement-of-importing-symbol-at-point)
   (define-key python-mode-map (kbd "C-c f") 'dhnam/run-python-module-function)
+  (define-key python-mode-map (kbd "C-c r") 'dhnam/run-python-dhnamlib-doctesting)
 
   (define-key inferior-python-mode-map (kbd "C-c M-W") 'dhnam/python-copy-code-from-docstring))
 
