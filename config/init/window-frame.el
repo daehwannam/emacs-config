@@ -481,7 +481,8 @@ i.e. windows tiled side-by-side."
 
   (progn
     ;; https://stackoverflow.com/a/13n82869
-    (setq split-height-threshold 999)))
+    (setq split-height-threshold 999)
+    (setq split-width-threshold 999)))
 
 
 (provide 'init-window-frame)
