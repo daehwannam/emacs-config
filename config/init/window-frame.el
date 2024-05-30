@@ -472,13 +472,16 @@ i.e. windows tiled side-by-side."
     (comment (setq split-width-threshold 40))
     (setq split-window-preferred-function 'split-window-really-sensibly)))
 
-(comment
-  (progn
-    ;; Always vertical split
+(progn
+  ;; Always vertical split
+  (comment
     ;; https://stackoverflow.com/a/43972522
-
     (setq split-width-threshold 0)
-    (setq split-height-threshold nil)))
+    (setq split-height-threshold nil))
+
+  (progn
+    ;; https://stackoverflow.com/a/13n82869
+    (setq split-height-threshold 999)))
 
 
 (provide 'init-window-frame)
