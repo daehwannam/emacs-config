@@ -15,4 +15,9 @@
 (defun dhnam/after-comint-with-command ()
   (local-set-key (kbd "C-c r") #'dhnam/comint-with-command-again))
 
+(comment
+  ;; Useful commands
+  ;; - `comint-delete-output' (C-c C-o)
+  )
+
 (provide 'init-comint)
