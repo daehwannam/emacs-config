@@ -225,9 +225,9 @@
     (add-hook 'org-mode-hook (lambda () (local-set-key (kbd "C-c C-x M-r") 'org-table-insert-row))))
 
   (progn
-    ;; `org-time-stamp' is original "C-C ." of `org-mode-map'
-    (define-key org-mode-map (kbd "C-C .") nil)
-    (define-key org-mode-map (kbd "C-C t") 'org-time-stamp))
+    ;; `org-time-stamp' is original "C-c ." of `org-mode-map'
+    (define-key org-mode-map (kbd "C-c .") nil)
+    (define-key org-mode-map (kbd "C-c t") 'org-time-stamp))
 
   (require 'dhnam-make-repeatable-command)
 
@@ -243,12 +243,12 @@
 	      ("b" org-backward-heading-same-level))
 
 	    (progn
-	      (define-key org-mode-map (kbd "C-C C-n") 'hydra-org-motion/org-next-visible-heading)
+	      (define-key org-mode-map (kbd "C-c C-n") 'hydra-org-motion/org-next-visible-heading)
 	      (define-key org-mode-map (kbd "C-c C-p") 'hydra-org-motion/org-previous-visible-heading)
 	      (define-key org-mode-map (kbd "C-c C-f") 'hydra-org-motion/org-forward-heading-same-level)
 	      (define-key org-mode-map (kbd "C-c C-b") 'hydra-org-motion/org-backward-heading-same-level)))
     (progn
-      (define-key org-mode-map (kbd "C-C C-n") (make-repeatable-command 'org-next-visible-heading))
+      (define-key org-mode-map (kbd "C-c C-n") (make-repeatable-command 'org-next-visible-heading))
       (define-key org-mode-map (kbd "C-c C-p") (make-repeatable-command 'org-previous-visible-heading))
       (define-key org-mode-map (kbd "C-c C-f") (make-repeatable-command 'org-forward-heading-same-level))
       (define-key org-mode-map (kbd "C-c C-b") (make-repeatable-command 'org-backward-heading-same-level))))
@@ -357,17 +357,17 @@ When nil, use the default face background."
 
       (let ((browse-url-browser-function 'dhnam/eww-new))
         (org-open-at-point arg)))
-    (define-key org-mode-map (kbd "C-C O") 'dhnam/org-open-at-point))
+    (define-key org-mode-map (kbd "C-c O") 'dhnam/org-open-at-point))
 
   (progn
     ;; https://github.com/astahlman/ob-async
     (require 'ob-async nil t))
 
   (progn
-    (define-key org-mode-map (kbd "C-C r") 'dhnam/org-display-remaining-days)
+    (define-key org-mode-map (kbd "C-c r") 'dhnam/org-display-remaining-days)
 
     (with-eval-after-load 'org-agenda
-      (define-key org-agenda-mode-map (kbd "C-C r") 'dhnam/agenda-display-remaining-days)
+      (define-key org-agenda-mode-map (kbd "C-c r") 'dhnam/agenda-display-remaining-days)
       (key-chord-define org-agenda-mode-map "rm" 'dhnam/agenda-display-remaining-days)
       (define-key org-agenda-mode-map (kbd "M-p") 'dhnam/agenda-move-to-prev-span)
       (define-key org-agenda-mode-map (kbd "M-n") 'dhnam/agenda-move-to-next-span)))
@@ -394,7 +394,9 @@ When nil, use the default face background."
     ;; then copy the citation more than once,
     ;; the following error occurs:
     ;; <org-fold-core--buffer-substring-filter: Invalid read syntax: "#">
-    (require 'dhnam-cmd-line-eval)))
+    (require 'dhnam-cmd-line-eval))
+
+  (define-key org-mode-map (kbd "C-c C-o") 'dhnam/org-open-at-point-same-window))
 
 
 (provide 'init-org-mode)
