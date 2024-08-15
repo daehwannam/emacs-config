@@ -479,10 +479,19 @@ i.e. windows tiled side-by-side."
     (setq split-width-threshold 0)
     (setq split-height-threshold nil))
 
-  (progn
+  (comment
     ;; https://stackoverflow.com/a/13n82869
     (setq split-height-threshold 900)
-    (setq split-width-threshold 320)))
+    (setq split-width-threshold 320))
+
+  (progn
+   (require 'cl-macs)
+   (cl-destructuring-bind
+       (height-threshold width-threshold)
+       (or (dhnam/machine-config-get-first 'split-height-width-threshold-pair)
+           '(900 320))
+     (setq split-height-threshold height-threshold)
+     (setq split-width-threshold width-threshold))))
 
 
 (provide 'init-window-frame)
