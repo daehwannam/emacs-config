@@ -82,6 +82,8 @@
          (descartes "~/program/LanguageTool/")
          (ubuntu-laptop "~/program/LanguageTool/"))
         (xcape-left-alt (ubuntu-laptop-left-alt-as-XF86WWAN "<XF86WWAN>"))
+        (split-height-width-threshold-pair
+         (ubuntu-laptop (900 200)))
 
         (installable-packages
          ;; (base (vlf magit key-chord modalka evil avy hydra dash counsel multi-term))

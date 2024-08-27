@@ -312,7 +312,8 @@ the PDFGrep job before it finishes, type \\[kill-compilation]."
 
         (fset 'langtool-prefix-map langtool-prefix-map)
 
-        (key-chord-define-global "t;" 'langtool-prefix-map))))
+        (comment (key-chord-define-global "t;" 'langtool-prefix-map))
+        (key-chord-define LaTeX-mode-map "t;" 'langtool-prefix-map))))
 
   (add-hook 'TeX-mode-hook 'dhnam/initialize-langtool))
 
