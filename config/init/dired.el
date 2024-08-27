@@ -169,6 +169,10 @@ Version 2019-11-04"
 	      (lambda () (local-set-key (kbd "C-c C-o") 'xah-open-in-external-app)))
 
 (progn
+  ;; (kbd "i") is mapped to `dired-maybe-insert-subdir'
+  (define-key dired-mode-map (kbd "K") 'dired-kill-subdir))
+
+(progn
   ;; `dired-x' has functions like `dired-do-relsymlink'.
   ;; `dired-do-relsymlink' is mapped to "Y" in `dired-mode-map'.
   (require 'dired-x))
