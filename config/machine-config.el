@@ -102,7 +102,7 @@
          (ms-desktop (vlf magit key-chord modalka evil dash))
          (semparse (jsonnet-mode))
          (web-edit (atomic-chrome))
-         (exwm-setup (exwm volume hide-mode-line ivy-posframe which-key-posframe))
+         (exwm-setup (exwm volume hide-mode-line ivy-posframe which-key-posframe exwm-edit))
          (vertico-setup (vertico orderless savehist vertico-posframe mini-frame marginalia consult embark-consult))
          (theme-setup (doom-themes))
 

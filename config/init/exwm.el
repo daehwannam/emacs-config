@@ -737,7 +737,17 @@
           (define-key exwm-mode-map (kbd "M-0") 'next-buffer))
 
         (comment (define-key exwm-mode-map (kbd "s-i") 'dhnam/counsel-switch-buffer-within-app)))
-      ))
+
+      (progn
+        ;; Application-specific key bindings
+
+        (defun dhnam/exwm-load-bindings-for-web-browser ()
+          (when (member exwm-class-name
+                        '("Firefox" "firefox" "Google-chrome" "google-chrome"))
+            (local-set-key (kbd "M-q") #'dhnam/exwm-app-command-query-to-existing-browser)))
+
+        (add-hook 'exwm-manage-finish-hook 'dhnam/exwm-load-bindings-for-web-browser)
+        (comment (remove-hook 'exwm-manage-finish-hook 'dhnam/exwm-load-bindings-for-web-browser)))))
 
   (progn
     ;; pre-config
