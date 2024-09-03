@@ -105,6 +105,7 @@
          (exwm-setup (exwm volume hide-mode-line ivy-posframe which-key-posframe exwm-edit))
          (vertico-setup (vertico orderless savehist vertico-posframe mini-frame marginalia consult embark-consult))
          (theme-setup (doom-themes))
+         ;; (linux-common (fcitx))
 
          ;; =============================
          (vbox (vlf magit key-chord modalka evil dash  multi-term auctex latex-preview-pane material-theme elpy flycheck py-autopep8 blacken sphinx-doc workgroups2 perspective counsel iedit wgrep which-key counsel-projectile persp-projectile paredit markdown-mode tuareg ein hy-mode)) ; removed: highlight

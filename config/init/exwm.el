@@ -593,8 +593,9 @@
                   (cons (kbd "M-9") (kbd "<C-prior>"))
                   (cons (kbd "M-0") (kbd "<C-next>"))
 
-                  (cons (kbd "C-l") (kbd "<f6>"))
-                  (cons (kbd "M-l") (kbd "C-t"))
+                  ;; (cons (kbd "C-l") (kbd "<f6>"))
+                  (cons (kbd "C-M-l") (kbd "<f6>"))
+                  ;; (cons (kbd "M-l") (kbd "C-t"))
 
                   (cons (kbd "C-q C-k") (kbd "C-w"))
 
@@ -741,13 +742,13 @@
       (progn
         ;; Application-specific key bindings
 
-        (defun dhnam/exwm-load-bindings-for-web-browser ()
-          (when (member exwm-class-name
-                        '("Firefox" "firefox" "Google-chrome" "google-chrome"))
-            (local-set-key (kbd "M-q") #'dhnam/exwm-app-command-query-to-existing-browser)))
+        (defun dhnam/exwm-load-bindings-for-firefox ()
+          (when (member exwm-class-name '("Firefox" "firefox"))
+            (local-set-key (kbd "C-l") #'dhnam/exwm-app-command-query-to-existing-firefox)
+            (local-set-key (kbd "M-l") #'dhnam/exwm-app-command-query-to-new-firefox-tab)))
 
-        (add-hook 'exwm-manage-finish-hook 'dhnam/exwm-load-bindings-for-web-browser)
-        (comment (remove-hook 'exwm-manage-finish-hook 'dhnam/exwm-load-bindings-for-web-browser)))))
+        (add-hook 'exwm-manage-finish-hook 'dhnam/exwm-load-bindings-for-firefox)
+        (comment (remove-hook 'exwm-manage-finish-hook 'dhnam/exwm-load-bindings-for-firefox)))))
 
   (progn
     ;; pre-config

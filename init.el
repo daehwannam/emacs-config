@@ -50,7 +50,8 @@
 
 (progn
   ;; bug fix
-  (load (concat dhnam/emacs-root-dir "bug-fix/emacs-28-bug-fix.el")))
+  (load (concat dhnam/emacs-root-dir "bug-fix/emacs-28-bug-fix.el"))
+  (load (concat dhnam/emacs-root-dir "bug-fix/emacs-bug-fix.el")))
 
 (progn
   (defvar dhnam/no-config-init-cmd-line-arg-passed
