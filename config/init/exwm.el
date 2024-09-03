@@ -742,13 +742,56 @@
       (progn
         ;; Application-specific key bindings
 
-        (defun dhnam/exwm-load-bindings-for-firefox ()
-          (when (member exwm-class-name '("Firefox" "firefox"))
-            (local-set-key (kbd "C-l") #'dhnam/exwm-app-command-query-to-existing-firefox)
-            (local-set-key (kbd "M-l") #'dhnam/exwm-app-command-query-to-new-firefox-tab)))
+        (comment
+          (defvar dhnam/exwm-app-command-hashtable (make-hash-table :test 'equal)
+            "A hash-table that contains mapping from keys to app-predicates and commands'
+e.g. ((key-0 . ((app-p-00 . command-00) (app-p-01 . command-01))) (key-1 . ((app-p-10 . command-10) (app-p-11 . command-11))) ...)")
 
-        (add-hook 'exwm-manage-finish-hook 'dhnam/exwm-load-bindings-for-firefox)
-        (comment (remove-hook 'exwm-manage-finish-hook 'dhnam/exwm-load-bindings-for-firefox)))))
+          (defun dhnam/exwm-register-app-command (app-p key command)
+            (unless (gethash key dhnam/exwm-app-command-hashtable)
+              (puthash key nil dhnam/exwm-app-command-hashtable))
+            (let ((app-p-command-pairs (gethash key dhnam/exwm-app-command-hashtable)))
+              (puthash key (cons (cons app-p command) app-p-command-pairs) dhnam/exwm-app-command-hashtable)))
+
+          (defun dhnam/exwm-firefox-p ()
+            (member exwm-class-name '("Firefox" "firefox")))
+
+          (defun dhnam/exwm-install-app-commands ()
+            (maphash
+             (lambda (key app-p-command-pairs)
+               (dolist (app-p-command-pair app-p-command-pairs)
+                 (let ((app-p (car app-p-command-pair))
+                       (command (cdr app-p-command-pair)))
+                   (define-key exwm-mode-map key (lambda () (when (funcall app-p) (funcall command)))))))
+             dhnam/exwm-app-command-hashtable))
+
+          (dhnam/exwm-register-app-command
+           #'dhnam/exwm-firefox-p
+           (kbd "C-l")
+           #'dhnam/exwm-app-command-query-to-existing-firefox)
+
+          (dhnam/exwm-register-app-command
+           #'dhnam/exwm-firefox-p
+           (kbd "M-l")
+           #'dhnam/exwm-app-command-query-to-new-firefox-tab)
+
+          (dhnam/exwm-install-app-commands))
+
+        (progn
+          (cl-macrolet
+              ((exwm-register-app-key
+                (key)
+                ;; It's a trick that uses that simulation keys have higher priorities than keys in `exwm-mode-map'.
+                ;; 
+                `(define-key exwm-mode-map ,key '(lambda () (interactive) (dhnam/exwm-edit-send-key ,key)))))
+
+            (exwm-register-app-key (kbd "C-l"))
+            (exwm-register-app-key (kbd "M-l")))
+
+          (add-hook 'exwm-manage-finish-hook 'dhnam/exwm-firefox-enable)
+          ;; (define-key exwm-mode-map (kbd "C-l") #'dhnam/exwm-app-command-query-to-existing-firefox)
+          )
+        )))
 
   (progn
     ;; pre-config
