@@ -240,10 +240,16 @@
     (progn
       ;; application commands
       (let ((map (make-sparse-keymap)))
-        (define-key map (kbd "w") 'dhnam/app-command-open-web-browser)
-        (define-key map (kbd "W") 'dhnam/app-command-open-web-browser-private)
-        (define-key map (kbd "q") 'dhnam/app-command-query-to-browser)
+        (comment (define-key map (kbd "w") 'dhnam/app-command-open-web-browser))
+        (comment (define-key map (kbd "W") 'dhnam/app-command-open-web-browser-private))
+        (comment (define-key map (kbd "q") 'dhnam/app-command-query-to-browser))
         ;; (define-key map (kbd "W") 'dhnam/app-command-open-web-browser-incognito)
+
+        (define-key map (kbd "q") 'dhnam/app-command-query-to-firefox)
+        (define-key map (kbd "Q") 'dhnam/app-command-query-to-firefox-private)
+        (define-key map (kbd "w") 'dhnam/app-command-open-bookmark-in-firefox)
+        (define-key map (kbd "W") 'dhnam/app-command-open-bookmark-in-firefox-private)
+
         (define-key map (kbd "c") 'dhnam/app-command-open-google-chrome)
         (define-key map (kbd "C") 'dhnam/app-command-open-google-chrome-incognito)
         (comment (define-key map (kbd "f") 'dhnam/app-command-open-firefox))
@@ -309,6 +315,9 @@
           (define-key map (kbd "k") 'dhnam/ivy-kill-marked)
           (define-key map (kbd "s") 'dhnam/switch-to-scratch-buffer)
           (define-key map (kbd "q") 'dhnam/eww-new)
+
+          (define-key map (kbd "l") 'dhnam/open-primary-web-search-engine-list-file)
+          (define-key map (kbd "m") 'dhnam/open-primary-web-bookmark-list-file)
 
           (defvar dhnam/exwm-extended-emacs-command-prefix-map map
 	        "Keymap for emacs related commands."))
@@ -633,10 +642,11 @@
                  (cons (kbd "C-q C-0") (kbd "M-q )"))))
 
           (setq exwm-browser-app-input-simulation-keys
-                (list
-                 ;; for fuzzy search
-                 ;; https://github.com/Fannon/search-bookmarks-history-and-tabs#readme
-                 (cons (kbd "C-m") (kbd "C-S-."))))
+                (comment
+                  (list
+                   ;; for fuzzy search
+                   ;; https://github.com/Fannon/search-bookmarks-history-and-tabs#readme
+                   (cons (kbd "C-m") (kbd "C-S-.")))))
 
           (setq exwm-libreoffice-input-simulation-keys
                 (append
@@ -743,15 +753,25 @@
         ;; Application-specific key bindings
 
         (progn
+          ;; For `dhnam/exwm-firefox-mode'
           (cl-macrolet
               ((exwm-register-app-key
                 (key)
-                ;; It's a trick that uses that simulation keys have higher priorities than keys in `exwm-mode-map'.
+                ;; Note
+                ;; - the keys in `exwm-mode-map' triggers a Emacs command in an application such as Firefox
+                ;; - if `dhnam/exwm-firefox-mode' is enabled,
+                ;;   the keys in `dhnam/exwm-firefox-line-mode-map' have higher priorities than those of `exwm-mode-map'
+                ;; - simulation keys have higher priorities than the keys in `exwm-mode-map'.
                 ;; 
                 `(define-key exwm-mode-map ,key '(lambda () (interactive) (dhnam/exwm-edit-send-key ,key)))))
 
             (exwm-register-app-key (kbd "C-l"))
-            (exwm-register-app-key (kbd "M-l")))
+            (exwm-register-app-key (kbd "M-l"))
+            (exwm-register-app-key (kbd "M-L"))
+
+            (exwm-register-app-key (kbd "C-m"))
+            (exwm-register-app-key (kbd "M-m"))
+            (exwm-register-app-key (kbd "M-M")))
 
           (add-hook 'exwm-manage-finish-hook 'dhnam/exwm-firefox-enable)
           ;; (define-key exwm-mode-map (kbd "C-l") #'dhnam/exwm-app-command-query-to-existing-firefox)

@@ -62,7 +62,17 @@
   (key-chord-define-global "i1" 'dhnam/eww-new))
 
 (with-eval-after-load 'dhnam-web-browser
-  (add-to-list 'dhnam/web-search-engine-list-file-paths
-               (concat dhnam/emacs-root-dir "config/init/dependent/search-engines.lisp")))
+  (comment
+    (add-to-list 'dhnam/web-search-engine-list-file-paths
+                 (concat dhnam/emacs-root-dir "config/init/dependent/search-engines.lisp")))
+  (progn
+    (setq dhnam/primary-web-search-engine-list-file-path (concat dhnam/emacs-root-dir "config/init/dependent/search-engines.lisp"))
+    (setq dhnam/web-search-engine-list-file-paths (list dhnam/primary-web-search-engine-list-file-path))
+    (dhnam/update-web-search-engines))
+
+  (progn
+    (setq dhnam/primary-web-bookmark-list-file-path (concat dhnam/emacs-root-dir "config/init/dependent/web-bookmarks.org"))
+    (setq dhnam/web-bookmark-list-file-paths (list dhnam/primary-web-bookmark-list-file-path))
+    (dhnam/update-web-bookmarks)))
 
 (provide 'init-web-browser)
