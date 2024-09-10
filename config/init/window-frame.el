@@ -489,7 +489,9 @@ i.e. windows tiled side-by-side."
    (cl-destructuring-bind
        (height-threshold width-threshold)
        (or (dhnam/machine-config-get-first 'split-height-width-threshold-pair)
-           '(900 320))
+           '(900 200)
+           ;; '(900 320)
+           )
      (setq split-height-threshold height-threshold)
      (setq split-width-threshold width-threshold))))
 

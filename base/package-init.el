@@ -2,7 +2,8 @@
 
 (dhnam/package-initialize
  '(("melpa" . "https://melpa.org/packages/")
-   ("nongnu" . "https://elpa.nongnu.org/nongnu/")))
+   ;; ("nongnu" . "https://elpa.nongnu.org/nongnu/")
+   ))
 
 (progn
   (dhnam/install-package-unless-installed 'use-package)
