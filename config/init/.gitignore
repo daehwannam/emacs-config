@@ -1,1 +1,2 @@
-/dependent
+/dependent/*
+!/dependent/.gitkeep
