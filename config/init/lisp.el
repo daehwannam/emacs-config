@@ -54,7 +54,10 @@
       ;; common-lisp's indentation
       (require 'cl-indent)
       (put 'comment 'common-lisp-indent-function
-           (get 'progn 'common-lisp-indent-function)))))
+           (get 'progn 'common-lisp-indent-function))))
+
+  (with-eval-after-load 'edebug
+    (define-key edebug-mode-map (kbd "C-q C-e") 'edebug-eval-last-sexp)))
 
 (progn
   ;; Common lisp
