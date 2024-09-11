@@ -63,16 +63,19 @@
   ;; Common lisp
   (add-to-list 'auto-mode-alist '("\\.lisp\\'" . lisp-mode))
 
-  (let ((path-to-slime-helper (dhnam/machine-config-get-first 'path-to-slime-helper))
-        (path-to-inferior-lisp-program (dhnam/machine-config-get-first 'path-to-inferior-lisp-program)))
+  (progn
     ;; SLIME
 
-    (when path-to-slime-helper
-      (load (expand-file-name path-to-slime-helper)))
+    (defvar using-manual-slime-helper nil)
+    (when using-manual-slime-helper
+      (let ((path-to-slime-helper (dhnam/machine-config-get-first 'path-to-slime-helper)))
+        (when path-to-slime-helper
+          (load (expand-file-name path-to-slime-helper)))))
 
-    (when path-to-inferior-lisp-program
-      ;; replace "sbcl" with the path to your implementation
-      (setq inferior-lisp-program path-to-inferior-lisp-program))
+    (let ((path-to-inferior-lisp-program (dhnam/machine-config-get-first 'path-to-inferior-lisp-program)))
+      (when path-to-inferior-lisp-program
+        ;; replace "sbcl" with the path to your implementation
+        (setq inferior-lisp-program path-to-inferior-lisp-program)))
 
     (when (fboundp 'slime)
       (progn

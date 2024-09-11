@@ -789,7 +789,7 @@
     ;; setting after exwm is started
     (start-process-shell-command
      "post-machine-config" nil
-     "bash" "/home/dhnam/.emacs.d/exwm/post-machine-config.sh"))
+     "bash /home/dhnam/.emacs.d/exwm/post-machine-config.sh"))
 
   (comment
     ;; docking and undocking config

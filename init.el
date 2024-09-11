@@ -8,7 +8,7 @@
   (require 'dhnam-lib-init (concat dhnam/emacs-root-dir "dhnamlib/dhnam-lib-init.el")))
 
 (progn
-  (when (version< emacs-version "28.0")
+  (when (version< emacs-version "29.0")
     (progn
       ;; Disable package signature
       ;; https://emacs.stackexchange.com/a/53142
