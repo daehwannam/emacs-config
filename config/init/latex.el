@@ -156,7 +156,8 @@
           (define-key pdf-view-mode-map (kbd "<f7>") 'dhnam/pdf-view-pop-command)
           (define-key pdf-view-mode-map (kbd "<f8>") 'dhnam/pdf-view-unpop-command)
 
-          (advice-add 'pdf-links-action-perform :before #'dhnam/pdf-tools-relocation-advice)))
+          (advice-add 'pdf-links-action-perform :around #'dhnam/pdf-tools-relocation-advice)
+          (comment (advice-remove 'pdf-links-action-perform #'dhnam/pdf-tools-relocation-advice))))
 
       (progn
         ;; dark theme
