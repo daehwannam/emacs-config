@@ -519,7 +519,10 @@
                               (cons (kbd (format "s-%d" i))
                                     (dhnam/exwm-make-environment-switch-create-specific i)))))
                    ;; 's-i': Switch to certain workspace group i.
-                   (mapcar 'make-key-func-pair (number-sequence 1 7)))))
+                   (mapcar 'make-key-func-pair (number-sequence 1 7)))
+
+                 (comment
+                   (cons (kbd "<Hangul>") 'dhnam/exwm-toggle-input-method))))
 
           (comment
             ;; Use "s-e" as prefix key instead of "C-c"

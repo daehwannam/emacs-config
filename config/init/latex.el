@@ -149,7 +149,14 @@
           (define-key pdf-view-mode-map (kbd "M-p") 'dhnam/pdf-view-previous-non-overlapping-page-in-multiple-columns-command)
           (define-key pdf-view-mode-map (kbd "M-n") 'dhnam/pdf-view-next-non-overlapping-page-in-multiple-columns-command)
           (define-key pdf-view-mode-map (kbd "M-b") 'dhnam/pdf-view-previous-page-in-multiple-columns-command)
-          (define-key pdf-view-mode-map (kbd "M-f") 'dhnam/pdf-view-next-page-in-multiple-columns-command)))
+          (define-key pdf-view-mode-map (kbd "M-f") 'dhnam/pdf-view-next-page-in-multiple-columns-command))
+
+        (progn
+          (define-key pdf-view-mode-map (kbd "C-SPC") 'dhnam/pdf-view-push-command)
+          (define-key pdf-view-mode-map (kbd "<f7>") 'dhnam/pdf-view-pop-command)
+          (define-key pdf-view-mode-map (kbd "<f8>") 'dhnam/pdf-view-unpop-command)
+
+          (advice-add 'pdf-links-action-perform :before #'dhnam/pdf-tools-relocation-advice)))
 
       (progn
         ;; dark theme
