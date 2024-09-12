@@ -16,3 +16,11 @@
   (progn
     ;; disabling auto-updating
     (setq quelpa-update-melpa-p nil)))
+
+(progn
+  ;; Suppress native-comp warnings.
+  ;; https://www.reddit.com/r/emacs/comments/l42oep/comment/kd0kw5c/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button
+  ;;
+  ;; e.g. ⛔ Warning (comp): example.el:...
+  ;;
+  (setq native-comp-async-report-warnings-errors nil))

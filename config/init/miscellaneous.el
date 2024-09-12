@@ -14,16 +14,17 @@
 (progn
   (comment (setq old-save-buffers-kill-function (key-binding (kbd "C-x C-c"))))
   (comment (setq old-save-buffers-kill-function #'save-buffers-kill-emacs))
-  (setq old-save-buffers-kill-function #'save-buffers-kill-terminal)
+  (comment (setq old-save-buffers-kill-function #'save-buffers-kill-terminal))
+  (setq old-save-buffers-kill-function #'save-buffers-kill-emacs)
 
   (defun dhnam/save-buffers-kill-emacs-with-asking ()
     "Close only if y was pressed."
     (interactive)
     (if (y-or-n-p (format "Are you sure you want to close this frame? "))
-	(progn
-	  ;; (save-buffers-kill-emacs)
-	  ;; (save-buffers-kill-terminal)  
-	  (funcall old-save-buffers-kill-function))
+	    (progn
+	      ;; (save-buffers-kill-emacs)
+	      ;; (save-buffers-kill-terminal)
+	      (funcall old-save-buffers-kill-function))
       (message "Canceled frame close")))
 
   (when (or t (daemonp))
