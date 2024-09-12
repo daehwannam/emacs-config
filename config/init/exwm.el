@@ -766,7 +766,7 @@
                 ;;   the keys in `dhnam/exwm-firefox-line-mode-map' have higher priorities than those of `exwm-mode-map'
                 ;; - simulation keys have higher priorities than the keys in `exwm-mode-map'.
                 ;; 
-                `(define-key exwm-mode-map ,key '(lambda () (interactive) (dhnam/exwm-edit-send-key ,key)))))
+                `(define-key exwm-mode-map ,key '(lambda () (interactive) (dhnam/exwm-send-key ,key)))))
 
             (exwm-register-app-key (kbd "C-l"))
             (exwm-register-app-key (kbd "M-l"))
