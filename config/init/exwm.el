@@ -845,14 +845,17 @@
     ;; - https://www.gnu.org/software/emacs/manual/html_node/elisp/Window-Hooks.html
     ;; - Hubisan's comment: https://stackoverflow.com/questions/47456134/emacs-lisp-hooks-for-detecting-change-of-active-buffer
     ;;
+
+    ;; `dhnam/fcitx-inactivate-for-non-exwm' can be used instead of `dhnam/fcitx-inactivate'.
+
     (add-hook
      ;; When the current buffer in a window is changed
      'window-buffer-change-functions
-     'dhnam/fcitx-inactivate-for-non-exwm)
+     'dhnam/fcitx-inactivate)
 
     (add-hook
      ;; When the cursor is moved to another window
      'window-selection-change-functions
-     'dhnam/fcitx-inactivate-for-non-exwm)))
+     'dhnam/fcitx-inactivate)))
 
 (provide 'init-exwm)
