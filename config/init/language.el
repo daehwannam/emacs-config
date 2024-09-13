@@ -26,7 +26,8 @@
 
   (progn
     ;; for linux
-    (global-set-key (kbd "<Hangul>") 'toggle-input-method))
+    (global-set-key (kbd "<Hangul>") 'toggle-input-method)
+    (global-set-key (kbd "M-<Hangul>") 'toggle-input-method))
 
   (progn
     ;; Preventing delay for composing Korean character 

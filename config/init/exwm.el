@@ -522,6 +522,7 @@
                    (mapcar 'make-key-func-pair (number-sequence 1 7)))
 
                  (comment
+                   (cons (kbd "C-M-S-SPC") 'dhnam/exwm-toggle-input-method)
                    (cons (kbd "<Hangul>") 'dhnam/exwm-toggle-input-method))))
 
           (comment
@@ -835,6 +836,23 @@
       ;; https://github.com/yanghaoxie/which-key-posframe
       (require 'which-key-posframe)
       (which-key-posframe-mode)
-      (setq which-key-posframe-poshandler 'posframe-poshandler-frame-center))))
+      (setq which-key-posframe-poshandler 'posframe-poshandler-frame-center)))
+
+  (progn
+    ;; fcitx config
+    ;;
+    ;; Disable fcitx when the current buffer or window is changed.
+    ;; - https://www.gnu.org/software/emacs/manual/html_node/elisp/Window-Hooks.html
+    ;; - Hubisan's comment: https://stackoverflow.com/questions/47456134/emacs-lisp-hooks-for-detecting-change-of-active-buffer
+    ;;
+    (add-hook
+     ;; When the current buffer in a window is changed
+     'window-buffer-change-functions
+     'dhnam/fcitx-inactivate-for-non-exwm)
+
+    (add-hook
+     ;; When the cursor is moved to another window
+     'window-selection-change-functions
+     'dhnam/fcitx-inactivate-for-non-exwm)))
 
 (provide 'init-exwm)

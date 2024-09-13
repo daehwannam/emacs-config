@@ -24,3 +24,9 @@
   ;; e.g. ⛔ Warning (comp): example.el:...
   ;;
   (setq native-comp-async-report-warnings-errors nil))
+
+(progn
+  ;; Hide warnings
+  ;; https://stackoverflow.com/a/23752552
+  ;;
+  (setq warning-minimum-level :emergency))
