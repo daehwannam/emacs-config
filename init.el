@@ -12,14 +12,15 @@
     (progn
       ;; Disable package signature
       ;; https://emacs.stackexchange.com/a/53142
-      (setq package-check-signature nil))
-    (progn
-      ;; Packages for each Emacs version
-      ;; https://www.reddit.com/r/emacs/comments/qbnrao/comment/hhciemk/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button
-      (setq package-user-dir (locate-user-emacs-file
-                              (concat
-                               (file-name-as-directory "elpa")
-                               emacs-version)))))
+      (setq package-check-signature nil)))
+
+  (progn
+    ;; Packages for each Emacs version
+    ;; https://www.reddit.com/r/emacs/comments/qbnrao/comment/hhciemk/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button
+    (setq package-user-dir (locate-user-emacs-file
+                            (concat
+                             (file-name-as-directory "elpa")
+                             emacs-version))))
 
   (package-initialize)
 

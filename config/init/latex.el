@@ -36,7 +36,24 @@
   ;; ---------------------------------------------------------------------------------------------------------
 
   (comment (setq LaTeX-command-style '(("" "%(PDF)%(latex) -shell-escape %S%(PDFout)"))))
-  (setq LaTeX-command-style '(("" "%(PDF)%(latex) -shell-escape %S%(PDFout) --synctex=1"))))
+  (setq LaTeX-command-style '(("" "%(PDF)%(latex) -shell-escape %S%(PDFout) --synctex=1")))
+  (progn
+    ;; Change TeX-engine
+    ;; https://tex.stackexchange.com/a/26387
+    (comment (setq-default TeX-engine 'luatex))
+    (comment (setq-default TeX-engine 'xetex))
+    (comment (setq-default TeX-engine 'default))))
+
+(progn
+  ;; Specifying TeX-engine as a file variable
+  ;; https://tex.stackexchange.com/a/21212
+
+  ;; %%% Local Variables: 
+  ;; %%% coding: utf-8
+  ;; %%% mode: latex
+  ;; %%% TeX-engine: luatex
+  ;; %%% End:
+)
 
 
 (progn
