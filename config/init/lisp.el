@@ -269,4 +269,10 @@
       ;; paredit overwrites M-s and M-S bindings
       (define-key paredit-mode-map (kbd "C-c h") 'dhnam/highlight-map))))
 
+(progn
+  (require 'dhnam-elisp)
+
+  (define-key edebug-mode-map (kbd "e") #'dhnam/edebug-eval-at-point)
+  (define-key edebug-mode-map (kbd "E") #'edebug-eval-expression))
+
 (provide 'init-lisp)
