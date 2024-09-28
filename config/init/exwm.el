@@ -522,8 +522,9 @@
                    (mapcar 'make-key-func-pair (number-sequence 1 7)))
 
                  (comment
-                   (cons (kbd "C-M-S-SPC") 'dhnam/exwm-toggle-input-method)
-                   (cons (kbd "<Hangul>") 'dhnam/exwm-toggle-input-method))))
+                   (cons (kbd "C-M-S-SPC") 'dhnam/exwm-toggle-input-method))
+                 (comment
+                  (cons (kbd "<Hangul>") 'dhnam/exwm-toggle-input-method))))
 
           (comment
             ;; Use "s-e" as prefix key instead of "C-c"
@@ -751,7 +752,8 @@
           (define-key exwm-mode-map (kbd "M-9") 'previous-buffer)
           (define-key exwm-mode-map (kbd "M-0") 'next-buffer))
 
-        (comment (define-key exwm-mode-map (kbd "s-i") 'dhnam/counsel-switch-buffer-within-app)))
+        (comment (define-key exwm-mode-map (kbd "s-i") 'dhnam/counsel-switch-buffer-within-app))
+        (comment (define-key exwm-mode-map (kbd "<Hangul>") 'dhnam/exwm-toggle-input-method)))
 
       (progn
         ;; Application-specific key bindings
@@ -838,7 +840,7 @@
       (which-key-posframe-mode)
       (setq which-key-posframe-poshandler 'posframe-poshandler-frame-center)))
 
-  (progn
+  (comment
     ;; fcitx config
     ;;
     ;; Disable fcitx when the current buffer or window is changed.
