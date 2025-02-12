@@ -41,8 +41,11 @@
   (define-key python-mode-map (kbd "C-c I") 'dhnam/copy-statement-of-importing-symbol-at-point)
   (define-key python-mode-map (kbd "C-c f") 'dhnam/run-python-module-function)
   (define-key python-mode-map (kbd "C-c r") 'dhnam/run-python-dhnamlib-doctesting)
+  (define-key python-mode-map (kbd "C-c c") 'dhnam/run-python-doc-code)
+  (define-key python-mode-map (kbd "C-c C") 'dhnam/copy-python-doc-code-command)
 
-  (define-key inferior-python-mode-map (kbd "C-c M-W") 'dhnam/python-copy-code-from-docstring))
+  (define-key inferior-python-mode-map (kbd "C-c M-W") 'dhnam/python-copy-code-from-docstring)
+  (define-key python-mode-map (kbd "C-c M-;") 'dhnam/python-toggle-doc-string-code))
 
 (progn
   ;; `comment-dwim' update for python
@@ -150,6 +153,10 @@
   (require 'yaml-mode)
   (add-to-list 'auto-mode-alist '("\\.yaml\\'" . yaml-mode))
   (add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode)))
+
+(when (dhnam/machine-config-get-first 'python-doc-code-temp-file-format)
+  (setq dhnam/python-doc-code-temp-file-format
+        (dhnam/machine-config-get-first 'python-doc-code-temp-file-format)))
 
 (when (fboundp 'ein:run)
   ;; EIN: Emacs IPython Notebook

@@ -1,19 +1,22 @@
 
-(let ((default-option-file-name (concat dhnam/emacs-root-dir "config/options.txt"))
-      (extra-option-file-name (concat dhnam/emacs-root-dir "config/options-extra.txt")))
-  (unless (file-exists-p default-option-file-name)
-    ;; initialize machine options if it's not exist.
-    ;; https://stackoverflow.com/questions/17376706/in-emacs-lisp-how-can-i-append-a-string-to-a-file-that-i-dont-like-to-open
-    ;; https://stackoverflow.com/questions/14071991/how-to-create-an-empty-file-by-elisp/14072295
-    ;;
-    ;; options are sorted in descending order of priority
-    (write-region "(base other-machine option1 option2)" nil default-option-file-name))
-  (let ((default-options (car (read-from-string (dhnam/get-string-from-file default-option-file-name))))
-        (extra-options (when (file-exists-p extra-option-file-name)
-                         (car (read-from-string (dhnam/get-string-from-file extra-option-file-name))))))
-    (defvar dhnam/machine-options
-      (append extra-options default-options)
-      "Configuration options")))
+(defun dhnam/load-machine-options ()
+  (let ((default-option-file-name (concat dhnam/emacs-root-dir "config/options.txt"))
+        (extra-option-file-name (concat dhnam/emacs-root-dir "config/options-extra.txt")))
+    (unless (file-exists-p default-option-file-name)
+      ;; initialize machine options if it's not exist.
+      ;; https://stackoverflow.com/questions/17376706/in-emacs-lisp-how-can-i-append-a-string-to-a-file-that-i-dont-like-to-open
+      ;; https://stackoverflow.com/questions/14071991/how-to-create-an-empty-file-by-elisp/14072295
+      ;;
+      ;; options are sorted in descending order of priority
+      (write-region "(base other-machine option1 option2)" nil default-option-file-name))
+    (let ((default-options (car (read-from-string (dhnam/get-string-from-file default-option-file-name))))
+          (extra-options (when (file-exists-p extra-option-file-name)
+                           (car (read-from-string (dhnam/get-string-from-file extra-option-file-name))))))
+      (append extra-options default-options))))
+
+(defvar dhnam/machine-options
+  (dhnam/load-machine-options)
+  "Configuration options")
 
 (defvar dhnam/machine-config-list)
 (setq dhnam/machine-config-list
@@ -85,6 +88,8 @@
         (split-height-width-threshold-pair
          (ubuntu-laptop (900 200))
          (descartes (900 200)))
+        (python-doc-code-temp-file-format
+         (local-python-doc-code-temp-file-format "/home/dhnam/tmp/XXXXX.py"))
 
         (installable-packages
          ;; (base (vlf magit key-chord modalka evil avy hydra dash counsel multi-term))

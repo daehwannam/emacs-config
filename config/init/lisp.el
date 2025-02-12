@@ -245,7 +245,11 @@
       (define-key paredit-mode-map (kbd "DEL") #'dhnam/paredit-backward-delete)
 
       (comment
-        (define-key paredit-mode-map (kbd dhnam/xcape-left-alt) 'dhnam-paredit-iokl/body)))
+        (define-key paredit-mode-map (kbd dhnam/xcape-left-alt) 'dhnam-paredit-iokl/body))
+
+      (progn
+        (advice-add 'paredit-open-round :around #'dhnam/paredit-open-round-with-$-advice)
+        (advice-add 'paredit-open-square :around #'dhnam/paredit-open-square-with-$-advice)))
 
     (progn
       (define-key paredit-mode-map (kbd "M-D") (make-repeatable-command #'paredit-backward-down))
