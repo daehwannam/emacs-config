@@ -142,7 +142,8 @@
 
     (progn
       ;; volume
-      (require 'volume nil t))
+      (when (require 'volume nil t)
+        (require 'dhnam-volume)))
 
     (comment
       ;; system tray
@@ -221,16 +222,7 @@
           (define-key map (kbd "0") 'ewg/delete-current-group))))
 
     (when (package-installed-p 'volume)
-      (comment
-        (defhydra hydra-volume ()
-          "volume"
-          ("q" nil "quit")
-          ("+" volume-raise-10)
-          ("=" volume-raise-10)
-          ("-" volume-lower-10)
-          ("s" volume-set)
-          ("0" volume-set-to-0%))
-        (define-key dhnam/exwm-workspace-prefix-map (kbd "v") 'hydra-volume/body))
+      (comment (define-key dhnam/exwm-workspace-prefix-map (kbd "v") 'dhnam/volume-control/body))
       (define-key dhnam/exwm-workspace-prefix-map (kbd "v") 'volume-set))
 
     (require 'dhnam-application)
@@ -493,8 +485,8 @@
                   (cons (kbd "s-n") 'tab-next))
 
                  (list
-                  (cons (kbd "<S-s-up>") 'volume-raise-10)
-                  (cons (kbd "<S-s-down>") 'volume-lower-10))
+                  (cons (kbd "<S-s-up>") 'dhnam/volume-raise-3)
+                  (cons (kbd "<S-s-down>") 'dhnam/volume-lower-3))
 
                  (let ((physical-monitor-names
                         (dhnam/machine-config-get-first 'exwm-physical-monitor-names)))
