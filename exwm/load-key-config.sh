@@ -9,12 +9,15 @@ DIR_PATH=`dirname $THIS_PATH`
 OPTION_PATH="${DIR_PATH}/option.txt"
 if [ -f $OPTION_PATH ]; then
     OPTION_VALUE=$(cat $OPTION_PATH)
-    if [ $OPTION_VALUE = "laptop" ]; then
+    if [ $OPTION_VALUE = "laptop-ver-1" ]; then
         # Left Alt = <XF86WWAN>
         xmodmap  -e 'keycode 254 = XF86WWAN'
         # xcape -t 200 -e 'Control_L=CruzeiroSign'
         xcape -t 200 -e 'Alt_L=XF86WWAN'
         # :  # pass
+    elif [ $OPTION_VALUE = "laptop" ]; then
+        # Right Alt to Hangul
+        xmodmap  -e 'keycode 108 = Hangul'
     elif [ $OPTION_VALUE = "descartes" ]; then
         # xmodmap $DIR_PATH/dependent/ctrl-caps-swap.xmodmap
         # Left Alt = ₢

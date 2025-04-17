@@ -38,7 +38,7 @@ export XMODIFIERS=@im=fcitx
 fcitx &  # run fcitx daemon
 
 # Set keyboard repeat rate
-xset r rate 250 50
+xset r rate 250 60
 
 # # Make short-pressed Ctrl behave like Escape
 # xcape -e 'Control_L=Escape'
