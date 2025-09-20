@@ -305,7 +305,7 @@
           (define-key map (kbd "d") 'dhnam/counsel-find-file-in-downloads)
           (define-key map (kbd "w") 'dhnam/kill-gc)
           (define-key map (kbd "k") 'dhnam/ivy-kill-marked)
-          (define-key map (kbd "s") 'dhnam/switch-to-scratch-buffer)
+          (define-key map (kbd "s") 'dhnam/switch-to-org-scratch-buffer)
           (define-key map (kbd "q") 'dhnam/eww-new)
 
           (define-key map (kbd "l") 'dhnam/open-primary-web-search-engine-list-file)
@@ -333,7 +333,10 @@
                           '(;; Browsers
                             "Firefox" "firefox" "Google-chrome" "google-chrome"
                             ;; Libreoffice
-                            "Soffice" "libreoffice-calc"))
+                            "Soffice" "libreoffice-calc"
+                            ;; Others
+                            "okular"
+                            ))
 	              line-mode t)))
              (progn
                ;; start applications in char-mode by default
@@ -572,8 +575,12 @@
                  (cons (kbd "C-M-p") (kbd "<S-up>"))
                  (cons (kbd "C-M-n") (kbd "<S-down>"))
 
-                 (cons (kbd "C-M-b") (kbd "<C-S-left>"))
-                 (cons (kbd "C-M-f") (kbd "<C-S-right>"))
+                 ;; (cons (kbd "C-M-b") (kbd "<C-S-left>"))
+                 ;; (cons (kbd "C-M-f") (kbd "<C-S-right>"))
+                 (cons (kbd "C-M-b") (kbd "<S-left>"))
+                 (cons (kbd "C-M-f") (kbd "<S-right>"))
+                 (cons (kbd "C-M-S-b") (kbd "<C-S-left>"))
+                 (cons (kbd "C-M-S-f") (kbd "<C-S-right>"))
                  (cons (kbd "C-M-a") (kbd "<S-home>"))
                  (cons (kbd "C-M-e") (kbd "<S-end>"))
 
@@ -583,6 +590,9 @@
                  (cons (kbd "M-p") (kbd "<S-f3>"))
                  (cons (kbd "M-n") (kbd "<f3>"))
                  (cons (kbd "<M-return>") (kbd "<escape>"))
+
+                 ;; save
+                 (cons (kbd "C-x C-s") (kbd "C-s"))
 
                  ;; quit
                  (cons (kbd "C-x C-c") (kbd "C-q"))))
@@ -600,13 +610,15 @@
                   (cons (kbd "M-0") (kbd "<C-next>"))
 
                   ;; (cons (kbd "C-l") (kbd "<f6>"))
-                  (cons (kbd "C-M-l") (kbd "<f6>"))
+                  ;; (cons (kbd "C-M-l") (kbd "<f6>"))
+                  (cons (kbd "C-M-u") (kbd "<f6>"))
                   ;; (cons (kbd "M-l") (kbd "C-t"))
 
                   (cons (kbd "C-q C-k") (kbd "C-w"))
 
                   ;; caret browsing
-                  (cons (kbd "<C-return>") (kbd "<f7>")))))
+                  ;; (cons (kbd "<C-return>") (kbd "<f7>"))
+                  (cons (kbd "<M-SPC>") (kbd "<f7>")))))
 
           (setq exwm-vimium-input-simulation-keys
                 (list
@@ -627,7 +639,7 @@
                  (cons (kbd "M-u") (kbd "T U"))
 
                  ;; visual mode
-                 (cons (kbd "C-SPC") (kbd "M-q v"))
+                 ;; (cons (kbd "C-SPC") (kbd "M-q v"))
 
                  ;; select/copy text
                  (cons (kbd "M-s") (kbd "M-q s"))
@@ -652,7 +664,43 @@
                  (list
                   (cons (kbd "C-x C-s") (kbd "C-s"))
                   (cons (kbd "C-q C-s") (kbd "C-s"))
-                  (cons (kbd "<C-return>") (kbd "<f2>"))))))
+                  (cons (kbd "<C-return>") (kbd "<f2>")))))
+
+          (setq exwm-pdf-reader-simulation-keys
+                (append
+                 exwm-base-input-simulation-keys
+                 exwm-advanced-input-simulation-keys))
+
+          (comment
+            ;; exwm-mushclient-simulation-keys does not work well
+            (setq exwm-mushclient-simulation-keys
+                  (append
+                   exwm-base-input-simulation-keys
+                   (list
+                    ;; expanding a region
+                    (cons (kbd "C-M-p") (kbd "<S-up>"))
+                    (cons (kbd "C-M-n") (kbd "<S-down>"))
+
+                    (cons (kbd "C-M-b") (kbd "<S-left>"))
+                    (cons (kbd "C-M-f") (kbd "<S-right>"))
+                    (cons (kbd "C-M-S-b") (kbd "<C-S-left>"))
+                    (cons (kbd "C-M-S-f") (kbd "<C-S-right>"))
+                    (cons (kbd "C-M-a") (kbd "<S-home>"))
+                    (cons (kbd "C-M-e") (kbd "<S-end>"))
+
+                    ;; search
+                    (cons (kbd "C-s") (kbd "C-f"))
+                    (cons (kbd "C-o") (kbd "C-S-f"))
+                    (cons (kbd "C-g") (kbd "<escape>"))
+                    ;; (cons (kbd "<M-return>") (kbd "<escape>"))
+
+                    ;; save
+                    (cons (kbd "C-x C-s") (kbd "C-s"))
+
+                    ;; quit
+                    ;; (cons (kbd "C-x C-c") (kbd "C-q"))
+                    ))))
+          )
 
         (progn
           ;; global bindings
@@ -716,7 +764,18 @@
             
             (register-simulation-keys
              '("Soffice" "libreoffice-calc")
-             exwm-libreoffice-input-simulation-keys))))
+             exwm-libreoffice-input-simulation-keys)
+
+            (register-simulation-keys
+             '("okular")
+             exwm-pdf-reader-simulation-keys)
+
+            (comment
+              (register-simulation-keys
+               ;; Key-bindings for mushclient.exe does not work well
+               '("mushclient.exe")
+               exwm-mushclient-simulation-keys))
+            )))
 
       (progn
         ;; prefix keys for line-mode are defined in `exwm-input-prefix-keys'
