@@ -220,6 +220,12 @@
     (add-hook 'org-mode-hook #'dhnam/org-syntax-table-modify))
 
   (progn
+    ;; todo
+    (define-key org-mode-map (kbd "C-c '") (make-repeatable-command 'org-todo))
+    (with-eval-after-load 'org-agenda
+      (define-key org-agenda-mode-map (kbd "C-c '") (make-repeatable-command 'org-agenda-todo))))
+
+  (progn
     ;; table
     (add-hook 'org-mode-hook (lambda () (local-set-key (kbd "C-c C-x M-c") 'org-table-insert-column)))
     (add-hook 'org-mode-hook (lambda () (local-set-key (kbd "C-c C-x M-r") 'org-table-insert-row))))

@@ -20,7 +20,9 @@
   (defun dhnam/save-buffers-kill-emacs-with-asking ()
     "Close only if y was pressed."
     (interactive)
-    (if (y-or-n-p (format "Are you sure you want to close this frame? "))
+    (if (or
+         current-prefix-arg  ; when prefix argument "C-u" is used
+         (y-or-n-p (format "Are you sure you want to close this frame? ")))
 	    (progn
 	      ;; (save-buffers-kill-emacs)
 	      ;; (save-buffers-kill-terminal)
@@ -28,8 +30,7 @@
       (message "Canceled frame close")))
 
   (when (or t (daemonp))
-    (global-set-key (kbd "C-x C-c") 'dhnam/save-buffers-kill-emacs-with-asking)
-    (global-set-key (kbd "C-x C-c") 'dhnam/save-buffers-kill-emacs-with-asking)
+     (global-set-key (kbd "C-x C-c") 'dhnam/save-buffers-kill-emacs-with-asking)
     (key-chord-define-global "xc" 'dhnam/save-buffers-kill-emacs-with-asking)))
 
 (progn

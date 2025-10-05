@@ -83,4 +83,5 @@
     ;; disable to load emacs startup screen
     (setq inhibit-splash-screen t))
 
-  (switch-to-buffer "*scratch*"))
+  (comment (switch-to-buffer "*scratch*"))
+  (dhnam/switch-to-org-scratch-buffer))

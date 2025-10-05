@@ -211,6 +211,7 @@ the PDFGrep job before it finishes, type \\[kill-compilation]."
     (comment (setq pdf-view-midnight-colors '("light gray" . "#002420")))
     (comment (setq pdf-view-midnight-colors '("light gray" . "#001d1d")))
     (comment (setq pdf-view-midnight-colors '("light gray" . "#002824")))
+    (comment (setq pdf-view-midnight-colors '("black" . "#fffff5")))
     (setq pdf-view-midnight-colors '("light gray" . "#000000")))
 
   (add-hook 'doc-view-mode-hook 'dhnam/initialize-pdf-tools)

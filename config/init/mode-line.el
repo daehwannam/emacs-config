@@ -5,7 +5,12 @@
 
   (progn
     ;; customize
-    (setq awesome-tray-active-modules '("tab-bar" "battery" "date"))
+    (setq awesome-tray-active-modules
+          (if dhnam/exwm-cmd-line-arg-passed
+              '("ewg" "tab-bar" "battery" "date")
+            (progn
+              ;; '("frame" "tab-bar" "battery" "date")
+              '("tab-bar" "battery" "date"))))
 
     (defun-override awesome-tray-module-date-info ()
       (comment (format-time-string "%m-%d %H:%M %a"))
@@ -42,7 +47,23 @@
              (num-tabs (length tabs)))
         (format "%d/%d" current-tab-num num-tabs)))
 
-    (push '("tab-bar" . (dhnam/awesome-tray-my-tab-bar-info awesome-tray-module-awesome-tab-face))
+    (push '("tab-bar" . (dhnam/awesome-tray-my-tab-bar-info awesome-tray-module-parent-dir-face))
+          awesome-tray-module-alist)
+
+    (defun dhnam/awesome-tray-my-frame-info ()
+      (let ((frames (frame-list))
+            (curr-frame (selected-frame)))
+        (format "%d/%d" (length (member curr-frame frames)) (length (frame-list)))))
+
+    (push '("frame" . (dhnam/awesome-tray-my-frame-info awesome-tray-module-awesome-tab-face))
+          awesome-tray-module-alist)
+
+    (defun dhnam/awesome-tray-my-ewg-info ()
+      (let ((group-number (1+ (ewg/get-group-index exwm-workspace-current-index)))
+            (num-total-groups (/ (exwm-workspace--count) ewg/max-group-size)))
+        (format "%d/%d" group-number num-total-groups)))
+
+    (push '("ewg" . (dhnam/awesome-tray-my-ewg-info awesome-tray-module-awesome-tab-face))
           awesome-tray-module-alist))
 
   (unless (display-graphic-p)

@@ -8,7 +8,7 @@
 
     (progn
       ;; default values are 0.1 and 0.2
-      (setq key-chord-two-keys-delay 0.1)
+      (setq key-chord-two-keys-delay 0.15)
       (setq key-chord-one-key-delay 0.2))
 
     (progn

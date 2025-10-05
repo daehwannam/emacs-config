@@ -117,6 +117,7 @@
   (key-chord-define-global "kk" 'kill-buffer)
   (key-chord-define-global "ff" 'find-file))
 
-(key-chord-define-global "s;" 'dhnam/switch-to-scratch-buffer)
+(key-chord-define-global "s;" 'dhnam/switch-to-org-scratch-buffer)
+(key-chord-define-global "e;" 'dhnam/switch-to-scratch-buffer)
 
 (provide 'init-buffer)

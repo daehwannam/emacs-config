@@ -61,6 +61,8 @@
 
 (progn
   ;; Common lisp
+  (require 'dhnam-lisp)
+
   (add-to-list 'auto-mode-alist '("\\.lisp\\'" . lisp-mode))
 
   (progn
@@ -95,15 +97,21 @@
 
       (progn
         ;; Common lisp hyperspec
-        (progn
+        (advice-add 'hyperspec-lookup :around 'dhnam/hyperspec-lookup-with-eww-advice)
+        (advice-add 'slime-hyperspec-lookup :around 'dhnam/hyperspec-lookup-with-eww-advice)
+
+        (comment
           ;; Opening hyperspec document in eww
           ;; https://www.reddit.com/r/lisp/comments/oo37mr/comment/h5vosl2/?utm_source=share&utm_medium=web2x&context=3
           ;;
           ;; related commands
           ;; - common-lisp-hyperspec
           ;; - slime-documentation-lookup (C-c C-d h)
+
           (setq browse-url-browser-function
-	            '(("hyperspec" . eww-browse-url)
+	            '(("hyperspec" . dhnam/eww-new-hyperspec)
+                  ;; ("hyperspec" . dhnam/eww-new)
+                  ;; ("hyperspec" . eww-browse-url)
 	              ("." . browse-url-default-browser))))
 
         (progn
@@ -142,7 +150,8 @@
 
   (defun dhnam/insert-lissp-prelude ()
     (interactive)
-    (insert "(hissp.basic.._macro_.prelude)")))
+    (comment (insert "(hissp.basic.._macro_.prelude)"))
+    (insert "(hissp.macros.._macro_.prelude)")))
 
 (progn
   ;; Parenthesis-related modes for global activations
