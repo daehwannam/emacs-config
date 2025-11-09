@@ -57,7 +57,15 @@
            (get 'progn 'common-lisp-indent-function))))
 
   (with-eval-after-load 'edebug
-    (define-key edebug-mode-map (kbd "C-q C-e") 'edebug-eval-last-sexp)))
+    (define-key edebug-mode-map (kbd "C-q C-e") 'edebug-eval-last-sexp))
+
+  (progn
+    (require 'dhnam-elisp)
+    (global-set-key (kbd "C-q C-e") 'dhnam/eval-last-sexp-or-region)
+    
+    (with-eval-after-load 'edebug
+      (define-key edebug-mode-map (kbd "e") #'dhnam/edebug-eval-at-point)
+      (define-key edebug-mode-map (kbd "E") #'edebug-eval-expression))))
 
 (progn
   ;; Common lisp
@@ -133,16 +141,24 @@
         ;; Bindings
 
         (defun dhnam/slime-define-keys (map)
-          (define-key map (kbd "C-q C-e") #'slime-eval-last-expression)
+          (comment (define-key map (kbd "C-q C-e") #'slime-eval-last-expression))
+          (define-key map (kbd "C-q C-e") #'dhnam/slime-eval-last-expression-or-region)
           (comment (define-key map (kbd "C-q C-j") #'slime-eval-last-expression-in-repl)) ; it's already mapped
           (comment (define-key map (kbd "C-q J") #'slime-eval-print-last-expression))
           (define-key map (kbd "C-c C-d H") #'slime-documentation)
-          (define-key map (kbd "C-c H") #'slime-hyperspec-lookup))
+          (define-key map (kbd "C-c H") #'slime-hyperspec-lookup)
+          (define-key map (kbd "C-c M-l") #'slime-list-connections))
 
         (with-eval-after-load 'slime
           (dhnam/slime-define-keys slime-mode-map))
         (with-eval-after-load 'slime-repl
-          (dhnam/slime-define-keys slime-repl-mode-map))))))
+          (dhnam/slime-define-keys slime-repl-mode-map))
+
+        (define-key slime-mode-map (kbd "C-c r") #'slime)
+        (define-key slime-mode-map (kbd "C-c R") #'slime-restart-inferior-lisp)
+        (comment (define-key slime-mode-map (kbd "C-c C-o") #'slime-repl))
+        (define-key slime-mode-map (kbd "C-c C-o") #'slime-switch-to-output-buffer)
+        ))))
 
 (progn
   ;; hissp & lissp
@@ -203,6 +219,8 @@
     (add-hook 'slime-repl-mode-hook       'enable-paredit-mode))
   
   (progn
+    (define-key paredit-mode-map (kbd "\"") 'dhnam/paredit-doublequote)
+
     (define-key paredit-mode-map (kbd "C-M-p") 'backward-list)
     (define-key paredit-mode-map (kbd "C-M-n") 'forward-list)
 
@@ -240,7 +258,7 @@
       (define-key paredit-mode-map (kbd "C-M-w") #'paredit-kill-region))
 
     (progn
-      (require 'dhnam-elisp)
+      (comment (require 'dhnam-elisp))
       (require 'dhnam-paredit)
 
       (comment (key-chord-define paredit-mode-map "kk" (make-repeatable-command #'dhnam/copy-and-forward-sexp)))
@@ -282,10 +300,5 @@
       ;; paredit overwrites M-s and M-S bindings
       (define-key paredit-mode-map (kbd "C-c h") 'dhnam/highlight-map))))
 
-(with-eval-after-load 'edebug
-  (require 'dhnam-elisp)
-
-  (define-key edebug-mode-map (kbd "e") #'dhnam/edebug-eval-at-point)
-  (define-key edebug-mode-map (kbd "E") #'edebug-eval-expression))
 
 (provide 'init-lisp)
