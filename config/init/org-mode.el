@@ -405,7 +405,7 @@ When nil, use the default face background."
 
   (define-key org-mode-map (kbd "C-c C-o") 'dhnam/org-open-at-point-same-window)
   (comment (define-key org-mode-map (kbd "C-c T") 'dhnam/org-insert-exact-time-stamp))
-  (define-key global-map (kbd "C-c T") 'dhnam/org-insert-exact-time-stamp)
+  (define-key global-map (kbd "C-c T") 'dhnam/org-insert-inactive-time-stamp)
 
   (with-eval-after-load "org"
     (require 'ob-html)
