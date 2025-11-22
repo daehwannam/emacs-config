@@ -46,8 +46,9 @@
 	    ;; (global-set-key (kbd "C-s") 'isearch-forward)
 	    ;; (global-set-key (kbd "C-c s") 'swiper)
 	    (comment (key-chord-define-global "js" 'swiper))
-	    (key-chord-define-global "js" 'dhnam/swiper-within-region)
-	    (key-chord-define-global "jf" 'dhnam/swiper-symbol-at-point)
+	    (comment (key-chord-define-global "js" 'dhnam/swiper-within-region))
+        (key-chord-define-global "jf" 'dhnam/swiper-within-region)
+	    (key-chord-define-global "jw" 'dhnam/swiper-symbol-at-point)
 	    (comment (space-chord-define-global "s" 'swiper))
 	    ;; (global-set-key (kbd "C-c C-s") 'swiper) ; conflict with 'elpy-rgrep-symbol
 	    ;; (global-set-key (kbd "C-r") 'swiper)

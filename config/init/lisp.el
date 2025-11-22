@@ -147,15 +147,15 @@
           (comment (define-key map (kbd "C-q J") #'slime-eval-print-last-expression))
           (define-key map (kbd "C-c C-d H") #'slime-documentation)
           (define-key map (kbd "C-c H") #'slime-hyperspec-lookup)
-          (define-key map (kbd "C-c M-l") #'slime-list-connections))
+          (define-key map (kbd "C-c M-l") #'slime-list-connections)
+          (define-key map (kbd "C-c r") #'slime)
+          (define-key map (kbd "C-c R") #'slime-restart-inferior-lisp))
 
         (with-eval-after-load 'slime
           (dhnam/slime-define-keys slime-mode-map))
         (with-eval-after-load 'slime-repl
           (dhnam/slime-define-keys slime-repl-mode-map))
 
-        (define-key slime-mode-map (kbd "C-c r") #'slime)
-        (define-key slime-mode-map (kbd "C-c R") #'slime-restart-inferior-lisp)
         (comment (define-key slime-mode-map (kbd "C-c C-o") #'slime-repl))
         (define-key slime-mode-map (kbd "C-c C-o") #'slime-switch-to-output-buffer)
         ))))

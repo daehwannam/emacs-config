@@ -28,9 +28,10 @@
          (vbox "~/quicklisp/slime-helper.el")
          (ubuntu-laptop "~/quicklisp/slime-helper.el"))
         (path-to-inferior-lisp-program
-         (slime-setup "/usr/bin/sbcl")
-         (descartes "/usr/bin/sbcl")
-         (vbox "/usr/bin/sbcl")
+         (slime-setup "sbcl")
+         ;; (slime-setup "/usr/bin/sbcl")
+         (descartes "sbcl")
+         (vbox "sbcl")
          (ubuntu-laptop-sbcl "/home/dhnam/program/miniconda3/envs/default/bin/sbcl"))
         (etags-list (vbox ("/usr/share/emacs/25.3/lisp" "~/.emacs.d")))
         (org-agenda-directory-pattern

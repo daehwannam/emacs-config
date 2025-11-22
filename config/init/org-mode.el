@@ -114,7 +114,8 @@
        'org-babel-load-languages `((python . t)
                                    (,shell-symbol . t)
                                    (latex . t)
-                                   (lisp . t))))
+                                   (lisp . t)
+                                   (js . t))))
 
     (progn
       ;; https://www.reddit.com/r/orgmode/comments/64tiq9/syntax_highlighting_in_code_blocks/dg548nx/
@@ -220,10 +221,10 @@
     (add-hook 'org-mode-hook #'dhnam/org-syntax-table-modify))
 
   (progn
-    ;; todo
-    (define-key org-mode-map (kbd "C-c '") (make-repeatable-command 'org-todo))
+    ;; "M-'" is originally mapped to `abbrev-prefix-mark'
     (with-eval-after-load 'org-agenda
-      (define-key org-agenda-mode-map (kbd "C-c '") (make-repeatable-command 'org-agenda-todo))))
+      (define-key org-mode-map (kbd "M-'") 'org-agenda-todo))
+    (define-key org-mode-map (kbd "M-'") 'org-todo)  )
 
   (progn
     ;; table
@@ -402,7 +403,16 @@ When nil, use the default face background."
     ;; <org-fold-core--buffer-substring-filter: Invalid read syntax: "#">
     (require 'dhnam-cmd-line-eval))
 
-  (define-key org-mode-map (kbd "C-c C-o") 'dhnam/org-open-at-point-same-window))
+  (define-key org-mode-map (kbd "C-c C-o") 'dhnam/org-open-at-point-same-window)
+  (comment (define-key org-mode-map (kbd "C-c T") 'dhnam/org-insert-exact-time-stamp))
+  (define-key global-map (kbd "C-c T") 'dhnam/org-insert-exact-time-stamp)
+
+  (with-eval-after-load "org"
+    (require 'ob-html)
+    ;; https://github.com/misohena/ob-html
+
+    ;; Enable C-c C-o on html code block
+    (org-babel-html-enable-open-src-block-result-temporary)))
 
 
 (provide 'init-org-mode)

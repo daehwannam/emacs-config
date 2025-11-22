@@ -6,6 +6,10 @@
     (add-hook 'python-mode-hook 'eglot-ensure)
     (add-hook 'python-mode-hook 'company-mode))
 
+  (progn
+    (add-hook 'js-mode-hook 'eglot-ensure)
+    (add-hook 'js-mode-hook 'company-mode))
+
   (comment
     (with-eval-after-load 'eglot
       ;; python language-server configuration

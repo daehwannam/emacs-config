@@ -55,15 +55,28 @@
     (comment (key-chord-define proced-mode-map "fl" 'dhnam/proced-filter-interactive-all))
     (comment (key-chord-define proced-mode-map "fu" 'dhnam/proced-filter-interactive-user))))
 
-(defun dhnam/kill-gc ()
+(defun dhnam/kill-gc-by-reading ()
   (interactive)
   (let ((path-file "~/gc-path.txt"))
     (kill-new (dhnam/string-trim (dhnam/get-string-from-file (dhnam/string-trim (dhnam/get-string-from-file path-file)))))))
 
-(defun dhnam/insert-gc ()
+(defun dhnam/kill-gc-by-running ()
+  (interactive)
+  (let ((path-file "~/gc-path.txt"))
+    (kill-new (dhnam/string-trim (shell-command-to-string (dhnam/string-trim (dhnam/get-string-from-file path-file)))))))
+
+(defun dhnam/insert-gc-by-reading ()
   (interactive)
   (let ((path-file "~/gc-path.txt"))
     (insert (dhnam/string-trim (dhnam/get-string-from-file (dhnam/string-trim (dhnam/get-string-from-file path-file)))))))
+
+(defun dhnam/insert-gc-by-running ()
+  (interactive)
+  (let ((path-file "~/gc-path.txt"))
+    (insert (dhnam/string-trim (shell-command-to-string (dhnam/string-trim (dhnam/get-string-from-file path-file)))))))
+
+(defalias 'dhnam/kill-gc 'dhnam/kill-gc-by-running)
+(defalias 'dhnam/insert-gc 'dhnam/insert-gc-by-running)
 
 (progn
   (define-key occur-mode-map "o" 'dhnam/occur-mode-goto-occurrence-current-window))

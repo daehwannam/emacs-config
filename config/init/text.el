@@ -45,4 +45,10 @@
   ;; The default value of `fill-column' is 70.
   (setq fill-column 110))
 
+(progn
+  (require 'dhnam-org-todo-comment)
+
+  (global-set-key (kbd "C-c M-;") 'dhnam/otc-toggle)
+  (global-set-key (kbd "C-c M-:") 'dhnam/otc-summarize-todo))
+
 (provide 'init-text)
