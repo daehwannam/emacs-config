@@ -145,6 +145,12 @@
       (when (require 'volume nil t)
         (require 'dhnam-volume)))
 
+    (when (package-installed-p 'pulseaudio-control)
+      ;; `pulseaudio-control'
+      (setq pulseaudio-control-volume-step "3%")
+
+      (require 'dhnam-pulseaudio-control))
+
     (comment
       ;; system tray
       ;; https://github.com/ch11ng/exwm/wiki#system-tray
@@ -251,6 +257,7 @@
         (define-key map (kbd "<print>") 'dhnam/app-command-open-flameshot-gui)
         (define-key map (kbd "<S-print> b") 'dhnam/screenshot-video-selection-start)
         (define-key map (kbd "<S-print> e") 'dhnam/screenshot-video-stop)
+        (define-key map (kbd "a") 'dhnam/pulseaudio-control/body)
 
 	    (defvar dhnam/exwm-command-prefix-map map
 	      "Keymap for application related commands."))
@@ -519,7 +526,11 @@
                  (comment
                    (cons (kbd "C-M-S-SPC") 'dhnam/exwm-toggle-input-method))
                  (comment
-                  (cons (kbd "<Hangul>") 'dhnam/exwm-toggle-input-method))))
+                  (cons (kbd "<Hangul>") 'dhnam/exwm-toggle-input-method))
+
+                 (list
+                  (cons (kbd "<s-f3>") 'kmacro-start-macro-or-insert-counter)
+                  (cons (kbd "<s-f4>") 'kmacro-end-or-call-macro))))
 
           (comment
             ;; Use "s-e" as prefix key instead of "C-c"

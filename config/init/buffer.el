@@ -10,6 +10,7 @@
     ;; ibuffer
     ;; http://emacs.stackexchange.com/questions/202/close-all-dired-buffers
     (global-set-key "\C-x\C-b" 'ibuffer)
+    (global-set-key (kbd "C-c B") 'dhnam/ibuffer-with-marking-unsaved-buffers)
     (with-eval-after-load 'ibuffer
       (define-key ibuffer-mode-map (kbd "M-o") nil))))
 

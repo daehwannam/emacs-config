@@ -173,6 +173,10 @@
           (define-key pdf-view-mode-map (kbd "<f7>") 'dhnam/pdf-view-pop-command)
           (define-key pdf-view-mode-map (kbd "<f8>") 'dhnam/pdf-view-unpop-command)
 
+          (define-key pdf-view-mode-map (kbd "M-<") 'dhnam/pdf-view-first-page)
+          (define-key pdf-view-mode-map (kbd "M->") 'dhnam/pdf-view-last-page)
+          (define-key pdf-view-mode-map (kbd "M-g M-g") 'dhnam/pdf-view-goto-page)
+
           (advice-add 'pdf-links-action-perform :around #'dhnam/pdf-tools-relocation-advice)
           (comment (advice-remove 'pdf-links-action-perform #'dhnam/pdf-tools-relocation-advice))))
 

@@ -5,6 +5,7 @@
   ;; (ivy-mode 1)
   (ivy-define-key ivy-switch-buffer-map (kbd "C-SPC") 'dhnam/ivy-toggle-mark)
   (ivy-define-key ivy-minibuffer-map (kbd "M-n") 'dhnam/ivy-next-history-element)
+  (ivy-define-key ivy-minibuffer-map (kbd "M-p") 'dhnam/ivy-previous-history-element)
   (ivy-define-key ivy-minibuffer-map (kbd "M-m") 'dhnam/ivy-toggle-symbol-boundaries)
   (ivy-define-key ivy-minibuffer-map (kbd "C-y") 'dhnam/swiper-yank)
 
@@ -48,7 +49,7 @@
 	    (comment (key-chord-define-global "js" 'swiper))
 	    (comment (key-chord-define-global "js" 'dhnam/swiper-within-region))
         (key-chord-define-global "jf" 'dhnam/swiper-within-region)
-	    (key-chord-define-global "jw" 'dhnam/swiper-symbol-at-point)
+	    (key-chord-define-global "qk" 'dhnam/swiper-symbol-at-point)
 	    (comment (space-chord-define-global "s" 'swiper))
 	    ;; (global-set-key (kbd "C-c C-s") 'swiper) ; conflict with 'elpy-rgrep-symbol
 	    ;; (global-set-key (kbd "C-r") 'swiper)

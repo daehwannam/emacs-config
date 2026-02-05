@@ -35,11 +35,24 @@
         map)))))
 
 
-(use-existing-pkg atomic-chrome
-  :init (atomic-chrome-start-server)
-  :config
+(comment
+  (use-existing-pkg atomic-chrome
+    :init (atomic-chrome-start-server)
+    :config
+    (setq atomic-chrome-url-major-mode-alist
+	      `((,(regexp-quote "overleaf.com") . latex-mode)
+            ((,regexp-quote "lepsol.aptaracorp.com") . latex-mode)))))
+
+(when (require 'atomic-chrome nil t)
+  (atomic-chrome-start-server)
   (setq atomic-chrome-url-major-mode-alist
-	'(("overleaf\\.com" . latex-mode))))
+	    `((,(regexp-quote "overleaf.com") . latex-mode)
+          (,(regexp-quote "lepsol.aptaracorp.com") . latex-mode)))
+  (progn
+    ;; `atomic-chrome-enable-auto-update' needs to be disabled
+    ;; to reduce latency when modifying large text.
+    (setq atomic-chrome-enable-auto-update nil)
+    (define-key atomic-chrome-edit-mode-map (kbd "C-x C-s") 'atomic-chrome-send-buffer-text)))
 
 (progn
   (defun dhnam/quit-window-and-other-window-backwards ()
@@ -73,6 +86,11 @@
   (progn
     (setq dhnam/primary-web-bookmark-list-file-path (concat dhnam/emacs-root-dir "config/init/dependent/web-bookmarks.org"))
     (setq dhnam/web-bookmark-list-file-paths (list dhnam/primary-web-bookmark-list-file-path))
-    (dhnam/update-web-bookmarks)))
+    (dhnam/update-web-bookmarks))
+
+  (progn
+    (setq dhnam/default-web-search-engine-name "gg")
+    (setq dhnam/default-web-search-engine-entry
+          '("gg" "https://www.google.com/search?q=~a" "https://www.google.com/"))))
 
 (provide 'init-web-browser)

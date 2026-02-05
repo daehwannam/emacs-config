@@ -47,6 +47,11 @@
        (proced arg))))
 
   (progn
+    ;; The variable `proced-filter' should be initialized before the first call of `proced'.
+    (comment (setq proced-filter 'user))
+    (setq proced-filter 'all))
+
+  (progn
     (defun dhnam/proced-filter-interactive-all () (interactive) (proced-filter-interactive 'all))
     (defun dhnam/proced-filter-interactive-user () (interactive) (proced-filter-interactive 'user))
 

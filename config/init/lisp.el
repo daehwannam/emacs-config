@@ -72,8 +72,56 @@
   (require 'dhnam-lisp)
 
   (add-to-list 'auto-mode-alist '("\\.lisp\\'" . lisp-mode))
+  (add-to-list 'auto-mode-alist '("/\\.sbclrc\\'" . lisp-mode))
+
+  (defvar dhnam/common-lisp-ide 'sly)
+  (comment (defvar dhnam/common-lisp-ide 'slime))
+
+  (let ((path-to-inferior-lisp-program (dhnam/machine-config-get-first 'path-to-inferior-lisp-program)))
+    (when path-to-inferior-lisp-program
+      ;; `inferior-lisp-program' can be a path to CL implementation
+      ;; such as "sbcl", "ccl", "clisp"
+      (setq inferior-lisp-program path-to-inferior-lisp-program)))
 
   (progn
+    ;; Common lisp hyperspec
+    (defvar dhnam/hyperspec-lookup-func #'sly-hyperspec-lookup)
+    (setq dhnam/hyperspec-lookup-key (kbd "C-c H"))
+
+    (advice-add 'hyperspec-lookup :around 'dhnam/hyperspec-lookup-with-eww-advice)
+    (advice-add 'slime-hyperspec-lookup :around 'dhnam/hyperspec-lookup-with-eww-advice)
+    (advice-add 'sly-hyperspec-lookup :around 'dhnam/hyperspec-lookup-with-eww-advice)
+
+    (comment
+      ;; Opening hyperspec document in eww
+      ;; https://www.reddit.com/r/lisp/comments/oo37mr/comment/h5vosl2/?utm_source=share&utm_medium=web2x&context=3
+      ;;
+      ;; related commands
+      ;; - common-lisp-hyperspec
+      ;; - slime-documentation-lookup (C-c C-d h)
+
+      (setq browse-url-browser-function
+            '(("hyperspec" . dhnam/eww-new-hyperspec)
+              ;; ("hyperspec" . dhnam/eww-new)
+              ;; ("hyperspec" . eww-browse-url)
+              ("." . browse-url-default-browser))))
+
+    (progn
+      ;; CLHS offline
+      ;; https://lispcookbook.github.io/cl-cookbook/emacs-ide.html#consult-the-clhs-offline
+      ;;
+      ;; Run the following code in slime REPL to install CLHS
+      ;; > (ql:quickload "clhs")
+      ;; > (clhs:print-emacs-setup-form)
+      ;; > (clhs:install-clhs-use-local)
+      ;;
+      ;; Run the below command again to find the path of CLHS
+      ;; > (clhs:print-emacs-setup-form)
+      (let ((clhs-use-local-path "~/quicklisp/clhs-use-local.el"))
+        (when (file-exists-p clhs-use-local-path)
+          (load clhs-use-local-path)))))
+
+  (when (eq dhnam/common-lisp-ide 'slime)
     ;; SLIME
 
     (defvar using-manual-slime-helper nil)
@@ -81,11 +129,6 @@
       (let ((path-to-slime-helper (dhnam/machine-config-get-first 'path-to-slime-helper)))
         (when path-to-slime-helper
           (load (expand-file-name path-to-slime-helper)))))
-
-    (let ((path-to-inferior-lisp-program (dhnam/machine-config-get-first 'path-to-inferior-lisp-program)))
-      (when path-to-inferior-lisp-program
-        ;; replace "sbcl" with the path to your implementation
-        (setq inferior-lisp-program path-to-inferior-lisp-program)))
 
     (when (fboundp 'slime)
       (progn
@@ -104,40 +147,6 @@
                     :around #'ora-slime-completion-in-region))
 
       (progn
-        ;; Common lisp hyperspec
-        (advice-add 'hyperspec-lookup :around 'dhnam/hyperspec-lookup-with-eww-advice)
-        (advice-add 'slime-hyperspec-lookup :around 'dhnam/hyperspec-lookup-with-eww-advice)
-
-        (comment
-          ;; Opening hyperspec document in eww
-          ;; https://www.reddit.com/r/lisp/comments/oo37mr/comment/h5vosl2/?utm_source=share&utm_medium=web2x&context=3
-          ;;
-          ;; related commands
-          ;; - common-lisp-hyperspec
-          ;; - slime-documentation-lookup (C-c C-d h)
-
-          (setq browse-url-browser-function
-	            '(("hyperspec" . dhnam/eww-new-hyperspec)
-                  ;; ("hyperspec" . dhnam/eww-new)
-                  ;; ("hyperspec" . eww-browse-url)
-	              ("." . browse-url-default-browser))))
-
-        (progn
-          ;; CLHS offline
-          ;; https://lispcookbook.github.io/cl-cookbook/emacs-ide.html#consult-the-clhs-offline
-          ;;
-          ;; Run the following code in slime REPL to install CLHS
-          ;; > (ql:quickload "clhs")
-          ;; > (clhs:print-emacs-setup-form)
-          ;; > (clhs:install-clhs-use-local)
-          ;;
-          ;; Run the below command again to find the path of CLHS
-          ;; > (clhs:print-emacs-setup-form)
-          (let ((clhs-use-local-path "~/quicklisp/clhs-use-local.el"))
-            (when (file-exists-p clhs-use-local-path)
-              (load clhs-use-local-path)))))
-
-      (progn
         ;; Bindings
 
         (defun dhnam/slime-define-keys (map)
@@ -152,13 +161,44 @@
           (define-key map (kbd "C-c R") #'slime-restart-inferior-lisp))
 
         (with-eval-after-load 'slime
-          (dhnam/slime-define-keys slime-mode-map))
-        (with-eval-after-load 'slime-repl
-          (dhnam/slime-define-keys slime-repl-mode-map))
+          (dhnam/slime-define-keys slime-mode-map)
 
-        (comment (define-key slime-mode-map (kbd "C-c C-o") #'slime-repl))
-        (define-key slime-mode-map (kbd "C-c C-o") #'slime-switch-to-output-buffer)
-        ))))
+          (comment (define-key slime-mode-map (kbd "C-c C-o") #'slime-repl))
+          (define-key slime-mode-map (kbd "C-c C-o") #'slime-switch-to-output-buffer))
+
+        (with-eval-after-load 'slime-repl
+          (dhnam/slime-define-keys slime-repl-mode-map)))))
+
+  (when (eq dhnam/common-lisp-ide 'sly)
+    (setq sly-replace-slime t)  ; Automatically replace SLIME with SLY
+
+    (when (fboundp 'sly)
+      (comment (require 'sly)))
+
+    (defun dhnam/sly-define-keys (map)
+      (define-key map (kbd "C-x C-e") #'dhnam/sly-eval-last-expression-or-region)
+      (define-key map (kbd "C-q C-e") #'dhnam/sly-eval-last-expression-or-region)
+
+      (define-key map (kbd "C-c M-h") #'sly-documentation)
+      (define-key map (kbd "C-c H") #'sly-hyperspec-lookup)
+      (define-key map (kbd "C-c M-l") #'sly-list-connections)
+      (define-key map (kbd "C-c r") #'sly)
+      (define-key map (kbd "C-c R") #'sly-restart-inferior-lisp))
+
+      ;; Default bindings of `sly-mode-map'
+      ;; C-c C-p: `sly-pprint-eval-last-expression'
+
+    (with-eval-after-load 'sly
+      (dhnam/sly-define-keys sly-mode-map)
+      (define-key sly-mode-map (kbd "C-c C-o") #'sly-mrepl))
+
+    (with-eval-after-load 'sly-mrepl
+      (dhnam/sly-define-keys sly-mrepl-mode-map))
+
+    (add-hook 'sly-mrepl-mode-hook 'dhnam/sly-paredit-mode))
+
+  (with-eval-after-load 'ob-lisp
+    (setq org-babel-lisp-eval-fn #'sly-eval)))
 
 (progn
   ;; hissp & lissp
@@ -216,7 +256,8 @@
     (add-hook 'lisp-interaction-mode-hook 'enable-paredit-mode)
     (add-hook 'scheme-mode-hook           'enable-paredit-mode)
     (add-hook 'hy-mode-hook               'enable-paredit-mode)
-    (add-hook 'slime-repl-mode-hook       'enable-paredit-mode))
+    (add-hook 'slime-repl-mode-hook       'enable-paredit-mode)
+    (add-hook 'sly-mrepl-mode-hook        'enable-paredit-mode))
   
   (progn
     (define-key paredit-mode-map (kbd "\"") 'dhnam/paredit-doublequote)
