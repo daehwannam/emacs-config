@@ -14,13 +14,15 @@
       ;;   - python-mode
       ;;   - pyvenv-workon --> some-python-environment
       )
-    (let ((pyvenv-workon-home-path (dhnam/machine-config-get-first 'pyvenv-workon-home-path)))
-      (when pyvenv-workon-home-path
-	    (setenv "WORKON_HOME" pyvenv-workon-home-path)
-	    (pyvenv-mode 1)
-	    (comment
-	      ;; pyvenv-tracking-mode is very slow
-	      (pyvenv-tracking-mode 1))))))
+    (comment
+      (let ((pyvenv-workon-home-path (dhnam/machine-config-get-first 'pyvenv-workon-home-path)))
+        ;; This setup is deprecated
+        (when pyvenv-workon-home-path
+	      (setenv "WORKON_HOME" pyvenv-workon-home-path)
+	      (pyvenv-mode 1)
+	      (comment
+	        ;; pyvenv-tracking-mode is very slow
+	        (pyvenv-tracking-mode 1)))))))
 
 (if (package-installed-p 'highlight-indentation)
     (progn
