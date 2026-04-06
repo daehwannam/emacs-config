@@ -1,6 +1,9 @@
 
 (require 'dhnam-conda)
 
+(when (dhnam/machine-config-get-first 'conda-command)
+  (setq dhnam/conda-command (dhnam/machine-config-get-first 'conda-command)))
+
 (progn
   (defun dhnam/vterm-run-command (cmd)
     (vterm-insert cmd)

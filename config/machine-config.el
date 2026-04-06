@@ -58,6 +58,8 @@
          ;; (vbox "py3")
          ;; (kant "py3")
          )
+        (conda-command
+         (micromamba-env "micromamba"))
         (elpy-flycheck-activate
          (engels nil)
          )
