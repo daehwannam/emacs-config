@@ -42,6 +42,7 @@
 (defvar tct/keyword-with-date-re-search-template "\\_<%s\\_> *\\(%s\\) *:? *\\(.*\\)$")
 (defvar tct/keyword-with-period-re-search-template "\\_<%s\\_> *\\(%s\\)--\\(%s\\) *:? *\\(.*\\)$")
 (defvar tct/keyword-fallback-re-search-template "\\_<%s\\_> *:? *\\(.*\\)$")
+(defvar tct/keyword-fallback-re-search-template-no-keyword "%s *:? *\\(.*\\)$")
 
 (defun tct/toggle (todo-keyword done-keyword &optional using-comment-dwim)
   "Insert a keyword or replace it as a counterpart.
@@ -174,7 +175,7 @@ an example DONE comment is 'DONE [2025-11-18 16:40]--[2025-11-18 17:25]: Some co
                                  (file-line (let ((file-line-start (point)))
                                               (re-search-forward ":" (line-end-position) t)
                                               (buffer-substring file-line-start (match-beginning 0))))
-                                 (text (buffer-substring (point) (line-end-position))))
+                                 (text (buffer-substring-no-properties (point) (line-end-position))))
                              (push (list path file-line text) tuples))
                            (progn
                              (end-of-line)
@@ -209,6 +210,11 @@ an example DONE comment is 'DONE [2025-11-18 16:40]--[2025-11-18 17:25]: Some co
                                      (list (match-string 1 text) (string-trim (match-string 2 text))))
                                     ((save-excursion
                                        (string-match (format tct/keyword-fallback-re-search-template
+                                                             "TODO")
+                                                     text))
+                                     (list nil (string-trim (match-string 1 text))))
+                                    ((save-excursion
+                                       (string-match (format tct/keyword-fallback-re-search-template-no-keyword
                                                              "TODO")
                                                      text))
                                      (list nil (string-trim (match-string 1 text))))

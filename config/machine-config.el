@@ -28,8 +28,8 @@
          (vbox "~/quicklisp/slime-helper.el")
          (ubuntu-laptop "~/quicklisp/slime-helper.el"))
         (path-to-inferior-lisp-program
-         (cl-setup "ccl")
-         ;; (cl-setup "sbcl")
+         (cl-setup "sbcl")
+         ;; (cl-setup "ccl")
          ;; (slime-setup "clisp")
          ;; (slime-setup "/usr/bin/sbcl")
          (descartes "sbcl")
