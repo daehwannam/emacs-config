@@ -20,7 +20,7 @@
 
 (defvar dhnam/machine-config-list)
 (setq dhnam/machine-config-list
-      '((theme-style (white-theme-machine white))
+      `((theme-style (white-theme-machine white))
         (ai-edu-key-binding (vbox t))
         (path-to-slime-helper
          (slime-setup "~/quicklisp/slime-helper.el")
@@ -34,7 +34,7 @@
          ;; (slime-setup "/usr/bin/sbcl")
          (descartes "sbcl")
          (vbox "sbcl")
-         (ubuntu-laptop-sbcl "/home/dhnam/program/miniconda3/envs/default/bin/sbcl"))
+         (ubuntu-laptop-sbcl ,(expand-file-name "program/miniconda3/envs/default/bin/sbcl" (getenv "HOME"))))
         (etags-list (vbox ("/usr/share/emacs/25.3/lisp" "~/.emacs.d")))
         (org-agenda-directory-pattern
          (ms-desktop ("e:/data/Dropbox/org/schedule/" ".*\\.org\\(\\.txt\\)?$"))
@@ -94,7 +94,7 @@
          (ubuntu-laptop (900 200))
          (descartes (900 200)))
         (python-doc-code-temp-file-format
-         (local-python-doc-code-temp-file-format "/home/dhnam/tmp/XXXXX.py"))
+         (local-python-doc-code-temp-file-format ,(expand-file-name "tmp/XXXXX.py" (getenv "HOME"))))
 
         (installable-packages
          ;; (base (vlf magit key-chord modalka evil avy hydra dash counsel multi-term))
