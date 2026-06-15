@@ -60,10 +60,16 @@ xrdb -merge ~/.Xresources
 ### run emacs ###
 # export BASH_ENV=~/.bashrc  # not working
 
-if [ [ -z "$EXWM_DEBUG" ] ]; then
-    exec emacs --exwm
+if [ [ -z "$EMACS" ] ]; then
+    EMACS_COMMAND=emacs
 else
-    exec emacs --debug-init --exwm
+    EMACS_COMMAND=$EMACS
+fi
+
+if [ [ -z "$EXWM_DEBUG" ] ]; then
+    exec $EMACS_COMMAND --exwm
+else
+    exec $EMACS_COMMAND --debug-init --exwm
 fi
 
 # exec emacs --exwm $EXWM_DEBUG
