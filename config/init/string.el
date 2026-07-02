@@ -1,5 +1,5 @@
 (comment
-  
+
   ;; https://stackoverflow.com/questions/23636226/how-to-round-all-the-numbers-in-a-region
   (defun dhnam/round-number (start end &optional fp)
     "round the numbers of region."
