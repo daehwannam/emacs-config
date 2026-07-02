@@ -60,24 +60,26 @@
     (comment (key-chord-define proced-mode-map "fl" 'dhnam/proced-filter-interactive-all))
     (comment (key-chord-define proced-mode-map "fu" 'dhnam/proced-filter-interactive-user))))
 
+(defvar dhnam/gc-path "~/.gc-path")
+
 (defun dhnam/kill-gc-by-reading ()
   (interactive)
-  (let ((path-file "~/gc-path.txt"))
+  (let ((path-file dhnam/gc-path))
     (kill-new (dhnam/string-trim (dhnam/get-string-from-file (dhnam/string-trim (dhnam/get-string-from-file path-file)))))))
 
 (defun dhnam/kill-gc-by-running ()
   (interactive)
-  (let ((path-file "~/gc-path.txt"))
+  (let ((path-file dhnam/gc-path))
     (kill-new (dhnam/string-trim (shell-command-to-string (dhnam/string-trim (dhnam/get-string-from-file path-file)))))))
 
 (defun dhnam/insert-gc-by-reading ()
   (interactive)
-  (let ((path-file "~/gc-path.txt"))
+  (let ((path-file dhnam/gc-path))
     (insert (dhnam/string-trim (dhnam/get-string-from-file (dhnam/string-trim (dhnam/get-string-from-file path-file)))))))
 
 (defun dhnam/insert-gc-by-running ()
   (interactive)
-  (let ((path-file "~/gc-path.txt"))
+  (let ((path-file dhnam/gc-path))
     (insert (dhnam/string-trim (shell-command-to-string (dhnam/string-trim (dhnam/get-string-from-file path-file)))))))
 
 (defalias 'dhnam/kill-gc 'dhnam/kill-gc-by-running)

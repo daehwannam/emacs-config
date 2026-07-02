@@ -78,6 +78,14 @@
     (define-key LaTeX-mode-map (kbd "C-M-7") 'dhnam/align-ampersands)
     (define-key LaTeX-mode-map (kbd "C-c e") 'dhnam/TeX-error-navigation/body)))
 
+(with-eval-after-load 'tex
+  ;; Ignore Bad Box warnings when `TeX-next-error' is used
+  (setq TeX-debug-bad-boxes nil)
+
+  (comment
+    ;; Ignore all warnings when `TeX-next-error' is used
+    (setq TeX-debug-warnings nil)))
+
 (with-eval-after-load 'latex
   (require 'dhnam-latex-indentation-fix)
   (comment
@@ -219,6 +227,12 @@ the PDFGrep job before it finishes, type \\[kill-compilation]."
     (setq pdf-view-midnight-colors '("light gray" . "#000000")))
 
   (add-hook 'doc-view-mode-hook 'dhnam/initialize-pdf-tools)
+
+  (custom-set-faces
+   ;; Region color
+   ;;
+   ;; '(pdf-view-region ((t (:background "#FFFF00" :foreground "#000000"))))
+   '(pdf-view-region ((t (:background "#FFF59D" :foreground "#000000")))))
 
   (progn
     ;; when opening a pdf file
