@@ -121,4 +121,15 @@
 (key-chord-define-global "s;" 'dhnam/switch-to-org-scratch-buffer)
 (key-chord-define-global "e;" 'dhnam/switch-to-scratch-buffer)
 
+(if (>= emacs-major-version 29)
+    ;; For Emacs 29+: Override the 3-option menu with standard y-or-n-p
+    (advice-add 'kill-buffer--possibly-save :override
+                (lambda (buffer)
+                  "Force standard y-or-n-p prompt instead of the 3-option menu."
+                  (let ((name (buffer-name buffer)))
+                    (y-or-n-p (format "Buffer %s modified; kill anyway? " name)))))
+
+  ;; For Emacs 28 and older: Ensure traditional system uses short answers
+  (setq use-short-answers t))
+
 (provide 'init-buffer)

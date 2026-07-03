@@ -34,7 +34,9 @@
   (define-key prog-mode-map (kbd "C-c M-m") 'tct/toggle-todo-in-program)
   (global-set-key (kbd "C-c M-u") 'tct/summarize-todo)
 
-  (setq tct/non-paired-keywords (tct/get-non-paired-keywords (mapcar #'car hl-todo-keyword-faces))))
+  (with-eval-after-load 'hl-todo
+    (setq tct/non-paired-keywords (tct/get-non-paired-keywords (mapcar #'car hl-todo-keyword-faces))))
+  )
   
 
 (provide 'init-documentation)

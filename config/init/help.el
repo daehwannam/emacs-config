@@ -49,7 +49,12 @@
 (require 'dhnam-miscellaneous)
 
 (define-key help-mode-map (kbd "o") 'dhnam/push-button-same-window)
-(define-key xref--xref-buffer-mode-map (kbd "o") 'dhnam/xref-goto-xref-same-window)
+;; (define-key xref--xref-buffer-mode-map (kbd "o") 'dhnam/xref-goto-xref-same-window)
+(with-eval-after-load 'xref
+  (let ((map (if (boundp 'xref-xref-buffer-mode-map)
+                 xref-xref-buffer-mode-map       ; Emacs 29+ name
+               xref--xref-buffer-mode-map)))     ; Older Emacs name
+    (define-key map (kbd "o") 'dhnam/xref-goto-xref-same-window)))
 
 
 (provide 'init-help)
