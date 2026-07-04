@@ -9,8 +9,8 @@ export _JAVA_AWT_WM_NONREPARENTING=1
 # Set default cursor.
 xsetroot -cursor_name left_ptr
 
-# Set keyboard repeat rate.
-xset r rate 200 60
+# # Set keyboard repeat rate.
+# xset r rate 200 60
 
 # Uncomment the following block to use the exwm-xim module.
 #export XMODIFIERS=@im=exwm-xim
