@@ -30,8 +30,12 @@
 (progn
   (require 'todo-comment-table)
 
-  (global-set-key (kbd "C-c M-m") 'tct/toggle-todo)
-  (define-key prog-mode-map (kbd "C-c M-m") 'tct/toggle-todo-in-program)
+  ;; (global-set-key (kbd "C-c M-m") 'tct/toggle-todo)
+  ;; (define-key prog-mode-map (kbd "C-c M-m") 'tct/toggle-todo-in-program) ; "C-c M-m" is already bound to `sly-macroexpand-all'
+
+  (global-set-key (kbd "C-c M-;") 'tct/toggle-todo)
+  (define-key prog-mode-map (kbd "C-c M-;") 'tct/toggle-todo-in-program)
+
   (global-set-key (kbd "C-c M-u") 'tct/summarize-todo)
 
   (with-eval-after-load 'hl-todo
